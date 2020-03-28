@@ -9,9 +9,9 @@ class App extends React.Component {
   }
   
   callAPI() {
-    fetch("http://localhost:9000/testAPI")
-      .then(res => res.text())
-      .then(res => this.setState({ apiResponse: res }));
+    fetch("http://localhost:9000/")
+      .then(res => res.json())
+      .then(res => this.setState({ apiResponse: res.message }));
     }
   
   componentDidMount() {
