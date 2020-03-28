@@ -9,7 +9,7 @@ class App extends React.Component {
   }
   
   callAPI() {
-    fetch("http://localhost:9000/")
+    fetch("http://localhost:9000/api/")
       .then(res => res.json())
       .then(res => this.setState({ apiResponse: res.message }));
     }
