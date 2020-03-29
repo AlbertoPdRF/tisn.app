@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import HomeToolbar from '../HomeToolbar/HomeToolbar';
-import Footer from '../Footer/Footer'
+import HomeFooter from '../HomeFooter/HomeFooter'
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -35,9 +35,6 @@ const Home = () => {
   return (
     <div className={classes.root}>
       <Grid container spacing={1} direction="column" className={classes.grow}>
-        <Grid item>
-          <HomeToolbar />
-        </Grid>
         {!user &&
           <Grid item>
             <HomeToolbar />
@@ -55,7 +52,7 @@ const Home = () => {
         </Grid>
         <Grid item className={classes.grow} />
         <Grid item className={classes.fullWidth}>
-          <Footer />
+          <HomeFooter />
         </Grid>
       </Grid>
     </div>
