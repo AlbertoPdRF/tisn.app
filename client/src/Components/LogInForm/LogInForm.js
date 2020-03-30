@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
@@ -7,39 +7,26 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 
+import { logIn, localStorageKey } from '../../logic/auth';
+
 const LogInForm = () => {
   const history = useHistory();
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-
-  const logInUrl = 'http://localhost:9000/api/users/log-in';
+  const [error, setError] = useState('');
 
   const handleClick = () => {
     setLoading(true);
-    fetch(logInUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        user: {
-          email,
-          password
-        }
-      })
-    })
-      .then(response => response.json())
+    logIn({ email, password })
       .then(data => {
-        if (data.user) {
-          localStorage.setItem('user', JSON.stringify(data.user));
-          history.push('/');
-        }
+        localStorage.setItem(localStorageKey('id'), data.user.id);
+        localStorage.setItem(localStorageKey('accessToken'), data.user.accessToken);
+        history.push('/');
       })
-      .catch(error => console.log(error));
-
-    setLoading(false);
+      .catch(error => setError(error.message))
+      .finally(setLoading(false));
   };
 
   return (
