@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Redirect } from 'react-router-dom';
 
-import { PublicRoute, PrivateRoute } from '../../logic/routes';
+import { PublicRoute, PrivateRoute } from '../Router/Router';
 
 import Home from '../Home/Home';
 import Welcome from '../Welcome/Welcome';

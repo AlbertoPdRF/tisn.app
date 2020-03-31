@@ -1,53 +1,32 @@
 import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
+import Style from '../Style/Style';
 import WelcomeToolbar from '../WelcomeToolbar/WelcomeToolbar';
 import WelcomeFooter from '../WelcomeFooter/WelcomeFooter';
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    padding: theme.spacing(2, 1),
-    [theme.breakpoints.up('md')]: {
-      padding: theme.spacing(3),
-      paddingBottom: theme.spacing(2),
-    },
-    display: 'flex',
-    minHeight: '100vh',
-  },
-  grow: {
-    flexGrow: 1,
-  },
-  fullWidth: {
-    width: '100%',
-  },
-  center: {
-    textAlign: 'center',
-  },
-}));
-
 const Welcome = () => {
-  const classes = useStyles();
+  const style = Style();
 
   return (
-    <div className={classes.root}>
-      <Grid container spacing={1} direction="column" className={classes.grow}>
+    <div className={style.root}>
+      <Grid container spacing={1} direction="column" className={style.grow}>
         <Grid item>
           <WelcomeToolbar />
         </Grid>
-        <Grid item className={classes.center}>
+        <Grid item className={style.center}>
           <Typography variant="h1">
             Tisn
           </Typography>
         </Grid>
-        <Grid item className={classes.center}>
+        <Grid item className={style.center}>
           <Typography variant="subtitle1">
             The introverts' social network
           </Typography>
         </Grid>
-        <Grid item className={classes.grow} />
-        <Grid item className={classes.fullWidth}>
+        <Grid item className={style.grow} />
+        <Grid item className={style.fullWidth}>
           <WelcomeFooter />
         </Grid>
       </Grid>

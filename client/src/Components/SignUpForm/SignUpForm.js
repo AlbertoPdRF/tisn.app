@@ -7,7 +7,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 
-import { signUp, localStorageKey } from '../../logic/auth';
+import { signUp, setUserSession } from '../../logic/auth';
 
 const SignUpForm = () => {
   const history = useHistory();
@@ -21,11 +21,8 @@ const SignUpForm = () => {
     setLoading(true);
     signUp({ email, password })
       .then(data => {
-        localStorage.setItem(localStorageKey('id'), data.user.id);
-        localStorage.setItem(localStorageKey('accessToken'), data.user.accessToken);
-
+        setUserSession(data.user.accessToken, data.user);
         setLoading(false);
-
         history.push('/');
       })
       .catch(error => {
