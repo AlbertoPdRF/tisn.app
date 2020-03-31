@@ -16,6 +16,14 @@ exports.get = (req, res, next) => {
 exports.post = (req, res, next) => {
   const { body: { user } } = req;
 
+  if (!user.name) {
+    return res.status(422).json({
+      errors: {
+        name: 'is required',
+      },
+    });
+  }
+
   if (!user.email) {
     return res.status(422).json({
       errors: {
@@ -28,6 +36,14 @@ exports.post = (req, res, next) => {
     return res.status(422).json({
       errors: {
         password: 'is required',
+      },
+    });
+  }
+
+  if (!user.dateOfBirth) {
+    return res.status(422).json({
+      errors: {
+        dateOfBirth: 'is required',
       },
     });
   }

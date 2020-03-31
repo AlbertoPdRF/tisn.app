@@ -5,10 +5,13 @@ const jwt = require('jsonwebtoken');
 const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
-  email: String,
-  hash: String,
-  salt: String
-});
+  name: {type: String, required: true},
+  email: {type: String, required: true},
+  hash: {type: String, required: true},
+  salt: {type: String, required: true},
+  dateOfBirth: {type: Date, required: true},
+  admin: {type: Boolean, required: true, default: false}
+}, { timestamps: true });
 
 UserSchema.methods.setPassword = function(password) {
   this.salt = crypto.randomBytes(16).toString('hex');
@@ -34,7 +37,9 @@ UserSchema.methods.generateJWT = function() {
 UserSchema.methods.toAuthJSON = function() {
   return {
     id: this._id,
-    accessToken: this.generateJWT(),
+    name: this.name,
+    admin: this.admin,
+    accessToken: this.generateJWT()
   };
 };
 

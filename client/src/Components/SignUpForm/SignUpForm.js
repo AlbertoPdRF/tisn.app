@@ -12,23 +12,31 @@ import { signUp, setUserSession } from '../../logic/auth';
 const SignUpForm = () => {
   const history = useHistory();
 
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   const handleClick = () => {
     setLoading(true);
-    signUp({ email, password })
-      .then(data => {
-        setUserSession(data.user.accessToken, data.user);
-        setLoading(false);
-        history.push('/');
-      })
-      .catch(error => {
-        setError(error.message);
-        setLoading(false);
-      });
+    if (password !== confirmPassword) {
+      setError('Passwords don\'t match');
+      setLoading(false);
+    } else {
+      signUp({ name, email, password, dateOfBirth })
+        .then(data => {
+          setUserSession(data.user.accessToken, data.user);
+          setLoading(false);
+          history.push('/');
+        })
+        .catch(error => {
+          setError(error.message);
+          setLoading(false);
+        });
+    }
   };
 
   return (
@@ -38,6 +46,14 @@ const SignUpForm = () => {
           <Typography variant="h1">
             Sign up
           </Typography>
+        </Grid>
+        <Grid item>
+          <TextField
+            label="Name"
+            variant="outlined"
+            value={name}
+            onChange={event => setName(event.target.value)}
+          />
         </Grid>
         <Grid item>
           <TextField
@@ -57,10 +73,36 @@ const SignUpForm = () => {
           />
         </Grid>
         <Grid item>
+          <TextField
+            type="password"
+            label="Confirm password"
+            variant="outlined"
+            value={confirmPassword}
+            onChange={event => setConfirmPassword(event.target.value)}
+          />
+        </Grid>
+        <Grid item>
+          <TextField
+            type="date"
+            label="Date of birth"
+            variant="outlined"
+            value={dateOfBirth}
+            onChange={event => setDateOfBirth(event.target.value)}
+            InputLabelProps={{ shrink: true }}
+          />
+        </Grid>
+        <Grid item>
           <Button
             variant="outlined"
             onClick={() => handleClick()}
-            disabled={loading || !email || !password}
+            disabled={
+              loading ||
+              !name ||
+              !email ||
+              !password ||
+              !confirmPassword ||
+              !dateOfBirth
+            }
           >
             Sign up
           </Button>
