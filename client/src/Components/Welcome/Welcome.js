@@ -1,31 +1,57 @@
 import React from 'react';
+import { makeStyles } from '@material-ui/core/styles';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
 import WelcomeToolbar from '../WelcomeToolbar/WelcomeToolbar';
 import WelcomeFooter from '../WelcomeFooter/WelcomeFooter';
 
-const Welcome = ({ classes = null }) => {
+const useStyles = makeStyles(theme => ({
+  root: {
+    padding: theme.spacing(2, 1),
+    [theme.breakpoints.up('md')]: {
+      padding: theme.spacing(3),
+      paddingBottom: theme.spacing(2),
+    },
+    display: 'flex',
+    minHeight: '100vh',
+  },
+  grow: {
+    flexGrow: 1,
+  },
+  fullWidth: {
+    width: '100%',
+  },
+  center: {
+    textAlign: 'center',
+  },
+}));
+
+const Welcome = () => {
+  const classes = useStyles();
+
   return (
-    <Grid container spacing={1} direction="column" className={classes.grow}>
-      <Grid item>
-        <WelcomeToolbar />
+    <div className={classes.root}>
+      <Grid container spacing={1} direction="column" className={classes.grow}>
+        <Grid item>
+          <WelcomeToolbar />
+        </Grid>
+        <Grid item className={classes.center}>
+          <Typography variant="h1">
+            Tisn
+          </Typography>
+        </Grid>
+        <Grid item className={classes.center}>
+          <Typography variant="subtitle1">
+            The introverts' social network
+          </Typography>
+        </Grid>
+        <Grid item className={classes.grow} />
+        <Grid item className={classes.fullWidth}>
+          <WelcomeFooter />
+        </Grid>
       </Grid>
-      <Grid item className={classes.center}>
-        <Typography variant="h1">
-          Tisn
-        </Typography>
-      </Grid>
-      <Grid item className={classes.center}>
-        <Typography variant="subtitle1">
-          The introverts' social network
-        </Typography>
-      </Grid>
-      <Grid item className={classes.grow} />
-      <Grid item className={classes.fullWidth}>
-        <WelcomeFooter />
-      </Grid>
-    </Grid>
+    </div>
   );
 };
 

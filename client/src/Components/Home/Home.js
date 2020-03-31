@@ -1,10 +1,7 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-
-import Welcome from '../Welcome/Welcome';
-import Feed from '../Feed/Feed';
-
-import { isLoggedIn } from '../../logic/auth';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -27,15 +24,18 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Home = () => {  
+const Home = () => {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      {isLoggedIn()
-        ? <Feed classes={classes} />
-        : <Welcome classes={classes} />
-      }
+      <Grid container spacing={1} direction="column" className={classes.grow}>
+        <Grid item className={classes.center}>
+          <Typography variant="h1">
+            Feed
+          </Typography>
+        </Grid>
+      </Grid>
     </div>
   );
 };

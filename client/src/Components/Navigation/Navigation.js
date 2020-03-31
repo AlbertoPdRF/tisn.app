@@ -1,16 +1,22 @@
 import React from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Redirect } from 'react-router-dom';
+
+import { PublicRoute, PrivateRoute } from '../../logic/routes';
 
 import Home from '../Home/Home';
+import Welcome from '../Welcome/Welcome';
 import LogInForm from '../LogInForm/LogInForm';
 import SignUpForm from '../SignUpForm/SignUpForm';
 
 const Navigation = () => {
   return (
     <Switch>
-      <Route exact path="/" component={Home} />
-      <Route exact path="/log-in" component={LogInForm} />
-      <Route exact path="/sign-up" component={SignUpForm} />
+      <PrivateRoute exact path="/" component={Home} />
+
+      <PublicRoute exact path="/welcome" component={Welcome} />
+      <PublicRoute exact path="/log-in" component={LogInForm} />
+      <PublicRoute exact path="/sign-up" component={SignUpForm} />
+
       <Redirect to="/" />
     </Switch>
   );

@@ -23,10 +23,15 @@ const SignUpForm = () => {
       .then(data => {
         localStorage.setItem(localStorageKey('id'), data.user.id);
         localStorage.setItem(localStorageKey('accessToken'), data.user.accessToken);
+
+        setLoading(false);
+
         history.push('/');
       })
-      .catch(error => setError(error.message))
-      .finally(setLoading(false));
+      .catch(error => {
+        setError(error.message);
+        setLoading(false);
+      });
   };
 
   return (
