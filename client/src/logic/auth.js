@@ -1,6 +1,6 @@
 import { fetchApi } from './api';
 
-export const localStorageKey = key => `Tisn.${key}`;
+const localStorageKey = key => `Tisn.${key}`;
 
 const logInOrSignUp = (action, user) => {
   const path = action === 'log-in' ? action : '';
@@ -13,8 +13,9 @@ const logInOrSignUp = (action, user) => {
 
 export const signUp = user => logInOrSignUp('sign-up', user);
  
-export const setUserSession = (accessToken, user) => {
-  localStorage.setItem(localStorageKey('accessToken'), accessToken);
+export const setUserSession = (user) => {
+  localStorage.setItem(localStorageKey('accessToken'), user.accessToken);
+  localStorage.setItem(localStorageKey('admin'), user.admin);
   localStorage.setItem(localStorageKey('user'), JSON.stringify(user));
 }
 
@@ -34,8 +35,13 @@ export const logIn = user => logInOrSignUp('log-in', user);
 
 export const isLoggedIn = () => !!accessToken();
 
-export const removeUserSession = () => {
+const admin = () => localStorage.getItem(localStorageKey('admin'));
+
+export const isAdmin = () => !!admin();
+
+const removeUserSession = () => {
   localStorage.removeItem(localStorageKey('accessToken'));
+  localStorage.removeItem(localStorageKey('admin'));
   localStorage.removeItem(localStorageKey('user'));
 }
 

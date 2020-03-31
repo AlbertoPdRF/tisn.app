@@ -28,7 +28,7 @@ const SignUpForm = () => {
     } else {
       signUp({ name, email, password, dateOfBirth })
         .then(data => {
-          setUserSession(data.user.accessToken, data.user);
+          setUserSession(data.user);
           setLoading(false);
           history.push('/');
         })

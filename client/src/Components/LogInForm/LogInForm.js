@@ -21,7 +21,7 @@ const LogInForm = () => {
     setLoading(true);
     logIn({ email, password })
       .then(data => {
-        setUserSession(data.user.accessToken, data.user);
+        setUserSession(data.user);
         setLoading(false);
         history.push('/');
       })
