@@ -10,6 +10,7 @@ const UserSchema = new Schema({
   hash: {type: String, required: true},
   salt: {type: String, required: true},
   dateOfBirth: {type: Date, required: true},
+  interests: [{type: Schema.Types.ObjectId, ref: 'Interest'}],
   admin: {type: Boolean, required: true, default: false}
 }, { timestamps: true });
 
