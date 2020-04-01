@@ -9,7 +9,7 @@ exports.get = (req, res, next) => {
         return res.sendStatus(400);
       }
 
-    res.json({ users: users.map(user => user.toAuthJSON()) });
+      res.json({ users: users.map(user => user.toAuthJSON()) });
     });
 };
 

@@ -1,12 +1,14 @@
 var express = require('express');
 var router = express.Router();
 
+const usersRouter = require('./users');
+const categoriesRouter = require('./categories');
+
 router.get('/', function(req, res, next) {
-  res.json({
-    message: "API is working properly"
-  });
+  res.json({ message: "Tisn API" });
 });
 
-router.use('/users', require('./users'));
+router.use('/users', usersRouter);
+router.use('/categories', categoriesRouter);
 
 module.exports = router;
