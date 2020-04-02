@@ -1,6 +1,8 @@
 import { accessToken } from './auth';
 import { BASE_API_URL } from './env';
 
+export const getEvents = () => fetchApi('/events', { method: 'GET' });
+
 export const fetchApi = (path, fetchOptions = {}) => {
   return fetch(
     `${BASE_API_URL}${path}`,

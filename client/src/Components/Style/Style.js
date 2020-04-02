@@ -8,17 +8,28 @@ const Style = makeStyles(theme => ({
       paddingBottom: theme.spacing(2),
     },
     display: 'flex',
-    minHeight: '100vh',
+    minHeight: '100vh'
   },
   grow: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   fullWidth: {
-    width: '100%',
+    width: '100%'
   },
   center: {
-    textAlign: 'center',
+    textAlign: 'center'
   },
+  cardGrid: {
+    maxWidth: 1000,
+    margin: 'auto'
+  },
+  card: {
+    maxWidth: 300,
+    maxHeight: 500
+  },
+  cardInterests: {
+    float: 'right'
+  }
 }));
 
 export default Style;

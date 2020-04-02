@@ -23,6 +23,14 @@ exports.post = (req, res, next) => {
     });
   }
 
+  if (!interest.avatar) {
+    return res.status(422).json({
+      errors: {
+        avatar: 'is required',
+      },
+    });
+  }
+
   if (!interest.category) {
     return res.status(422).json({
       errors: {

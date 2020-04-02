@@ -2,7 +2,7 @@ const Event = require('../models/Event');
 
 exports.get = (req, res, next) => {
   return Event.find()
-    .populate('relatedInterests', 'name')
+    .populate('relatedInterests', 'name avatar')
     .then(events => {
       if (!events) {
         return res.sendStatus(400);
