@@ -23,23 +23,15 @@ const Home = () => {
   return loading ? (
     <LinearProgress />
   ) : (
-    <Grid container spacing={1} justify="center" className={style.cardGrid}>
-      {events.map(event => (
-        <Grid item key={event.name}>
-          <EventCard event={event} />
-        </Grid>
-      ))}
-      {events.map(event => (
-        <Grid item key={event.name}>
-          <EventCard event={event} />
-        </Grid>
-      ))}
-      {events.map(event => (
-        <Grid item key={event.name}>
-          <EventCard event={event} />
-        </Grid>
-      ))}
-    </Grid>
+    <div className={style.root}>
+      <Grid container spacing={1} justify="center">
+        {events.map(event => (
+          <Grid item key={event.name}>
+            <EventCard event={event} />
+          </Grid>
+        ))}
+      </Grid>
+    </div>
   );
 };
 

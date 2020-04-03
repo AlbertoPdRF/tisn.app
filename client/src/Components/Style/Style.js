@@ -1,5 +1,7 @@
 import { makeStyles } from '@material-ui/core/styles';
 
+const drawerWidth = 250;
+
 const Style = makeStyles(theme => ({
   root: {
     padding: theme.spacing(2, 1),
@@ -8,7 +10,8 @@ const Style = makeStyles(theme => ({
       paddingBottom: theme.spacing(2),
     },
     display: 'flex',
-    minHeight: '100vh'
+    minHeight: '100vh',
+    maxWidth: '100vw'
   },
   grow: {
     flexGrow: 1
@@ -19,9 +22,8 @@ const Style = makeStyles(theme => ({
   center: {
     textAlign: 'center'
   },
-  cardGrid: {
-    maxWidth: 1000,
-    margin: 'auto'
+  drawerPaper: {
+    width: drawerWidth,
   },
   card: {
     maxWidth: 300,
