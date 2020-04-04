@@ -5,6 +5,7 @@ import { PublicRoute, PrivateRoute, AdminRoute } from '../Router/Router';
 
 import Home from '../Home/Home';
 import Event from '../Event/Event';
+import User from '../User/User';
 
 import Welcome from '../Welcome/Welcome';
 import LogInForm from '../LogInForm/LogInForm';
@@ -17,6 +18,7 @@ const Navigation = () => {
     <Switch>
       <PrivateRoute exact path="/" component={Home} />
       <PrivateRoute exact path="/events/:id" component={Event} />
+      <PrivateRoute exact path="/users/:id" component={User} />
 
       <PublicRoute exact path="/welcome" component={Welcome} />
       <PublicRoute exact path="/log-in" component={LogInForm} />

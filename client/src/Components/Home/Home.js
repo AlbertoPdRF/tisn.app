@@ -18,7 +18,7 @@ const Home = () => {
       .then(data => setEvents(data.events))
       .catch(error => console.log(error))
       .finally(() => setLoading(false));
-  }, [])
+  }, []);
 
   return loading ? (
     <LinearProgress />

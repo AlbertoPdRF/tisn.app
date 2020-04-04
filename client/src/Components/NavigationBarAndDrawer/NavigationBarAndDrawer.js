@@ -9,6 +9,7 @@ import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
+import HomeIcon from '@material-ui/icons/Home';
 import PersonIcon from '@material-ui/icons/Person';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AppBar from '@material-ui/core/AppBar';
@@ -49,16 +50,34 @@ const NavigationBarAndDrawer = (props) => {
   const drawer = (
     <Fragment>
       <List>
-        <ListItem button onClick={() => history.push(`/users/${user.id}`)}>
+        <ListItem button onClick={() => {
+          history.push(`/users/${user.id}`);
+          handleDrawerToggle();
+        }}>
           <ListItemAvatar>
-            <Avatar alt={`${user.name}'s avatar`} src={user.avatar}/>
+            <Avatar alt={`${user.name}'s avatar`} src={user.avatar} />
           </ListItemAvatar>
           <ListItemText
             primary={user.name}
           />
         </ListItem>
         <Divider />
-        <ListItem button onClick={() => history.push(`/users/${user.id}`)}>
+        <ListItem button onClick={() => {
+          history.push('/');
+          handleDrawerToggle();
+        }}>
+          <ListItemIcon>
+            <HomeIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary="Home"
+          />
+        </ListItem>
+        <Divider />
+        <ListItem button onClick={() => {
+          history.push(`/users/${user.id}`);
+          handleDrawerToggle();
+        }}>
           <ListItemIcon>
             <PersonIcon />
           </ListItemIcon>
@@ -68,7 +87,7 @@ const NavigationBarAndDrawer = (props) => {
         </ListItem>
         <ListItem button onClick={() => {
           logOut();
-          history.push(`/welcome`);
+          history.push('/welcome');
         }}>
           <ListItemIcon>
             <ExitToAppIcon />
