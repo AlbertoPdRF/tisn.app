@@ -1,5 +1,5 @@
-import { accessToken } from './auth';
 import { BASE_API_URL } from './env';
+import { accessToken } from './auth';
 
 export const getEvents = () => fetchApi('/events', { method: 'GET' });
 
@@ -9,8 +9,8 @@ export const fetchApi = (path, fetchOptions = {}) => {
     Object.assign({}, fetchOptions, {
       headers: new Headers({
         'Authorization': `Bearer ${accessToken()}`,
-        'Content-Type': 'application/json',
-      }),
+        'Content-Type': 'application/json'
+      })
     })
   )
     .then(response => {
