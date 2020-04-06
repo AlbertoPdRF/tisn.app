@@ -8,6 +8,6 @@ const categoriesController = require('../controllers/categoriesController');
 router.get('/', auth.required, categoriesController.get);
 router.post('/', auth.required, categoriesController.post);
 
-router.get('/:id', auth.required, categoriesController.get_id);
+router.get('/:id', auth.required, categoriesController.getId);
 
 module.exports = router;

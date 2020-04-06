@@ -55,7 +55,7 @@ exports.post = (req, res, next) => {
 
 
 
-exports.get_id = (req, res, next) => {
+exports.getId = (req, res, next) => {
   return Event.findById(req.params.id)
     .populate('createdBy', 'name')
     .populate({

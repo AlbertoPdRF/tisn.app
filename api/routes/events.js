@@ -8,6 +8,6 @@ const eventsController = require('../controllers/eventsController');
 router.get('/', auth.required, eventsController.get);
 router.post('/', auth.required, eventsController.post);
 
-router.get('/:id', auth.required, eventsController.get_id);
+router.get('/:id', auth.required, eventsController.getId);
 
 module.exports = router;
