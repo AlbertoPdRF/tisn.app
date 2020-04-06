@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { useHistory } from 'react-router-dom';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import Slide from '@material-ui/core/Slide';
@@ -12,6 +12,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import HomeIcon from '@material-ui/icons/Home';
 import PersonIcon from '@material-ui/icons/Person';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -19,7 +20,10 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Link from '@material-ui/core/Link';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 
-import { getUser, logOut } from '../../logic/auth';
+import { getCurrentUser } from '../../logic/api';
+import { logOut } from '../../logic/auth';
+
+import { useUser, useSetUser } from '../UserProvider/UserProvider';
 
 import Style from '../Style/Style';
 
@@ -38,8 +42,16 @@ const HideOnScroll = (props) => {
 const NavigationBarAndDrawer = (props) => {
   const { container } = props;
   const history = useHistory();
-  const user = getUser();
   const style = Style();
+
+  const user = useUser();
+  const setUser = useSetUser();
+
+  useEffect(() => {
+    getCurrentUser()
+      .then(data => setUser(data.user))
+      .catch(error => console.log(error));
+  }, [setUser]);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
@@ -48,56 +60,60 @@ const NavigationBarAndDrawer = (props) => {
   };
 
   const drawer = (
-    <Fragment>
-      <List>
-        <ListItem button onClick={() => {
-          history.push(`/users/${user.id}`);
-          handleDrawerToggle();
-        }}>
-          <ListItemAvatar>
-            <Avatar alt={`${user.name}'s avatar`} src={user.avatar} />
-          </ListItemAvatar>
-          <ListItemText
-            primary={user.name}
-          />
-        </ListItem>
-        <Divider />
-        <ListItem button onClick={() => {
-          history.push('/');
-          handleDrawerToggle();
-        }}>
-          <ListItemIcon>
-            <HomeIcon />
-          </ListItemIcon>
-          <ListItemText
-            primary="Home"
-          />
-        </ListItem>
-        <Divider />
-        <ListItem button onClick={() => {
-          history.push(`/users/${user.id}`);
-          handleDrawerToggle();
-        }}>
-          <ListItemIcon>
-            <PersonIcon />
-          </ListItemIcon>
-          <ListItemText
-            primary="Profile"
-          />
-        </ListItem>
-        <ListItem button onClick={() => {
-          logOut();
-          history.push('/welcome');
-        }}>
-          <ListItemIcon>
-            <ExitToAppIcon />
-          </ListItemIcon>
-          <ListItemText
-            primary="Log out"
-          />
-        </ListItem>
-      </List>
-    </Fragment>
+    user ? (
+      <Fragment>
+        <List>
+          <ListItem button onClick={() => {
+            history.push(`/users/${user._id}`);
+            handleDrawerToggle();
+          }}>
+            <ListItemAvatar>
+              <Avatar alt={`${user.name}'s avatar`} src={user.avatar} />
+            </ListItemAvatar>
+            <ListItemText
+              primary={user.name}
+            />
+          </ListItem>
+          <Divider />
+          <ListItem button onClick={() => {
+            history.push('/');
+            handleDrawerToggle();
+          }}>
+            <ListItemIcon>
+              <HomeIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="Home"
+            />
+          </ListItem>
+          <Divider />
+          <ListItem button onClick={() => {
+            history.push(`/users/${user._id}`);
+            handleDrawerToggle();
+          }}>
+            <ListItemIcon>
+              <PersonIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="Profile"
+            />
+          </ListItem>
+          <ListItem button onClick={() => {
+            logOut();
+            history.push('/welcome');
+          }}>
+            <ListItemIcon>
+              <ExitToAppIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="Log out"
+            />
+          </ListItem>
+        </List>
+      </Fragment>
+    ) : (
+      <CircularProgress />
+    )
   );
 
   return (

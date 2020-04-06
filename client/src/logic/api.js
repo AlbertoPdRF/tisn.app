@@ -1,5 +1,7 @@
 import { BASE_API_URL } from './env';
-import { accessToken } from './auth';
+import { accessToken, getPayloadFromToken } from './auth';
+
+export const getCurrentUser = () => fetchApi(`/users/${getPayloadFromToken()._id}`, { method: 'GET' });
 
 export const getEvents = () => fetchApi('/events', { method: 'GET' });
 

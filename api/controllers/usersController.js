@@ -9,7 +9,7 @@ exports.get = (req, res, next) => {
         return res.sendStatus(400);
       }
 
-      res.json({ users: users.map(user => user.toAuthJSON()) });
+      res.json({ users });
     });
 };
 
@@ -58,7 +58,21 @@ exports.post = (req, res, next) => {
 
 
 
-exports.log_in = (req, res, next) => {
+exports.getId = (req, res, next) => {
+  return User.findById(req.params.id)
+    .populate('interests')
+    .then(user => {
+      if (!user) {
+        return res.sendStatus(400);
+      }
+
+      res.json({ user });
+    });
+};
+
+
+
+exports.logIn = (req, res, next) => {
   const { body: { user } } = req;
 
   if (!user.email) {

@@ -13,7 +13,7 @@ const auth = {
   required: jwt({
     secret: process.env.JWT_SECRET,
     userProperty: 'payload',
-    getToken: getTokenFromHeaders,
+    getToken: getTokenFromHeaders
   })
 };
 

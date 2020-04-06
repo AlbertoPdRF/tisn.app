@@ -30,18 +30,14 @@ UserSchema.methods.generateJWT = function() {
   expirationDate.setDate(today.getDate() + 60);
 
   return jwt.sign({
-    id: this._id,
+    _id: this._id,
+    admin: this.admin,
     exp: parseInt(expirationDate.getTime() / 1000, 10)
   }, process.env.JWT_SECRET);
-}
+};
 
 UserSchema.methods.toAuthJSON = function() {
-  return {
-    id: this._id,
-    name: this.name,
-    admin: this.admin,
-    accessToken: this.generateJWT()
-  };
+  return { accessToken: this.generateJWT() };
 };
 
 module.exports = mongoose.model('User', UserSchema);

@@ -1,7 +1,5 @@
 import { fetchApi } from './api';
 
-const localStorageKey = key => `Tisn.${key}`;
-
 const logInOrSignUp = (action, user) => {
   const path = action === 'log-in' ? action : '';
 
@@ -12,37 +10,33 @@ const logInOrSignUp = (action, user) => {
 };
 
 export const signUp = user => logInOrSignUp('sign-up', user);
- 
-export const setUserSession = (user) => {
-  localStorage.setItem(localStorageKey('accessToken'), user.accessToken);
-  localStorage.setItem(localStorageKey('admin'), user.admin);
-  localStorage.setItem(localStorageKey('user'), JSON.stringify(user));
-}
 
-export const getUser = () => {
-  const user = localStorage.getItem(localStorageKey('user'));
+const localStorageKey = key => `Tisn.${key}`;
 
-  if (user) {
-    return JSON.parse(user);
-  }
-
-  return null;
-}
+export const setUserSession = (user) => localStorage.setItem(localStorageKey('accessToken'), user.accessToken);
 
 export const accessToken = () => localStorage.getItem(localStorageKey('accessToken'));
 
 export const logIn = user => logInOrSignUp('log-in', user);
 
-export const isLoggedIn = () => !!accessToken();
+export const isLoggedIn = () => {
+  if (!!accessToken()) {
+    const expirationDate = new Date(0);
+    expirationDate.setUTCSeconds(getPayloadFromToken().exp);
 
-const admin = () => localStorage.getItem(localStorageKey('admin'));
+    if (new Date() <= expirationDate) {
+      return true;
+    }
+  }
 
-export const isAdmin = () => !!admin();
-
-const removeUserSession = () => {
-  localStorage.removeItem(localStorageKey('accessToken'));
-  localStorage.removeItem(localStorageKey('admin'));
-  localStorage.removeItem(localStorageKey('user'));
+  logOut();
+  return false;
 }
+
+export const getPayloadFromToken = () => JSON.parse(atob(accessToken().split('.')[1]));
+
+export const isAdmin = () => !!getPayloadFromToken().admin;
+
+const removeUserSession = () => localStorage.removeItem(localStorageKey('accessToken'));
 
 export const logOut = () => removeUserSession();
