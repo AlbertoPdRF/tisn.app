@@ -66,11 +66,11 @@ const LogInForm = () => {
           </Button>
         </Grid>
         <Grid item>
-          <Link href="/sign-up">
+          <Link href={`${process.env.PUBLIC_URL}/sign-up`}>
             Sign up
           </Link>
           {' | '}
-          <Link href="/">
+          <Link href={`${process.env.PUBLIC_URL}/`}>
             Home
           </Link>
         </Grid>
