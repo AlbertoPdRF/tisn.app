@@ -10,6 +10,7 @@ import Avatar from '@material-ui/core/Avatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import HomeIcon from '@material-ui/icons/Home';
+import AddIcon from '@material-ui/icons/Add';
 import PersonIcon from '@material-ui/icons/Person';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import CircularProgress from '@material-ui/core/CircularProgress';
@@ -84,6 +85,18 @@ const NavigationBarAndDrawer = (props) => {
             </ListItemIcon>
             <ListItemText
               primary="Home"
+            />
+          </ListItem>
+          <Divider />
+          <ListItem button onClick={() => {
+            history.push('/events/new');
+            handleDrawerToggle();
+          }}>
+            <ListItemIcon>
+              <AddIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="New event"
             />
           </ListItem>
           <Divider />

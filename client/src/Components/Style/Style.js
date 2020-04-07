@@ -26,11 +26,19 @@ const Style = makeStyles(theme => ({
     width: drawerWidth,
   },
   card: {
-    maxWidth: 300,
-    maxHeight: 500
+    width: 300,
+    maxHeight: 300
   },
   cardInterests: {
     float: 'right'
+  },
+  formInput: {
+    [theme.breakpoints.down('sm')]: {
+      width: '80vw'
+    },
+    [theme.breakpoints.up('md')]: {
+      width: '768px'
+    },
   }
 }));
 

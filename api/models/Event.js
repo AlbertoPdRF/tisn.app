@@ -9,7 +9,8 @@ const EventSchema = new Schema({
   endDate: {type: Date, required: true},
   createdBy: {type: Schema.Types.ObjectId, ref: 'User', required: true},
   relatedInterests: [{type: Schema.Types.ObjectId, ref: 'Interest'}],
-  attendants: [{type: Schema.Types.ObjectId, ref: 'User'}]
+  attendants: [{type: Schema.Types.ObjectId, ref: 'User'}],
+  coverPhoto: {type: String}
 }, { timestamps: true });
 
 module.exports = mongoose.model('Event', EventSchema);

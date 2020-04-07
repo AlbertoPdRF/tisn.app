@@ -8,6 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import Avatar from '@material-ui/core/Avatar';
 
+import { BASE_API_URL } from '../../logic/env';
+
 import Style from '../Style/Style';
 
 const EventCard = ({ event = {} }) => {
@@ -18,16 +20,17 @@ const EventCard = ({ event = {} }) => {
       <CardActionArea
         component={Link}
         to={`/events/${event._id}`}
+        disabled={event._id === "dummy"}
       >
         <CardMedia
           component="img"
-          src="../../../event-placeholder.jpg"
+          src={event.coverPhoto ? `${BASE_API_URL}${event.coverPhoto}` : "../../../event-placeholder.jpg"}
           alt={event.name}
           height="140"
           title={event.name}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h2">
+          <Typography gutterBottom variant="h5" component="h3">
             {event.name}
           </Typography>
           <AvatarGroup className={style.cardInterests} max={1}>

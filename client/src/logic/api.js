@@ -5,6 +5,15 @@ export const getCurrentUser = () => fetchApi(`/users/${getPayloadFromToken()._id
 
 export const getEvents = () => fetchApi('/events', { method: 'GET' });
 
+export const postEvent = (event) => {
+  return fetchApi('/events', {
+    method: 'POST',
+    body: JSON.stringify({ event })
+  });
+};
+
+export const getInterests = () => fetchApi('/interests', { method: 'GET' });
+
 export const fetchApi = (path, fetchOptions = {}) => {
   return fetch(
     `${BASE_API_URL}${path}`,
