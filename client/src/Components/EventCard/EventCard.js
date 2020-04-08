@@ -30,7 +30,7 @@ const EventCard = ({ event = {} }) => {
           title={event.name}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h3">
+          <Typography gutterBottom variant="h5" component="h3" noWrap>
             {event.name}
           </Typography>
           <AvatarGroup className={style.cardInterests} max={1}>
@@ -39,7 +39,10 @@ const EventCard = ({ event = {} }) => {
             ))}
           </AvatarGroup>
           <Typography variant="body1" color="textSecondary" component="p">
-            {event.description}
+            {event.description.length < 120
+              ? event.description
+              : `${event.description.substring(0, 119)}...`
+            }
           </Typography>
         </CardContent>
       </CardActionArea>
