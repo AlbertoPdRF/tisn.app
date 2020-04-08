@@ -38,6 +38,14 @@ const Style = makeStyles(theme => ({
     [theme.breakpoints.up('md')]: {
       width: '768px'
     },
+  },
+  avatar: {
+    height: '200px',
+    width: '200px',
+    margin: 'auto'
+  },
+  chip: {
+    margin: theme.spacing(0.5),
   }
 }));
 

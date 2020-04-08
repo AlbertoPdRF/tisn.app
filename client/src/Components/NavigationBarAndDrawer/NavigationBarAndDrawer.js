@@ -21,7 +21,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 import Link from '@material-ui/core/Link';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 
-import { getCurrentUser } from '../../logic/api';
+import { getUser } from '../../logic/api';
 import { logOut } from '../../logic/auth';
 
 import { useUser, useSetUser } from '../UserProvider/UserProvider';
@@ -49,7 +49,7 @@ const NavigationBarAndDrawer = (props) => {
   const setUser = useSetUser();
 
   useEffect(() => {
-    getCurrentUser()
+    getUser()
       .then(data => setUser(data.user))
       .catch(error => console.log(error));
   }, [setUser]);
