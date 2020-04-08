@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, Fragment } from 'react';
 import { useHistory } from 'react-router-dom';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -32,50 +33,53 @@ const LogInForm = () => {
   };
 
   return (
-    <Box p={1}>
-      <Grid container direction="column" alignItems="center" spacing={2}>
-        <Grid item>
-          <Typography variant="h1">
-            Log in
-          </Typography>
+    <Fragment>
+      {loading && <LinearProgress />}
+      <Box p={1}>
+        <Grid container direction="column" alignItems="center" spacing={2}>
+          <Grid item>
+            <Typography variant="h1">
+              Log in
+            </Typography>
+          </Grid>
+          <Grid item>
+            <TextField
+              label="Email"
+              variant="outlined"
+              value={email}
+              onChange={event => setEmail(event.target.value)}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              type="password"
+              label="Password"
+              variant="outlined"
+              value={password}
+              onChange={event => setPassword(event.target.value)}
+            />
+          </Grid>
+          <Grid item>
+            <Button
+              variant="outlined"
+              onClick={() => handleClick()}
+              disabled={loading || !email || !password}
+            >
+              Log in
+            </Button>
+          </Grid>
+          <Grid item>
+            <Link href={`${process.env.PUBLIC_URL}/sign-up`}>
+              Sign up
+            </Link>
+            {' | '}
+            <Link href={`${process.env.PUBLIC_URL}/`}>
+              Home
+            </Link>
+          </Grid>
         </Grid>
-        <Grid item>
-          <TextField
-            label="Email"
-            variant="outlined"
-            value={email}
-            onChange={event => setEmail(event.target.value)}
-          />
-        </Grid>
-        <Grid item>
-          <TextField
-            type="password"
-            label="Password"
-            variant="outlined"
-            value={password}
-            onChange={event => setPassword(event.target.value)}
-          />
-        </Grid>
-        <Grid item>
-          <Button
-            variant="outlined"
-            onClick={() => handleClick()}
-            disabled={loading || !email || !password}
-          >
-            Log in
-          </Button>
-        </Grid>
-        <Grid item>
-          <Link href={`${process.env.PUBLIC_URL}/sign-up`}>
-            Sign up
-          </Link>
-          {' | '}
-          <Link href={`${process.env.PUBLIC_URL}/`}>
-            Home
-          </Link>
-        </Grid>
-      </Grid>
-    </Box>
+      </Box>
+    </Fragment>
   );
 };
 

@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { useHistory } from 'react-router-dom';
+import LinearProgress from '@material-ui/core/LinearProgress';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -70,120 +71,123 @@ const NewEventForm = () => {
   };
 
   return (
-    <Box p={1}>
-      <Grid container direction="column" alignItems="center" spacing={2}>
-        <Grid item className={style.center}>
-          <Typography variant="h2">
-            New event
-          </Typography>
+    <Fragment>
+      {loading && <LinearProgress />}
+      <Box p={1}>
+        <Grid container direction="column" alignItems="center" spacing={2}>
+          <Grid item className={style.center}>
+            <Typography variant="h2">
+              New event
+            </Typography>
+          </Grid>
+          <Grid item>
+            <Typography variant="h4" component="h3">
+              Event card preview
+            </Typography>
+          </Grid>
+          <Grid item>
+            <EventCard event={{
+              _id: "dummy",
+              name,
+              description,
+              relatedInterests,
+              coverPhoto
+            }} />
+          </Grid>
+          <Grid item>
+            <Typography variant="h4" component="h3">
+              Event details
+            </Typography>
+          </Grid>
+          <Grid item>
+            <TextField
+              className={style.formInput}
+              type="file"
+              accept="image/*"
+              label="Cover photo"
+              variant="outlined"
+              onChange={event => handleFileUpload(event.target.files[0])}
+              InputLabelProps={{ shrink: true }}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              className={style.formInput}
+              label="Name"
+              variant="outlined"
+              value={name}
+              onChange={event => setName(event.target.value)}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              className={style.formInput}
+              multiline
+              rows={5}
+              label="Description"
+              variant="outlined"
+              value={description}
+              onChange={event => setDescription(event.target.value)}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              className={style.formInput}
+              type="datetime-local"
+              label="Start date and time"
+              variant="outlined"
+              value={startDate}
+              onChange={event => setStartDate(event.target.value)}
+              InputLabelProps={{ shrink: true }}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              className={style.formInput}
+              type="datetime-local"
+              label="End date and time"
+              variant="outlined"
+              value={endDate}
+              onChange={event => setEndDate(event.target.value)}
+              InputLabelProps={{ shrink: true }}
+            />
+          </Grid>
+          <Grid item>
+            <TextField
+              className={style.formInput}
+              select
+              multiple
+              label="Related interests"
+              variant="outlined"
+              value={relatedInterests}
+              onChange={event => setRelatedInterests(event.target.value)}
+              SelectProps={{ multiple: true }}
+            >
+              {interests.map(interest => (
+                <MenuItem key={interest.name} value={interest}>
+                  {interest.name}
+                </MenuItem>
+              ))}
+            </TextField>
+          </Grid>
+          <Grid item>
+            <Button
+              variant="outlined"
+              onClick={() => handleClick()}
+              disabled={
+                loading ||
+                !name ||
+                !description ||
+                !startDate ||
+                !endDate
+              }
+            >
+              Create new event
+            </Button>
+          </Grid>
         </Grid>
-        <Grid item>
-          <Typography variant="h4" component="h3">
-            Event card preview
-          </Typography>
-        </Grid>
-        <Grid item>
-          <EventCard event={{
-            _id: "dummy",
-            name,
-            description,
-            relatedInterests,
-            coverPhoto
-          }} />
-        </Grid>
-        <Grid item>
-          <Typography variant="h4" component="h3">
-            Event details
-          </Typography>
-        </Grid>
-        <Grid item>
-          <TextField
-            className={style.formInput}
-            type="file"
-            accept="image/*"
-            label="Cover photo"
-            variant="outlined"
-            onChange={event => handleFileUpload(event.target.files[0])}
-            InputLabelProps={{ shrink: true }}
-          />
-        </Grid>
-        <Grid item>
-          <TextField
-            className={style.formInput}
-            label="Name"
-            variant="outlined"
-            value={name}
-            onChange={event => setName(event.target.value)}
-          />
-        </Grid>
-        <Grid item>
-          <TextField
-            className={style.formInput}
-            multiline
-            rows={5}
-            label="Description"
-            variant="outlined"
-            value={description}
-            onChange={event => setDescription(event.target.value)}
-          />
-        </Grid>
-        <Grid item>
-          <TextField
-            className={style.formInput}
-            type="datetime-local"
-            label="Start date and time"
-            variant="outlined"
-            value={startDate}
-            onChange={event => setStartDate(event.target.value)}
-            InputLabelProps={{ shrink: true }}
-          />
-        </Grid>
-        <Grid item>
-          <TextField
-            className={style.formInput}
-            type="datetime-local"
-            label="End date and time"
-            variant="outlined"
-            value={endDate}
-            onChange={event => setEndDate(event.target.value)}
-            InputLabelProps={{ shrink: true }}
-          />
-        </Grid>
-        <Grid item>
-          <TextField
-            className={style.formInput}
-            select
-            multiple
-            label="Related interests"
-            variant="outlined"
-            value={relatedInterests}
-            onChange={event => setRelatedInterests(event.target.value)}
-            SelectProps={{ multiple: true }}
-          >
-            {interests.map(interest => (
-              <MenuItem key={interest.name} value={interest}>
-                {interest.name}
-              </MenuItem>
-            ))}
-          </TextField>
-        </Grid>
-        <Grid item>
-          <Button
-            variant="outlined"
-            onClick={() => handleClick()}
-            disabled={
-              loading ||
-              !name ||
-              !description ||
-              !startDate ||
-              !endDate
-            }
-          >
-            Create new event
-          </Button>
-        </Grid>
-      </Grid>
-    </Box>
+      </Box>
+    </Fragment>
   );
 };
 
