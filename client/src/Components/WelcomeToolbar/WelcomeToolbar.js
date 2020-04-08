@@ -11,6 +11,7 @@ const WelcomeToolbar = () => {
       <Grid item>
         <Button
           variant="outlined"
+          color="primary"
           onClick={() => history.push('/log-in')}
         >
           Log in
@@ -18,7 +19,8 @@ const WelcomeToolbar = () => {
       </Grid>
       <Grid item>
         <Button
-          variant="outlined"
+          variant="contained"
+          color="primary"
           onClick={() => history.push('/sign-up')}
         >
           Sign up

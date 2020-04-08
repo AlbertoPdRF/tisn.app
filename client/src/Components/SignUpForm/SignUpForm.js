@@ -10,8 +10,11 @@ import Link from '@material-ui/core/Link';
 
 import { signUp, setUserSession } from '../../logic/auth';
 
+import Style from '../Style/Style';
+
 const SignUpForm = () => {
   const history = useHistory();
+  const style = Style();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -52,6 +55,7 @@ const SignUpForm = () => {
           </Grid>
           <Grid item>
             <TextField
+              className={style.formInput}
               label="Name"
               variant="outlined"
               value={name}
@@ -60,6 +64,7 @@ const SignUpForm = () => {
           </Grid>
           <Grid item>
             <TextField
+              className={style.formInput}
               label="Email"
               variant="outlined"
               value={email}
@@ -68,6 +73,7 @@ const SignUpForm = () => {
           </Grid>
           <Grid item>
             <TextField
+              className={style.formInput}
               type="password"
               label="Password"
               variant="outlined"
@@ -77,6 +83,7 @@ const SignUpForm = () => {
           </Grid>
           <Grid item>
             <TextField
+              className={style.formInput}
               type="password"
               label="Confirm password"
               variant="outlined"
@@ -86,6 +93,7 @@ const SignUpForm = () => {
           </Grid>
           <Grid item>
             <TextField
+              className={style.formInput}
               type="date"
               label="Date of birth"
               variant="outlined"
@@ -96,7 +104,8 @@ const SignUpForm = () => {
           </Grid>
           <Grid item>
             <Button
-              variant="outlined"
+              variant="contained"
+              color="primary"
               onClick={() => handleClick()}
               disabled={
                 loading ||

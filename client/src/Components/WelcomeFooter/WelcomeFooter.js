@@ -8,7 +8,6 @@ const WelcomeFooter = () => {
     <Grid container spacing={1}>
       <Grid item>
         <Link
-          color="inherit"
           href="https://github.com/AlbertoPdRF/tisn"
           target="_blank"
           rel="noopener noreferrer"
