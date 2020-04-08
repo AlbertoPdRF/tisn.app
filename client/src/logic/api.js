@@ -12,6 +12,8 @@ export const postEvent = (event) => {
   });
 };
 
+export const getEvent = (id) => fetchApi(`/events/${id}`, { method: 'GET' });
+
 export const getInterests = () => fetchApi('/interests', { method: 'GET' });
 
 export const fetchApi = (path, fetchOptions = {}) => {

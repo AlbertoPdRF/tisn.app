@@ -20,15 +20,16 @@ const Style = makeStyles(theme => ({
   center: {
     textAlign: 'center'
   },
+  alignRight: {
+    float: 'right',
+    textAlign: 'right'
+  },
   drawerPaper: {
     width: 250,
   },
   card: {
     width: 300,
     height: 300
-  },
-  cardInterests: {
-    float: 'right'
   },
   formInput: {
     [theme.breakpoints.down('sm')]: {

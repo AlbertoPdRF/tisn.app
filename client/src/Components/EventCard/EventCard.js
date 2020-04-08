@@ -33,7 +33,7 @@ const EventCard = ({ event = {} }) => {
           <Typography gutterBottom variant="h5" component="h3" noWrap>
             {event.name}
           </Typography>
-          <AvatarGroup className={style.cardInterests} max={1}>
+          <AvatarGroup className={style.alignRight} max={1}>
             {event.relatedInterests.map(interest => (
               <Avatar key={interest.name} alt={interest.name} src={interest.avatar} />
             ))}

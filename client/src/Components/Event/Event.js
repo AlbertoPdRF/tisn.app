@@ -1,20 +1,138 @@
-import React from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
+import LinearProgress from '@material-ui/core/LinearProgress'
 import Grid from '@material-ui/core/Grid';
+import Card from '@material-ui/core/Card';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardContent from '@material-ui/core/CardContent';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
+import AvatarGroup from '@material-ui/lab/AvatarGroup';
+import Avatar from '@material-ui/core/Avatar';
+
+import { getEvent } from '../../logic/api';
+import { BASE_API_URL } from '../../logic/env';
+import { formatDateTimeRange } from '../../logic/date';
 
 import Style from '../Style/Style';
 
-const Event = () => {
+const Event = ({ match }) => {
   const style = Style();
 
+  const [event, setEvent] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  const id = match.params.id;
+  useEffect(() => {
+    getEvent(id)
+      .then(data => {
+        setEvent(data.event);
+        setLoading(false);
+      })
+      .catch(error => {
+        console.log(error);
+        setLoading(false);
+      });
+  }, [id]);
+
   return (
-    <Grid container spacing={1} direction="column" className={style.grow}>
-      <Grid item className={style.center}>
-        <Typography variant="h1">
-          Event
-        </Typography>
-      </Grid>
-    </Grid>
+    loading ? (
+      <LinearProgress />
+    ) : (
+      <div className={style.root}>
+        <Grid container spacing={1} justify="center">
+          <Grid item>
+            <Card>
+              <CardMedia
+                component="img"
+                src={event.coverPhoto
+                  ? `${BASE_API_URL}${event.coverPhoto}`
+                  : `${process.env.PUBLIC_URL}/event-placeholder.jpg`
+                }
+                alt={event.name}
+                title={event.name}
+              />
+              <CardContent>
+                <div className={style.alignRight}>
+                  <Fragment>
+                    {formatDateTimeRange(
+                      event.startDate,
+                      event.endDate
+                    )
+                      .split('\n')
+                      .map((text, index) =>
+                        <Typography
+                          key={index}
+                          gutterBottom={!!index}
+                          variant="h5"
+                          component="p"
+                          color="textSecondary"
+                        >
+                          {text}
+                        </Typography>
+                      )
+                    }
+                  </Fragment>
+                  <Button variant="contained" color="primary">
+                    I will attend!
+                  </Button>
+                </div>
+                <Typography gutterBottom variant="h5" component="h3">
+                  {event.name}
+                </Typography>
+                <Fragment>
+                  {event.description
+                    .split('\n')
+                    .map((text, index) =>
+                      <Typography
+                        key={index}
+                        gutterBottom
+                        variant="body1"
+                        component="p"
+                        color="textSecondary"
+                      >
+                        {text}
+                      </Typography>
+                    )
+                  }
+                </Fragment>
+                {event.relatedInterests.length > 0 && (
+                  <Fragment>
+                    <Typography variant="h6" component="h4">
+                      Related interests:
+                    </Typography>
+                    <AvatarGroup>
+                      {event.relatedInterests.map(interest => (
+                        <Avatar
+                          key={interest._id}
+                          alt={interest.name}
+                          src={interest.avatar}
+                        />
+                      ))}
+                    </AvatarGroup>
+                  </Fragment>
+                )}
+                {event.attendants.length > 0 && (
+                  <Fragment>
+                    <Typography variant="h6" component="h4">
+                      Attendants:
+                    </Typography>
+                    <AvatarGroup>
+                      {event.attendants.map(attendant => (
+                        <Avatar
+                          key={attendant._id}
+                          alt={`${attendant.name}'s avatar`}
+                          src={attendant.avatar}
+                        />
+                      ))}
+                    </AvatarGroup>
+                  </Fragment>
+                )}
+              </CardContent>
+            </Card>
+          </Grid>
+        </Grid>
+      </div>
+    )
   );
 };
 
