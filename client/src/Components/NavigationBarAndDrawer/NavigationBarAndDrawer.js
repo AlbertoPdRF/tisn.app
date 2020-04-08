@@ -146,7 +146,7 @@ const NavigationBarAndDrawer = (props) => {
               variant="h4"
               color="inherit"
               underline="none"
-              href={`${process.env.PUBLIC_URL}/`}
+              href="/"
             >
               Tisn
             </Link>

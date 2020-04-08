@@ -8,7 +8,7 @@ import Navigation from '../Navigation/Navigation';
 
 const App = () => {
   return (
-    <BrowserRouter basename={process.env.PUBLIC_URL}>
+    <BrowserRouter>
       <UserProvider>
         <CssBaseline />
         <Navigation />

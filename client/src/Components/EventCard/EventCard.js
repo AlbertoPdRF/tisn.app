@@ -24,7 +24,10 @@ const EventCard = ({ event = {} }) => {
       >
         <CardMedia
           component="img"
-          src={event.coverPhoto ? `${BASE_API_URL}${event.coverPhoto}` : `${process.env.PUBLIC_URL}/event-placeholder.jpg`}
+          src={event.coverPhoto
+            ? `${BASE_API_URL}${event.coverPhoto}`
+            : "../../../event-placeholder.jpg"
+          }
           alt={event.name}
           height="140"
           title={event.name}
@@ -35,7 +38,10 @@ const EventCard = ({ event = {} }) => {
           </Typography>
           <AvatarGroup className={style.alignRight} max={1}>
             {event.relatedInterests.map(interest => (
-              <Avatar key={interest.name} alt={interest.name} src={interest.avatar} />
+              <Avatar
+                key={interest._id}
+                alt={interest.name}
+                src={interest.avatar} />
             ))}
           </AvatarGroup>
           <Typography variant="body1" color="textSecondary" component="p">
