@@ -10,7 +10,6 @@ import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import Avatar from '@material-ui/core/Avatar';
 
 import { getEvent } from '../../logic/api';
-import { BASE_API_URL } from '../../logic/env';
 import { formatDateTimeRange } from '../../logic/date';
 
 import Style from '../Style/Style';
@@ -41,8 +40,8 @@ const Event = ({ match }) => {
               <CardMedia
                 component="img"
                 src={event.coverPhoto
-                  ? `${BASE_API_URL}${event.coverPhoto}`
-                  : `${process.env.PUBLIC_URL}/event-placeholder.jpg`
+                  ? event.coverPhoto
+                  : "../../../event-placeholder.jpg"
                 }
                 alt={event.name}
                 title={event.name}
@@ -100,8 +99,8 @@ const Event = ({ match }) => {
                       {event.relatedInterests.map(interest => (
                         <Avatar
                           key={interest._id}
+                          src={interest.avatar}
                           alt={interest.name}
-                          src={`${BASE_API_URL}${interest.avatar}`}
                         />
                       ))}
                     </AvatarGroup>
@@ -116,9 +115,11 @@ const Event = ({ match }) => {
                       {event.attendants.map(attendant => (
                         <Avatar
                           key={attendant._id}
+                          src={attendant.avatar}
                           alt={`${attendant.name}'s avatar`}
-                          src={`${BASE_API_URL}${attendant.avatar}`}
-                        />
+                        >
+                          {attendant.name.charAt(0).toUpperCase()}
+                        </Avatar>
                       ))}
                     </AvatarGroup>
                   </Fragment>

@@ -1,6 +1,13 @@
 const path = require('path');
+const cloudinary = require("cloudinary").v2;
 
 const uploadsPath = path.join(__dirname, '../uploads');
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
 
 exports.post = async (req, res, next) => {
   const file = req.files.file;
@@ -15,8 +22,9 @@ exports.post = async (req, res, next) => {
   const fileName = md5CheckSum + extension;
   const destination = path.join(uploadsPath, fileName);
   try {
-    await req.files.file.mv(destination);
-    res.json({ path: `/uploads/${fileName}` });
+    await file.mv(destination);
+    const response = await cloudinary.uploader.upload(destination);
+    res.json(response);
   } catch (error) {
     res.status(400);
     res.json({ error: error.message });

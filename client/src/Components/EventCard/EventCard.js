@@ -8,8 +8,6 @@ import Typography from '@material-ui/core/Typography';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import Avatar from '@material-ui/core/Avatar';
 
-import { BASE_API_URL } from '../../logic/env';
-
 import Style from '../Style/Style';
 
 const EventCard = ({ event = {} }) => {
@@ -25,7 +23,7 @@ const EventCard = ({ event = {} }) => {
         <CardMedia
           component="img"
           src={event.coverPhoto
-            ? `${BASE_API_URL}${event.coverPhoto}`
+            ? `${event.coverPhoto}`
             : "../../../event-placeholder.jpg"
           }
           alt={event.name}
@@ -40,8 +38,9 @@ const EventCard = ({ event = {} }) => {
             {event.relatedInterests.map(interest => (
               <Avatar
                 key={interest._id}
+                src={interest.avatar}
                 alt={interest.name}
-                src={`${BASE_API_URL}${interest.avatar}`} />
+              />
             ))}
           </AvatarGroup>
           <Typography variant="body1" color="textSecondary" component="p">

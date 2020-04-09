@@ -7,7 +7,6 @@ import Avatar from '@material-ui/core/Avatar';
 import CardContent from '@material-ui/core/CardContent';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 
-import { BASE_API_URL } from '../../logic/env';
 import { formatDate } from '../../logic/date';
 
 const UserCard = ({ user = {} }) => {
@@ -20,9 +19,11 @@ const UserCard = ({ user = {} }) => {
         <CardHeader
           avatar={
             <Avatar
-              src={`${BASE_API_URL}${user.avatar}`}
+              src={user.avatar}
               alt={`${user.name}'s avatar`}
-            />
+            >
+              {user.name.charAt(0).toUpperCase()}
+            </Avatar>
           }
           title={user.name}
           subheader={`Joined on ${formatDate(user.createdAt)}`}
@@ -33,7 +34,7 @@ const UserCard = ({ user = {} }) => {
               {user.interests.map(interest => (
                 <Avatar
                   key={interest._id}
-                  src={`${BASE_API_URL}${interest.avatar}`}
+                  src={interest.avatar}
                   alt={interest.name}
                 />
               ))}

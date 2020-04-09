@@ -22,7 +22,6 @@ import Link from '@material-ui/core/Link';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 
 import { getUser } from '../../logic/api';
-import { BASE_API_URL } from '../../logic/env';
 import { logOut } from '../../logic/auth';
 
 import { useUser, useSetUser } from '../UserProvider/UserProvider';
@@ -74,9 +73,11 @@ const NavigationBarAndDrawer = (props) => {
         }}>
           <ListItemAvatar>
             <Avatar
-              src={`${BASE_API_URL}${user.avatar}`}
+              src={user.avatar}
               alt={`${user.name}'s avatar`}
-            />
+            >
+              {user.name.charAt(0).toUpperCase()}
+            </Avatar>
           </ListItemAvatar>
           <ListItemText
             primary={user.name}

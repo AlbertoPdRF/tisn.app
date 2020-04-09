@@ -37,7 +37,7 @@ const Style = makeStyles(theme => ({
     },
     [theme.breakpoints.up('md')]: {
       width: '768px'
-    },
+    }
   },
   avatar: {
     height: '200px',
