@@ -12,11 +12,12 @@ const Users = () => {
 
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     getUsers()
       .then(data => setUsers(data.users))
-      .catch(error => console.log(error))
+      .catch(error => setError(error))
       .finally(() => setLoading(false));
   }, []);
 

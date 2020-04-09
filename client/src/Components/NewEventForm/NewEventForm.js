@@ -32,9 +32,11 @@ const NewEventForm = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
+    setLoading(true);
     getInterests()
       .then(data => setInterests(data.interests))
-      .catch(error => console.log(error));
+      .catch(error => setError(error))
+      .finally(() => setLoading(false));
   }, []);
 
   const handleClick = () => {
@@ -49,10 +51,7 @@ const NewEventForm = () => {
       attendants: [user._id],
       coverPhoto
     })
-      .then(data => {
-        setLoading(false);
-        history.push(`/events/${data.event._id}`);
-      })
+      .then(data => history.push(`/events/${data.event._id}`))
       .catch(error => {
         setError(error);
         setLoading(false);
@@ -60,14 +59,11 @@ const NewEventForm = () => {
   };
 
   const handleFileUpload = file => {
+    setLoading(true);
     uploadFile(file)
-      .then(data => {
-        setCoverPhoto(data.path);
-      })
-      .catch(error => {
-        setError(error);
-        console.log(error);
-      });
+      .then(data => setCoverPhoto(data.path))
+      .catch(error => setError(error))
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -172,7 +168,8 @@ const NewEventForm = () => {
           </Grid>
           <Grid item>
             <Button
-              variant="outlined"
+              variant="contained"
+              color="primary"
               onClick={() => handleClick()}
               disabled={
                 loading ||

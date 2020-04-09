@@ -12,11 +12,12 @@ const Home = () => {
 
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   useEffect(() => {
     getEvents()
       .then(data => setEvents(data.events))
-      .catch(error => console.log(error))
+      .catch(error => setError(error.message))
       .finally(() => setLoading(false));
   }, []);
 

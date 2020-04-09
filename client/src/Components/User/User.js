@@ -21,18 +21,14 @@ const User = ({ match }) => {
 
   const [user, setUser] = useState({});
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   const id = match.params.id;
   useEffect(() => {
     getUser(id)
-      .then(data => {
-        setUser(data.user);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.log(error);
-        setLoading(false);
-      });
+      .then(data => setUser(data.user))
+      .catch(error => setError(error))
+      .finally(() => setLoading(false));
   }, [id]);
 
   return (
@@ -52,7 +48,7 @@ const User = ({ match }) => {
                 <Typography gutterBottom variant="h5" component="h3">
                   {user.name}
                 </Typography>
-                {user._id === currentUser._id &&
+                {currentUser && user._id === currentUser._id &&
                   <Fragment>
                     <Typography gutterBottom variant="body1">
                       {formatDate(user.dateOfBirth)}

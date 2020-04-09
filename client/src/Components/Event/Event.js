@@ -20,24 +20,20 @@ const Event = ({ match }) => {
 
   const [event, setEvent] = useState({});
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
   const id = match.params.id;
   useEffect(() => {
     getEvent(id)
-      .then(data => {
-        setEvent(data.event);
-        setLoading(false);
-      })
-      .catch(error => {
-        console.log(error);
-        setLoading(false);
-      });
+      .then(data => setEvent(data.event))
+      .catch(error => setError(error.message))
+      .finally(() => setLoading(false));
   }, [id]);
 
   return (
     loading ? (
       <LinearProgress />
-    ) : (
+    ) : (event &&
       <div className={style.root}>
         <Grid container spacing={1} justify="center">
           <Grid item>

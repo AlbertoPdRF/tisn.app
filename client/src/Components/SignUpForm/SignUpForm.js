@@ -33,7 +33,6 @@ const SignUpForm = () => {
       signUp({ name, email, password, dateOfBirth })
         .then(data => {
           setUserSession(data.user);
-          setLoading(false);
           history.push('/');
         })
         .catch(error => {

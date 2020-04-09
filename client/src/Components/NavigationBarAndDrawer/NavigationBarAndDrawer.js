@@ -14,7 +14,6 @@ import AddIcon from '@material-ui/icons/Add';
 import PeopleIcon from '@material-ui/icons/People';
 import PersonIcon from '@material-ui/icons/Person';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
-import LinearProgress from '@material-ui/core/LinearProgress';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -50,10 +49,14 @@ const NavigationBarAndDrawer = (props) => {
   const user = useUser();
   const setUser = useSetUser();
 
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+
   useEffect(() => {
     getUser()
       .then(data => setUser(data.user))
-      .catch(error => console.log(error));
+      .catch(error => setError(error.message))
+      .finally(() => setLoading(false));
   }, [setUser]);
 
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -62,87 +65,83 @@ const NavigationBarAndDrawer = (props) => {
     setDrawerOpen(!drawerOpen);
   };
 
-  const drawer = (
-    user ? (
-      <Fragment>
-        <List>
-          <ListItem button onClick={() => {
-            history.push(`/users/${user._id}`);
-            handleDrawerToggle();
-          }}>
-            <ListItemAvatar>
-              <Avatar
-                src={`${BASE_API_URL}${user.avatar}`}
-                alt={`${user.name}'s avatar`}
-              />
-            </ListItemAvatar>
-            <ListItemText
-              primary={user.name}
+  const drawer = (user &&
+    <Fragment>
+      <List>
+        <ListItem button onClick={() => {
+          history.push(`/users/${user._id}`);
+          handleDrawerToggle();
+        }}>
+          <ListItemAvatar>
+            <Avatar
+              src={`${BASE_API_URL}${user.avatar}`}
+              alt={`${user.name}'s avatar`}
             />
-          </ListItem>
-          <Divider />
-          <ListItem button onClick={() => {
-            history.push('/');
-            handleDrawerToggle();
-          }}>
-            <ListItemIcon>
-              <HomeIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="Home"
-            />
-          </ListItem>
-          <Divider />
-          <ListItem button onClick={() => {
-            history.push('/events/new');
-            handleDrawerToggle();
-          }}>
-            <ListItemIcon>
-              <AddIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="New event"
-            />
-          </ListItem>
-          <Divider />
-          <ListItem button onClick={() => {
-            history.push('/users');
-            handleDrawerToggle();
-          }}>
-            <ListItemIcon>
-              <PeopleIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="Users"
-            />
-          </ListItem>
-          <ListItem button onClick={() => {
-            history.push(`/users/${user._id}`);
-            handleDrawerToggle();
-          }}>
-            <ListItemIcon>
-              <PersonIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="My profile"
-            />
-          </ListItem>
-          <ListItem button onClick={() => {
-            logOut();
-            history.push('/welcome');
-          }}>
-            <ListItemIcon>
-              <ExitToAppIcon />
-            </ListItemIcon>
-            <ListItemText
-              primary="Log out"
-            />
-          </ListItem>
-        </List>
-      </Fragment>
-    ) : (
-      <LinearProgress />
-    )
+          </ListItemAvatar>
+          <ListItemText
+            primary={user.name}
+          />
+        </ListItem>
+        <Divider />
+        <ListItem button onClick={() => {
+          history.push('/');
+          handleDrawerToggle();
+        }}>
+          <ListItemIcon>
+            <HomeIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary="Home"
+          />
+        </ListItem>
+        <Divider />
+        <ListItem button onClick={() => {
+          history.push('/events/new');
+          handleDrawerToggle();
+        }}>
+          <ListItemIcon>
+            <AddIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary="New event"
+          />
+        </ListItem>
+        <Divider />
+        <ListItem button onClick={() => {
+          history.push('/users');
+          handleDrawerToggle();
+        }}>
+          <ListItemIcon>
+            <PeopleIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary="Users"
+          />
+        </ListItem>
+        <ListItem button onClick={() => {
+          history.push(`/users/${user._id}`);
+          handleDrawerToggle();
+        }}>
+          <ListItemIcon>
+            <PersonIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary="My profile"
+          />
+        </ListItem>
+        <ListItem button onClick={() => {
+          logOut();
+          history.push('/welcome');
+        }}>
+          <ListItemIcon>
+            <ExitToAppIcon />
+          </ListItemIcon>
+          <ListItemText
+            primary="Log out"
+          />
+        </ListItem>
+      </List>
+    </Fragment>
   );
 
   return (
@@ -170,21 +169,23 @@ const NavigationBarAndDrawer = (props) => {
         </AppBar>
       </HideOnScroll>
       <Toolbar />
-      <SwipeableDrawer
-        anchor="left"
-        container={container}
-        open={drawerOpen}
-        onOpen={handleDrawerToggle}
-        onClose={handleDrawerToggle}
-        classes={{
-          paper: style.drawerPaper,
-        }}
-        ModalProps={{
-          keepMounted: true
-        }}
-      >
-        {drawer}
-      </SwipeableDrawer>
+      {!loading && user &&
+        <SwipeableDrawer
+          anchor="left"
+          container={container}
+          open={drawerOpen}
+          onOpen={handleDrawerToggle}
+          onClose={handleDrawerToggle}
+          classes={{
+            paper: style.drawerPaper,
+          }}
+          ModalProps={{
+            keepMounted: true
+          }}
+        >
+          {drawer}
+        </SwipeableDrawer>
+      }
     </Fragment>
   );
 };
