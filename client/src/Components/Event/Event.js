@@ -33,7 +33,7 @@ const Event = ({ match }) => {
   return (
     loading ? (
       <LinearProgress />
-    ) : (event &&
+    ) : (
       <div className={style.root}>
         <Grid container spacing={1} justify="center">
           <Grid item>
