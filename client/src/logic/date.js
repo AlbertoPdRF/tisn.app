@@ -1,15 +1,15 @@
 import { format, parseISO } from 'date-fns';
 
-export const formatDate = dateString => format(parseISO(dateString), 'MMM do, yyyy');
+export const formatDate = dateString => format(parseISO(dateString), 'MMM d, yyyy');
 
 export const formatDateTimeRange = (startString, endString) => {
   const [startMinute, startHour, startDay, startMonth, startYear] = format(
     parseISO(startString),
-    'mm H do MMM yyyy'
+    'mm H d MMM yyyy'
   ).split(' ');
   const [endMinute, endHour, endDay, endMonth, endYear] = format(
     parseISO(endString),
-    'mm H do MMM yyyy'
+    'mm H d MMM yyyy'
   ).split(' ');
 
   const timeRange = `${startHour}:${startMinute} - ${endHour}:${endMinute}`;
