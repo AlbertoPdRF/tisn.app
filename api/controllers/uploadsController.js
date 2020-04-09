@@ -1,5 +1,6 @@
 const path = require('path');
-const cloudinary = require("cloudinary").v2;
+const cloudinary = require('cloudinary').v2;
+const fs = require('fs');
 
 const uploadsPath = path.join(__dirname, '../uploads');
 
@@ -23,8 +24,9 @@ exports.post = async (req, res, next) => {
   const destination = path.join(uploadsPath, fileName);
   try {
     await file.mv(destination);
-    const response = await cloudinary.uploader.upload(destination);
-    res.json(response);
+    const uploadedFile = await cloudinary.uploader.upload(destination);
+    fs.unlink(destination, () => {});
+    res.json({ uploadedFile });
   } catch (error) {
     res.status(400);
     res.json({ error: error.message });

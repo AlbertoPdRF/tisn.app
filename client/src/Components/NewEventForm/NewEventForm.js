@@ -61,7 +61,7 @@ const NewEventForm = () => {
   const handleFileUpload = file => {
     setLoading(true);
     uploadFile(file)
-      .then(data => setCoverPhoto(data.secure_url))
+      .then(data => setCoverPhoto(data.uploadedFile.secure_url))
       .catch(error => setError(error))
       .finally(() => setLoading(false));
   };
