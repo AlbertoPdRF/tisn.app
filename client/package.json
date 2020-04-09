@@ -2,7 +2,7 @@
   "name": "tisn",
   "version": "0.0.0",
   "private": true,
-  "homepage": "http://tisn.app",
+  "homepage": "https://tisn.app",
   "dependencies": {
     "@material-ui/core": "^4.9.7",
     "@material-ui/icons": "^4.9.1",
