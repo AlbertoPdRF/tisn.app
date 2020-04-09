@@ -26,7 +26,7 @@ const Home = () => {
     <div className={style.root}>
       <Grid container spacing={1} justify="center">
         {events.map(event => (
-          <Grid item key={event.name}>
+          <Grid item key={event._id}>
             <EventCard event={event} />
           </Grid>
         ))}

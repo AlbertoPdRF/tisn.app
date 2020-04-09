@@ -41,7 +41,7 @@ const EventCard = ({ event = {} }) => {
               <Avatar
                 key={interest._id}
                 alt={interest.name}
-                src={interest.avatar} />
+                src={`${BASE_API_URL}${interest.avatar}`} />
             ))}
           </AvatarGroup>
           <Typography variant="body1" color="textSecondary" component="p">

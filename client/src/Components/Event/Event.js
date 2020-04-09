@@ -105,7 +105,7 @@ const Event = ({ match }) => {
                         <Avatar
                           key={interest._id}
                           alt={interest.name}
-                          src={interest.avatar}
+                          src={`${BASE_API_URL}${interest.avatar}`}
                         />
                       ))}
                     </AvatarGroup>
@@ -121,7 +121,7 @@ const Event = ({ match }) => {
                         <Avatar
                           key={attendant._id}
                           alt={`${attendant.name}'s avatar`}
-                          src={attendant.avatar}
+                          src={`${BASE_API_URL}${attendant.avatar}`}
                         />
                       ))}
                     </AvatarGroup>

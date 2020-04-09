@@ -164,7 +164,7 @@ const NewEventForm = () => {
               SelectProps={{ multiple: true }}
             >
               {interests.map(interest => (
-                <MenuItem key={interest.name} value={interest}>
+                <MenuItem key={interest._id} value={interest}>
                   {interest.name}
                 </MenuItem>
               ))}

@@ -57,12 +57,8 @@ exports.post = (req, res, next) => {
 
 exports.getId = (req, res, next) => {
   return Event.findById(req.params.id)
-    .populate('createdBy', 'name')
-    .populate({
-      path: 'relatedInterests',
-      populate: { path: 'category' }
-    })
-    .populate('attendants', 'name')
+    .populate('relatedInterests', 'name avatar')
+    .populate('attendants', 'name avatar')
     .then(event => {
       if (!event) {
         return res.sendStatus(400);
