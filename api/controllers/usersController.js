@@ -4,6 +4,7 @@ const passport = require('passport');
 
 exports.get = (req, res, next) => {
   return User.find()
+    .populate('interests', 'name avatar')
     .then(users => {
       if (!users) {
         return res.sendStatus(400);
@@ -60,7 +61,7 @@ exports.post = (req, res, next) => {
 
 exports.getId = (req, res, next) => {
   return User.findById(req.params.id)
-    .populate('interests')
+    .populate('interests', 'name avatar')
     .then(user => {
       if (!user) {
         return res.sendStatus(400);

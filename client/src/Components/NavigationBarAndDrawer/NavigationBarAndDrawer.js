@@ -11,6 +11,7 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import HomeIcon from '@material-ui/icons/Home';
 import AddIcon from '@material-ui/icons/Add';
+import PeopleIcon from '@material-ui/icons/People';
 import PersonIcon from '@material-ui/icons/Person';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -22,6 +23,7 @@ import Link from '@material-ui/core/Link';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 
 import { getUser } from '../../logic/api';
+import { BASE_API_URL } from '../../logic/env';
 import { logOut } from '../../logic/auth';
 
 import { useUser, useSetUser } from '../UserProvider/UserProvider';
@@ -69,7 +71,10 @@ const NavigationBarAndDrawer = (props) => {
             handleDrawerToggle();
           }}>
             <ListItemAvatar>
-              <Avatar alt={`${user.name}'s avatar`} src={user.avatar} />
+              <Avatar
+                src={`${BASE_API_URL}${user.avatar}`}
+                alt={`${user.name}'s avatar`}
+              />
             </ListItemAvatar>
             <ListItemText
               primary={user.name}
@@ -101,6 +106,17 @@ const NavigationBarAndDrawer = (props) => {
           </ListItem>
           <Divider />
           <ListItem button onClick={() => {
+            history.push('/users');
+            handleDrawerToggle();
+          }}>
+            <ListItemIcon>
+              <PeopleIcon />
+            </ListItemIcon>
+            <ListItemText
+              primary="Users"
+            />
+          </ListItem>
+          <ListItem button onClick={() => {
             history.push(`/users/${user._id}`);
             handleDrawerToggle();
           }}>
@@ -108,7 +124,7 @@ const NavigationBarAndDrawer = (props) => {
               <PersonIcon />
             </ListItemIcon>
             <ListItemText
-              primary="Profile"
+              primary="My profile"
             />
           </ListItem>
           <ListItem button onClick={() => {

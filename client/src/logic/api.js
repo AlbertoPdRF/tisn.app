@@ -1,6 +1,8 @@
 import { BASE_API_URL } from './env';
 import { accessToken, getPayloadFromToken } from './auth';
 
+export const getUsers = () => fetchApi('/users', { method: 'GET' });
+
 export const getUser = (id = getPayloadFromToken()._id) =>
   fetchApi(`/users/${id}`, { method: 'GET' });
 

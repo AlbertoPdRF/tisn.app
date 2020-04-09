@@ -11,7 +11,8 @@ const UserSchema = new Schema({
   salt: {type: String, required: true},
   dateOfBirth: {type: Date, required: true},
   interests: [{type: Schema.Types.ObjectId, ref: 'Interest'}],
-  admin: {type: Boolean, required: true, default: false}
+  admin: {type: Boolean, required: true, default: false},
+  avatar: {type: String}
 }, { timestamps: true });
 
 UserSchema.methods.setPassword = function(password) {

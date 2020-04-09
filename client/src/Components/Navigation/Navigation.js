@@ -6,6 +6,7 @@ import { PublicRoute, PrivateRoute, AdminRoute } from '../Router/Router';
 import Home from '../Home/Home';
 import NewEventForm from '../NewEventForm/NewEventForm';
 import Event from '../Event/Event';
+import Users from '../Users/Users';
 import User from '../User/User';
 
 import Welcome from '../Welcome/Welcome';
@@ -20,6 +21,7 @@ const Navigation = () => {
       <PrivateRoute exact path="/" component={Home} />
       <PrivateRoute exact path="/events/new" component={NewEventForm} />
       <PrivateRoute exact path="/events/:id" component={Event} />
+      <PrivateRoute exact path="/users" component={Users} />
       <PrivateRoute exact path="/users/:id" component={User} />
 
       <PublicRoute exact path="/welcome" component={Welcome} />

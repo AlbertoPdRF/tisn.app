@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
 
 import { getUser } from '../../logic/api';
+import { BASE_API_URL } from '../../logic/env';
 import { formatDate } from '../../logic/date';
 
 import { useUser } from '../UserProvider/UserProvider';
@@ -45,8 +46,8 @@ const User = ({ match }) => {
               <CardContent>
                 <Avatar
                   className={style.avatar}
-                  src={user.avatar}
-                  alt={user.name}
+                  src={`${BASE_API_URL}${user.avatar}`}
+                  alt={`${user.avatar}'s avatar`}
                 />
                 <Typography gutterBottom variant="h5" component="h3">
                   {user.name}
@@ -71,10 +72,12 @@ const User = ({ match }) => {
                         className={style.chip}
                         variant="outlined"
                         key={interest._id}
-                        avatar={<Avatar
-                          src={interest.avatar}
-                          alt={interest.name}
-                        />}
+                        avatar={
+                          <Avatar
+                            src={`${BASE_API_URL}${interest.avatar}`}
+                            alt={interest.name}
+                          />
+                        }
                         label={interest.name}
                       />
                     ))}
