@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
 
 import { getUser } from '../../logic/api';
-import { formatDate } from '../../logic/date';
+import { formatDate } from '../../logic/datetime';
 
 import { useUser } from '../UserProvider/UserProvider';
 

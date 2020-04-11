@@ -39,6 +39,16 @@ const NewEventForm = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  const handleFileUpload = file => {
+    if (file) {
+      setLoading(true);
+      uploadFile(file)
+        .then(data => setCoverPhoto(data.uploadedFile.secure_url))
+        .catch(error => setError(error))
+        .finally(() => setLoading(false));
+    }
+  };
+
   const handleClick = () => {
     setLoading(true);
     postEvent({
@@ -56,14 +66,6 @@ const NewEventForm = () => {
         setError(error);
         setLoading(false);
       });
-  };
-
-  const handleFileUpload = file => {
-    setLoading(true);
-    uploadFile(file)
-      .then(data => setCoverPhoto(data.uploadedFile.secure_url))
-      .catch(error => setError(error))
-      .finally(() => setLoading(false));
   };
 
   return (

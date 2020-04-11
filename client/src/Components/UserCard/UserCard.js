@@ -7,8 +7,6 @@ import Avatar from '@material-ui/core/Avatar';
 import CardContent from '@material-ui/core/CardContent';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 
-import { formatDate } from '../../logic/date';
-
 const UserCard = ({ user = {} }) => {
   return (
     <Card>
@@ -26,7 +24,6 @@ const UserCard = ({ user = {} }) => {
             </Avatar>
           }
           title={user.name}
-          subheader={`Joined on ${formatDate(user.createdAt)}`}
         />
         {user.interests.length > 0 &&
           <CardContent>

@@ -60,9 +60,7 @@ const NavigationBarAndDrawer = (props) => {
 
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const handleDrawerToggle = () => {
-    setDrawerOpen(!drawerOpen);
-  };
+  const handleDrawerToggle = () => setDrawerOpen(!drawerOpen);
 
   const drawer = (user &&
     <Fragment>
@@ -132,6 +130,7 @@ const NavigationBarAndDrawer = (props) => {
         </ListItem>
         <ListItem button onClick={() => {
           logOut();
+          setUser(null);
           history.push('/welcome');
         }}>
           <ListItemIcon>
