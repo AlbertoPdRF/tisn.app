@@ -72,11 +72,7 @@ exports.getId = (req, res, next) => {
 };
 
 exports.putId = (req, res, next) => {
-  const { payload, body: { user } } = req;
-
-  if (!(req.params.id === payload._id || payload.admin)) {
-    return res.status(401);
-  }
+  const { body: { user } } = req;
 
   if (!user.name) {
     return res.status(422).json({
