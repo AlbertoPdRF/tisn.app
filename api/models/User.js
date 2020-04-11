@@ -37,8 +37,22 @@ UserSchema.methods.generateJWT = function() {
   }, process.env.JWT_SECRET);
 };
 
-UserSchema.methods.toAuthJSON = function() {
+UserSchema.methods.toAuthJson = function() {
   return { accessToken: this.generateJWT() };
+};
+
+UserSchema.methods.toJson = function() {
+  return {
+    _id: this._id,
+    name: this.name,
+    email: this.email,
+    dateOfBirth: this.dateOfBirth,
+    interests: this.interests,
+    admin: this.admin,
+    avatar: this.avatar,
+    createdAt: this.createdAt,
+    updatedAt: this.updatedAt
+  };
 };
 
 module.exports = mongoose.model('User', UserSchema);

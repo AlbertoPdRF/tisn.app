@@ -46,6 +46,9 @@ const Style = makeStyles(theme => ({
   },
   chip: {
     margin: theme.spacing(0.5),
+  },
+  buttons: {
+    margin: theme.spacing(0.5),
   }
 }));
 

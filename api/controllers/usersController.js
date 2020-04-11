@@ -10,7 +10,7 @@ exports.get = (req, res, next) => {
         return res.sendStatus(400);
       }
 
-      res.json({ users });
+      res.json({ users: users.map(user => user.toJson()) });
     });
 };
 
@@ -54,7 +54,7 @@ exports.post = (req, res, next) => {
   finalUser.setPassword(user.password);
 
   return finalUser.save()
-    .then(() => res.json({ user: finalUser.toAuthJSON() }));
+    .then(() => res.json({ user: finalUser.toAuthJson() }));
 };
 
 
@@ -67,8 +67,48 @@ exports.getId = (req, res, next) => {
         return res.sendStatus(400);
       }
 
-      res.json({ user });
+      res.json({ user: user.toJson() });
     });
+};
+
+exports.putId = (req, res, next) => {
+  const { payload, body: { user } } = req;
+
+  if (!(req.params.id === payload._id || payload.admin)) {
+    return res.status(401);
+  }
+
+  if (!user.name) {
+    return res.status(422).json({
+      errors: {
+        name: 'is required',
+      },
+    });
+  }
+
+  if (!user.email) {
+    return res.status(422).json({
+      errors: {
+        email: 'is required',
+      },
+    });
+  }
+
+  if (!user.dateOfBirth) {
+    return res.status(422).json({
+      errors: {
+        dateOfBirth: 'is required',
+      },
+    });
+  }
+
+  User.findByIdAndUpdate(
+      req.params.id,
+      user,
+      { new: true }
+    )
+    .populate('interests', 'name avatar')
+    .then(updatedUser => res.json({ user: updatedUser.toJson() }))
 };
 
 
@@ -101,7 +141,7 @@ exports.logIn = (req, res, next) => {
       const user = passportUser;
       user.token = passportUser.generateJWT();
 
-      return res.json({ user: user.toAuthJSON() });
+      return res.json({ user: user.toAuthJson() });
     }
 
     return status(400).info;

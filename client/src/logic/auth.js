@@ -1,15 +1,4 @@
-import { fetchApi } from './api';
-
-const logInOrSignUp = (action, user) => {
-  const path = action === 'log-in' ? action : '';
-
-  return fetchApi(`/users/${path}`, {
-    method: 'POST',
-    body: JSON.stringify({ user })
-  });
-};
-
-export const signUp = user => logInOrSignUp('sign-up', user);
+import { postUser } from './api';
 
 const localStorageKey = key => `Tisn.${key}`;
 
@@ -17,7 +6,7 @@ export const setUserSession = (user) => localStorage.setItem(localStorageKey('ac
 
 export const accessToken = () => localStorage.getItem(localStorageKey('accessToken'));
 
-export const logIn = user => logInOrSignUp('log-in', user);
+export const logIn = user => postUser(user, 'log-in');
 
 export const isLoggedIn = () => {
   if (!!accessToken()) {

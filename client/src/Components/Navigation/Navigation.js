@@ -11,7 +11,7 @@ import User from '../User/User';
 
 import Welcome from '../Welcome/Welcome';
 import LogInForm from '../LogInForm/LogInForm';
-import SignUpForm from '../SignUpForm/SignUpForm';
+import UserForm from '../UserForm/UserForm';
 
 import AdminDashboard from '../AdminDashboard/AdminDashboard';
 
@@ -23,10 +23,11 @@ const Navigation = () => {
       <PrivateRoute exact path="/events/:id" component={Event} />
       <PrivateRoute exact path="/users" component={Users} />
       <PrivateRoute exact path="/users/:id" component={User} />
+      <PrivateRoute exact path="/users/:id/edit" component={UserForm} />
 
       <PublicRoute exact path="/welcome" component={Welcome} />
       <PublicRoute exact path="/log-in" component={LogInForm} />
-      <PublicRoute exact path="/sign-up" component={SignUpForm} />
+      <PublicRoute exact path="/sign-up" component={UserForm} />
 
       <AdminRoute exact path="/admin" component={AdminDashboard} />
 

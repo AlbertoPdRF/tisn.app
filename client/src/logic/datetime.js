@@ -1,5 +1,7 @@
 import { format, parseISO } from 'date-fns';
 
+export const inputDate = dateString => format(parseISO(dateString), 'yyyy-MM-dd');
+
 export const formatDate = dateString => format(parseISO(dateString), 'MMM d, yyyy');
 
 export const formatDateTimeRange = (startString, endString) => {

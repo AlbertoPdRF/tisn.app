@@ -1,10 +1,12 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { useHistory } from 'react-router-dom';
 import LinearProgress from '@material-ui/core/LinearProgress'
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
 
 import { getUser } from '../../logic/api';
@@ -15,6 +17,7 @@ import { useUser } from '../UserProvider/UserProvider';
 import Style from '../Style/Style';
 
 const User = ({ match }) => {
+  const history = useHistory();
   const style = Style();
   const currentUser = useUser();
 
@@ -29,6 +32,11 @@ const User = ({ match }) => {
       .catch(error => setError(error))
       .finally(() => setLoading(false));
   }, [id]);
+
+  const restrictedDisplay = currentUser && (
+    currentUser._id === id ||
+    currentUser.admin
+  );
 
   return (
     loading ? (
@@ -46,12 +54,28 @@ const User = ({ match }) => {
                 >
                   {user.name.charAt(0).toUpperCase()}
                 </Avatar>
-                <Typography gutterBottom variant="h5" component="h3">
+                {restrictedDisplay &&
+                  <Button
+                    className={style.alignRight}
+                    variant="outlined"
+                    color="primary"
+                      onClick={() => history.push(`/users/${id}/edit`)}
+                  >
+                    Edit
+                  </Button>
+                }
+                <Typography variant="h5" component="h3">
                   {user.name}
                 </Typography>
-                {currentUser && user._id === currentUser._id &&
+                <Typography variant="body1" color="textSecondary">
+                  {`Joined on ${formatDate(user.createdAt)}`}
+                </Typography>
+                <Typography gutterBottom variant="body1" color="textSecondary">
+                  {`Updated on ${formatDate(user.updatedAt)}`}
+                </Typography>
+                {restrictedDisplay &&
                   <Fragment>
-                    <Typography gutterBottom variant="body1">
+                    <Typography variant="body1">
                       {formatDate(user.dateOfBirth)}
                     </Typography>
                     <Typography gutterBottom variant="body1">

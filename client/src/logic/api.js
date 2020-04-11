@@ -3,6 +3,20 @@ import { accessToken, getPayloadFromToken } from './auth';
 
 export const getUsers = () => fetchApi('/users', { method: 'GET' });
 
+export const postUser = (user, path = '') => {
+  return fetchApi(`/users/${path}`, {
+    method: 'POST',
+    body: JSON.stringify({ user })
+  });
+};
+
+export const putUser = (id, user) => {
+  return fetchApi(`/users/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify({ user })
+  });
+};
+
 export const getUser = (id = getPayloadFromToken()._id) =>
   fetchApi(`/users/${id}`, { method: 'GET' });
 
@@ -19,7 +33,7 @@ export const getEvent = (id) => fetchApi(`/events/${id}`, { method: 'GET' });
 
 export const getInterests = () => fetchApi('/interests', { method: 'GET' });
 
-export const fetchApi = (path, fetchOptions = {}) => {
+const fetchApi = (path, fetchOptions = {}) => {
   return fetch(
     `${BASE_API_URL}${path}`,
     Object.assign({}, fetchOptions, {
