@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { useHistory } from 'react-router-dom';
 import LinearProgress from '@material-ui/core/LinearProgress'
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
@@ -12,10 +13,14 @@ import Avatar from '@material-ui/core/Avatar';
 import { getEvent } from '../../logic/api';
 import { formatDateTimeRange } from '../../logic/date-time';
 
+import { useUser } from '../UserProvider/UserProvider';
+
 import Style from '../Style/Style';
 
 const Event = ({ match }) => {
+  const history = useHistory();
   const style = Style();
+  const user = useUser();
 
   const [event, setEvent] = useState({});
   const [loading, setLoading] = useState(true);
@@ -28,6 +33,12 @@ const Event = ({ match }) => {
       .catch(error => setError(error.message))
       .finally(() => setLoading(false));
   }, [id]);
+
+  const restrictedDisplay = event &&
+    user && (
+      user._id === event.createdBy ||
+      user.admin
+    );
 
   return (
     loading ? (
@@ -48,25 +59,32 @@ const Event = ({ match }) => {
               />
               <CardContent>
                 <div className={style.alignRight}>
-                  <Fragment>
-                    {formatDateTimeRange(
+                  {restrictedDisplay &&
+                    <Button
+                      variant="outlined"
+                      color="primary"
+                      onClick={() => history.push(`/events/${id}/edit`)}
+                    >
+                      Edit
+                    </Button>
+                  }
+                  {formatDateTimeRange(
                       event.startDate,
                       event.endDate
                     )
-                      .split('\n')
-                      .map((text, index) =>
-                        <Typography
-                          key={index}
-                          gutterBottom={!!index}
-                          variant="h5"
-                          component="p"
-                          color="textSecondary"
-                        >
-                          {text}
-                        </Typography>
-                      )
-                    }
-                  </Fragment>
+                    .split('\n')
+                    .map((text, index) =>
+                      <Typography
+                        key={index}
+                        gutterBottom={!!index}
+                        variant="h5"
+                        component="p"
+                        color="textSecondary"
+                      >
+                        {text}
+                      </Typography>
+                    )
+                  }
                   <Button variant="contained" color="primary">
                     I will attend!
                   </Button>

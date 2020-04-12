@@ -1,7 +1,14 @@
 const permissions = (req, res, next) => {
   const { payload } = req;
 
-  if (req.params.id === payload._id || payload.admin) {
+  let id;
+  if (req.baseUrl === '/api/users') {
+    id = req.params.id;
+  } else if (req.baseUrl === '/api/events') {
+    id = req.body.event.createdBy;
+  }
+
+  if (payload._id === id || payload.admin) {
     next();
   } else {
     res.status(403).json({

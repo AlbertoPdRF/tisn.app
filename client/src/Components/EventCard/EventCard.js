@@ -17,8 +17,8 @@ const EventCard = ({ event = {} }) => {
     <Card className={style.card}>
       <CardActionArea
         component={Link}
-        to={`/events/${event._id}`}
-        disabled={event._id === "dummy"}
+        to={event._id ? `/events/${event._id}` : '/events'}
+        disabled={!event._id}
       >
         <CardMedia
           component="img"

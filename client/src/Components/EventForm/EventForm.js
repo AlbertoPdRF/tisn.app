@@ -8,7 +8,8 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 
-import { getInterests, postEvent } from '../../logic/api';
+import { getInterests, getEvent, postEvent, putEvent } from '../../logic/api';
+import { inputDateTime } from '../../logic/date-time';
 import { uploadFile } from '../../logic/file-upload';
 
 import { useUser } from '../UserProvider/UserProvider';
@@ -16,7 +17,7 @@ import { useUser } from '../UserProvider/UserProvider';
 import Style from '../Style/Style';
 import EventCard from '../EventCard/EventCard';
 
-const NewEventForm = () => {
+const EventForm = ({ match }) => {
   const history = useHistory();
   const user = useUser();
   const style = Style();
@@ -25,8 +26,10 @@ const NewEventForm = () => {
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [createdBy, setCreatedBy] = useState('');
   const [interests, setInterests] = useState([]);
   const [relatedInterests, setRelatedInterests] = useState([]);
+  const [attendants, setAttendants] = useState([]);
   const [coverPhoto, setCoverPhoto] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -39,6 +42,46 @@ const NewEventForm = () => {
       .finally(() => setLoading(false));
   }, []);
 
+  const id = match.params.id;
+  useEffect(() => {
+    if (id) {
+      setLoading(true);
+      if (user && interests.length > 0) {
+        getEvent(id)
+          .then(data => {
+            if (!(user._id === data.event.createdBy || user.admin)) {
+              history.push(`/events/${id}`);
+            } else {
+              setName(data.event.name);
+              setDescription(data.event.description);
+              setStartDate(inputDateTime(data.event.startDate));
+              setEndDate(inputDateTime(data.event.endDate));
+              setCreatedBy(data.event.createdBy);
+              setRelatedInterests(interests.filter(interest =>
+                data.event.relatedInterests.some(relatedInterest =>
+                  relatedInterest._id === interest._id
+                )
+              ));
+              setAttendants(data.event.attendants);
+              setCoverPhoto(data.event.coverPhoto);
+            }
+          })
+          .catch(error => setError(error.message))
+          .finally(() => setLoading(false));
+      }
+    } else {
+      setName('');
+      setDescription('');
+      setStartDate('');
+      setEndDate('');
+      setCreatedBy('');
+      setRelatedInterests([]);
+      setAttendants([]);
+      setCoverPhoto('');
+      setLoading(false);
+    }
+  }, [id, user, interests, history]);
+
   const handleFileUpload = file => {
     if (file) {
       setLoading(true);
@@ -49,7 +92,7 @@ const NewEventForm = () => {
     }
   };
 
-  const handleClick = () => {
+  const handleNewClick = () => {
     setLoading(true);
     postEvent({
       name,
@@ -68,6 +111,25 @@ const NewEventForm = () => {
       });
   };
 
+  const handleEditClick = () => {
+    setLoading(true);
+    putEvent(id, {
+      name,
+      description,
+      startDate,
+      endDate,
+      createdBy,
+      relatedInterests,
+      attendants,
+      coverPhoto
+    })
+      .then(data => history.push(`/events/${data.event._id}`))
+      .catch(error => {
+        setError(error);
+        setLoading(false);
+      });
+  };
+
   return (
     <Fragment>
       {loading && <LinearProgress />}
@@ -75,7 +137,7 @@ const NewEventForm = () => {
         <Grid container direction="column" alignItems="center" spacing={2}>
           <Grid item className={style.center}>
             <Typography variant="h2">
-              New event
+              {`${id ? 'Edit' : 'New'} event`}
             </Typography>
           </Grid>
           <Grid item>
@@ -85,7 +147,6 @@ const NewEventForm = () => {
           </Grid>
           <Grid item>
             <EventCard event={{
-              _id: "dummy",
               name,
               description,
               relatedInterests,
@@ -169,10 +230,22 @@ const NewEventForm = () => {
             </TextField>
           </Grid>
           <Grid item>
+            {id &&
+              <Button
+                className={style.buttons}
+                variant="outlined"
+                color="primary"
+                onClick={() => history.push(`/events/${id}`)}
+                disabled={loading}
+              >
+                Cancel
+              </Button>
+            }
             <Button
+              className={id && style.buttons}
               variant="contained"
               color="primary"
-              onClick={() => handleClick()}
+              onClick={() => id ? handleEditClick() : handleNewClick()}
               disabled={
                 loading ||
                 !name ||
@@ -181,7 +254,7 @@ const NewEventForm = () => {
                 !endDate
               }
             >
-              Create new event
+              {id ? 'Edit' : 'Create'}
             </Button>
           </Grid>
         </Grid>
@@ -190,4 +263,4 @@ const NewEventForm = () => {
   );
 };
 
-export default NewEventForm;
+export default EventForm;

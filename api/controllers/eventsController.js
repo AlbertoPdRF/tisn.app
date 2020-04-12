@@ -75,3 +75,62 @@ exports.getId = (req, res, next) => {
       res.json({ event });
     });
 };
+
+exports.putId = (req, res, next) => {
+  const { body: { event } } = req;
+
+  if (!event.name) {
+    return res.status(422).json({
+      errors: {
+        name: 'is required',
+      },
+    });
+  }
+
+  if (!event.description) {
+    return res.status(422).json({
+      errors: {
+        description: 'is required',
+      },
+    });
+  }
+
+  if (!event.startDate) {
+    return res.status(422).json({
+      errors: {
+        startDate: 'is required',
+      },
+    });
+  }
+
+  if (!event.endDate) {
+    return res.status(422).json({
+      errors: {
+        endDate: 'is required',
+      },
+    });
+  }
+
+  if (!event.createdBy) {
+    return res.status(422).json({
+      errors: {
+        createdBy: 'is required',
+      },
+    });
+  }
+
+  Event.findOneAndUpdate({
+        "_id": req.params.id,
+        "createdBy": req.payload.admin ? event.createdBy : req.payload._id
+      },
+      event,
+      { new: true }
+    )
+    .then(updatedEvent => {
+      if (!updatedEvent) {
+        res.status(500).json({ error: 'something wen\'t wrong' });
+      }
+
+      res.json({ event: updatedEvent });
+    });
+};

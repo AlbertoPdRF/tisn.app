@@ -29,6 +29,13 @@ export const postEvent = (event) => {
   });
 };
 
+export const putEvent = (id, event) => {
+  return fetchApi(`/events/${id}`, {
+    method: 'PUT',
+    body: JSON.stringify({ event })
+  });
+};
+
 export const getEvent = (id) => fetchApi(`/events/${id}`, { method: 'GET' });
 
 export const getInterests = () => fetchApi('/interests', { method: 'GET' });
