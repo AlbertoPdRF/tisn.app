@@ -11,7 +11,7 @@ import Link from '@material-ui/core/Link';
 
 import { getUser, postUser, putUser } from '../../logic/api';
 import { setUserSession } from '../../logic/auth';
-import { inputDate } from '../../logic/datetime';
+import { inputDate } from '../../logic/date-time';
 import { uploadFile } from '../../logic/file-upload';
 
 import { useUser, useSetUser } from '../UserProvider/UserProvider';
@@ -37,30 +37,31 @@ const UserForm = ({ match }) => {
 
   const id = match.params.id;
   useEffect(() => {
-    setLoading(true);
     if (id && currentUser) {
+      setLoading(true);
       if (currentUser._id === id) {
         setUser(currentUser);
+        setLoading(false);
       } else if (currentUser.admin) {
         getUser(id)
           .then(data => setUser(data.user))
           .catch(error => setError(error.message))
+          .finally(() => setLoading(false));
       } else {
-        history.push(`/users/${currentUser._id}/edit`)
+        history.push(`/users/${currentUser._id}/edit`);
       }
     }
-    setLoading(false);
-  }, [id, currentUser]);
+  }, [id, currentUser, history]);
 
   useEffect(() => {
-    setLoading(true);
     if (user) {
+      setLoading(true);
       setName(user.name);
       setEmail(user.email);
       setDateOfBirth(inputDate(user.dateOfBirth));
       setAvatar(user.avatar);
+      setLoading(false);
     }
-    setLoading(false);
   }, [user]);
 
   const handleFileUpload = file => {

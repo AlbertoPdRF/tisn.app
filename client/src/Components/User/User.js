@@ -10,7 +10,7 @@ import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
 
 import { getUser } from '../../logic/api';
-import { formatDate } from '../../logic/datetime';
+import { formatDate } from '../../logic/date-time';
 
 import { useUser } from '../UserProvider/UserProvider';
 

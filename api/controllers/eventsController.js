@@ -47,6 +47,14 @@ exports.post = (req, res, next) => {
     });
   }
 
+  if (!event.createdBy) {
+    return res.status(422).json({
+      errors: {
+        createdBy: 'is required',
+      },
+    });
+  }
+
   const finalEvent = new Event(event);
 
   return finalEvent.save()

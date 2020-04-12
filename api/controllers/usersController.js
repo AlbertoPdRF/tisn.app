@@ -104,7 +104,7 @@ exports.putId = (req, res, next) => {
       { new: true }
     )
     .populate('interests', 'name avatar')
-    .then(updatedUser => res.json({ user: updatedUser.toJson() }))
+    .then(updatedUser => res.json({ user: updatedUser.toJson() }));
 };
 
 

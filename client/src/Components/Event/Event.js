@@ -10,7 +10,7 @@ import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import Avatar from '@material-ui/core/Avatar';
 
 import { getEvent } from '../../logic/api';
-import { formatDateTimeRange } from '../../logic/datetime';
+import { formatDateTimeRange } from '../../logic/date-time';
 
 import Style from '../Style/Style';
 
