@@ -29,6 +29,8 @@ export const postEvent = (event) => {
   });
 };
 
+export const getEvent = (id) => fetchApi(`/events/${id}`, { method: 'GET' });
+
 export const putEvent = (id, event) => {
   return fetchApi(`/events/${id}`, {
     method: 'PUT',
@@ -36,7 +38,22 @@ export const putEvent = (id, event) => {
   });
 };
 
-export const getEvent = (id) => fetchApi(`/events/${id}`, { method: 'GET' });
+export const getAttendants = (eventId) =>
+  fetchApi(`/events/${eventId}/attendants`, { method: 'GET' });
+
+export const postAttendant = (eventId, attendant) => {
+  return fetchApi(`/events/${eventId}/attendants`, {
+    method: 'POST',
+    body: JSON.stringify({ attendant })
+  });
+};
+
+export const deleteAttendant = (eventId, attendantId, attendant) => {
+  return fetchApi(`/events/${eventId}/attendants/${attendantId}`, {
+    method: 'DELETE',
+    body: JSON.stringify({ attendant })
+  });
+};
 
 export const getInterests = () => fetchApi('/interests', { method: 'GET' });
 

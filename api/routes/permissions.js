@@ -2,10 +2,15 @@ const permissions = (req, res, next) => {
   const { payload } = req;
 
   let id;
-  if (req.baseUrl === '/api/users') {
+  const url = req.baseUrl;
+  if (url === '/api/users') {
     id = req.params.id;
-  } else if (req.baseUrl === '/api/events') {
-    id = req.body.event.createdBy;
+  } else if (url.startsWith('/api/events')) {
+    if (url.endsWith('/attendants')) {
+      id = req.body.attendant.user;
+    } else {
+      id = req.body.event.createdBy;
+    }
   }
 
   if (payload._id === id || payload.admin) {

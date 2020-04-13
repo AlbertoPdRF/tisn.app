@@ -8,7 +8,13 @@ import TextField from '@material-ui/core/TextField';
 import MenuItem from '@material-ui/core/MenuItem';
 import Button from '@material-ui/core/Button';
 
-import { getInterests, getEvent, postEvent, putEvent } from '../../logic/api';
+import {
+  getInterests,
+  getEvent,
+  postEvent,
+  putEvent,
+  postAttendant
+} from '../../logic/api';
 import { inputDateTime } from '../../logic/date-time';
 import { uploadFile } from '../../logic/file-upload';
 
@@ -29,7 +35,6 @@ const EventForm = ({ match }) => {
   const [createdBy, setCreatedBy] = useState('');
   const [interests, setInterests] = useState([]);
   const [relatedInterests, setRelatedInterests] = useState([]);
-  const [attendants, setAttendants] = useState([]);
   const [coverPhoto, setCoverPhoto] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
@@ -62,7 +67,6 @@ const EventForm = ({ match }) => {
                   relatedInterest._id === interest._id
                 )
               ));
-              setAttendants(data.event.attendants);
               setCoverPhoto(data.event.coverPhoto);
             }
           })
@@ -76,7 +80,6 @@ const EventForm = ({ match }) => {
       setEndDate('');
       setCreatedBy('');
       setRelatedInterests([]);
-      setAttendants([]);
       setCoverPhoto('');
       setLoading(false);
     }
@@ -101,10 +104,19 @@ const EventForm = ({ match }) => {
       endDate,
       createdBy: user._id,
       relatedInterests,
-      attendants: [user._id],
       coverPhoto
     })
-      .then(data => history.push(`/events/${data.event._id}`))
+      .then(data => {
+        postAttendant(data.event._id, {
+          event: data.event._id,
+          user: user._id
+        })
+          .then(data => history.push(`/events/${data.attendant.event}`))
+          .catch(error => {
+            setError(error);
+            setLoading(false);
+          });
+      })
       .catch(error => {
         setError(error);
         setLoading(false);
@@ -120,7 +132,6 @@ const EventForm = ({ match }) => {
       endDate,
       createdBy,
       relatedInterests,
-      attendants,
       coverPhoto
     })
       .then(data => history.push(`/events/${data.event._id}`))

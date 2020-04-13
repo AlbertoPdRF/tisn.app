@@ -66,7 +66,6 @@ exports.post = (req, res, next) => {
 exports.getId = (req, res, next) => {
   return Event.findById(req.params.id)
     .populate('relatedInterests', 'name avatar')
-    .populate('attendants', 'name avatar')
     .then(event => {
       if (!event) {
         return res.sendStatus(400);
@@ -126,6 +125,7 @@ exports.putId = (req, res, next) => {
       event,
       { new: true }
     )
+    .populate('relatedInterests', 'name avatar')
     .then(updatedEvent => {
       if (!updatedEvent) {
         res.status(500).json({ error: 'something wen\'t wrong' });

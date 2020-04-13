@@ -12,4 +12,8 @@ router.post('/', auth.required, eventsController.post);
 router.get('/:id', auth.required, eventsController.getId);
 router.put('/:id', [auth.required, permissions], eventsController.putId);
 
+const attendantsRouter = require('./attendants');
+
+router.use('/:eventId/attendants', attendantsRouter);
+
 module.exports = router;

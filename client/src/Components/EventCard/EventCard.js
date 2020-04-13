@@ -31,10 +31,7 @@ const EventCard = ({ event = {} }) => {
           title={event.name}
         />
         <CardContent>
-          <Typography gutterBottom variant="h5" component="h3" noWrap>
-            {event.name}
-          </Typography>
-          <AvatarGroup className={style.alignRight} max={1}>
+          <AvatarGroup className={style.alignRight} max={2}>
             {event.relatedInterests.map(interest => (
               <Avatar
                 key={interest._id}
@@ -43,10 +40,16 @@ const EventCard = ({ event = {} }) => {
               />
             ))}
           </AvatarGroup>
+          <Typography gutterBottom variant="h5" component="h3">
+            {event.name.length < 30
+              ? event.name
+              : `${event.name.substring(0, 29)}...`
+            }
+          </Typography>
           <Typography variant="body1" color="textSecondary" component="p">
-            {event.description.length < 120
+            {event.description.length < 115
               ? event.description
-              : `${event.description.substring(0, 119)}...`
+              : `${event.description.substring(0, 114)}...`
             }
           </Typography>
         </CardContent>
