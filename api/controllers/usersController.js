@@ -49,6 +49,12 @@ exports.post = (req, res, next) => {
     });
   }
 
+  if (user.admin) {
+    return res.status(403).json({
+      error: 'not enough permissions to perform the requested action'
+    });
+  }
+
   const finalUser = new User(user);
 
   finalUser.setPassword(user.password);
@@ -95,6 +101,12 @@ exports.putId = (req, res, next) => {
       errors: {
         dateOfBirth: 'is required',
       },
+    });
+  }
+
+  if (user.admin && !req.payload.admin) {
+    return res.status(403).json({
+      error: 'not enough permissions to perform the requested action'
     });
   }
 
