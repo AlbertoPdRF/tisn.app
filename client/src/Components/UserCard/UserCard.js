@@ -7,9 +7,13 @@ import Avatar from '@material-ui/core/Avatar';
 import CardContent from '@material-ui/core/CardContent';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 
+import Style from '../Style/Style';
+
 const UserCard = ({ user = {} }) => {
+  const style = Style();
+
   return (
-    <Card>
+    <Card className={style.userCard}>
       <CardActionArea
         component={Link}
         to={`/users/${user._id}`}
@@ -27,7 +31,7 @@ const UserCard = ({ user = {} }) => {
         />
         {user.interests.length > 0 &&
           <CardContent>
-            <AvatarGroup>
+            <AvatarGroup max={3}>
               {user.interests.map(interest => (
                 <Avatar
                   key={interest._id}

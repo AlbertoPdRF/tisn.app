@@ -8,8 +8,10 @@ const Style = makeStyles(theme => ({
       paddingBottom: theme.spacing(2),
     },
     display: 'flex',
-    minHeight: '100vh',
     maxWidth: '100vw'
+  },
+  minHeight: {
+    minHeight: '100vh'
   },
   grow: {
     flexGrow: 1
@@ -27,9 +29,13 @@ const Style = makeStyles(theme => ({
   drawerPaper: {
     width: 250,
   },
-  card: {
+  eventCard: {
     width: 300,
     height: 300
+  },
+  userCard: {
+    width: 150,
+    height: 150
   },
   formInput: {
     [theme.breakpoints.down('sm')]: {

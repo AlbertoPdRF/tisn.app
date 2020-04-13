@@ -14,7 +14,7 @@ const EventCard = ({ event = {} }) => {
   const style = Style();
 
   return (
-    <Card className={style.card}>
+    <Card className={style.eventCard}>
       <CardActionArea
         component={Link}
         to={event._id ? `/events/${event._id}` : '/events'}
