@@ -39,10 +39,10 @@ const Style = makeStyles(theme => ({
   },
   formInput: {
     [theme.breakpoints.down('sm')]: {
-      width: '80vw'
+      width: '75vw'
     },
     [theme.breakpoints.up('md')]: {
-      width: '768px'
+      width: '720px'
     }
   },
   avatar: {

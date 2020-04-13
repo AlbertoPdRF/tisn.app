@@ -18,14 +18,14 @@ import { useUser, useSetUser } from '../UserProvider/UserProvider';
 
 import Style from '../Style/Style';
 
-const UserForm = ({ match }) => {
+const UserForm = ({ id = null }) => {
   const history = useHistory();
   const style = Style();
 
   const currentUser = useUser();
   const setCurrentUser = useSetUser();
 
-  const [user, setUser] = useState(undefined);
+  const [user, setUser] = useState(null);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -35,7 +35,6 @@ const UserForm = ({ match }) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const id = match.params.id;
   useEffect(() => {
     if (id && currentUser) {
       setLoading(true);
@@ -112,11 +111,13 @@ const UserForm = ({ match }) => {
       {loading && <LinearProgress />}
       <Box p={1}>
         <Grid container direction="column" alignItems="center" spacing={2}>
+          {!id &&
           <Grid item>
             <Typography variant="h1">
-              {id ? 'Edit' : 'Sign up'}
+                Sign up
             </Typography>
           </Grid>
+          }
           {id &&
             <Fragment>
               <Grid item>
@@ -195,19 +196,7 @@ const UserForm = ({ match }) => {
             />
           </Grid>
           <Grid item>
-            {id &&
-              <Button
-                className={style.buttons}
-                variant="outlined"
-                color="primary"
-                onClick={() => history.push(`/users/${id}`)}
-                disabled={loading}
-              >
-                Cancel
-              </Button>
-            }
             <Button
-              className={id && style.buttons}
               variant="contained"
               color="primary"
               onClick={() => id ? handleEditClick() : handleSignUpClick()}
