@@ -8,11 +8,11 @@ import EventForm from '../EventForm/EventForm';
 import Event from '../Event/Event';
 import Users from '../Users/Users';
 import User from '../User/User';
+import UserTabs from '../UserTabs/UserTabs';
 
 import Welcome from '../Welcome/Welcome';
 import LogInForm from '../LogInForm/LogInForm';
-import UserTabs from '../UserTabs/UserTabs';
-import UserForm from '../UserForm/UserForm';
+import SignUpForm from '../SignUpForm/SignUpForm';
 
 import AdminDashboard from '../AdminDashboard/AdminDashboard';
 
@@ -29,7 +29,7 @@ const Navigation = () => {
 
       <PublicRoute exact path="/welcome" component={Welcome} />
       <PublicRoute exact path="/log-in" component={LogInForm} />
-      <PublicRoute exact path="/sign-up" component={UserForm} />
+      <PublicRoute exact path="/sign-up" component={SignUpForm} />
 
       <AdminRoute exact path="/admin" component={AdminDashboard} />
 
