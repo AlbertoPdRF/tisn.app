@@ -21,7 +21,9 @@ import { uploadFile } from '../../logic/file-upload';
 import { useUser } from '../UserProvider/UserProvider';
 
 import Style from '../Style/Style';
+
 import EventCard from '../EventCard/EventCard';
+import InterestsSelect from '../InterestsSelect/InterestsSelect';
 
 const EventForm = ({ match }) => {
   const history = useHistory();
@@ -86,6 +88,9 @@ const EventForm = ({ match }) => {
       setLoading(false);
     }
   }, [id, user, interests, history]);
+
+  const handleRelatedInterestsChange = (relatedInterests) =>
+    setRelatedInterests(relatedInterests);
 
   const handleFileUpload = (file) => {
     if (file) {
@@ -227,22 +232,11 @@ const EventForm = ({ match }) => {
             />
           </Grid>
           <Grid item>
-            <TextField
-              className={style.formInput}
-              select
-              multiple
-              label="Related interests"
-              variant="outlined"
-              value={relatedInterests}
-              onChange={(event) => setRelatedInterests(event.target.value)}
-              SelectProps={{ multiple: true }}
-            >
-              {interests.map((interest) => (
-                <MenuItem key={interest._id} value={interest}>
-                  {interest.name}
-                </MenuItem>
-              ))}
-            </TextField>
+            <InterestsSelect
+              allInterests={interests}
+              interests={relatedInterests}
+              handleInterestsChange={handleRelatedInterestsChange}
+            />
           </Grid>
           <Grid item>
             {id && (

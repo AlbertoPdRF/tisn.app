@@ -3,6 +3,7 @@ const Interest = require('../models/Interest');
 exports.get = (req, res, next) => {
   return Interest.find()
     .populate('category')
+    .sort('name')
     .then((interests) => {
       if (!interests) {
         return res.sendStatus(400);

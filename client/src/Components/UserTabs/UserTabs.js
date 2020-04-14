@@ -20,7 +20,7 @@ import { uploadFile } from '../../logic/file-upload';
 import { useUser, useSetUser } from '../UserProvider/UserProvider';
 
 import UserForm from '../UserForm/UserForm';
-import UserInterestsForm from '../UserInterestsForm/UserInterestsForm';
+import InterestsSelect from '../InterestsSelect/InterestsSelect';
 
 import Style from '../Style/Style';
 
@@ -193,7 +193,7 @@ const UserTabs = ({ match }) => {
                     />
                   </TabPanel>
                   <TabPanel value={value} index={1}>
-                    <UserInterestsForm
+                    <InterestsSelect
                       allInterests={allInterests}
                       interests={interests}
                       handleInterestsChange={handleInterestsChange}
