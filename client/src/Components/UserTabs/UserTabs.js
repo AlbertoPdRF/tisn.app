@@ -71,8 +71,8 @@ const UserTabs = ({ match }) => {
         setLoading(false);
       } else if (currentUser.admin) {
         getUser(id)
-          .then(data => setUser(data.user))
-          .catch(error => setError(error.message))
+          .then((data) => setUser(data.user))
+          .catch((error) => setError(error.message))
           .finally(() => setLoading(false));
       } else {
         history.push(`/users/${currentUser._id}/edit`);
@@ -94,19 +94,21 @@ const UserTabs = ({ match }) => {
   useEffect(() => {
     setLoading(true);
     getInterests()
-      .then(data => setAllInterests(data.interests))
-      .catch(error => setError(error))
+      .then((data) => setAllInterests(data.interests))
+      .catch((error) => setError(error))
       .finally(() => setLoading(false));
   }, []);
 
   useEffect(() => {
     if (user && allInterests) {
       setLoading(true);
-      setInterests(allInterests.filter(interest =>
-        user.interests.some(userInterest =>
-          userInterest._id === interest._id
+      setInterests(
+        allInterests.filter((interest) =>
+          user.interests.some(
+            (userInterest) => userInterest._id === interest._id
+          )
         )
-      ));
+      );
       setLoading(false);
     }
   }, [user, allInterests]);
@@ -121,30 +123,30 @@ const UserTabs = ({ match }) => {
     if (file) {
       setLoading(true);
       uploadFile(file)
-        .then(data => setAvatar(data.uploadedFile.secure_url))
-        .catch(error => setError(error))
+        .then((data) => setAvatar(data.uploadedFile.secure_url))
+        .catch((error) => setError(error))
         .finally(() => setLoading(false));
     }
   };
 
   const handleInterestsChange = (interests) => setInterests(interests);
-  
+
   const handleEditClick = () => {
     setLoading(true);
     putUser(id, {
-        name,
-        email,
-        dateOfBirth,
-        avatar,
-        interests
-      })
-      .then(data => {
+      name,
+      email,
+      dateOfBirth,
+      avatar,
+      interests,
+    })
+      .then((data) => {
         if (currentUser._id === id) {
           setCurrentUser(data.user);
         }
         history.push(`/users/${id}`);
       })
-      .catch(error => {
+      .catch((error) => {
         setError(error.message);
         setLoading(false);
       });
@@ -156,9 +158,7 @@ const UserTabs = ({ match }) => {
       <div className={style.root}>
         <Grid container direction="column" alignItems="center" spacing={2}>
           <Grid item>
-            <Typography variant="h2">
-              Edit
-            </Typography>
+            <Typography variant="h2">Edit</Typography>
           </Grid>
           <Grid item>
             <Paper>
@@ -175,7 +175,7 @@ const UserTabs = ({ match }) => {
                   <Tab label="Settings" />
                 </Tabs>
               </AppBar>
-              {user &&
+              {user && (
                 <SwipeableViews
                   index={value}
                   onChangeIndex={(index) => setValue(index)}
@@ -200,12 +200,15 @@ const UserTabs = ({ match }) => {
                     />
                   </TabPanel>
                   <TabPanel value={value} index={2}>
-                    <Typography variant="body1" className={`${style.center} ${style.formInput}`}>
+                    <Typography
+                      variant="body1"
+                      className={`${style.center} ${style.formInput}`}
+                    >
                       Settings
                     </Typography>
                   </TabPanel>
                 </SwipeableViews>
-              }
+              )}
             </Paper>
           </Grid>
           <Grid item>
@@ -222,12 +225,7 @@ const UserTabs = ({ match }) => {
               variant="contained"
               color="primary"
               onClick={() => handleEditClick()}
-              disabled={
-                loading ||
-                !name ||
-                !email ||
-                !dateOfBirth
-              }
+              disabled={loading || !name || !email || !dateOfBirth}
             >
               Edit
             </Button>

@@ -7,14 +7,20 @@ const uploadsPath = path.join(__dirname, '../uploads');
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
+  api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
 exports.post = async (req, res, next) => {
   const file = req.files.file;
 
   const extension = path.extname(file.name);
-  if (extension !== '.jpg' && extension !== '.jpeg' && extension !== '.png' && extension !== '.gif' && extension !== '.svg') {
+  if (
+    extension !== '.jpg' &&
+    extension !== '.jpeg' &&
+    extension !== '.png' &&
+    extension !== '.gif' &&
+    extension !== '.svg'
+  ) {
     res.status(400);
     res.json({ error: 'invalid file type' });
   }

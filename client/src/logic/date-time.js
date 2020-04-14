@@ -1,10 +1,13 @@
 import { format, parseISO } from 'date-fns';
 
-export const inputDate = dateString => format(parseISO(dateString), 'yyyy-MM-dd');
+export const inputDate = (dateString) =>
+  format(parseISO(dateString), 'yyyy-MM-dd');
 
-export const formatDate = dateString => format(parseISO(dateString), 'MMM d, yyyy');
+export const formatDate = (dateString) =>
+  format(parseISO(dateString), 'MMM d, yyyy');
 
-export const inputDateTime = dateString => format(parseISO(dateString), 'yyyy-MM-dd\'T\'hh:mm');
+export const inputDateTime = (dateString) =>
+  format(parseISO(dateString), "yyyy-MM-dd'T'hh:mm");
 
 export const formatDateTimeRange = (startString, endString) => {
   const [startMinute, startHour, startDay, startMonth, startYear] = format(
@@ -29,5 +32,5 @@ export const formatDateTimeRange = (startString, endString) => {
     dayRange = `${startMonth} ${startDay}, ${startYear} - ${endMonth} ${endDay}, ${endYear}`;
   }
 
-  return (`${timeRange}\n${dayRange}`);
+  return `${timeRange}\n${dayRange}`;
 };

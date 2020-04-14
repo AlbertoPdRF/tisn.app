@@ -14,25 +14,19 @@ const UserCard = ({ user = {} }) => {
 
   return (
     <Card className={style.userCard}>
-      <CardActionArea
-        component={Link}
-        to={`/users/${user._id}`}
-      >
+      <CardActionArea component={Link} to={`/users/${user._id}`}>
         <CardHeader
           avatar={
-            <Avatar
-              src={user.avatar}
-              alt={`${user.name}'s avatar`}
-            >
+            <Avatar src={user.avatar} alt={`${user.name}'s avatar`}>
               {user.name.charAt(0).toUpperCase()}
             </Avatar>
           }
           title={user.name}
         />
-        {user.interests.length > 0 &&
+        {user.interests.length > 0 && (
           <CardContent>
             <AvatarGroup max={3}>
-              {user.interests.map(interest => (
+              {user.interests.map((interest) => (
                 <Avatar
                   key={interest._id}
                   src={interest.avatar}
@@ -41,7 +35,7 @@ const UserCard = ({ user = {} }) => {
               ))}
             </AvatarGroup>
           </CardContent>
-        }
+        )}
       </CardActionArea>
     </Card>
   );

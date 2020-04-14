@@ -53,8 +53,8 @@ const NavigationBarAndDrawer = (props) => {
 
   useEffect(() => {
     getUser()
-      .then(data => setUser(data.user))
-      .catch(error => setError(error.message))
+      .then((data) => setUser(data.user))
+      .catch((error) => setError(error.message))
       .finally(() => setLoading(false));
   }, [setUser]);
 
@@ -62,83 +62,86 @@ const NavigationBarAndDrawer = (props) => {
 
   const handleDrawerToggle = () => setDrawerOpen(!drawerOpen);
 
-  const drawer = (user &&
+  const drawer = user && (
     <Fragment>
       <List>
-        <ListItem button onClick={() => {
-          history.push(`/users/${user._id}`);
-          handleDrawerToggle();
-        }}>
+        <ListItem
+          button
+          onClick={() => {
+            history.push(`/users/${user._id}`);
+            handleDrawerToggle();
+          }}
+        >
           <ListItemAvatar>
-            <Avatar
-              src={user.avatar}
-              alt={`${user.name}'s avatar`}
-            >
+            <Avatar src={user.avatar} alt={`${user.name}'s avatar`}>
               {user.name.charAt(0).toUpperCase()}
             </Avatar>
           </ListItemAvatar>
-          <ListItemText
-            primary={user.name}
-          />
+          <ListItemText primary={user.name} />
         </ListItem>
         <Divider />
-        <ListItem button onClick={() => {
-          history.push('/');
-          handleDrawerToggle();
-        }}>
+        <ListItem
+          button
+          onClick={() => {
+            history.push('/');
+            handleDrawerToggle();
+          }}
+        >
           <ListItemIcon>
             <HomeIcon />
           </ListItemIcon>
-          <ListItemText
-            primary="Home"
-          />
+          <ListItemText primary="Home" />
         </ListItem>
         <Divider />
-        <ListItem button onClick={() => {
-          history.push('/events/new');
-          handleDrawerToggle();
-        }}>
+        <ListItem
+          button
+          onClick={() => {
+            history.push('/events/new');
+            handleDrawerToggle();
+          }}
+        >
           <ListItemIcon>
             <AddIcon />
           </ListItemIcon>
-          <ListItemText
-            primary="New event"
-          />
+          <ListItemText primary="New event" />
         </ListItem>
         <Divider />
-        <ListItem button onClick={() => {
-          history.push('/users');
-          handleDrawerToggle();
-        }}>
+        <ListItem
+          button
+          onClick={() => {
+            history.push('/users');
+            handleDrawerToggle();
+          }}
+        >
           <ListItemIcon>
             <PeopleIcon />
           </ListItemIcon>
-          <ListItemText
-            primary="Users"
-          />
+          <ListItemText primary="Users" />
         </ListItem>
-        <ListItem button onClick={() => {
-          history.push(`/users/${user._id}`);
-          handleDrawerToggle();
-        }}>
+        <ListItem
+          button
+          onClick={() => {
+            history.push(`/users/${user._id}`);
+            handleDrawerToggle();
+          }}
+        >
           <ListItemIcon>
             <PersonIcon />
           </ListItemIcon>
-          <ListItemText
-            primary="My profile"
-          />
+          <ListItemText primary="My profile" />
         </ListItem>
-        <ListItem button onClick={() => {
-          logOut();
-          setUser(null);
-          history.push('/welcome');
-        }}>
+        <ListItem
+          button
+          onClick={() => {
+            logOut();
+            setUser(null);
+            history.push('/welcome');
+          }}
+        >
           <ListItemIcon>
             <ExitToAppIcon />
           </ListItemIcon>
-          <ListItemText
-            primary="Log out"
-          />
+          <ListItemText primary="Log out" />
         </ListItem>
       </List>
     </Fragment>
@@ -157,19 +160,14 @@ const NavigationBarAndDrawer = (props) => {
             >
               <MenuIcon />
             </IconButton>
-            <Link
-              variant="h4"
-              color="inherit"
-              underline="none"
-              href="/"
-            >
+            <Link variant="h4" color="inherit" underline="none" href="/">
               Tisn
             </Link>
           </Toolbar>
         </AppBar>
       </HideOnScroll>
       <Toolbar />
-      {!loading && user &&
+      {!loading && user && (
         <SwipeableDrawer
           anchor="left"
           container={container}
@@ -180,12 +178,12 @@ const NavigationBarAndDrawer = (props) => {
             paper: style.drawerPaper,
           }}
           ModalProps={{
-            keepMounted: true
+            keepMounted: true,
           }}
         >
           {drawer}
         </SwipeableDrawer>
-      }
+      )}
     </Fragment>
   );
 };

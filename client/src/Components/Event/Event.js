@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { useHistory } from 'react-router-dom';
-import LinearProgress from '@material-ui/core/LinearProgress'
+import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -14,7 +14,7 @@ import {
   getEvent,
   getAttendants,
   postAttendant,
-  deleteAttendant
+  deleteAttendant,
 } from '../../logic/api';
 import { formatDateTimeRange } from '../../logic/date-time';
 
@@ -37,16 +37,16 @@ const Event = ({ match }) => {
   useEffect(() => {
     setLoading(true);
     getEvent(id)
-      .then(data => setEvent(data.event))
-      .catch(error => setError(error.message))
+      .then((data) => setEvent(data.event))
+      .catch((error) => setError(error.message))
       .finally(() => setLoading(false));
   }, [id]);
 
   useEffect(() => {
     if (updateAttendants) {
       getAttendants(id)
-        .then(data => setAttendants(data.attendants))
-        .catch(error => setError(error.message))
+        .then((data) => setAttendants(data.attendants))
+        .catch((error) => setError(error.message))
         .finally(() => {
           setLoading(false);
           setUpdateAttendants(false);
@@ -57,11 +57,11 @@ const Event = ({ match }) => {
   const handleAttendClick = () => {
     setLoading(true);
     postAttendant(id, {
-        event: id,
-        user: user._id
-      })
+      event: id,
+      user: user._id,
+    })
       .then(() => setUpdateAttendants(true))
-      .catch(error => {
+      .catch((error) => {
         setError(error.message);
         setLoading(false);
       });
@@ -70,51 +70,51 @@ const Event = ({ match }) => {
   const handleNotAttendClick = () => {
     setLoading(true);
 
-    const attendant =
-      attendants.filter(attendant => attendant.user._id === user._id)[0];
+    const attendant = attendants.filter(
+      (attendant) => attendant.user._id === user._id
+    )[0];
     const nonPopulatedAttendant = {
       event: attendant.event,
-      user: attendant.user._id
+      user: attendant.user._id,
     };
 
     deleteAttendant(id, attendant._id, nonPopulatedAttendant)
       .then(() => setUpdateAttendants(true))
-      .catch(error => {
+      .catch((error) => {
         setError(error.message);
         setLoading(false);
       });
   };
 
-  const restrictedDisplay = event &&
-    user && (
-      user._id === event.createdBy ||
-      user.admin
-    );
+  const restrictedDisplay =
+    event && user && (user._id === event.createdBy || user.admin);
 
-  const userAttending = user &&
+  const userAttending =
+    user &&
     attendants &&
-    attendants.some(attendant => attendant.user._id === user._id);
+    attendants.some((attendant) => attendant.user._id === user._id);
 
   return (
     <Fragment>
       {loading && <LinearProgress />}
-      {event &&
+      {event && (
         <div className={style.root}>
           <Grid container spacing={1} justify="center">
             <Grid item>
               <Card>
                 <CardMedia
                   component="img"
-                  src={event.coverPhoto
-                    ? event.coverPhoto
-                    : "../../../event-placeholder.jpg"
+                  src={
+                    event.coverPhoto
+                      ? event.coverPhoto
+                      : '../../../event-placeholder.jpg'
                   }
                   alt={event.name}
                   title={event.name}
                 />
                 <CardContent>
                   <div className={style.alignRight}>
-                    {restrictedDisplay &&
+                    {restrictedDisplay && (
                       <Button
                         variant="outlined"
                         color="primary"
@@ -122,13 +122,10 @@ const Event = ({ match }) => {
                       >
                         Edit
                       </Button>
-                    }
-                    {formatDateTimeRange(
-                        event.startDate,
-                        event.endDate
-                      )
+                    )}
+                    {formatDateTimeRange(event.startDate, event.endDate)
                       .split('\n')
-                      .map((text, index) =>
+                      .map((text, index) => (
                         <Typography
                           key={index}
                           gutterBottom={!!index}
@@ -138,34 +135,34 @@ const Event = ({ match }) => {
                         >
                           {text}
                         </Typography>
-                      )
-                    }
+                      ))}
                     <Button
                       variant="contained"
-                      color={userAttending ? "secondary" : "primary"}
-                      onClick={() => userAttending ? handleNotAttendClick() : handleAttendClick()}
+                      color={userAttending ? 'secondary' : 'primary'}
+                      onClick={() =>
+                        userAttending
+                          ? handleNotAttendClick()
+                          : handleAttendClick()
+                      }
                     >
-                      {userAttending ? "I won't attend" : "I will attend!"}
+                      {userAttending ? "I won't attend" : 'I will attend!'}
                     </Button>
                   </div>
                   <Typography gutterBottom variant="h5" component="h3">
                     {event.name}
                   </Typography>
                   <Fragment>
-                    {event.description
-                      .split('\n')
-                      .map((text, index) =>
-                        <Typography
-                          key={index}
-                          gutterBottom
-                          variant="body1"
-                          component="p"
-                          color="textSecondary"
-                        >
-                          {text}
-                        </Typography>
-                      )
-                    }
+                    {event.description.split('\n').map((text, index) => (
+                      <Typography
+                        key={index}
+                        gutterBottom
+                        variant="body1"
+                        component="p"
+                        color="textSecondary"
+                      >
+                        {text}
+                      </Typography>
+                    ))}
                   </Fragment>
                   {event.relatedInterests.length > 0 && (
                     <Fragment>
@@ -173,7 +170,7 @@ const Event = ({ match }) => {
                         Related interests:
                       </Typography>
                       <AvatarGroup>
-                        {event.relatedInterests.map(interest => (
+                        {event.relatedInterests.map((interest) => (
                           <Avatar
                             key={interest._id}
                             src={interest.avatar}
@@ -189,7 +186,7 @@ const Event = ({ match }) => {
                         Attendants:
                       </Typography>
                       <AvatarGroup>
-                        {attendants.map(attendant => (
+                        {attendants.map((attendant) => (
                           <Avatar
                             key={attendant.user._id}
                             src={attendant.user.avatar}
@@ -206,7 +203,7 @@ const Event = ({ match }) => {
             </Grid>
           </Grid>
         </div>
-      }
+      )}
     </Fragment>
   );
 };

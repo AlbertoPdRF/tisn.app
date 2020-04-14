@@ -1,4 +1,4 @@
-require('dotenv').config()
+require('dotenv').config();
 
 var createError = require('http-errors');
 var express = require('express');
@@ -13,7 +13,7 @@ var app = express();
 var mongoDB = process.env.DB_URL;
 mongoose.connect(mongoDB, {
   useNewUrlParser: true,
-  useUnifiedTopology: true
+  useUnifiedTopology: true,
 });
 mongoose.set('useFindAndModify', false);
 var db = mongoose.connection;
@@ -30,15 +30,15 @@ app.use(cookieParser());
 app.use('/api/uploads', express.static(path.join(__dirname, 'uploads')));
 app.use('/api/', require('./routes/index'));
 
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   next(createError(404));
 });
 
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.json({
     message: err.message,
-    error: err
+    error: err,
   });
   return;
 });

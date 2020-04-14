@@ -3,7 +3,7 @@ const Event = require('../models/Event');
 exports.get = (req, res, next) => {
   return Event.find()
     .populate('relatedInterests', 'name avatar')
-    .then(events => {
+    .then((events) => {
       if (!events) {
         return res.sendStatus(400);
       }
@@ -13,7 +13,9 @@ exports.get = (req, res, next) => {
 };
 
 exports.post = (req, res, next) => {
-  const { body: { event } } = req;
+  const {
+    body: { event },
+  } = req;
 
   if (!event.name) {
     return res.status(422).json({
@@ -57,16 +59,13 @@ exports.post = (req, res, next) => {
 
   const finalEvent = new Event(event);
 
-  return finalEvent.save()
-    .then(() => res.json({ event: finalEvent }));
+  return finalEvent.save().then(() => res.json({ event: finalEvent }));
 };
-
-
 
 exports.getId = (req, res, next) => {
   return Event.findById(req.params.id)
     .populate('relatedInterests', 'name avatar')
-    .then(event => {
+    .then((event) => {
       if (!event) {
         return res.sendStatus(400);
       }
@@ -76,7 +75,9 @@ exports.getId = (req, res, next) => {
 };
 
 exports.putId = (req, res, next) => {
-  const { body: { event } } = req;
+  const {
+    body: { event },
+  } = req;
 
   if (!event.name) {
     return res.status(422).json({
@@ -118,17 +119,18 @@ exports.putId = (req, res, next) => {
     });
   }
 
-  Event.findOneAndUpdate({
-        "_id": req.params.id,
-        "createdBy": req.payload.admin ? event.createdBy : req.payload._id
-      },
-      event,
-      { new: true }
-    )
+  Event.findOneAndUpdate(
+    {
+      _id: req.params.id,
+      createdBy: req.payload.admin ? event.createdBy : req.payload._id,
+    },
+    event,
+    { new: true }
+  )
     .populate('relatedInterests', 'name avatar')
-    .then(updatedEvent => {
+    .then((updatedEvent) => {
       if (!updatedEvent) {
-        res.status(500).json({ error: 'something wen\'t wrong' });
+        res.status(500).json({ error: "something wen't wrong" });
       }
 
       res.json({ event: updatedEvent });

@@ -6,11 +6,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Style from '../Style/Style';
 
 const UserInterestsForm = (props) => {
-  const {
-    allInterests,
-    interests,
-    handleInterestsChange
-  } = props;
+  const { allInterests, interests, handleInterestsChange } = props;
 
   const style = Style();
 
@@ -23,10 +19,10 @@ const UserInterestsForm = (props) => {
           label="Interests"
           variant="outlined"
           value={interests}
-          onChange={event => handleInterestsChange(event.target.value)}
+          onChange={(event) => handleInterestsChange(event.target.value)}
           SelectProps={{ multiple: true }}
         >
-          {allInterests.map(interest => (
+          {allInterests.map((interest) => (
             <MenuItem key={interest._id} value={interest}>
               {interest.name}
             </MenuItem>

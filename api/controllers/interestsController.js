@@ -3,7 +3,7 @@ const Interest = require('../models/Interest');
 exports.get = (req, res, next) => {
   return Interest.find()
     .populate('category')
-    .then(interests => {
+    .then((interests) => {
       if (!interests) {
         return res.sendStatus(400);
       }
@@ -13,7 +13,9 @@ exports.get = (req, res, next) => {
 };
 
 exports.post = (req, res, next) => {
-  const { body: { interest } } = req;
+  const {
+    body: { interest },
+  } = req;
 
   if (!interest.name) {
     return res.status(422).json({
@@ -41,16 +43,13 @@ exports.post = (req, res, next) => {
 
   const finalInterest = new Interest(interest);
 
-  return finalInterest.save()
-    .then(() => res.json({ interest: finalInterest }));
+  return finalInterest.save().then(() => res.json({ interest: finalInterest }));
 };
-
-
 
 exports.getId = (req, res, next) => {
   return Interest.findById(req.params.id)
     .populate('category')
-    .then(interest => {
+    .then((interest) => {
       if (!interest) {
         return res.sendStatus(400);
       }
@@ -58,4 +57,3 @@ exports.getId = (req, res, next) => {
       res.json({ interest });
     });
 };
-

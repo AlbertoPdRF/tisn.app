@@ -6,14 +6,14 @@ export const getUsers = () => fetchApi('/users', { method: 'GET' });
 export const postUser = (user, path = '') => {
   return fetchApi(`/users/${path}`, {
     method: 'POST',
-    body: JSON.stringify({ user })
+    body: JSON.stringify({ user }),
   });
 };
 
 export const putUser = (id, user) => {
   return fetchApi(`/users/${id}`, {
     method: 'PUT',
-    body: JSON.stringify({ user })
+    body: JSON.stringify({ user }),
   });
 };
 
@@ -25,7 +25,7 @@ export const getEvents = () => fetchApi('/events', { method: 'GET' });
 export const postEvent = (event) => {
   return fetchApi('/events', {
     method: 'POST',
-    body: JSON.stringify({ event })
+    body: JSON.stringify({ event }),
   });
 };
 
@@ -34,7 +34,7 @@ export const getEvent = (id) => fetchApi(`/events/${id}`, { method: 'GET' });
 export const putEvent = (id, event) => {
   return fetchApi(`/events/${id}`, {
     method: 'PUT',
-    body: JSON.stringify({ event })
+    body: JSON.stringify({ event }),
   });
 };
 
@@ -44,14 +44,14 @@ export const getAttendants = (eventId) =>
 export const postAttendant = (eventId, attendant) => {
   return fetchApi(`/events/${eventId}/attendants`, {
     method: 'POST',
-    body: JSON.stringify({ attendant })
+    body: JSON.stringify({ attendant }),
   });
 };
 
 export const deleteAttendant = (eventId, attendantId, attendant) => {
   return fetchApi(`/events/${eventId}/attendants/${attendantId}`, {
     method: 'DELETE',
-    body: JSON.stringify({ attendant })
+    body: JSON.stringify({ attendant }),
   });
 };
 
@@ -62,17 +62,17 @@ const fetchApi = (path, fetchOptions = {}) => {
     `${BASE_API_URL}${path}`,
     Object.assign({}, fetchOptions, {
       headers: new Headers({
-        'Authorization': `Bearer ${accessToken()}`,
-        'Content-Type': 'application/json'
-      })
+        Authorization: `Bearer ${accessToken()}`,
+        'Content-Type': 'application/json',
+      }),
     })
   )
-    .then(response => {
+    .then((response) => {
       if (!response.ok) {
         throw new Error(response.statusText);
       }
 
       return response;
     })
-    .then(response => response.json());
+    .then((response) => response.json());
 };

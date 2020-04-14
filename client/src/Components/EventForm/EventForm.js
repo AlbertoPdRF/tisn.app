@@ -13,7 +13,7 @@ import {
   getEvent,
   postEvent,
   putEvent,
-  postAttendant
+  postAttendant,
 } from '../../logic/api';
 import { inputDateTime } from '../../logic/date-time';
 import { uploadFile } from '../../logic/file-upload';
@@ -42,8 +42,8 @@ const EventForm = ({ match }) => {
   useEffect(() => {
     setLoading(true);
     getInterests()
-      .then(data => setInterests(data.interests))
-      .catch(error => setError(error))
+      .then((data) => setInterests(data.interests))
+      .catch((error) => setError(error))
       .finally(() => setLoading(false));
   }, []);
 
@@ -53,7 +53,7 @@ const EventForm = ({ match }) => {
       setLoading(true);
       if (user && interests.length > 0) {
         getEvent(id)
-          .then(data => {
+          .then((data) => {
             if (!(user._id === data.event.createdBy || user.admin)) {
               history.push(`/events/${id}`);
             } else {
@@ -62,15 +62,17 @@ const EventForm = ({ match }) => {
               setStartDate(inputDateTime(data.event.startDate));
               setEndDate(inputDateTime(data.event.endDate));
               setCreatedBy(data.event.createdBy);
-              setRelatedInterests(interests.filter(interest =>
-                data.event.relatedInterests.some(relatedInterest =>
-                  relatedInterest._id === interest._id
+              setRelatedInterests(
+                interests.filter((interest) =>
+                  data.event.relatedInterests.some(
+                    (relatedInterest) => relatedInterest._id === interest._id
+                  )
                 )
-              ));
+              );
               setCoverPhoto(data.event.coverPhoto);
             }
           })
-          .catch(error => setError(error.message))
+          .catch((error) => setError(error.message))
           .finally(() => setLoading(false));
       }
     } else {
@@ -85,12 +87,12 @@ const EventForm = ({ match }) => {
     }
   }, [id, user, interests, history]);
 
-  const handleFileUpload = file => {
+  const handleFileUpload = (file) => {
     if (file) {
       setLoading(true);
       uploadFile(file)
-        .then(data => setCoverPhoto(data.uploadedFile.secure_url))
-        .catch(error => setError(error))
+        .then((data) => setCoverPhoto(data.uploadedFile.secure_url))
+        .catch((error) => setError(error))
         .finally(() => setLoading(false));
     }
   };
@@ -104,20 +106,20 @@ const EventForm = ({ match }) => {
       endDate,
       createdBy: user._id,
       relatedInterests,
-      coverPhoto
+      coverPhoto,
     })
-      .then(data => {
+      .then((data) => {
         postAttendant(data.event._id, {
           event: data.event._id,
-          user: user._id
+          user: user._id,
         })
-          .then(data => history.push(`/events/${data.attendant.event}`))
-          .catch(error => {
+          .then((data) => history.push(`/events/${data.attendant.event}`))
+          .catch((error) => {
             setError(error);
             setLoading(false);
           });
       })
-      .catch(error => {
+      .catch((error) => {
         setError(error);
         setLoading(false);
       });
@@ -132,10 +134,10 @@ const EventForm = ({ match }) => {
       endDate,
       createdBy,
       relatedInterests,
-      coverPhoto
+      coverPhoto,
     })
-      .then(data => history.push(`/events/${data.event._id}`))
-      .catch(error => {
+      .then((data) => history.push(`/events/${data.event._id}`))
+      .catch((error) => {
         setError(error);
         setLoading(false);
       });
@@ -157,12 +159,14 @@ const EventForm = ({ match }) => {
             </Typography>
           </Grid>
           <Grid item>
-            <EventCard event={{
-              name,
-              description,
-              relatedInterests,
-              coverPhoto
-            }} />
+            <EventCard
+              event={{
+                name,
+                description,
+                relatedInterests,
+                coverPhoto,
+              }}
+            />
           </Grid>
           <Grid item>
             <Typography variant="h4" component="h3">
@@ -176,7 +180,7 @@ const EventForm = ({ match }) => {
               accept="image/*"
               label="Cover photo"
               variant="outlined"
-              onChange={event => handleFileUpload(event.target.files[0])}
+              onChange={(event) => handleFileUpload(event.target.files[0])}
               InputLabelProps={{ shrink: true }}
             />
           </Grid>
@@ -186,7 +190,7 @@ const EventForm = ({ match }) => {
               label="Name"
               variant="outlined"
               value={name}
-              onChange={event => setName(event.target.value)}
+              onChange={(event) => setName(event.target.value)}
             />
           </Grid>
           <Grid item>
@@ -197,7 +201,7 @@ const EventForm = ({ match }) => {
               label="Description"
               variant="outlined"
               value={description}
-              onChange={event => setDescription(event.target.value)}
+              onChange={(event) => setDescription(event.target.value)}
             />
           </Grid>
           <Grid item>
@@ -207,7 +211,7 @@ const EventForm = ({ match }) => {
               label="Start date and time"
               variant="outlined"
               value={startDate}
-              onChange={event => setStartDate(event.target.value)}
+              onChange={(event) => setStartDate(event.target.value)}
               InputLabelProps={{ shrink: true }}
             />
           </Grid>
@@ -218,7 +222,7 @@ const EventForm = ({ match }) => {
               label="End date and time"
               variant="outlined"
               value={endDate}
-              onChange={event => setEndDate(event.target.value)}
+              onChange={(event) => setEndDate(event.target.value)}
               InputLabelProps={{ shrink: true }}
             />
           </Grid>
@@ -230,10 +234,10 @@ const EventForm = ({ match }) => {
               label="Related interests"
               variant="outlined"
               value={relatedInterests}
-              onChange={event => setRelatedInterests(event.target.value)}
+              onChange={(event) => setRelatedInterests(event.target.value)}
               SelectProps={{ multiple: true }}
             >
-              {interests.map(interest => (
+              {interests.map((interest) => (
                 <MenuItem key={interest._id} value={interest}>
                   {interest.name}
                 </MenuItem>
@@ -241,7 +245,7 @@ const EventForm = ({ match }) => {
             </TextField>
           </Grid>
           <Grid item>
-            {id &&
+            {id && (
               <Button
                 className={style.buttons}
                 variant="outlined"
@@ -251,18 +255,14 @@ const EventForm = ({ match }) => {
               >
                 Cancel
               </Button>
-            }
+            )}
             <Button
               className={id && style.buttons}
               variant="contained"
               color="primary"
-              onClick={() => id ? handleEditClick() : handleNewClick()}
+              onClick={() => (id ? handleEditClick() : handleNewClick())}
               disabled={
-                loading ||
-                !name ||
-                !description ||
-                !startDate ||
-                !endDate
+                loading || !name || !description || !startDate || !endDate
               }
             >
               {id ? 'Edit' : 'Create'}

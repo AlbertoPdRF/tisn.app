@@ -1,12 +1,14 @@
 import { postUser } from './api';
 
-const localStorageKey = key => `Tisn.${key}`;
+const localStorageKey = (key) => `Tisn.${key}`;
 
-export const setUserSession = (user) => localStorage.setItem(localStorageKey('accessToken'), user.accessToken);
+export const setUserSession = (user) =>
+  localStorage.setItem(localStorageKey('accessToken'), user.accessToken);
 
-export const accessToken = () => localStorage.getItem(localStorageKey('accessToken'));
+export const accessToken = () =>
+  localStorage.getItem(localStorageKey('accessToken'));
 
-export const logIn = user => postUser(user, 'log-in');
+export const logIn = (user) => postUser(user, 'log-in');
 
 export const isLoggedIn = () => {
   if (!!accessToken()) {
@@ -20,12 +22,14 @@ export const isLoggedIn = () => {
 
   logOut();
   return false;
-}
+};
 
-export const getPayloadFromToken = () => JSON.parse(atob(accessToken().split('.')[1]));
+export const getPayloadFromToken = () =>
+  JSON.parse(atob(accessToken().split('.')[1]));
 
 export const isAdmin = () => !!getPayloadFromToken().admin;
 
-const removeUserSession = () => localStorage.removeItem(localStorageKey('accessToken'));
+const removeUserSession = () =>
+  localStorage.removeItem(localStorageKey('accessToken'));
 
 export const logOut = () => removeUserSession();

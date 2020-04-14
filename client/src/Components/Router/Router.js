@@ -9,7 +9,13 @@ export const PublicRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={(props) => !isLoggedIn() ? <Component {...props} /> : <Redirect to={{ pathname: '/' }} />}
+      render={(props) =>
+        !isLoggedIn() ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to={{ pathname: '/' }} />
+        )
+      }
     />
   );
 };
@@ -18,14 +24,18 @@ export const PrivateRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={(props) => isLoggedIn() ? (
-        <Fragment>
-          <NavigationBarAndDrawer />
-          <Component {...props} />
-        </Fragment>
-      ) : (
-        <Redirect to={{ pathname: '/welcome', state: { from: props.location } }} />
-      )}
+      render={(props) =>
+        isLoggedIn() ? (
+          <Fragment>
+            <NavigationBarAndDrawer />
+            <Component {...props} />
+          </Fragment>
+        ) : (
+          <Redirect
+            to={{ pathname: '/welcome', state: { from: props.location } }}
+          />
+        )
+      }
     />
   );
 };
@@ -34,7 +44,13 @@ export const AdminRoute = ({ component: Component, ...rest }) => {
   return (
     <Route
       {...rest}
-      render={(props) => isAdmin() ? <Component {...props} /> : <Redirect to={{ pathname: '/', state: { from: props.location } }} />}
+      render={(props) =>
+        isAdmin() ? (
+          <Component {...props} />
+        ) : (
+          <Redirect to={{ pathname: '/', state: { from: props.location } }} />
+        )
+      }
     />
   );
 };

@@ -28,15 +28,15 @@ const SignUpForm = () => {
   const handleSignUpClick = () => {
     setLoading(true);
     if (password !== confirmPassword) {
-      setError('Passwords don\'t match');
+      setError("Passwords don't match");
       setLoading(false);
     } else {
       postUser({ name, email, password, dateOfBirth })
-        .then(data => {
+        .then((data) => {
           setUserSession(data.user);
           history.push('/');
         })
-        .catch(error => {
+        .catch((error) => {
           setError(error.message);
           setLoading(false);
         });
@@ -49,9 +49,7 @@ const SignUpForm = () => {
       <Box p={1}>
         <Grid container direction="column" alignItems="center" spacing={2}>
           <Grid item>
-            <Typography variant="h1">
-              Sign up
-            </Typography>
+            <Typography variant="h1">Sign up</Typography>
           </Grid>
           <Grid item>
             <TextField
@@ -59,7 +57,7 @@ const SignUpForm = () => {
               label="Name"
               variant="outlined"
               value={name}
-              onChange={event => setName(event.target.value)}
+              onChange={(event) => setName(event.target.value)}
             />
           </Grid>
           <Grid item>
@@ -68,7 +66,7 @@ const SignUpForm = () => {
               label="Email"
               variant="outlined"
               value={email}
-              onChange={event => setEmail(event.target.value)}
+              onChange={(event) => setEmail(event.target.value)}
             />
           </Grid>
           <Grid item>
@@ -78,7 +76,7 @@ const SignUpForm = () => {
               label="Password"
               variant="outlined"
               value={password}
-              onChange={event => setPassword(event.target.value)}
+              onChange={(event) => setPassword(event.target.value)}
             />
           </Grid>
           <Grid item>
@@ -88,7 +86,7 @@ const SignUpForm = () => {
               label="Confirm password"
               variant="outlined"
               value={confirmPassword}
-              onChange={event => setConfirmPassword(event.target.value)}
+              onChange={(event) => setConfirmPassword(event.target.value)}
             />
           </Grid>
           <Grid item>
@@ -98,7 +96,7 @@ const SignUpForm = () => {
               label="Date of birth"
               variant="outlined"
               value={dateOfBirth}
-              onChange={event => setDateOfBirth(event.target.value)}
+              onChange={(event) => setDateOfBirth(event.target.value)}
               InputLabelProps={{ shrink: true }}
             />
           </Grid>
@@ -120,13 +118,9 @@ const SignUpForm = () => {
             </Button>
           </Grid>
           <Grid item>
-            <Link href="/log-in">
-              Log in
-            </Link>
+            <Link href="/log-in">Log in</Link>
             {' | '}
-            <Link href="/">
-              Home
-            </Link>
+            <Link href="/">Home</Link>
           </Grid>
         </Grid>
       </Box>

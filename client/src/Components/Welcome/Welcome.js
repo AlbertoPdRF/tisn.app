@@ -16,9 +16,7 @@ const Welcome = () => {
           <WelcomeToolbar />
         </Grid>
         <Grid item className={style.center}>
-          <Typography variant="h1">
-            Tisn
-          </Typography>
+          <Typography variant="h1">Tisn</Typography>
         </Grid>
         <Grid item className={style.center}>
           <Typography variant="subtitle1">

@@ -16,8 +16,8 @@ const Users = () => {
 
   useEffect(() => {
     getUsers()
-      .then(data => setUsers(data.users))
-      .catch(error => setError(error))
+      .then((data) => setUsers(data.users))
+      .catch((error) => setError(error))
       .finally(() => setLoading(false));
   }, []);
 
@@ -26,7 +26,7 @@ const Users = () => {
   ) : (
     <div className={style.root}>
       <Grid container spacing={1} justify="center">
-        {users.map(user => (
+        {users.map((user) => (
           <Grid item key={user._id}>
             <UserCard user={user} />
           </Grid>

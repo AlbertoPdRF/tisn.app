@@ -17,9 +17,9 @@ const permissions = (req, res, next) => {
     next();
   } else {
     res.status(403).json({
-      error: 'not enough permissions to perform the requested action'
+      error: 'not enough permissions to perform the requested action',
     });
   }
 };
 
-module.exports = permissions
+module.exports = permissions;

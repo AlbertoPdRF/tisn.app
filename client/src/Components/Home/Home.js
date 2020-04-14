@@ -16,8 +16,8 @@ const Home = () => {
 
   useEffect(() => {
     getEvents()
-      .then(data => setEvents(data.events))
-      .catch(error => setError(error.message))
+      .then((data) => setEvents(data.events))
+      .catch((error) => setError(error.message))
       .finally(() => setLoading(false));
   }, []);
 
@@ -26,7 +26,7 @@ const Home = () => {
   ) : (
     <div className={style.root}>
       <Grid container spacing={1} justify="center">
-        {events.map(event => (
+        {events.map((event) => (
           <Grid item key={event._id}>
             <EventCard event={event} />
           </Grid>

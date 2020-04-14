@@ -1,18 +1,19 @@
 const Category = require('../models/Category');
 
 exports.get = (req, res, next) => {
-  return Category.find()
-    .then(categories => {
-      if (!categories) {
-        return res.sendStatus(400);
-      }
+  return Category.find().then((categories) => {
+    if (!categories) {
+      return res.sendStatus(400);
+    }
 
-      res.json({ categories });
-    });
+    res.json({ categories });
+  });
 };
 
 exports.post = (req, res, next) => {
-  const { body: { category } } = req;
+  const {
+    body: { category },
+  } = req;
 
   if (!category.name) {
     return res.status(422).json({
@@ -24,20 +25,15 @@ exports.post = (req, res, next) => {
 
   const finalCategory = new Category(category);
 
-  return finalCategory.save()
-    .then(() => res.json({ category: finalCategory }));
+  return finalCategory.save().then(() => res.json({ category: finalCategory }));
 };
-
-
 
 exports.getId = (req, res, next) => {
-  return Category.findById(req.params.id)
-    .then(category => {
-      if (!category) {
-        return res.sendStatus(400);
-      }
+  return Category.findById(req.params.id).then((category) => {
+    if (!category) {
+      return res.sendStatus(400);
+    }
 
-      res.json({ category });
-    });
+    res.json({ category });
+  });
 };
-

@@ -24,11 +24,11 @@ const LogInForm = () => {
   const handleClick = () => {
     setLoading(true);
     logIn({ email, password })
-      .then(data => {
+      .then((data) => {
         setUserSession(data.user);
         history.push('/');
       })
-      .catch(error => {
+      .catch((error) => {
         setError(error.message);
         setLoading(false);
       });
@@ -40,9 +40,7 @@ const LogInForm = () => {
       <Box p={1}>
         <Grid container direction="column" alignItems="center" spacing={2}>
           <Grid item>
-            <Typography variant="h1">
-              Log in
-            </Typography>
+            <Typography variant="h1">Log in</Typography>
           </Grid>
           <Grid item>
             <TextField
@@ -50,7 +48,7 @@ const LogInForm = () => {
               label="Email"
               variant="outlined"
               value={email}
-              onChange={event => setEmail(event.target.value)}
+              onChange={(event) => setEmail(event.target.value)}
             />
           </Grid>
           <Grid item>
@@ -60,7 +58,7 @@ const LogInForm = () => {
               label="Password"
               variant="outlined"
               value={password}
-              onChange={event => setPassword(event.target.value)}
+              onChange={(event) => setPassword(event.target.value)}
             />
           </Grid>
           <Grid item>
@@ -74,13 +72,9 @@ const LogInForm = () => {
             </Button>
           </Grid>
           <Grid item>
-            <Link href="/sign-up">
-              Sign up
-            </Link>
+            <Link href="/sign-up">Sign up</Link>
             {' | '}
-            <Link href="/">
-              Home
-            </Link>
+            <Link href="/">Home</Link>
           </Grid>
         </Grid>
       </Box>

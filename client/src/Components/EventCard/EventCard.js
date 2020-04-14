@@ -22,9 +22,10 @@ const EventCard = ({ event = {} }) => {
       >
         <CardMedia
           component="img"
-          src={event.coverPhoto
-            ? `${event.coverPhoto}`
-            : "../../../event-placeholder.jpg"
+          src={
+            event.coverPhoto
+              ? `${event.coverPhoto}`
+              : '../../../event-placeholder.jpg'
           }
           alt={event.name}
           height="140"
@@ -32,7 +33,7 @@ const EventCard = ({ event = {} }) => {
         />
         <CardContent>
           <AvatarGroup className={style.alignRight} max={2}>
-            {event.relatedInterests.map(interest => (
+            {event.relatedInterests.map((interest) => (
               <Avatar
                 key={interest._id}
                 src={interest.avatar}
@@ -43,14 +44,12 @@ const EventCard = ({ event = {} }) => {
           <Typography gutterBottom variant="h5" component="h3">
             {event.name.length < 30
               ? event.name
-              : `${event.name.substring(0, 29)}...`
-            }
+              : `${event.name.substring(0, 29)}...`}
           </Typography>
           <Typography variant="body1" color="textSecondary" component="p">
             {event.description.length < 115
               ? event.description
-              : `${event.description.substring(0, 114)}...`
-            }
+              : `${event.description.substring(0, 114)}...`}
           </Typography>
         </CardContent>
       </CardActionArea>

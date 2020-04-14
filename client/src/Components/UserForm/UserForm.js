@@ -15,7 +15,7 @@ const UserForm = (props) => {
     dateOfBirth,
     handleDateOfBirthChange,
     avatar,
-    handleFileUpload
+    handleFileUpload,
   } = props;
 
   const style = Style();
@@ -39,7 +39,7 @@ const UserForm = (props) => {
             accept="image/*"
             label="Avatar"
             variant="outlined"
-            onChange={event => handleFileUpload(event.target.files[0])}
+            onChange={(event) => handleFileUpload(event.target.files[0])}
             InputLabelProps={{ shrink: true }}
           />
         </Grid>
@@ -49,7 +49,7 @@ const UserForm = (props) => {
             label="Name"
             variant="outlined"
             value={name}
-            onChange={event => handleNameChange(event.target.value)}
+            onChange={(event) => handleNameChange(event.target.value)}
           />
         </Grid>
         <Grid item>
@@ -58,7 +58,7 @@ const UserForm = (props) => {
             label="Email"
             variant="outlined"
             value={email}
-            onChange={event => handleEmailChange(event.target.value)}
+            onChange={(event) => handleEmailChange(event.target.value)}
           />
         </Grid>
         <Grid item>
@@ -68,7 +68,7 @@ const UserForm = (props) => {
             label="Date of birth"
             variant="outlined"
             value={dateOfBirth}
-            onChange={event => handleDateOfBirthChange(event.target.value)}
+            onChange={(event) => handleDateOfBirthChange(event.target.value)}
             InputLabelProps={{ shrink: true }}
           />
         </Grid>
