@@ -8,7 +8,13 @@ const Style = makeStyles((theme) => ({
       paddingBottom: theme.spacing(2),
     },
     display: 'flex',
-    maxWidth: '100vw',
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: '100vw',
+    },
+    [theme.breakpoints.up('md')]: {
+      maxWidth: '960px',
+      margin: 'auto',
+    },
   },
   minHeight: {
     minHeight: '100vh',
@@ -27,15 +33,15 @@ const Style = makeStyles((theme) => ({
     textAlign: 'right',
   },
   drawerPaper: {
-    width: 250,
+    width: '250px',
   },
   eventCard: {
-    width: 300,
-    height: 300,
+    width: '300px',
+    height: '300px',
   },
   userCard: {
-    width: 150,
-    height: 150,
+    width: '150px',
+    height: '150px',
   },
   formInput: {
     [theme.breakpoints.down('sm')]: {
@@ -55,6 +61,18 @@ const Style = makeStyles((theme) => ({
   },
   buttons: {
     margin: theme.spacing(0.5),
+  },
+  image: {
+    [theme.breakpoints.down('sm')]: {
+      width: '75vw',
+    },
+    [theme.breakpoints.up('md')]: {
+      width: '720px',
+    },
+    border: 'solid',
+    borderWidth: '1px',
+    borderRadius: '4px',
+    borderColor: 'rgba(0, 0, 0, 0.23)',
   },
 }));
 

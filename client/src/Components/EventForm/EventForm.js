@@ -26,11 +26,7 @@ const EventForm = (props) => {
       <Grid container direction="column" alignItems="center" spacing={2}>
         {coverPhoto && (
           <Grid item>
-            <img
-              className={style.formInput}
-              src={coverPhoto}
-              alt="Cover photo"
-            />
+            <img className={style.image} src={coverPhoto} alt="Event cover" />
           </Grid>
         )}
         <Grid item>

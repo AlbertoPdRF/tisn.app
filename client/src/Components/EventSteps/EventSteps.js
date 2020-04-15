@@ -257,7 +257,7 @@ const EventSteps = ({ match }) => {
         {`${id ? 'Edit' : 'New'} event`}
       </Typography>
       <Stepper
-        className={style.fullWidth}
+        className={`${style.root} ${style.fullWidth}`}
         style={{ backgroundColor: 'inherit' }}
         activeStep={activeStep}
       >
