@@ -20,6 +20,9 @@ export const putUser = (id, user) => {
   });
 };
 
+export const deleteUser = (id = getPayloadFromToken()._id) =>
+  fetchApi(`/users/${id}`, { method: 'DELETE' });
+
 export const getUserEvents = (id = getPayloadFromToken()._id) =>
   fetchApi(`/users/${id}/events`, { method: 'GET' });
 

@@ -7,13 +7,20 @@ import Paper from '@material-ui/core/Paper';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Button from '@material-ui/core/Button';
 
 import SwipeableViews from 'react-swipeable-views';
 
-import { getUser, putUser, getInterests } from '../../logic/api';
+import { getUser, putUser, deleteUser, getInterests } from '../../logic/api';
+import { logOut } from '../../logic/auth';
 import { inputDate } from '../../logic/date-time';
 import { uploadFile } from '../../logic/file-upload';
+
+import { useConfirm } from 'material-ui-confirm';
 
 import { useUser, useSetUser } from '../UserProvider/UserProvider';
 
@@ -28,6 +35,7 @@ const UserTabs = ({ match }) => {
   const style = Style();
   const currentUser = useUser();
   const setCurrentUser = useSetUser();
+  const confirm = useConfirm();
 
   const [value, setValue] = useState(0);
   const [user, setUser] = useState(null);
@@ -130,6 +138,20 @@ const UserTabs = ({ match }) => {
       });
   };
 
+  const handleDeleteClick = () => {
+    setLoading(true);
+    deleteUser()
+      .then(() => {
+        logOut();
+        setCurrentUser(null);
+        history.push('/welcome');
+      })
+      .catch((error) => {
+        setError(error.message);
+        setLoading(false);
+      });
+  };
+
   return (
     <Fragment>
       {loading && <LinearProgress />}
@@ -178,12 +200,36 @@ const UserTabs = ({ match }) => {
                     />
                   </TabPanel>
                   <TabPanel value={value} index={2}>
-                    <Typography
-                      variant="body1"
-                      className={`${style.center} ${style.formInput}`}
-                    >
-                      Settings
-                    </Typography>
+                    <ExpansionPanel className={style.formInput}>
+                      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                        Delete account
+                      </ExpansionPanelSummary>
+                      <ExpansionPanelDetails
+                        style={{ justifyContent: 'center' }}
+                      >
+                        <Button
+                          variant="outlined"
+                          color="secondary"
+                          onClick={() => {
+                            confirm({
+                              description:
+                                'Deleting your account is a permanent action!',
+                              confirmationText: 'Delete',
+                              confirmationButtonProps: {
+                                variant: 'contained',
+                                color: 'secondary',
+                              },
+                              cancellationButtonProps: {
+                                variant: 'contained',
+                                color: 'primary',
+                              },
+                            }).then(() => handleDeleteClick());
+                          }}
+                        >
+                          Delete
+                        </Button>
+                      </ExpansionPanelDetails>
+                    </ExpansionPanel>
                   </TabPanel>
                 </SwipeableViews>
               )}

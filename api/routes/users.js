@@ -11,6 +11,7 @@ router.post('/', usersController.post);
 
 router.get('/:id', auth.required, usersController.getId);
 router.put('/:id', [auth.required, permissions], usersController.putId);
+router.delete('/:id', [auth.required, permissions], usersController.deleteId);
 
 router.get('/:id/events', auth.required, usersController.getEvents);
 

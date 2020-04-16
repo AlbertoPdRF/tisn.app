@@ -122,6 +122,31 @@ exports.putId = (req, res, next) => {
     .then((updatedUser) => res.json({ user: updatedUser.toJson() }));
 };
 
+exports.deleteId = (req, res, next) => {
+  const id = req.params.id;
+  async.parallel(
+    {
+      user: (callback) => User.findByIdAndRemove(id).exec(callback),
+      attendants: (callback) =>
+        Attendant.deleteMany({ user: id }).exec(callback),
+    },
+    (error, results) => {
+      if (error) {
+        return next(error);
+      }
+
+      if (!results) {
+        return res.sendStatus(400);
+      }
+
+      res.json({
+        user: results.user.toJson(),
+        attendants: results.attendants,
+      });
+    }
+  );
+};
+
 exports.getEvents = (req, res, next) => {
   const id = req.params.id;
   async.parallel(
