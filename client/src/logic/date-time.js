@@ -9,6 +9,9 @@ export const formatDate = (dateString) =>
 export const inputDateTime = (dateString) =>
   format(parseISO(dateString), "yyyy-MM-dd'T'hh:mm");
 
+export const formatDateTime = (dateTimeString) =>
+  format(parseISO(dateTimeString), "H:mm'\n'MMM d, yyyy");
+
 export const formatDateTimeRange = (startString, endString) => {
   const [startMinute, startHour, startDay, startMonth, startYear] = format(
     parseISO(startString),

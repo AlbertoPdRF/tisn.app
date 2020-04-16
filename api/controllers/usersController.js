@@ -1,6 +1,10 @@
 const User = require('../models/User');
+const Attendant = require('../models/Attendant');
+const Event = require('../models/Event');
 
 const passport = require('passport');
+const async = require('async');
+const mongoose = require('mongoose');
 
 exports.get = (req, res, next) => {
   return User.find()
@@ -116,6 +120,49 @@ exports.putId = (req, res, next) => {
   User.findByIdAndUpdate(req.params.id, user, { new: true })
     .populate('interests', 'name avatar')
     .then((updatedUser) => res.json({ user: updatedUser.toJson() }));
+};
+
+exports.getEvents = (req, res, next) => {
+  const id = req.params.id;
+  async.parallel(
+    {
+      attending: (callback) =>
+        Attendant.aggregate(
+          [
+            { $match: { user: mongoose.Types.ObjectId(id) } },
+            {
+              $lookup: {
+                from: 'events',
+                localField: 'event',
+                foreignField: '_id',
+                as: 'event',
+              },
+            },
+            { $unwind: { path: '$event' } },
+            { $sort: { 'event.startDate': 1 } },
+          ],
+          callback
+        ),
+      created: (callback) =>
+        Event.find({ createdBy: id }).sort('startDate').exec(callback),
+    },
+    (error, results) => {
+      if (error) {
+        return next(error);
+      }
+
+      if (!results) {
+        return res.sendStatus(400);
+      }
+
+      res.json({
+        events: {
+          attending: results.attending.map((attendant) => attendant.event),
+          created: results.created,
+        },
+      });
+    }
+  );
 };
 
 exports.logIn = (req, res, next) => {

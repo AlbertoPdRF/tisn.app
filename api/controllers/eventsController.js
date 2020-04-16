@@ -1,4 +1,7 @@
 const Event = require('../models/Event');
+const Attendant = require('../models/Attendant');
+
+const async = require('async');
 
 exports.get = (req, res, next) => {
   return Event.find()
@@ -135,4 +138,39 @@ exports.putId = (req, res, next) => {
 
       res.json({ event: updatedEvent });
     });
+};
+
+exports.deleteId = (req, res, next) => {
+  const {
+    body: { event },
+  } = req;
+
+  const id = req.params.id;
+  async.parallel(
+    {
+      event: (callback) =>
+        Event.findOneAndRemove({
+          _id: id,
+          createdBy: req.payload.admin ? event.createdBy : req.payload._id,
+        }).exec(callback),
+      attendants: (callback) =>
+        Attendant.deleteMany({
+          event: id,
+        }).exec(callback),
+    },
+    (error, results) => {
+      if (error) {
+        return next(error);
+      }
+
+      if (!results) {
+        return res.sendStatus(400);
+      }
+
+      res.json({
+        event: results.event,
+        attendants: results.attendants,
+      });
+    }
+  );
 };

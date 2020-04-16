@@ -11,6 +11,7 @@ router.post('/', auth.required, eventsController.post);
 
 router.get('/:id', auth.required, eventsController.getId);
 router.put('/:id', [auth.required, permissions], eventsController.putId);
+router.delete('/:id', [auth.required, permissions], eventsController.deleteId);
 
 const attendantsRouter = require('./attendants');
 

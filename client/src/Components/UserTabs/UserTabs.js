@@ -1,9 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { useHistory } from 'react-router-dom';
 import LinearProgress from '@material-ui/core/LinearProgress';
-import PropTypes from 'prop-types';
 import Typography from '@material-ui/core/Typography';
-import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import AppBar from '@material-ui/core/AppBar';
@@ -19,31 +17,11 @@ import { uploadFile } from '../../logic/file-upload';
 
 import { useUser, useSetUser } from '../UserProvider/UserProvider';
 
+import TabPanel from '../TabPanel/TabPanel';
 import UserForm from '../UserForm/UserForm';
 import InterestsSelect from '../InterestsSelect/InterestsSelect';
 
 import Style from '../Style/Style';
-
-const TabPanel = (props) => {
-  const { children, value, index, ...other } = props;
-
-  return (
-    <Typography
-      component="div"
-      role="tabpanel"
-      hidden={value !== index}
-      {...other}
-    >
-      {value === index && <Box p={3}>{children}</Box>}
-    </Typography>
-  );
-};
-
-TabPanel.propTypes = {
-  children: PropTypes.node,
-  index: PropTypes.any.isRequired,
-  value: PropTypes.any.isRequired,
-};
 
 const UserTabs = ({ match }) => {
   const history = useHistory();

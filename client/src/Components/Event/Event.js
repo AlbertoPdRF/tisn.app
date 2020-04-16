@@ -87,8 +87,10 @@ const Event = ({ match }) => {
       });
   };
 
+  const futureEvent = event && new Date(event.startDate) >= new Date();
+
   const restrictedDisplay =
-    event && user && (user._id === event.createdBy || user.admin);
+    futureEvent && user && (user._id === event.createdBy || user.admin);
 
   const userAttending =
     user &&
@@ -137,17 +139,19 @@ const Event = ({ match }) => {
                           {text}
                         </Typography>
                       ))}
-                    <Button
-                      variant="contained"
-                      color={userAttending ? 'secondary' : 'primary'}
-                      onClick={() =>
-                        userAttending
-                          ? handleNotAttendClick()
-                          : handleAttendClick()
-                      }
-                    >
-                      {userAttending ? "I won't attend" : 'I will attend!'}
-                    </Button>
+                    {futureEvent && (
+                      <Button
+                        variant="contained"
+                        color={userAttending ? 'secondary' : 'primary'}
+                        onClick={() =>
+                          userAttending
+                            ? handleNotAttendClick()
+                            : handleAttendClick()
+                        }
+                      >
+                        {userAttending ? "I won't attend" : 'I will attend!'}
+                      </Button>
+                    )}
                   </div>
                   <Typography gutterBottom variant="h5" component="h3">
                     {event.name}
