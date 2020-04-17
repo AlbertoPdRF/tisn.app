@@ -158,7 +158,7 @@ const UserTabs = ({ match }) => {
       <div className={style.root}>
         <Grid container direction="column" alignItems="center" spacing={2}>
           <Grid item>
-            <Typography variant="h2">Edit</Typography>
+            <Typography variant="h2">Edit profile</Typography>
           </Grid>
           <Grid item>
             <Paper>

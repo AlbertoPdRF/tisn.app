@@ -10,7 +10,9 @@ import Avatar from '@material-ui/core/Avatar';
 
 import Style from '../Style/Style';
 
-const EventCard = ({ event = {} }) => {
+const EventCard = (props) => {
+  const { event } = props;
+
   const style = Style();
 
   return (

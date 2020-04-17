@@ -2,10 +2,10 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { useHistory } from 'react-router-dom';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
 
@@ -40,7 +40,12 @@ const User = ({ match }) => {
     <LinearProgress />
   ) : (
     <div className={style.root}>
-      <Grid container spacing={1} justify="center">
+      <Grid container direction="column" alignItems="center" spacing={2}>
+        <Grid item>
+          <Typography variant="h2">
+            {currentUser && currentUser._id === id ? 'My profile' : 'Profile'}
+          </Typography>
+        </Grid>
         <Grid item>
           <Card>
             <CardContent>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 
 import { getUsers } from '../../logic/api';
 
@@ -25,7 +26,10 @@ const Users = () => {
     <LinearProgress />
   ) : (
     <div className={style.root}>
-      <Grid container spacing={1} justify="center">
+      <Grid container justify="center" spacing={2}>
+        <Grid item className={`${style.fullWidth} ${style.center}`}>
+          <Typography variant="h2">Users</Typography>
+        </Grid>
         {users.map((user) => (
           <Grid item key={user._id}>
             <UserCard user={user} />

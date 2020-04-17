@@ -9,7 +9,9 @@ import AvatarGroup from '@material-ui/lab/AvatarGroup';
 
 import Style from '../Style/Style';
 
-const UserCard = ({ user = {} }) => {
+const UserCard = (props) => {
+  const { user } = props;
+
   const style = Style();
 
   return (

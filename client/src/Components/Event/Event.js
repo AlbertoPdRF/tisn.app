@@ -2,10 +2,10 @@ import React, { useState, useEffect, Fragment } from 'react';
 import { useHistory } from 'react-router-dom';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
-import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import Chip from '@material-ui/core/Chip';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
@@ -102,7 +102,10 @@ const Event = ({ match }) => {
       {loading && <LinearProgress />}
       {event && (
         <div className={style.root}>
-          <Grid container spacing={1} justify="center">
+          <Grid container direction="column" alignItems="center" spacing={2}>
+            <Grid item>
+              <Typography variant="h2">Event</Typography>
+            </Grid>
             <Grid item>
               <Card>
                 <CardMedia
@@ -141,7 +144,7 @@ const Event = ({ match }) => {
                       ))}
                     {futureEvent && (
                       <Button
-                        variant="contained"
+                        variant={userAttending ? 'outlined' : 'contained'}
                         color={userAttending ? 'secondary' : 'primary'}
                         onClick={() =>
                           userAttending

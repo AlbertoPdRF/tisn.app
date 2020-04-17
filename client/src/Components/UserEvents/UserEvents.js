@@ -1,25 +1,26 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
+import ExpansionPanel from '@material-ui/core/ExpansionPanel';
+import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
-import Link from '@material-ui/core/Link';
 
 import SwipeableViews from 'react-swipeable-views';
 
 import { getUserEvents, deleteEvent } from '../../logic/api';
+import { classifyEvents } from '../../logic/array';
 
 import { useUser } from '../UserProvider/UserProvider';
 
-import TabPanel from '../TabPanel/TabPanel';
 import EventsTable from '../EventsTable/EventsTable';
+import TabPanel from '../TabPanel/TabPanel';
 
 import Style from '../Style/Style';
 
@@ -35,21 +36,6 @@ const UserEvents = () => {
   const [updateEvents, setUpdateEvents] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-
-  const classifyEvents = (events, now) => {
-    const current = [];
-    const past = [];
-    events.forEach((event) => {
-      if (new Date(event.startDate) >= now) {
-        current.push(event);
-      } else {
-        past.push(event);
-      }
-    });
-
-    past.reverse();
-    return { current, past };
-  };
 
   useEffect(() => {
     getUserEvents()
@@ -81,6 +67,35 @@ const UserEvents = () => {
       });
   };
 
+  const expansionPanel = (defaultExpanded, status, type, events) => (
+    <ExpansionPanel defaultExpanded={defaultExpanded}>
+      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+        {status === 'current' ? 'Current' : 'Past'}
+      </ExpansionPanelSummary>
+      <ExpansionPanelDetails>
+        {events.length > 0 ? (
+          <EventsTable
+            events={events}
+            displayActions={status === 'current' && type === 'created'}
+            handleDeleteClick={handleDeleteClick}
+          />
+        ) : (
+          <div className={style.center}>
+            <Typography variant="body1">
+              You have no {status} {type} events.
+            </Typography>
+            <Link
+              href={`/events${type === 'attending' ? '' : '/new'}`}
+              variant="body1"
+            >
+              {type === 'attending' ? 'Browse events!' : 'Create a new event!'}
+            </Link>
+          </div>
+        )}
+      </ExpansionPanelDetails>
+    </ExpansionPanel>
+  );
+
   return (
     <Fragment>
       {loading && <LinearProgress />}
@@ -109,97 +124,32 @@ const UserEvents = () => {
                   onChangeIndex={(index) => setValue(index)}
                 >
                   <TabPanel value={value} index={0}>
-                    <ExpansionPanel defaultExpanded>
-                      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                        Current
-                      </ExpansionPanelSummary>
-                      <ExpansionPanelDetails>
-                        {currentAttendingEvents.length > 0 ? (
-                          <EventsTable
-                            events={currentAttendingEvents}
-                            displayActions={false}
-                          />
-                        ) : (
-                          <div className={style.center}>
-                            <Typography variant="body1">
-                              You have no current attending events.
-                            </Typography>
-                            <Link href="/events" variant="body1">
-                              Browse events!
-                            </Link>
-                          </div>
-                        )}
-                      </ExpansionPanelDetails>
-                    </ExpansionPanel>
-                    <ExpansionPanel>
-                      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                        Past
-                      </ExpansionPanelSummary>
-                      <ExpansionPanelDetails>
-                        {pastAttendingEvents.length > 0 ? (
-                          <EventsTable
-                            events={pastAttendingEvents}
-                            displayActions={false}
-                          />
-                        ) : (
-                          <div className={style.center}>
-                            <Typography variant="body1">
-                              You have no past attending events.
-                            </Typography>
-                            <Link href="/events" variant="body1">
-                              Browse events!
-                            </Link>
-                          </div>
-                        )}
-                      </ExpansionPanelDetails>
-                    </ExpansionPanel>
+                    {expansionPanel(
+                      true,
+                      'current',
+                      'attending',
+                      currentAttendingEvents
+                    )}
+                    {expansionPanel(
+                      false,
+                      'past',
+                      'attending',
+                      pastAttendingEvents
+                    )}
                   </TabPanel>
                   <TabPanel value={value} index={1}>
-                    <ExpansionPanel defaultExpanded>
-                      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                        Current
-                      </ExpansionPanelSummary>
-                      <ExpansionPanelDetails>
-                        {currentCreatedEvents.length > 0 ? (
-                          <EventsTable
-                            events={currentCreatedEvents}
-                            displayActions={true}
-                            handleDeleteClick={handleDeleteClick}
-                          />
-                        ) : (
-                          <div className={style.center}>
-                            <Typography variant="body1">
-                              You have no current created events.
-                            </Typography>
-                            <Link href="/events/new" variant="body1">
-                              Create a new event!
-                            </Link>
-                          </div>
-                        )}
-                      </ExpansionPanelDetails>
-                    </ExpansionPanel>
-                    <ExpansionPanel>
-                      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                        Past
-                      </ExpansionPanelSummary>
-                      <ExpansionPanelDetails>
-                        {pastCreatedEvents.length > 0 ? (
-                          <EventsTable
-                            events={pastCreatedEvents}
-                            displayActions={false}
-                          />
-                        ) : (
-                          <div className={style.center}>
-                            <Typography variant="body1">
-                              You have no past created events.
-                            </Typography>
-                            <Link href="/events/new" variant="body1">
-                              Create a new event!
-                            </Link>
-                          </div>
-                        )}
-                      </ExpansionPanelDetails>
-                    </ExpansionPanel>
+                    {expansionPanel(
+                      true,
+                      'current',
+                      'created',
+                      currentCreatedEvents
+                    )}
+                    {expansionPanel(
+                      false,
+                      'past',
+                      'created',
+                      pastCreatedEvents
+                    )}
                   </TabPanel>
                 </SwipeableViews>
               )}
