@@ -10,6 +10,7 @@ import Event from '../Event/Event';
 import Users from '../Users/Users';
 import User from '../User/User';
 import UserTabs from '../UserTabs/UserTabs';
+import Interests from '../Interests/Interests';
 
 import Welcome from '../Welcome/Welcome';
 import LogInForm from '../LogInForm/LogInForm';
@@ -28,6 +29,7 @@ const Navigation = () => {
       <PrivateRoute exact path="/users" component={Users} />
       <PrivateRoute exact path="/users/:id" component={User} />
       <PrivateRoute exact path="/users/:id/edit" component={UserTabs} />
+      <PrivateRoute exact path="/interests" component={Interests} />
 
       <PublicRoute exact path="/welcome" component={Welcome} />
       <PublicRoute exact path="/log-in" component={LogInForm} />

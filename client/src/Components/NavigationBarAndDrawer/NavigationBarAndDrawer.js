@@ -14,6 +14,7 @@ import EventIcon from '@material-ui/icons/Event';
 import AddIcon from '@material-ui/icons/Add';
 import PeopleIcon from '@material-ui/icons/People';
 import PersonIcon from '@material-ui/icons/Person';
+import CategoryIcon from '@material-ui/icons/Category';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -143,6 +144,20 @@ const NavigationBarAndDrawer = (props) => {
           </ListItemIcon>
           <ListItemText primary="My profile" />
         </ListItem>
+        <Divider />
+        <ListItem
+          button
+          onClick={() => {
+            history.push('/interests');
+            handleDrawerToggle();
+          }}
+        >
+          <ListItemIcon>
+            <CategoryIcon />
+          </ListItemIcon>
+          <ListItemText primary="Interests" />
+        </ListItem>
+        <Divider />
         <ListItem
           button
           onClick={() => {

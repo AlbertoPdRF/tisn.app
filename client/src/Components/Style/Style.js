@@ -43,6 +43,14 @@ const Style = makeStyles((theme) => ({
     width: '150px',
     height: '150px',
   },
+  interestCard: {
+    width: '250px',
+    height: '100px',
+  },
+  interestCardActions: {
+    float: 'right',
+    marginTop: '-24px',
+  },
   formInput: {
     [theme.breakpoints.down('sm')]: {
       width: '75vw',
