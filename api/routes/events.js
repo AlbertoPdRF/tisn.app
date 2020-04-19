@@ -17,4 +17,8 @@ const attendantsRouter = require('./attendants');
 
 router.use('/:eventId/attendants', attendantsRouter);
 
+const commentsRouter = require('./comments');
+
+router.use('/:eventId/comments', commentsRouter);
+
 module.exports = router;

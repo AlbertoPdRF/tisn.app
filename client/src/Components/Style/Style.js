@@ -39,6 +39,29 @@ const Style = makeStyles((theme) => ({
     width: '300px',
     height: '300px',
   },
+  commentCard: {
+    [theme.breakpoints.down('sm')]: {
+      width: '75vw',
+    },
+    [theme.breakpoints.up('md')]: {
+      width: '720px',
+    },
+  },
+  commentCardContent: {
+    marginTop: '-24px',
+  },
+  commentCardActions: {
+    float: 'right',
+    marginTop: '-24px',
+  },
+  nestedComments: {
+    [theme.breakpoints.down('sm')]: {
+      width: '70vw',
+    },
+    [theme.breakpoints.up('md')]: {
+      width: '672px',
+    },
+  },
   userCard: {
     width: '150px',
     height: '150px',

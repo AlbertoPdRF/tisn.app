@@ -1,36 +1,44 @@
 import React, { useState, useEffect, Fragment } from 'react';
-import { useHistory } from 'react-router-dom';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Card from '@material-ui/core/Card';
-import CardMedia from '@material-ui/core/CardMedia';
-import CardContent from '@material-ui/core/CardContent';
+import Paper from '@material-ui/core/Paper';
+import AppBar from '@material-ui/core/AppBar';
+import Tabs from '@material-ui/core/Tabs';
+import Tab from '@material-ui/core/Tab';
 import Button from '@material-ui/core/Button';
-import Chip from '@material-ui/core/Chip';
-import AvatarGroup from '@material-ui/lab/AvatarGroup';
-import Avatar from '@material-ui/core/Avatar';
+
+import SwipeableViews from 'react-swipeable-views';
 
 import {
   getEvent,
   getAttendants,
   postAttendant,
   deleteAttendant,
+  getComments,
+  postComment,
 } from '../../logic/api';
-import { formatDateTimeRange } from '../../logic/date-time';
+import { groupComments } from '../../logic/array';
 
 import { useUser } from '../UserProvider/UserProvider';
+
+import TabPanel from '../TabPanel/TabPanel';
+import EventDetails from '../EventDetails/EventDetails';
+import CommentCard from '../CommentCard/CommentCard';
+import CommentForm from '../CommentForm/CommentForm';
 
 import Style from '../Style/Style';
 
 const Event = ({ match }) => {
-  const history = useHistory();
   const style = Style();
   const user = useUser();
 
+  const [value, setValue] = useState(0);
   const [event, setEvent] = useState(null);
   const [attendants, setAttendants] = useState(null);
   const [updateAttendants, setUpdateAttendants] = useState(true);
+  const [comments, setComments] = useState(null);
+  const [updateComments, setUpdateComments] = useState(true);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
@@ -55,32 +63,68 @@ const Event = ({ match }) => {
     }
   }, [id, updateAttendants]);
 
-  const handleAttendClick = () => {
+  useEffect(() => {
+    if (updateComments) {
+      getComments(id)
+        .then((data) => setComments(groupComments(data.comments)))
+        .catch((error) => setError(error.message))
+        .finally(() => {
+          setLoading(false);
+          setUpdateComments(false);
+        });
+    }
+  }, [id, updateComments]);
+
+  const handleAttendantsClick = () => {
     setLoading(true);
-    postAttendant(id, {
-      event: id,
-      user: user._id,
-    })
-      .then(() => setUpdateAttendants(true))
-      .catch((error) => {
-        setError(error.message);
-        setLoading(false);
-      });
+    if (userAttending) {
+      const attendant = attendants.filter(
+        (attendant) => attendant.user._id === user._id
+      )[0];
+      const nonPopulatedAttendant = {
+        event: attendant.event,
+        user: attendant.user._id,
+      };
+
+      deleteAttendant(id, attendant._id, nonPopulatedAttendant)
+        .then(() => setUpdateAttendants(true))
+        .catch((error) => {
+          setError(error.message);
+          setLoading(false);
+        });
+    } else {
+      postAttendant(id, {
+        event: id,
+        user: user._id,
+      })
+        .then(() => setUpdateAttendants(true))
+        .catch((error) => {
+          setError(error.message);
+          setLoading(false);
+        });
+    }
   };
 
-  const handleNotAttendClick = () => {
+  const handleCommentsClick = (
+    commentContent,
+    handleCommentContentChange,
+    parentComment
+  ) => {
     setLoading(true);
-
-    const attendant = attendants.filter(
-      (attendant) => attendant.user._id === user._id
-    )[0];
-    const nonPopulatedAttendant = {
-      event: attendant.event,
-      user: attendant.user._id,
+    const comment = {
+      event: id,
+      user: user._id,
+      content: commentContent,
     };
+    if (parentComment) {
+      comment.parentComment = parentComment;
+    }
 
-    deleteAttendant(id, attendant._id, nonPopulatedAttendant)
-      .then(() => setUpdateAttendants(true))
+    postComment(id, comment)
+      .then(() => {
+        setUpdateComments(true);
+        handleCommentContentChange('');
+      })
       .catch((error) => {
         setError(error.message);
         setLoading(false);
@@ -100,116 +144,84 @@ const Event = ({ match }) => {
   return (
     <Fragment>
       {loading && <LinearProgress />}
-      {event && (
+      {event && user && (
         <div className={style.root}>
           <Grid container direction="column" alignItems="center" spacing={2}>
             <Grid item>
               <Typography variant="h2">Event</Typography>
             </Grid>
-            <Grid item>
-              <Card>
-                <CardMedia
-                  component="img"
-                  src={
-                    event.coverPhoto
-                      ? event.coverPhoto
-                      : '../../../event-placeholder.jpg'
-                  }
-                  alt={event.name}
-                  title={event.name}
-                />
-                <CardContent>
-                  <div className={style.alignRight}>
-                    {restrictedDisplay && (
-                      <Button
-                        variant="outlined"
-                        color="primary"
-                        onClick={() => history.push(`/events/${id}/edit`)}
+            <Grid item style={{ width: '100%' }}>
+              <Paper>
+                <AppBar position="static" color="default">
+                  <Tabs
+                    value={value}
+                    onChange={(event, newValue) => setValue(newValue)}
+                    indicatorColor="primary"
+                    textColor="primary"
+                    variant="fullWidth"
+                  >
+                    <Tab label="Details" />
+                    <Tab label="Comments" />
+                  </Tabs>
+                </AppBar>
+                <SwipeableViews
+                  index={value}
+                  onChangeIndex={(index) => setValue(index)}
+                >
+                  <TabPanel value={value} index={0}>
+                    <EventDetails
+                      event={event}
+                      restrictedDisplay={restrictedDisplay}
+                      futureEvent={futureEvent}
+                      userAttending={userAttending}
+                      handleClick={handleAttendantsClick}
+                      attendants={attendants}
+                    />
+                  </TabPanel>
+                  <TabPanel value={value} index={1}>
+                    {userAttending ? (
+                      <Grid
+                        container
+                        direction="column"
+                        alignItems="center"
+                        spacing={2}
                       >
-                        Edit
-                      </Button>
-                    )}
-                    {formatDateTimeRange(event.startDate, event.endDate)
-                      .split('\n')
-                      .map((text, index) => (
-                        <Typography
-                          key={index}
-                          gutterBottom={!!index}
-                          variant="h5"
-                          component="p"
-                          color="textSecondary"
-                        >
-                          {text}
+                        <Grid item>
+                          <CommentForm
+                            parentComment={null}
+                            handleClick={handleCommentsClick}
+                          />
+                        </Grid>
+                        {comments &&
+                          comments.map((commentsGroup) => (
+                            <Grid item key={commentsGroup.comment._id}>
+                              <CommentCard
+                                commentsGroup={commentsGroup}
+                                handleClick={handleCommentsClick}
+                              />
+                            </Grid>
+                          ))}
+                      </Grid>
+                    ) : (
+                      <div className={style.center}>
+                        <Typography variant="body1">
+                          Only attendants can read and post comments.
                         </Typography>
-                      ))}
-                    {futureEvent && (
-                      <Button
-                        variant={userAttending ? 'outlined' : 'contained'}
-                        color={userAttending ? 'secondary' : 'primary'}
-                        onClick={() =>
-                          userAttending
-                            ? handleNotAttendClick()
-                            : handleAttendClick()
-                        }
-                      >
-                        {userAttending ? "I won't attend" : 'I will attend!'}
-                      </Button>
-                    )}
-                  </div>
-                  <Typography gutterBottom variant="h5" component="h3">
-                    {event.name}
-                  </Typography>
-                  <Fragment>
-                    {event.description.split('\n').map((text, index) => (
-                      <Typography
-                        key={index}
-                        gutterBottom
-                        variant="body1"
-                        component="p"
-                        color="textSecondary"
-                      >
-                        {text}
-                      </Typography>
-                    ))}
-                  </Fragment>
-                  {event.relatedInterests.length > 0 && (
-                    <Fragment>
-                      <Typography variant="h6" component="h4">
-                        Related interests:
-                      </Typography>
-                      {event.relatedInterests.map((interest) => (
-                        <Chip
-                          className={style.chip}
-                          variant="outlined"
-                          key={interest._id}
-                          avatar={
-                            <Avatar src={interest.avatar} alt={interest.name} />
-                          }
-                          label={interest.name}
-                        />
-                      ))}
-                    </Fragment>
-                  )}
-                  {attendants && attendants.length > 0 && (
-                    <Fragment>
-                      <Typography variant="h6" component="h4">
-                        Attendants:
-                      </Typography>
-                      <AvatarGroup>
-                        {attendants.map((attendant) => (
-                          <Avatar
-                            key={attendant.user._id}
-                            src={attendant.user.avatar}
-                            alt={`${attendant.user.name}'s avatar`}
+                        {futureEvent && (
+                          <Button
+                            style={{ marginTop: '16px' }}
+                            variant="contained"
+                            color="primary"
+                            onClick={() => handleAttendantsClick()}
                           >
-                            {attendant.user.name.charAt(0).toUpperCase()}
-                          </Avatar>
-                        ))}
-                      </AvatarGroup>
-                    </Fragment>
-                  )}
-                </CardContent>
-              </Card>
+                            I will attend!
+                          </Button>
+                        )}
+                      </div>
+                    )}
+                  </TabPanel>
+                </SwipeableViews>
+              </Paper>
             </Grid>
           </Grid>
         </div>

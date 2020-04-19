@@ -67,6 +67,16 @@ export const deleteAttendant = (eventId, attendantId, attendant) => {
   });
 };
 
+export const getComments = (eventId) =>
+  fetchApi(`/events/${eventId}/comments`, { method: 'GET' });
+
+export const postComment = (eventId, comment) => {
+  return fetchApi(`/events/${eventId}/comments`, {
+    method: 'POST',
+    body: JSON.stringify({ comment }),
+  });
+};
+
 export const getInterests = () => fetchApi('/interests', { method: 'GET' });
 
 const fetchApi = (path, fetchOptions = {}) => {

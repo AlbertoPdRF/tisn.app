@@ -8,6 +8,8 @@ const permissions = (req, res, next) => {
   } else if (url.startsWith('/api/events')) {
     if (url.endsWith('/attendants')) {
       id = req.body.attendant.user;
+    } else if (url.endsWith('/comments')) {
+      id = req.body.comment.user;
     } else {
       id = req.body.event.createdBy;
     }

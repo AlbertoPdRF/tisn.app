@@ -13,6 +13,27 @@ export const classifyEvents = (events, referenceDate) => {
   return { current, past };
 };
 
+export const groupComments = (comments) => {
+  const commentsGroups = {};
+  const groupedComments = [];
+
+  comments.forEach((comment) => {
+    if (!comment.parentComment && !commentsGroups[comment._id]) {
+      commentsGroups[comment._id] = [];
+      groupedComments.push({
+        comment,
+        nestedComments: commentsGroups[comment._id],
+      });
+    }
+
+    if (comment.parentComment) {
+      commentsGroups[comment.parentComment].push(comment);
+    }
+  });
+
+  return groupedComments.reverse();
+};
+
 export const groupInterests = (interests) => {
   const interestsGroups = {};
   const groupedInterests = [];
