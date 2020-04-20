@@ -26,24 +26,24 @@ const CommentCard = (props) => {
   );
 
   const cardFragment = (comment) => {
+    const user = comment.user ? comment.user : { name: '[Deleted user]' };
+
     return (
       <Fragment>
         <CardActionArea
           component={Link}
-          to={`/users/${comment.user._id}`}
+          to={`/users/${user._id}`}
+          disabled={!user._id}
           color="inherit"
           underline="none"
         >
           <CardHeader
             avatar={
-              <Avatar
-                src={comment.user.avatar}
-                alt={`${comment.user.name}'s avatar`}
-              >
-                {comment.user.name.charAt(0).toUpperCase()}
+              <Avatar src={user.avatar} alt={`${user.name}'s avatar`}>
+                {user.name.charAt(0).toUpperCase()}
               </Avatar>
             }
-            title={comment.user.name}
+            title={user.name}
             subheader={formatDateTime(comment.createdAt)}
           />
         </CardActionArea>

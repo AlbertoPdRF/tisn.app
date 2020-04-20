@@ -140,11 +140,15 @@ const UserTabs = ({ match }) => {
 
   const handleDeleteClick = () => {
     setLoading(true);
-    deleteUser()
+    deleteUser(id)
       .then(() => {
-        logOut();
-        setCurrentUser(null);
-        history.push('/welcome');
+        if (currentUser._id === id) {
+          logOut();
+          setCurrentUser(null);
+          history.push('/welcome');
+        } else {
+          history.push('/users');
+        }
       })
       .catch((error) => {
         setError(error.message);
