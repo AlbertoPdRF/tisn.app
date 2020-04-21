@@ -1,5 +1,6 @@
 const Event = require('../models/Event');
 const Attendant = require('../models/Attendant');
+const Comment = require('../models/Comment');
 
 const async = require('async');
 
@@ -157,6 +158,10 @@ exports.deleteId = (req, res, next) => {
         Attendant.deleteMany({
           event: id,
         }).exec(callback),
+      comments: (callback) =>
+        Comment.deleteMany({
+          event: id,
+        }).exec(callback),
     },
     (error, results) => {
       if (error) {
@@ -170,6 +175,7 @@ exports.deleteId = (req, res, next) => {
       res.json({
         event: results.event,
         attendants: results.attendants,
+        comments: results.comments,
       });
     }
   );
