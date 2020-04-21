@@ -9,7 +9,10 @@ import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 
 import { postUser } from '../../logic/api';
+import { buildValidationErrorsObject } from '../../logic/array';
 import { setUserSession } from '../../logic/auth';
+
+import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 
 import Style from '../Style/Style';
 
@@ -23,24 +26,27 @@ const SignUpForm = () => {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [validationErrors, setValidationErrors] = useState({});
+  const [error, setError] = useState(null);
 
   const handleSignUpClick = () => {
     setLoading(true);
-    if (password !== confirmPassword) {
-      setError("Passwords don't match");
-      setLoading(false);
-    } else {
-      postUser({ name, email, password, dateOfBirth })
-        .then((data) => {
+    setError(null);
+    postUser({ name, email, password, confirmPassword, dateOfBirth })
+      .then((data) => {
+        if (data.errors) {
+          setValidationErrors(buildValidationErrorsObject(data.errors));
+          setError('The form contains errors');
+          setLoading(false);
+        } else {
           setUserSession(data.user);
           history.push('/');
-        })
-        .catch((error) => {
-          setError(error.message);
-          setLoading(false);
-        });
-    }
+        }
+      })
+      .catch((error) => {
+        setError(error);
+        setLoading(false);
+      });
   };
 
   return (
@@ -58,6 +64,8 @@ const SignUpForm = () => {
               variant="outlined"
               value={name}
               onChange={(event) => setName(event.target.value)}
+              error={!!validationErrors.name}
+              helperText={validationErrors.name}
             />
           </Grid>
           <Grid item>
@@ -67,6 +75,8 @@ const SignUpForm = () => {
               variant="outlined"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
+              error={!!validationErrors.email}
+              helperText={validationErrors.email}
             />
           </Grid>
           <Grid item>
@@ -77,6 +87,8 @@ const SignUpForm = () => {
               variant="outlined"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
+              error={!!validationErrors.password}
+              helperText={validationErrors.password}
             />
           </Grid>
           <Grid item>
@@ -87,6 +99,8 @@ const SignUpForm = () => {
               variant="outlined"
               value={confirmPassword}
               onChange={(event) => setConfirmPassword(event.target.value)}
+              error={!!validationErrors.confirmPassword}
+              helperText={validationErrors.confirmPassword}
             />
           </Grid>
           <Grid item>
@@ -98,6 +112,8 @@ const SignUpForm = () => {
               value={dateOfBirth}
               onChange={(event) => setDateOfBirth(event.target.value)}
               InputLabelProps={{ shrink: true }}
+              error={!!validationErrors.dateOfBirth}
+              helperText={validationErrors.dateOfBirth}
             />
           </Grid>
           <Grid item>
@@ -124,6 +140,7 @@ const SignUpForm = () => {
           </Grid>
         </Grid>
       </Box>
+      {error && <ErrorSnackbar error={error} />}
     </Fragment>
   );
 };

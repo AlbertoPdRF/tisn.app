@@ -1,3 +1,15 @@
+export const buildValidationErrorsObject = (errors) => {
+  const errorsObject = {};
+  errors.forEach((error) => {
+    const key = error.param.split('.')[1];
+    if (!errorsObject[key]) {
+      errorsObject[key] = error.msg;
+    }
+  });
+
+  return errorsObject;
+};
+
 export const classifyEvents = (events, referenceDate) => {
   const current = [];
   const past = [];
