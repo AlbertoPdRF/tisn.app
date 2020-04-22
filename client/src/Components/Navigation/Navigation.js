@@ -27,8 +27,8 @@ const Navigation = () => {
       <PrivateRoute exact path="/events/:id" component={Event} />
       <PrivateRoute exact path="/events/:id/edit" component={EventSteps} />
       <PrivateRoute exact path="/users" component={Users} />
-      <PrivateRoute exact path="/users/:id" component={User} />
-      <PrivateRoute exact path="/users/:id/edit" component={UserTabs} />
+      <PrivateRoute exact path="/users/:userId" component={User} />
+      <PrivateRoute exact path="/users/:userId/edit" component={UserTabs} />
       <PrivateRoute exact path="/interests" component={Interests} />
 
       <PublicRoute exact path="/welcome" component={Welcome} />

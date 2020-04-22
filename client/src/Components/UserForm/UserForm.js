@@ -16,6 +16,7 @@ const UserForm = (props) => {
     handleDateOfBirthChange,
     avatar,
     handleFileUpload,
+    validationErrors,
   } = props;
 
   const style = Style();
@@ -41,6 +42,8 @@ const UserForm = (props) => {
             variant="outlined"
             onChange={(event) => handleFileUpload(event.target.files[0])}
             InputLabelProps={{ shrink: true }}
+            error={!!validationErrors.avatar}
+            helperText={validationErrors.avatar}
           />
         </Grid>
         <Grid item>
@@ -50,6 +53,8 @@ const UserForm = (props) => {
             variant="outlined"
             value={name}
             onChange={(event) => handleNameChange(event.target.value)}
+            error={!!validationErrors.name}
+            helperText={validationErrors.name}
           />
         </Grid>
         <Grid item>
@@ -59,6 +64,8 @@ const UserForm = (props) => {
             variant="outlined"
             value={email}
             onChange={(event) => handleEmailChange(event.target.value)}
+            error={!!validationErrors.email}
+            helperText={validationErrors.email}
           />
         </Grid>
         <Grid item>
@@ -70,6 +77,8 @@ const UserForm = (props) => {
             value={dateOfBirth}
             onChange={(event) => handleDateOfBirthChange(event.target.value)}
             InputLabelProps={{ shrink: true }}
+            error={!!validationErrors.dateOfBirth}
+            helperText={validationErrors.dateOfBirth}
           />
         </Grid>
       </Grid>

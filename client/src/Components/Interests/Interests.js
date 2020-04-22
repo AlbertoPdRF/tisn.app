@@ -13,6 +13,7 @@ import { groupInterests } from '../../logic/array';
 import { useUser, useSetUser } from '../UserProvider/UserProvider';
 
 import InterestCard from '../InterestCard/InterestCard';
+import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 
 import Style from '../Style/Style';
 
@@ -23,7 +24,7 @@ const Interests = () => {
 
   const [interests, setInterests] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     getInterests()
@@ -34,6 +35,7 @@ const Interests = () => {
 
   const handleClick = (interest, userInterested) => {
     setLoading(true);
+    setError(null);
 
     let userInterests = [];
     if (userInterested) {
@@ -48,10 +50,17 @@ const Interests = () => {
       name: user.name,
       email: user.email,
       dateOfBirth: user.dateOfBirth,
+      avatar: user.avatar,
       interests: userInterests,
     })
-      .then((data) => setUser(data.user))
-      .catch((error) => setError(error.message))
+      .then((data) => {
+        if (data.errors) {
+          setError('Something went wrong');
+        } else {
+          setUser(data.user);
+        }
+      })
+      .catch((error) => setError(error))
       .finally(() => setLoading(false));
   };
 
@@ -91,6 +100,7 @@ const Interests = () => {
           </Grid>
         </Grid>
       </div>
+      {error && <ErrorSnackbar error={error} />}
     </Fragment>
   );
 };

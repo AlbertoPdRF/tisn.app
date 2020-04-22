@@ -1,9 +1,25 @@
+const getOrdinalSuffix = (n) =>
+  ['st', 'nd', 'rd'][((((n + 90) % 100) - 10) % 10) - 1] || 'th';
+
 export const buildValidationErrorsObject = (errors) => {
   const errorsObject = {};
   errors.forEach((error) => {
-    const key = error.param.split('.')[1];
+    let key = error.param.split('.')[1];
+    let number;
+    if (key.includes('[')) {
+      const splitted = key.split('[');
+      key = splitted[0];
+      number = splitted[1].slice(0, -1);
+    }
+
     if (!errorsObject[key]) {
-      errorsObject[key] = error.msg;
+      if (!number) {
+        errorsObject[key] = error.msg;
+      } else {
+        errorsObject[key] = `${parseInt(number) + 1}${getOrdinalSuffix(
+          number
+        )} ${key.slice(0, -1)} ${error.msg}`;
+      }
     }
   });
 

@@ -21,6 +21,7 @@ import { useUser } from '../UserProvider/UserProvider';
 
 import EventsTable from '../EventsTable/EventsTable';
 import TabPanel from '../TabPanel/TabPanel';
+import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 
 import Style from '../Style/Style';
 
@@ -35,22 +36,28 @@ const UserEvents = () => {
   const [pastCreatedEvents, setPastCreatedEvents] = useState([]);
   const [updateEvents, setUpdateEvents] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    setError(null);
     getUserEvents()
       .then((data) => {
-        const now = new Date();
+        if (data.errors) {
+          const error = data.errors[0];
+          setError(`${error.param} ${error.msg}`);
+        } else {
+          const now = new Date();
 
-        const attendingEvents = classifyEvents(data.events.attending, now);
-        setCurrentAttendingEvents(attendingEvents.current);
-        setPastAttendingEvents(attendingEvents.past);
+          const attendingEvents = classifyEvents(data.events.attending, now);
+          setCurrentAttendingEvents(attendingEvents.current);
+          setPastAttendingEvents(attendingEvents.past);
 
-        const createdEvents = classifyEvents(data.events.created, now);
-        setCurrentCreatedEvents(createdEvents.current);
-        setPastCreatedEvents(createdEvents.past);
+          const createdEvents = classifyEvents(data.events.created, now);
+          setCurrentCreatedEvents(createdEvents.current);
+          setPastCreatedEvents(createdEvents.past);
+        }
       })
-      .catch((error) => setError(error.message))
+      .catch((error) => setError(error))
       .finally(() => {
         setUpdateEvents(false);
         setLoading(false);
@@ -157,6 +164,7 @@ const UserEvents = () => {
           </Grid>
         </Grid>
       </div>
+      {error && <ErrorSnackbar error={error} />}
     </Fragment>
   );
 };

@@ -16,6 +16,7 @@ import Button from '@material-ui/core/Button';
 import SwipeableViews from 'react-swipeable-views';
 
 import { getUser, putUser, deleteUser, getInterests } from '../../logic/api';
+import { buildValidationErrorsObject } from '../../logic/array';
 import { logOut } from '../../logic/auth';
 import { inputDate } from '../../logic/date-time';
 import { uploadFile } from '../../logic/file-upload';
@@ -27,6 +28,7 @@ import { useUser, useSetUser } from '../UserProvider/UserProvider';
 import TabPanel from '../TabPanel/TabPanel';
 import UserForm from '../UserForm/UserForm';
 import InterestsSelect from '../InterestsSelect/InterestsSelect';
+import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 
 import Style from '../Style/Style';
 
@@ -45,26 +47,36 @@ const UserTabs = ({ match }) => {
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [avatar, setAvatar] = useState('');
   const [interests, setInterests] = useState([]);
+  const [updatedFields, setUpdatedFields] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [validationErrors, setValidationErrors] = useState({});
+  const [error, setError] = useState(null);
 
-  const id = match.params.id;
+  const userId = match.params.userId;
   useEffect(() => {
-    if (id && currentUser) {
+    if (userId && currentUser) {
       setLoading(true);
-      if (currentUser._id === id) {
+      setError(null);
+      if (currentUser._id === userId) {
         setUser(currentUser);
         setLoading(false);
       } else if (currentUser.admin) {
-        getUser(id)
-          .then((data) => setUser(data.user))
-          .catch((error) => setError(error.message))
+        getUser(userId)
+          .then((data) => {
+            if (data.errors) {
+              const error = data.errors[0];
+              setError(`${error.param} ${error.msg}`);
+            } else {
+              setUser(data.user);
+            }
+          })
+          .catch((error) => setError(error))
           .finally(() => setLoading(false));
       } else {
         history.push(`/users/${currentUser._id}/edit`);
       }
     }
-  }, [id, currentUser, history]);
+  }, [userId, currentUser, history]);
 
   useEffect(() => {
     if (user) {
@@ -99,27 +111,54 @@ const UserTabs = ({ match }) => {
     }
   }, [user, allInterests]);
 
-  const handleNameChange = (name) => setName(name);
+  const handleNameChange = (name) => {
+    setName(name);
+    if (!updatedFields || !updatedFields.name) {
+      setUpdatedFields({ ...updatedFields, name: true });
+    }
+  };
 
-  const handleEmailChange = (email) => setEmail(email);
+  const handleEmailChange = (email) => {
+    setEmail(email);
+    if (!updatedFields || !updatedFields.email) {
+      setUpdatedFields({ ...updatedFields, email: true });
+    }
+  };
 
-  const handleDateOfBirthChange = (dateOfBirth) => setDateOfBirth(dateOfBirth);
+  const handleDateOfBirthChange = (dateOfBirth) => {
+    setDateOfBirth(dateOfBirth);
+    if (!updatedFields || !updatedFields.dateOfBirth) {
+      setUpdatedFields({ ...updatedFields, dateOfBirth: true });
+    }
+  };
 
   const handleFileUpload = (file) => {
     if (file) {
       setLoading(true);
       uploadFile(file)
-        .then((data) => setAvatar(data.uploadedFile.secure_url))
+        .then((data) => {
+          setAvatar(data.uploadedFile.secure_url);
+          if (!updatedFields || !updatedFields.avatar) {
+            setUpdatedFields({ ...updatedFields, avatar: true });
+          }
+        })
         .catch((error) => setError(error))
         .finally(() => setLoading(false));
     }
   };
 
-  const handleInterestsChange = (interests) => setInterests(interests);
+  const handleInterestsChange = (interests) => {
+    setInterests(interests);
+    if (!updatedFields || !updatedFields.interests) {
+      setUpdatedFields({ ...updatedFields, interests: true });
+    }
+  };
 
   const handleEditClick = () => {
     setLoading(true);
-    putUser(id, {
+    setError(null);
+    setValidationErrors({});
+    putUser(userId, {
       name,
       email,
       dateOfBirth,
@@ -127,31 +166,44 @@ const UserTabs = ({ match }) => {
       interests,
     })
       .then((data) => {
-        if (currentUser._id === id) {
-          setCurrentUser(data.user);
+        if (data.errors) {
+          setError('The form contains errors');
+          setValidationErrors(buildValidationErrorsObject(data.errors));
+          setLoading(false);
+        } else {
+          if (currentUser._id === userId) {
+            setCurrentUser(data.user);
+          }
+          history.push(`/users/${userId}`);
         }
-        history.push(`/users/${id}`);
       })
       .catch((error) => {
-        setError(error.message);
+        setError(error);
         setLoading(false);
       });
   };
 
   const handleDeleteClick = () => {
     setLoading(true);
-    deleteUser(id)
-      .then(() => {
-        if (currentUser._id === id) {
-          logOut();
-          setCurrentUser(null);
-          history.push('/welcome');
+    setError(null);
+    deleteUser(userId)
+      .then((data) => {
+        if (data.errors) {
+          const error = data.errors[0];
+          setError(`${error.param} ${error.msg}`);
+          setLoading(false);
         } else {
-          history.push('/users');
+          if (currentUser._id === userId) {
+            logOut();
+            setCurrentUser(null);
+            history.push('/welcome');
+          } else {
+            history.push('/users');
+          }
         }
       })
       .catch((error) => {
-        setError(error.message);
+        setError(error);
         setLoading(false);
       });
   };
@@ -194,6 +246,7 @@ const UserTabs = ({ match }) => {
                       handleDateOfBirthChange={handleDateOfBirthChange}
                       avatar={avatar}
                       handleFileUpload={handleFileUpload}
+                      validationErrors={validationErrors}
                     />
                   </TabPanel>
                   <TabPanel value={value} index={1}>
@@ -201,6 +254,7 @@ const UserTabs = ({ match }) => {
                       allInterests={allInterests}
                       interests={interests}
                       handleInterestsChange={handleInterestsChange}
+                      validationErrors={validationErrors}
                     />
                   </TabPanel>
                   <TabPanel value={value} index={2}>
@@ -244,7 +298,7 @@ const UserTabs = ({ match }) => {
               className={style.buttons}
               variant="outlined"
               color="primary"
-              onClick={() => history.push(`/users/${id}`)}
+              onClick={() => history.push(`/users/${userId}`)}
             >
               Cancel
             </Button>
@@ -253,13 +307,16 @@ const UserTabs = ({ match }) => {
               variant="contained"
               color="primary"
               onClick={() => handleEditClick()}
-              disabled={loading || !name || !email || !dateOfBirth}
+              disabled={
+                !updatedFields || loading || !name || !email || !dateOfBirth
+              }
             >
               Edit
             </Button>
           </Grid>
         </Grid>
       </div>
+      {error && <ErrorSnackbar error={error} />}
     </Fragment>
   );
 };

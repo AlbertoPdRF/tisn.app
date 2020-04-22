@@ -10,21 +10,21 @@ export const postUser = (user, path = '') => {
   });
 };
 
-export const getUser = (id = getPayloadFromToken()._id) =>
-  fetchApi(`/users/${id}`, { method: 'GET' });
+export const getUser = (userId = getPayloadFromToken()._id) =>
+  fetchApi(`/users/${userId}`, { method: 'GET' });
 
-export const putUser = (id, user) => {
-  return fetchApi(`/users/${id}`, {
+export const putUser = (userId, user) => {
+  return fetchApi(`/users/${userId}`, {
     method: 'PUT',
     body: JSON.stringify({ user }),
   });
 };
 
-export const deleteUser = (id = getPayloadFromToken()._id) =>
-  fetchApi(`/users/${id}`, { method: 'DELETE' });
+export const deleteUser = (userId = getPayloadFromToken()._id) =>
+  fetchApi(`/users/${userId}`, { method: 'DELETE' });
 
-export const getUserEvents = (id = getPayloadFromToken()._id) =>
-  fetchApi(`/users/${id}/events`, { method: 'GET' });
+export const getUserEvents = (userId = getPayloadFromToken()._id) =>
+  fetchApi(`/users/${userId}/events`, { method: 'GET' });
 
 export const getEvents = () => fetchApi('/events', { method: 'GET' });
 

@@ -14,6 +14,8 @@ import { formatDate } from '../../logic/date-time';
 
 import { useUser } from '../UserProvider/UserProvider';
 
+import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
+
 import Style from '../Style/Style';
 
 const User = ({ match }) => {
@@ -21,20 +23,29 @@ const User = ({ match }) => {
   const style = Style();
   const currentUser = useUser();
 
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(null);
 
-  const id = match.params.id;
+  const userId = match.params.userId;
   useEffect(() => {
-    getUser(id)
-      .then((data) => setUser(data.user))
+    setError(null);
+    getUser(userId)
+      .then((data) => {
+        if (data.errors) {
+          const error = data.errors[0];
+          setError(`${error.param} ${error.msg}`);
+          setLoading(false);
+        } else {
+          setUser(data.user);
+        }
+      })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
-  }, [id]);
+  }, [userId]);
 
   const restrictedDisplay =
-    currentUser && (currentUser._id === id || currentUser.admin);
+    currentUser && (currentUser._id === userId || currentUser.admin);
 
   return loading ? (
     <LinearProgress />
@@ -43,70 +54,75 @@ const User = ({ match }) => {
       <Grid container direction="column" alignItems="center" spacing={2}>
         <Grid item>
           <Typography variant="h2">
-            {currentUser && currentUser._id === id ? 'My profile' : 'Profile'}
+            {currentUser && currentUser._id === userId
+              ? 'My profile'
+              : 'Profile'}
           </Typography>
         </Grid>
-        <Grid item>
-          <Card>
-            <CardContent>
-              <Avatar
-                className={style.avatar}
-                src={user.avatar}
-                alt={`${user.avatar}'s avatar`}
-              >
-                {user.name.charAt(0).toUpperCase()}
-              </Avatar>
-              {restrictedDisplay && (
-                <Button
-                  className={style.alignRight}
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => history.push(`/users/${id}/edit`)}
+        {user && (
+          <Grid item>
+            <Card>
+              <CardContent>
+                <Avatar
+                  className={style.avatar}
+                  src={user.avatar}
+                  alt={`${user.avatar}'s avatar`}
                 >
-                  Edit
-                </Button>
-              )}
-              <Typography variant="h5" component="h3">
-                {user.name}
-              </Typography>
-              <Typography variant="body1" color="textSecondary">
-                {`Joined on ${formatDate(user.createdAt)}`}
-              </Typography>
-              <Typography gutterBottom variant="body1" color="textSecondary">
-                {`Updated on ${formatDate(user.updatedAt)}`}
-              </Typography>
-              {restrictedDisplay && (
-                <Fragment>
-                  <Typography variant="body1">
-                    {formatDate(user.dateOfBirth)}
-                  </Typography>
-                  <Typography gutterBottom variant="body1">
-                    {user.email}
-                  </Typography>
-                </Fragment>
-              )}
-              {user.interests.length > 0 && (
-                <Fragment>
-                  <Typography variant="h6" component="h4">
-                    Interests:
-                  </Typography>
-                  {user.interests.map((interest) => (
-                    <Chip
-                      className={style.chip}
-                      variant="outlined"
-                      key={interest._id}
-                      avatar={
-                        <Avatar src={interest.avatar} alt={interest.name} />
-                      }
-                      label={interest.name}
-                    />
-                  ))}
-                </Fragment>
-              )}
-            </CardContent>
-          </Card>
-        </Grid>
+                  {user.name.charAt(0).toUpperCase()}
+                </Avatar>
+                {restrictedDisplay && (
+                  <Button
+                    className={style.alignRight}
+                    variant="outlined"
+                    color="primary"
+                    onClick={() => history.push(`/users/${userId}/edit`)}
+                  >
+                    Edit
+                  </Button>
+                )}
+                <Typography variant="h5" component="h3">
+                  {user.name}
+                </Typography>
+                <Typography variant="body1" color="textSecondary">
+                  {`Joined on ${formatDate(user.createdAt)}`}
+                </Typography>
+                <Typography gutterBottom variant="body1" color="textSecondary">
+                  {`Updated on ${formatDate(user.updatedAt)}`}
+                </Typography>
+                {restrictedDisplay && (
+                  <Fragment>
+                    <Typography variant="body1">
+                      {formatDate(user.dateOfBirth)}
+                    </Typography>
+                    <Typography gutterBottom variant="body1">
+                      {user.email}
+                    </Typography>
+                  </Fragment>
+                )}
+                {user.interests.length > 0 && (
+                  <Fragment>
+                    <Typography variant="h6" component="h4">
+                      Interests:
+                    </Typography>
+                    {user.interests.map((interest) => (
+                      <Chip
+                        className={style.chip}
+                        variant="outlined"
+                        key={interest._id}
+                        avatar={
+                          <Avatar src={interest.avatar} alt={interest.name} />
+                        }
+                        label={interest.name}
+                      />
+                    ))}
+                  </Fragment>
+                )}
+              </CardContent>
+            </Card>
+          </Grid>
+        )}
       </Grid>
+      {error && <ErrorSnackbar error={error} />}
     </div>
   );
 };

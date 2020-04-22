@@ -1,50 +1,53 @@
 const validator = require('express-validator');
 
 const User = require('../models/User');
+const Interest = require('../models/Interest');
 
-const buildValidator = (type, param) => {
-  const commonOptions = validator
+const buildValidator = (type, param, logIn = false) => {
+  const basic = validator.check(param).trim();
+  const escaped = validator.check(param).trim().escape();
+  const required = validator
     .check(param)
-    .escape()
     .trim()
+    .escape()
     .notEmpty()
     .withMessage('is required');
 
   switch (type) {
     case 'name':
-      return commonOptions
+      return required
         .isLength({ max: 20 })
         .withMessage('too long')
         .matches(/^[a-z ]+$/i)
         .withMessage('must have letters (and spaces) only');
     case 'email':
-      return commonOptions
+      return required
         .isEmail()
         .withMessage('is invalid')
         .normalizeEmail()
-        .custom((email) =>
-          User.find({ email }).then((data) => {
-            if (data.length !== 0) {
+        .custom((email, { req }) =>
+          User.findOne({ email }).then((data) => {
+            if (!logIn && data && data._id != req.params.userId) {
               throw new Error('a user with this email already exists');
-            } else {
-              return email;
             }
+
+            return email;
           })
         );
     case 'password':
-      return commonOptions
-        .isLength({ min: 8 })
+      return required
+        .isLength({ min: logIn ? 0 : 8 })
         .withMessage('must be at least 8 characters long');
     case 'confirmPassword':
-      return commonOptions.custom((confirmPassword, { req }) => {
+      return required.custom((confirmPassword, { req }) => {
         if (confirmPassword !== req.body.user.password) {
           throw new Error("doesn't match");
-        } else {
-          return confirmPassword;
         }
+
+        return confirmPassword;
       });
     case 'dateOfBirth':
-      return commonOptions
+      return required
         .isISO8601()
         .withMessage('is invalid')
         .toDate()
@@ -54,15 +57,33 @@ const buildValidator = (type, param) => {
           const maximumDate = new Date();
           maximumDate.setFullYear(maximumDate.getFullYear() - 100);
           if (dateOfBirth > dateForMinimumAge) {
-            throw new Error('you must be at least 14 years old to sign up');
+            throw new Error('you must be at least 14 years old');
           } else if (dateOfBirth < maximumDate) {
             throw new Error('seems wrong');
-          } else {
-            return dateOfBirth;
           }
+
+          return dateOfBirth;
         });
+    case 'id':
+      return escaped.isMongoId().withMessage('is invalid');
+    case 'avatar':
+      return basic.isURL().withMessage('is invalid').optional();
+    case 'interests':
+      return escaped
+        .isMongoId()
+        .withMessage('is invalid')
+        .custom((interest) =>
+          Interest.findById(interest).then((data) => {
+            if (!data) {
+              throw new Error("doesn't exist");
+            }
+
+            return interest;
+          })
+        )
+        .optional();
     default:
-      return commonOptions;
+      return escaped;
   }
 };
 
@@ -75,6 +96,26 @@ const createValidation = (route) => {
         buildValidator('password', 'user.password'),
         buildValidator('confirmPassword', 'user.confirmPassword'),
         buildValidator('dateOfBirth', 'user.dateOfBirth'),
+      ];
+    case 'usersGetId':
+      return [buildValidator('id', 'userId')];
+    case 'usersPutId':
+      return [
+        buildValidator('id', 'userId'),
+        buildValidator('name', 'user.name'),
+        buildValidator('email', 'user.email'),
+        buildValidator('dateOfBirth', 'user.dateOfBirth'),
+        buildValidator('avatar', 'user.avatar'),
+        buildValidator('interests', 'user.interests.*._id'),
+      ];
+    case 'usersDeleteId':
+      return [buildValidator('id', 'userId')];
+    case 'usersGetEvents':
+      return [buildValidator('id', 'userId')];
+    case 'usersLogIn':
+      return [
+        buildValidator('email', 'user.email', true),
+        buildValidator('password', 'user.password', true),
       ];
     default:
       return [];

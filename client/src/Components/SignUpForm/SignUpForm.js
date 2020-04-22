@@ -32,11 +32,12 @@ const SignUpForm = () => {
   const handleSignUpClick = () => {
     setLoading(true);
     setError(null);
+    setValidationErrors({});
     postUser({ name, email, password, confirmPassword, dateOfBirth })
       .then((data) => {
         if (data.errors) {
-          setValidationErrors(buildValidationErrorsObject(data.errors));
           setError('The form contains errors');
+          setValidationErrors(buildValidationErrorsObject(data.errors));
           setLoading(false);
         } else {
           setUserSession(data.user);

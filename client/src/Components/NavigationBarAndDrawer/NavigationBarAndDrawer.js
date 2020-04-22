@@ -28,6 +28,8 @@ import { logOut } from '../../logic/auth';
 
 import { useUser, useSetUser } from '../UserProvider/UserProvider';
 
+import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
+
 import Style from '../Style/Style';
 
 const HideOnScroll = (props) => {
@@ -51,12 +53,19 @@ const NavigationBarAndDrawer = (props) => {
   const setUser = useSetUser();
 
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    setError(null);
     getUser()
-      .then((data) => setUser(data.user))
-      .catch((error) => setError(error.message))
+      .then((data) => {
+        if (data.errors) {
+          setError('Something went wrong');
+        } else {
+          setUser(data.user);
+        }
+      })
+      .catch((error) => setError(error))
       .finally(() => setLoading(false));
   }, [setUser]);
 
@@ -212,6 +221,7 @@ const NavigationBarAndDrawer = (props) => {
           {drawer}
         </SwipeableDrawer>
       )}
+      {error && <ErrorSnackbar error={error} />}
     </Fragment>
   );
 };

@@ -7,15 +7,17 @@ import { getUsers } from '../../logic/api';
 
 import Style from '../Style/Style';
 import UserCard from '../UserCard/UserCard';
+import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 
 const Users = () => {
   const style = Style();
 
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    setError(null);
     getUsers()
       .then((data) => setUsers(data.users))
       .catch((error) => setError(error))
@@ -36,6 +38,7 @@ const Users = () => {
           </Grid>
         ))}
       </Grid>
+      {error && <ErrorSnackbar error={error} />}
     </div>
   );
 };

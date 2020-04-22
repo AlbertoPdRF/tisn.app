@@ -7,7 +7,12 @@ import Avatar from '@material-ui/core/Avatar';
 import Style from '../Style/Style';
 
 const InterestsSelect = (props) => {
-  const { allInterests, interests, handleInterestsChange } = props;
+  const {
+    allInterests,
+    interests,
+    handleInterestsChange,
+    validationErrors,
+  } = props;
 
   const style = Style();
 
@@ -23,7 +28,13 @@ const InterestsSelect = (props) => {
       groupBy={(interest) => interest.category.name}
       getOptionLabel={(interest) => interest.name}
       renderInput={(params) => (
-        <TextField {...params} variant="outlined" label="Interests" />
+        <TextField
+          {...params}
+          variant="outlined"
+          label="Interests"
+          error={!!validationErrors.interests}
+          helperText={validationErrors.interests}
+        />
       )}
       noOptionsText="No matching interests"
       value={interests}

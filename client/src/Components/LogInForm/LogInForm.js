@@ -8,7 +8,10 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 
+import { buildValidationErrorsObject } from '../../logic/array';
 import { logIn, setUserSession } from '../../logic/auth';
+
+import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 
 import Style from '../Style/Style';
 
@@ -19,17 +22,29 @@ const LogInForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({});
   const [error, setError] = useState('');
 
   const handleClick = () => {
     setLoading(true);
+    setError(null);
+    setValidationErrors({});
     logIn({ email, password })
       .then((data) => {
-        setUserSession(data.user);
-        history.push('/');
+        if (data.error) {
+          setError('Wrong email and/or password');
+          setLoading(false);
+        } else if (data.errors) {
+          setError('The form contains errors');
+          setValidationErrors(buildValidationErrorsObject(data.errors));
+          setLoading(false);
+        } else {
+          setUserSession(data.user);
+          history.push('/');
+        }
       })
       .catch((error) => {
-        setError(error.message);
+        setError(error);
         setLoading(false);
       });
   };
@@ -49,6 +64,8 @@ const LogInForm = () => {
               variant="outlined"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
+              error={!!validationErrors.email}
+              helperText={validationErrors.email}
             />
           </Grid>
           <Grid item>
@@ -59,6 +76,8 @@ const LogInForm = () => {
               variant="outlined"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
+              error={!!validationErrors.password}
+              helperText={validationErrors.password}
             />
           </Grid>
           <Grid item>
@@ -78,6 +97,7 @@ const LogInForm = () => {
           </Grid>
         </Grid>
       </Box>
+      {error && <ErrorSnackbar error={error} />}
     </Fragment>
   );
 };

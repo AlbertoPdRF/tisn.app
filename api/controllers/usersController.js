@@ -10,8 +10,8 @@ exports.get = (req, res, next) => {
   return User.find()
     .populate('interests', 'name avatar')
     .then((users) => {
-      if (!users) {
-        return res.sendStatus(400);
+      if (users.length === 0) {
+        return res.sendStatus(404);
       }
 
       res.json({ users: users.map((user) => user.toJson()) });
@@ -25,7 +25,12 @@ exports.post = (req, res, next) => {
 
   if (user.admin) {
     return res.status(403).json({
-      error: 'not enough permissions to perform the requested action',
+      errors: [
+        {
+          param: 'Permissions',
+          msg: "aren't enough",
+        },
+      ],
     });
   }
 
@@ -39,11 +44,11 @@ exports.post = (req, res, next) => {
 };
 
 exports.getId = (req, res, next) => {
-  return User.findById(req.params.id)
+  return User.findById(req.params.userId)
     .populate('interests', 'name avatar')
     .then((user) => {
       if (!user) {
-        return res.sendStatus(400);
+        return res.sendStatus(404);
       }
 
       res.json({ user: user.toJson() });
@@ -55,43 +60,30 @@ exports.putId = (req, res, next) => {
     body: { user },
   } = req;
 
-  if (!user.name) {
-    return res.status(422).json({
-      errors: {
-        name: 'is required',
-      },
-    });
-  }
-
-  if (!user.email) {
-    return res.status(422).json({
-      errors: {
-        email: 'is required',
-      },
-    });
-  }
-
-  if (!user.dateOfBirth) {
-    return res.status(422).json({
-      errors: {
-        dateOfBirth: 'is required',
-      },
-    });
-  }
-
   if (user.admin && !req.payload.admin) {
     return res.status(403).json({
-      error: 'not enough permissions to perform the requested action',
+      errors: [
+        {
+          param: 'Permissions',
+          msg: "aren't enough",
+        },
+      ],
     });
   }
 
-  User.findByIdAndUpdate(req.params.id, user, { new: true })
+  User.findByIdAndUpdate(req.params.userId, user, { new: true })
     .populate('interests', 'name avatar')
-    .then((updatedUser) => res.json({ user: updatedUser.toJson() }));
+    .then((updatedUser) => {
+      if (!updatedUser) {
+        return res.sendStatus(404);
+      }
+
+      res.json({ user: updatedUser.toJson() });
+    });
 };
 
 exports.deleteId = (req, res, next) => {
-  const id = req.params.id;
+  const id = req.params.userId;
   async.parallel(
     {
       user: (callback) => User.findByIdAndRemove(id).exec(callback),
@@ -104,7 +96,7 @@ exports.deleteId = (req, res, next) => {
       }
 
       if (!results) {
-        return res.sendStatus(400);
+        return res.sendStatus(404);
       }
 
       res.json({
@@ -116,7 +108,7 @@ exports.deleteId = (req, res, next) => {
 };
 
 exports.getEvents = (req, res, next) => {
-  const id = req.params.id;
+  const id = req.params.userId;
   async.parallel(
     {
       attending: (callback) =>
@@ -145,7 +137,7 @@ exports.getEvents = (req, res, next) => {
       }
 
       if (!results) {
-        return res.sendStatus(400);
+        return res.sendStatus(404);
       }
 
       res.json({
@@ -159,32 +151,12 @@ exports.getEvents = (req, res, next) => {
 };
 
 exports.logIn = (req, res, next) => {
-  const {
-    body: { user },
-  } = req;
-
-  if (!user.email) {
-    return res.status(422).json({
-      errors: {
-        email: 'is required',
-      },
-    });
-  }
-
-  if (!user.password) {
-    return res.status(422).json({
-      errors: {
-        password: 'is required',
-      },
-    });
-  }
-
   return passport.authenticate(
     'local',
     { session: false },
-    (err, passportUser, info) => {
-      if (err) {
-        return next(err);
+    (error, passportUser, info) => {
+      if (error) {
+        return next(error);
       }
 
       if (passportUser) {
@@ -194,7 +166,7 @@ exports.logIn = (req, res, next) => {
         return res.json({ user: user.toAuthJson() });
       }
 
-      return status(400).info;
+      return status(404).info;
     }
   )(req, res, next);
 };

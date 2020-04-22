@@ -4,7 +4,7 @@ const permissions = (req, res, next) => {
   let id;
   const url = req.baseUrl;
   if (url === '/api/users') {
-    id = req.params.id;
+    id = req.params.userId;
   } else if (url.startsWith('/api/events')) {
     if (url.endsWith('/attendants')) {
       id = req.body.attendant.user;
@@ -19,7 +19,12 @@ const permissions = (req, res, next) => {
     next();
   } else {
     res.status(403).json({
-      error: 'not enough permissions to perform the requested action',
+      errors: [
+        {
+          param: 'Permissions',
+          msg: "aren't enough",
+        },
+      ],
     });
   }
 };

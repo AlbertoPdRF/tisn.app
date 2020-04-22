@@ -8,18 +8,51 @@ const permissions = require('./permissions');
 const usersController = require('../controllers/usersController');
 
 router.get('/', auth.required, usersController.get);
+
 router.post(
   '/',
   [validations.create('usersPost'), validations.run],
   usersController.post
 );
 
-router.get('/:id', auth.required, usersController.getId);
-router.put('/:id', [auth.required, permissions], usersController.putId);
-router.delete('/:id', [auth.required, permissions], usersController.deleteId);
+router.get(
+  '/:userId',
+  [auth.required, validations.create('usersGetId'), validations.run],
+  usersController.getId
+);
 
-router.get('/:id/events', auth.required, usersController.getEvents);
+router.put(
+  '/:userId',
+  [
+    auth.required,
+    permissions,
+    validations.create('usersPutId'),
+    validations.run,
+  ],
+  usersController.putId
+);
 
-router.post('/log-in', usersController.logIn);
+router.delete(
+  '/:userId',
+  [
+    auth.required,
+    permissions,
+    validations.create('usersDeleteId'),
+    validations.run,
+  ],
+  usersController.deleteId
+);
+
+router.get(
+  '/:userId/events',
+  [auth.required, validations.create('usersGetEvents'), validations.run],
+  usersController.getEvents
+);
+
+router.post(
+  '/log-in',
+  [validations.create('usersLogIn'), validations.run],
+  usersController.logIn
+);
 
 module.exports = router;
