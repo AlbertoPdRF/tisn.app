@@ -16,7 +16,7 @@ import Button from '@material-ui/core/Button';
 import SwipeableViews from 'react-swipeable-views';
 
 import { getUser, putUser, deleteUser, getInterests } from '../../logic/api';
-import { buildValidationErrorsObject } from '../../logic/array';
+import { buildValidationErrorsObject } from '../../logic/utils';
 import { logOut } from '../../logic/auth';
 import { inputDate } from '../../logic/date-time';
 import { uploadFile } from '../../logic/file-upload';
@@ -308,7 +308,7 @@ const UserTabs = ({ match }) => {
               color="primary"
               onClick={() => handleEditClick()}
               disabled={
-                !updatedFields || loading || !name || !email || !dateOfBirth
+                !updatedFields || !name || !email || !dateOfBirth || loading
               }
             >
               Edit

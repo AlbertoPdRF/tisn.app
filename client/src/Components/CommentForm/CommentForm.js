@@ -34,7 +34,7 @@ const CommentForm = (props) => {
               setLoading(true);
               handleClick(content, handleContentChange, parentComment);
             }}
-            disabled={loading || !content}
+            disabled={!content || loading}
           >
             Post
           </Button>

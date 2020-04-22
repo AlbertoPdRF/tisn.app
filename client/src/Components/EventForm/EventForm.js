@@ -17,6 +17,7 @@ const EventForm = (props) => {
     handleEndDateChange,
     coverPhoto,
     handleFileUpload,
+    validationErrors,
   } = props;
 
   const style = Style();
@@ -38,6 +39,8 @@ const EventForm = (props) => {
             variant="outlined"
             onChange={(event) => handleFileUpload(event.target.files[0])}
             InputLabelProps={{ shrink: true }}
+            error={!!validationErrors.coverPhoto}
+            helperText={validationErrors.coverPhoto}
           />
         </Grid>
         <Grid item>
@@ -47,6 +50,8 @@ const EventForm = (props) => {
             variant="outlined"
             value={name}
             onChange={(event) => handleNameChange(event.target.value)}
+            error={!!validationErrors.name}
+            helperText={validationErrors.name}
           />
         </Grid>
         <Grid item>
@@ -58,6 +63,8 @@ const EventForm = (props) => {
             variant="outlined"
             value={description}
             onChange={(event) => handleDescriptionChange(event.target.value)}
+            error={!!validationErrors.description}
+            helperText={validationErrors.description}
           />
         </Grid>
         <Grid item>
@@ -69,6 +76,8 @@ const EventForm = (props) => {
             value={startDate}
             onChange={(event) => handleStartDateChange(event.target.value)}
             InputLabelProps={{ shrink: true }}
+            error={!!validationErrors.startDate}
+            helperText={validationErrors.startDate}
           />
         </Grid>
         <Grid item>
@@ -80,6 +89,8 @@ const EventForm = (props) => {
             value={endDate}
             onChange={(event) => handleEndDateChange(event.target.value)}
             InputLabelProps={{ shrink: true }}
+            error={!!validationErrors.endDate}
+            helperText={validationErrors.endDate}
           />
         </Grid>
       </Grid>

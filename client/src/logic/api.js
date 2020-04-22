@@ -35,17 +35,18 @@ export const postEvent = (event) => {
   });
 };
 
-export const getEvent = (id) => fetchApi(`/events/${id}`, { method: 'GET' });
+export const getEvent = (eventId) =>
+  fetchApi(`/events/${eventId}`, { method: 'GET' });
 
-export const putEvent = (id, event) => {
-  return fetchApi(`/events/${id}`, {
+export const putEvent = (eventId, event) => {
+  return fetchApi(`/events/${eventId}`, {
     method: 'PUT',
     body: JSON.stringify({ event }),
   });
 };
 
-export const deleteEvent = (id, event) =>
-  fetchApi(`/events/${id}`, {
+export const deleteEvent = (eventId, event) =>
+  fetchApi(`/events/${eventId}`, {
     method: 'DELETE',
     body: JSON.stringify({ event }),
   });

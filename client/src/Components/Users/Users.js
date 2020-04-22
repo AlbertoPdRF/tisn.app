@@ -5,9 +5,10 @@ import Typography from '@material-ui/core/Typography';
 
 import { getUsers } from '../../logic/api';
 
-import Style from '../Style/Style';
 import UserCard from '../UserCard/UserCard';
 import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
+
+import Style from '../Style/Style';
 
 const Users = () => {
   const style = Style();

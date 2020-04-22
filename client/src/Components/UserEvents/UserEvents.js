@@ -15,7 +15,7 @@ import Tab from '@material-ui/core/Tab';
 import SwipeableViews from 'react-swipeable-views';
 
 import { getUserEvents, deleteEvent } from '../../logic/api';
-import { classifyEvents } from '../../logic/array';
+import { classifyEvents } from '../../logic/utils';
 
 import { useUser } from '../UserProvider/UserProvider';
 
@@ -66,8 +66,17 @@ const UserEvents = () => {
 
   const handleDeleteClick = (event) => {
     setLoading(true);
+    setError(null);
     deleteEvent(event._id, event)
-      .then(() => setUpdateEvents(true))
+      .then((data) => {
+        if (data.errors) {
+          const error = data.errors[0];
+          setError(`${error.param} ${error.msg}`);
+          setLoading(false);
+        } else {
+          setUpdateEvents(true);
+        }
+      })
       .catch((error) => {
         setError(error.message);
         setLoading(false);

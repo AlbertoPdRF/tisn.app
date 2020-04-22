@@ -9,11 +9,13 @@ export const UserProvider = ({ children }) => {
 };
 
 export const useUser = () => {
+  // eslint-disable-next-line
   const [user, setUser] = useContext(UserContext);
   return user;
 };
 
 export const useSetUser = () => {
+  // eslint-disable-next-line
   const [user, setUser] = useContext(UserContext);
   return setUser;
 };

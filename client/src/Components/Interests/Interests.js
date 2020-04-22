@@ -8,7 +8,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 
 import { getInterests, putUser } from '../../logic/api';
-import { groupInterests } from '../../logic/array';
+import { groupInterests } from '../../logic/utils';
 
 import { useUser, useSetUser } from '../UserProvider/UserProvider';
 

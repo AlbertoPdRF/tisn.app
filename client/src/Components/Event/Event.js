@@ -18,7 +18,7 @@ import {
   getComments,
   postComment,
 } from '../../logic/api';
-import { groupComments } from '../../logic/array';
+import { groupComments } from '../../logic/utils';
 
 import { useUser } from '../UserProvider/UserProvider';
 
@@ -26,6 +26,7 @@ import TabPanel from '../TabPanel/TabPanel';
 import EventDetails from '../EventDetails/EventDetails';
 import CommentCard from '../CommentCard/CommentCard';
 import CommentForm from '../CommentForm/CommentForm';
+import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 
 import Style from '../Style/Style';
 
@@ -40,13 +41,22 @@ const Event = ({ match }) => {
   const [comments, setComments] = useState(null);
   const [updateComments, setUpdateComments] = useState(true);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(null);
 
-  const id = match.params.id;
+  const id = match.params.eventId;
   useEffect(() => {
     setLoading(true);
+    setError(null);
     getEvent(id)
-      .then((data) => setEvent(data.event))
+      .then((data) => {
+        if (data.errors) {
+          const error = data.errors[0];
+          setError(`${error.param} ${error.msg}`);
+          setLoading(false);
+        } else {
+          setEvent(data.event);
+        }
+      })
       .catch((error) => setError(error.message))
       .finally(() => setLoading(false));
   }, [id]);
@@ -226,6 +236,7 @@ const Event = ({ match }) => {
           </Grid>
         </div>
       )}
+      {error && <ErrorSnackbar error={error} />}
     </Fragment>
   );
 };

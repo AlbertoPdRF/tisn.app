@@ -32,8 +32,12 @@ const InterestsSelect = (props) => {
           {...params}
           variant="outlined"
           label="Interests"
-          error={!!validationErrors.interests}
-          helperText={validationErrors.interests}
+          error={
+            !!validationErrors.interests || !!validationErrors.relatedInterests
+          }
+          helperText={
+            validationErrors.interests || validationErrors.relatedInterests
+          }
         />
       )}
       noOptionsText="No matching interests"

@@ -2,6 +2,7 @@ const validator = require('express-validator');
 
 const User = require('../models/User');
 const Interest = require('../models/Interest');
+const Event = require('../models/Event');
 
 const buildValidator = (type, param, logIn = false) => {
   const basic = validator.check(param).trim();
@@ -46,30 +47,56 @@ const buildValidator = (type, param, logIn = false) => {
 
         return confirmPassword;
       });
-    case 'dateOfBirth':
+    case 'date':
       return required
         .isISO8601()
         .withMessage('is invalid')
         .toDate()
-        .custom((dateOfBirth) => {
-          const dateForMinimumAge = new Date();
-          dateForMinimumAge.setFullYear(dateForMinimumAge.getFullYear() - 14);
-          const maximumDate = new Date();
-          maximumDate.setFullYear(maximumDate.getFullYear() - 100);
-          if (dateOfBirth > dateForMinimumAge) {
-            throw new Error('you must be at least 14 years old');
-          } else if (dateOfBirth < maximumDate) {
-            throw new Error('seems wrong');
+        .custom((date, { req }) => {
+          if (param.includes('Birth')) {
+            const dateForMinimumAge = new Date();
+            dateForMinimumAge.setFullYear(dateForMinimumAge.getFullYear() - 14);
+            const maximumDate = new Date();
+            maximumDate.setFullYear(maximumDate.getFullYear() - 100);
+            if (date > dateForMinimumAge) {
+              throw new Error('you must be at least 14 years old');
+            } else if (date < maximumDate) {
+              throw new Error('seems wrong');
+            }
+          } else {
+            const now = new Date();
+            if (date < now) {
+              throw new Error('must be in the future');
+            }
+
+            if (param.includes('end') && date < req.body.event.startDate) {
+              throw new Error('must be after start date');
+            }
           }
 
-          return dateOfBirth;
+          return date;
         });
-    case 'id':
-      return escaped.isMongoId().withMessage('is invalid');
-    case 'avatar':
-      return basic.isURL().withMessage('is invalid').optional();
+    case 'userId':
+      return escaped
+        .isMongoId()
+        .withMessage('is invalid')
+        .custom((userId) =>
+          User.findById(userId).then((data) => {
+            if (!data) {
+              throw new Error("doesn't exist");
+            }
+
+            return userId;
+          })
+        );
+    case 'image':
+      return basic
+        .optional({ checkFalsy: true })
+        .isURL()
+        .withMessage('is invalid');
     case 'interests':
       return escaped
+        .optional({ checkFalsy: true })
         .isMongoId()
         .withMessage('is invalid')
         .custom((interest) =>
@@ -80,8 +107,22 @@ const buildValidator = (type, param, logIn = false) => {
 
             return interest;
           })
-        )
-        .optional();
+        );
+    case 'text':
+      return required;
+    case 'eventId':
+      return escaped
+        .isMongoId()
+        .withMessage('is invalid')
+        .custom((eventId) =>
+          Event.findById(eventId).then((data) => {
+            if (!data) {
+              throw new Error("doesn't exist");
+            }
+
+            return eventId;
+          })
+        );
     default:
       return escaped;
   }
@@ -95,27 +136,49 @@ const createValidation = (route) => {
         buildValidator('email', 'user.email'),
         buildValidator('password', 'user.password'),
         buildValidator('confirmPassword', 'user.confirmPassword'),
-        buildValidator('dateOfBirth', 'user.dateOfBirth'),
+        buildValidator('date', 'user.dateOfBirth'),
       ];
     case 'usersGetId':
-      return [buildValidator('id', 'userId')];
+    case 'usersDeleteId':
+    case 'usersGetEvents':
+      return [buildValidator('userId', 'userId')];
     case 'usersPutId':
       return [
-        buildValidator('id', 'userId'),
+        buildValidator('userId', 'userId'),
         buildValidator('name', 'user.name'),
         buildValidator('email', 'user.email'),
-        buildValidator('dateOfBirth', 'user.dateOfBirth'),
-        buildValidator('avatar', 'user.avatar'),
+        buildValidator('date', 'user.dateOfBirth'),
+        buildValidator('image', 'user.avatar'),
         buildValidator('interests', 'user.interests.*._id'),
       ];
-    case 'usersDeleteId':
-      return [buildValidator('id', 'userId')];
-    case 'usersGetEvents':
-      return [buildValidator('id', 'userId')];
     case 'usersLogIn':
       return [
         buildValidator('email', 'user.email', true),
         buildValidator('password', 'user.password', true),
+      ];
+    case 'eventsPost':
+      return [
+        buildValidator('text', 'event.name'),
+        buildValidator('text', 'event.description'),
+        buildValidator('date', 'event.startDate'),
+        buildValidator('date', 'event.endDate'),
+        buildValidator('userId', 'event.createdBy'),
+        buildValidator('interests', 'event.relatedInterests.*._id'),
+        buildValidator('image', 'event.coverPhoto'),
+      ];
+    case 'eventsGetId':
+    case 'eventsDeleteId':
+      return [buildValidator('eventId', 'eventId')];
+    case 'eventsPutId':
+      return [
+        buildValidator('eventId', 'eventId'),
+        buildValidator('text', 'event.name'),
+        buildValidator('text', 'event.description'),
+        buildValidator('date', 'event.startDate'),
+        buildValidator('date', 'event.endDate'),
+        buildValidator('userId', 'event.createdBy'),
+        buildValidator('interests', 'event.relatedInterests.*._id'),
+        buildValidator('image', 'event.coverPhoto'),
       ];
     default:
       return [];

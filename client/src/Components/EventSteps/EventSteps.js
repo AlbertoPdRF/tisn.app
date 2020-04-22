@@ -15,6 +15,7 @@ import {
   putEvent,
   postAttendant,
 } from '../../logic/api';
+import { buildValidationErrorsObject } from '../../logic/utils';
 import { inputDateTime } from '../../logic/date-time';
 import { uploadFile } from '../../logic/file-upload';
 
@@ -25,6 +26,7 @@ import Style from '../Style/Style';
 import EventForm from '../EventForm/EventForm';
 import InterestsSelect from '../InterestsSelect/InterestsSelect';
 import EventCard from '../EventCard/EventCard';
+import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 
 const EventSteps = ({ match }) => {
   const history = useHistory();
@@ -42,26 +44,35 @@ const EventSteps = ({ match }) => {
   const [interests, setInterests] = useState(null);
   const [relatedInterests, setRelatedInterests] = useState([]);
   const [coverPhoto, setCoverPhoto] = useState('');
+  const [updatedFields, setUpdatedFields] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState('');
+  const [validationErrors, setValidationErrors] = useState({});
+  const [error, setError] = useState(null);
 
-  const id = match.params.id;
+  const id = match.params.eventId;
   useEffect(() => {
     if (id) {
       setLoading(true);
+      setError(null);
       if (user) {
         getEvent(id)
           .then((data) => {
-            if (!(user._id === data.event.createdBy || user.admin)) {
-              history.push(`/events/${id}`);
+            if (data.errors) {
+              const error = data.errors[0];
+              setError(`${error.param} ${error.msg}`);
+              history.push('/events/new');
             } else {
-              setEvent(data.event);
-              setName(data.event.name);
-              setDescription(data.event.description);
-              setStartDate(inputDateTime(data.event.startDate));
-              setEndDate(inputDateTime(data.event.endDate));
-              setCreatedBy(data.event.createdBy);
-              setCoverPhoto(data.event.coverPhoto);
+              if (!(user._id === data.event.createdBy || user.admin)) {
+                history.push(`/events/${id}`);
+              } else {
+                setEvent(data.event);
+                setName(data.event.name);
+                setDescription(data.event.description);
+                setStartDate(inputDateTime(data.event.startDate));
+                setEndDate(inputDateTime(data.event.endDate));
+                setCreatedBy(data.event.createdBy);
+                setCoverPhoto(data.event.coverPhoto);
+              }
             }
           })
           .catch((error) => setError(error.message))
@@ -119,6 +130,7 @@ const EventSteps = ({ match }) => {
             handleEndDateChange={handleEndDateChange}
             coverPhoto={coverPhoto}
             handleFileUpload={handleFileUpload}
+            validationErrors={validationErrors}
           />
         );
       case 1:
@@ -127,6 +139,7 @@ const EventSteps = ({ match }) => {
             allInterests={interests}
             interests={relatedInterests}
             handleInterestsChange={handleRelatedInterestsChange}
+            validationErrors={validationErrors}
           />
         );
       case 2:
@@ -183,29 +196,60 @@ const EventSteps = ({ match }) => {
 
   const lastStep = activeStep === steps.length - 1;
 
-  const handleNameChange = (name) => setName(name);
+  const handleNameChange = (name) => {
+    setName(name);
+    if (!updatedFields || !updatedFields.name) {
+      setUpdatedFields({ ...updatedFields, name: true });
+    }
+  };
 
-  const handleDescriptionChange = (description) => setDescription(description);
+  const handleDescriptionChange = (description) => {
+    setDescription(description);
+    if (!updatedFields || !updatedFields.description) {
+      setUpdatedFields({ ...updatedFields, description: true });
+    }
+  };
 
-  const handleStartDateChange = (startDate) => setStartDate(startDate);
+  const handleStartDateChange = (startDate) => {
+    setStartDate(startDate);
+    if (!updatedFields || !updatedFields.startDate) {
+      setUpdatedFields({ ...updatedFields, startDate: true });
+    }
+  };
 
-  const handleEndDateChange = (endDate) => setEndDate(endDate);
+  const handleEndDateChange = (endDate) => {
+    setEndDate(endDate);
+    if (!updatedFields || !updatedFields.endDate) {
+      setUpdatedFields({ ...updatedFields, endDate: true });
+    }
+  };
 
   const handleFileUpload = (file) => {
     if (file) {
       setLoading(true);
       uploadFile(file)
-        .then((data) => setCoverPhoto(data.uploadedFile.secure_url))
+        .then((data) => {
+          setCoverPhoto(data.uploadedFile.secure_url);
+          if (!updatedFields || !updatedFields.coverPhoto) {
+            setUpdatedFields({ ...updatedFields, coverPhoto: true });
+          }
+        })
         .catch((error) => setError(error))
         .finally(() => setLoading(false));
     }
   };
 
-  const handleRelatedInterestsChange = (relatedInterests) =>
+  const handleRelatedInterestsChange = (relatedInterests) => {
     setRelatedInterests(relatedInterests);
+    if (!updatedFields || !updatedFields.relatedInterests) {
+      setUpdatedFields({ ...updatedFields, relatedInterests: true });
+    }
+  };
 
   const handleNewClick = () => {
     setLoading(true);
+    setError(null);
+    setValidationErrors({});
     postEvent({
       name,
       description,
@@ -216,15 +260,21 @@ const EventSteps = ({ match }) => {
       coverPhoto,
     })
       .then((data) => {
-        postAttendant(data.event._id, {
-          event: data.event._id,
-          user: user._id,
-        })
-          .then((data) => history.push(`/events/${data.attendant.event}`))
-          .catch((error) => {
-            setError(error);
-            setLoading(false);
-          });
+        if (data.errors) {
+          setError('The form contains errors');
+          setValidationErrors(buildValidationErrorsObject(data.errors));
+          setLoading(false);
+        } else {
+          postAttendant(data.event._id, {
+            event: data.event._id,
+            user: user._id,
+          })
+            .then((data) => history.push(`/events/${data.attendant.event}`))
+            .catch((error) => {
+              setError(error);
+              setLoading(false);
+            });
+        }
       })
       .catch((error) => {
         setError(error);
@@ -234,6 +284,8 @@ const EventSteps = ({ match }) => {
 
   const handleEditClick = () => {
     setLoading(true);
+    setError(null);
+    setValidationErrors({});
     putEvent(id, {
       name,
       description,
@@ -243,7 +295,15 @@ const EventSteps = ({ match }) => {
       relatedInterests,
       coverPhoto,
     })
-      .then((data) => history.push(`/events/${data.event._id}`))
+      .then((data) => {
+        if (data.errors) {
+          setError('The form contains errors');
+          setValidationErrors(buildValidationErrorsObject(data.errors));
+          setLoading(false);
+        } else {
+          history.push(`/events/${data.event._id}`);
+        }
+      })
       .catch((error) => {
         setError(error);
         setLoading(false);
@@ -328,7 +388,12 @@ const EventSteps = ({ match }) => {
                 }}
                 disabled={
                   lastStep &&
-                  (loading || !name || !description || !startDate || !endDate)
+                  (!name ||
+                    !description ||
+                    !startDate ||
+                    !endDate ||
+                    loading ||
+                    !updatedFields)
                 }
               >
                 {lastStep ? (id ? 'Edit' : 'Create') : 'Next'}
@@ -337,6 +402,7 @@ const EventSteps = ({ match }) => {
           </Grid>
         </div>
       )}
+      {error && <ErrorSnackbar error={error} />}
     </Fragment>
   );
 };

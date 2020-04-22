@@ -4,20 +4,23 @@ import Grid from '@material-ui/core/Grid';
 
 import { getEvents } from '../../logic/api';
 
-import Style from '../Style/Style';
 import EventCard from '../EventCard/EventCard';
+import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
+
+import Style from '../Style/Style';
 
 const Home = () => {
   const style = Style();
 
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(null);
 
   useEffect(() => {
+    setError(null);
     getEvents()
       .then((data) => setEvents(data.events))
-      .catch((error) => setError(error.message))
+      .catch((error) => setError(error))
       .finally(() => setLoading(false));
   }, []);
 
@@ -32,6 +35,7 @@ const Home = () => {
           </Grid>
         ))}
       </Grid>
+      {error && <ErrorSnackbar error={error} />}
     </div>
   );
 };

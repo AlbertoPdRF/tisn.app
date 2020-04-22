@@ -9,7 +9,7 @@ import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 
 import { postUser } from '../../logic/api';
-import { buildValidationErrorsObject } from '../../logic/array';
+import { buildValidationErrorsObject } from '../../logic/utils';
 import { setUserSession } from '../../logic/auth';
 
 import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
@@ -123,12 +123,12 @@ const SignUpForm = () => {
               color="primary"
               onClick={() => handleSignUpClick()}
               disabled={
-                loading ||
                 !name ||
                 !email ||
                 !password ||
                 !confirmPassword ||
-                !dateOfBirth
+                !dateOfBirth ||
+                loading
               }
             >
               Sign up

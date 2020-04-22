@@ -8,7 +8,7 @@ import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 
-import { buildValidationErrorsObject } from '../../logic/array';
+import { buildValidationErrorsObject } from '../../logic/utils';
 import { logIn, setUserSession } from '../../logic/auth';
 
 import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
@@ -85,7 +85,7 @@ const LogInForm = () => {
               variant="contained"
               color="primary"
               onClick={() => handleClick()}
-              disabled={loading || !email || !password}
+              disabled={!email || !password || loading}
             >
               Log in
             </Button>
