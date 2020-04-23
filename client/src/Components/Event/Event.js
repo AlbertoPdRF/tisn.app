@@ -18,7 +18,7 @@ import {
   getComments,
   postComment,
 } from '../../logic/api';
-import { groupComments } from '../../logic/utils';
+import { groupComments, buildValidationErrorsObject } from '../../logic/utils';
 
 import { useUser } from '../UserProvider/UserProvider';
 
@@ -41,6 +41,7 @@ const Event = ({ match }) => {
   const [comments, setComments] = useState(null);
   const [updateComments, setUpdateComments] = useState(true);
   const [loading, setLoading] = useState(false);
+  const [validationErrors, setValidationErrors] = useState({});
   const [error, setError] = useState(null);
 
   const id = match.params.eventId;
@@ -48,27 +49,20 @@ const Event = ({ match }) => {
     setLoading(true);
     setError(null);
     getEvent(id)
-      .then((data) => {
-        if (data.errors) {
-          const error = data.errors[0];
-          setError(`${error.param} ${error.msg}`);
-          setLoading(false);
-        } else {
-          setEvent(data.event);
-        }
-      })
-      .catch((error) => setError(error.message))
+      .then((data) => setEvent(data.event))
+      .catch((error) => setError(error))
       .finally(() => setLoading(false));
   }, [id]);
 
   useEffect(() => {
     if (updateAttendants) {
+      setError(null);
       getAttendants(id)
         .then((data) => setAttendants(data.attendants))
-        .catch((error) => setError(error.message))
+        .catch((error) => setError(error))
         .finally(() => {
-          setLoading(false);
           setUpdateAttendants(false);
+          setLoading(false);
         });
     }
   }, [id, updateAttendants]);
@@ -77,16 +71,17 @@ const Event = ({ match }) => {
     if (updateComments) {
       getComments(id)
         .then((data) => setComments(groupComments(data.comments)))
-        .catch((error) => setError(error.message))
+        .catch((error) => setError(error))
         .finally(() => {
-          setLoading(false);
           setUpdateComments(false);
+          setLoading(false);
         });
     }
   }, [id, updateComments]);
 
   const handleAttendantsClick = () => {
     setLoading(true);
+    setError(null);
     if (userAttending) {
       const attendant = attendants.filter(
         (attendant) => attendant.user._id === user._id
@@ -99,7 +94,7 @@ const Event = ({ match }) => {
       deleteAttendant(id, attendant._id, nonPopulatedAttendant)
         .then(() => setUpdateAttendants(true))
         .catch((error) => {
-          setError(error.message);
+          setError(error);
           setLoading(false);
         });
     } else {
@@ -109,7 +104,7 @@ const Event = ({ match }) => {
       })
         .then(() => setUpdateAttendants(true))
         .catch((error) => {
-          setError(error.message);
+          setError(error);
           setLoading(false);
         });
     }
@@ -121,6 +116,8 @@ const Event = ({ match }) => {
     parentComment
   ) => {
     setLoading(true);
+    setError(null);
+    setValidationErrors({});
     const comment = {
       event: id,
       user: user._id,
@@ -131,12 +128,18 @@ const Event = ({ match }) => {
     }
 
     postComment(id, comment)
-      .then(() => {
-        setUpdateComments(true);
-        handleCommentContentChange('');
+      .then((data) => {
+        if (data.errors) {
+          setError('The form contains errors');
+          setValidationErrors(buildValidationErrorsObject(data.errors));
+          setLoading(false);
+        } else {
+          setUpdateComments(true);
+          handleCommentContentChange('');
+        }
       })
       .catch((error) => {
-        setError(error.message);
+        setError(error);
         setLoading(false);
       });
   };
@@ -200,6 +203,7 @@ const Event = ({ match }) => {
                           <CommentForm
                             parentComment={null}
                             handleClick={handleCommentsClick}
+                            validationErrors={validationErrors}
                           />
                         </Grid>
                         {comments &&
@@ -208,6 +212,7 @@ const Event = ({ match }) => {
                               <CommentCard
                                 commentsGroup={commentsGroup}
                                 handleClick={handleCommentsClick}
+                                validationErrors={validationErrors}
                               />
                             </Grid>
                           ))}

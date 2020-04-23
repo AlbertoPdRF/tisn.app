@@ -19,7 +19,7 @@ import { getUser, putUser, deleteUser, getInterests } from '../../logic/api';
 import { buildValidationErrorsObject } from '../../logic/utils';
 import { logOut } from '../../logic/auth';
 import { inputDate } from '../../logic/date-time';
-import { uploadFile } from '../../logic/file-upload';
+import { upload } from '../../logic/upload';
 
 import { useConfirm } from 'material-ui-confirm';
 
@@ -62,14 +62,7 @@ const UserTabs = ({ match }) => {
         setLoading(false);
       } else if (currentUser.admin) {
         getUser(userId)
-          .then((data) => {
-            if (data.errors) {
-              const error = data.errors[0];
-              setError(`${error.param} ${error.msg}`);
-            } else {
-              setUser(data.user);
-            }
-          })
+          .then((data) => setUser(data.user))
           .catch((error) => setError(error))
           .finally(() => setLoading(false));
       } else {
@@ -132,14 +125,22 @@ const UserTabs = ({ match }) => {
     }
   };
 
-  const handleFileUpload = (file) => {
+  const handleUpload = (file) => {
     if (file) {
       setLoading(true);
-      uploadFile(file)
+      setError(null);
+      setValidationErrors({});
+      upload(file)
         .then((data) => {
-          setAvatar(data.uploadedFile.secure_url);
-          if (!updatedFields || !updatedFields.avatar) {
-            setUpdatedFields({ ...updatedFields, avatar: true });
+          if (data.errors) {
+            const error = data.errors[0];
+            setError(`${error.param.split('.')[1]} ${error.msg}`);
+            setValidationErrors(buildValidationErrorsObject(data.errors));
+          } else {
+            setAvatar(data.uploadedFile.secure_url);
+            if (!updatedFields || !updatedFields.avatar) {
+              setUpdatedFields({ ...updatedFields, avatar: true });
+            }
           }
         })
         .catch((error) => setError(error))
@@ -245,7 +246,7 @@ const UserTabs = ({ match }) => {
                       dateOfBirth={dateOfBirth}
                       handleDateOfBirthChange={handleDateOfBirthChange}
                       avatar={avatar}
-                      handleFileUpload={handleFileUpload}
+                      handleUpload={handleUpload}
                       validationErrors={validationErrors}
                     />
                   </TabPanel>

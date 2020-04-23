@@ -58,13 +58,7 @@ const NavigationBarAndDrawer = (props) => {
   useEffect(() => {
     setError(null);
     getUser()
-      .then((data) => {
-        if (data.errors) {
-          setError('Something went wrong');
-        } else {
-          setUser(data.user);
-        }
-      })
+      .then((data) => setUser(data.user))
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
   }, [setUser]);

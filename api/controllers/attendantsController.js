@@ -3,49 +3,23 @@ const Attendant = require('../models/Attendant');
 exports.get = (req, res, next) => {
   return Attendant.find({ event: req.params.eventId })
     .populate('user', 'name avatar')
-    .then((attendants) => {
-      if (!attendants) {
-        return res.sendStatus(400);
-      }
-
-      res.json({ attendants });
-    });
+    .then((attendants) => res.json({ attendants }));
 };
 
 exports.post = (req, res, next) => {
-  const {
-    body: { attendant },
-  } = req;
+  const attendant = new Attendant(req.body.attendant);
 
-  if (!attendant.event) {
-    return res.status(422).json({
-      errors: {
-        event: 'is required',
-      },
-    });
-  }
-
-  if (!attendant.user) {
-    return res.status(422).json({
-      errors: {
-        user: 'is required',
-      },
-    });
-  }
-
-  const finalAttendant = new Attendant(attendant);
-
-  return finalAttendant
-    .save()
-    .then(() => res.json({ attendant: finalAttendant }));
+  return attendant.save().then(() => res.json({ attendant }));
 };
 
 exports.deleteId = (req, res, next) => {
-  return Attendant.findByIdAndRemove(req.params.id).then((attendant) => {
-    if (!attendant) {
-      return res.sendStatus(400);
-    }
+  return Attendant.findByIdAndRemove(req.params.attendantId).then(
+    (attendant) => {
+      if (!attendant) {
+        return res.sendStatus(404);
+      }
 
-    res.json({ attendant });
-  });
+      res.json({ attendant });
+    }
+  );
 };

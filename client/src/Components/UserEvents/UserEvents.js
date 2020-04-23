@@ -42,20 +42,15 @@ const UserEvents = () => {
     setError(null);
     getUserEvents()
       .then((data) => {
-        if (data.errors) {
-          const error = data.errors[0];
-          setError(`${error.param} ${error.msg}`);
-        } else {
-          const now = new Date();
+        const now = new Date();
 
-          const attendingEvents = classifyEvents(data.events.attending, now);
-          setCurrentAttendingEvents(attendingEvents.current);
-          setPastAttendingEvents(attendingEvents.past);
+        const attendingEvents = classifyEvents(data.events.attending, now);
+        setCurrentAttendingEvents(attendingEvents.current);
+        setPastAttendingEvents(attendingEvents.past);
 
-          const createdEvents = classifyEvents(data.events.created, now);
-          setCurrentCreatedEvents(createdEvents.current);
-          setPastCreatedEvents(createdEvents.past);
-        }
+        const createdEvents = classifyEvents(data.events.created, now);
+        setCurrentCreatedEvents(createdEvents.current);
+        setPastCreatedEvents(createdEvents.past);
       })
       .catch((error) => setError(error))
       .finally(() => {
@@ -78,7 +73,7 @@ const UserEvents = () => {
         }
       })
       .catch((error) => {
-        setError(error.message);
+        setError(error);
         setLoading(false);
       });
   };

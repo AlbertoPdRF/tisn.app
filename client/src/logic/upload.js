@@ -1,7 +1,7 @@
 import { BASE_API_URL } from './env';
 import { accessToken } from './auth';
 
-export const uploadFile = (file) => {
+export const upload = (file) => {
   const formData = new FormData();
   formData.append('file', file);
 
@@ -11,13 +11,5 @@ export const uploadFile = (file) => {
     headers: new Headers({
       Authorization: `Bearer ${accessToken()}`,
     }),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        throw new Error(response.statusText);
-      }
-
-      return response;
-    })
-    .then((response) => response.json());
+  }).then((response) => response.json());
 };

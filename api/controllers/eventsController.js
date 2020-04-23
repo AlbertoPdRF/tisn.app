@@ -17,13 +17,9 @@ exports.get = (req, res, next) => {
 };
 
 exports.post = (req, res, next) => {
-  const {
-    body: { event },
-  } = req;
+  const event = new Event(req.body.event);
 
-  const finalEvent = new Event(event);
-
-  return finalEvent.save().then(() => res.json({ event: finalEvent }));
+  return event.save().then(() => res.json({ event }));
 };
 
 exports.getId = (req, res, next) => {

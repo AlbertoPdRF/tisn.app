@@ -15,7 +15,7 @@ const UserForm = (props) => {
     dateOfBirth,
     handleDateOfBirthChange,
     avatar,
-    handleFileUpload,
+    handleUpload,
     validationErrors,
   } = props;
 
@@ -40,10 +40,10 @@ const UserForm = (props) => {
             accept="image/*"
             label="Avatar"
             variant="outlined"
-            onChange={(event) => handleFileUpload(event.target.files[0])}
+            onChange={(event) => handleUpload(event.target.files[0])}
             InputLabelProps={{ shrink: true }}
-            error={!!validationErrors.avatar}
-            helperText={validationErrors.avatar}
+            error={!!validationErrors.fileType || !!validationErrors.avatar}
+            helperText={validationErrors.fileType || validationErrors.avatar}
           />
         </Grid>
         <Grid item>

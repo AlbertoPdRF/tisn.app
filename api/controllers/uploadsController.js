@@ -2,8 +2,6 @@ const path = require('path');
 const cloudinary = require('cloudinary').v2;
 const fs = require('fs');
 
-const uploadsPath = path.join(__dirname, '../uploads');
-
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
@@ -21,12 +19,19 @@ exports.post = async (req, res, next) => {
     extension !== '.gif' &&
     extension !== '.svg'
   ) {
-    res.status(400);
-    res.json({ error: 'invalid file type' });
+    return res.status(422).json({
+      errors: [
+        {
+          param: 'upload.fileType',
+          msg: 'is invalid',
+        },
+      ],
+    });
   }
 
   const md5CheckSum = file.md5;
   const fileName = md5CheckSum + extension;
+  const uploadsPath = path.join(__dirname, '../uploads');
   const destination = path.join(uploadsPath, fileName);
   try {
     await file.mv(destination);

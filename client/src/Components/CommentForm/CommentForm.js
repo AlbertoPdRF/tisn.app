@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import Style from '../Style/Style';
 
 const CommentForm = (props) => {
-  const { parentComment, handleClick } = props;
+  const { parentComment, handleClick, validationErrors } = props;
 
   const style = Style();
 
@@ -40,6 +40,8 @@ const CommentForm = (props) => {
           </Button>
         ),
       }}
+      error={!!validationErrors.content}
+      helperText={validationErrors.content}
     />
   );
 };

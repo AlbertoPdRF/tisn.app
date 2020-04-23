@@ -16,7 +16,7 @@ const EventForm = (props) => {
     endDate,
     handleEndDateChange,
     coverPhoto,
-    handleFileUpload,
+    handleUpload,
     validationErrors,
   } = props;
 
@@ -37,10 +37,12 @@ const EventForm = (props) => {
             accept="image/*"
             label="Cover photo"
             variant="outlined"
-            onChange={(event) => handleFileUpload(event.target.files[0])}
+            onChange={(event) => handleUpload(event.target.files[0])}
             InputLabelProps={{ shrink: true }}
-            error={!!validationErrors.coverPhoto}
-            helperText={validationErrors.coverPhoto}
+            error={!!validationErrors.fileType || !!validationErrors.coverPhoto}
+            helperText={
+              validationErrors.fileType || validationErrors.coverPhoto
+            }
           />
         </Grid>
         <Grid item>

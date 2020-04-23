@@ -8,16 +8,10 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
-import {
-  getInterests,
-  getEvent,
-  postEvent,
-  putEvent,
-  postAttendant,
-} from '../../logic/api';
+import { getInterests, getEvent, postEvent, putEvent } from '../../logic/api';
 import { buildValidationErrorsObject } from '../../logic/utils';
 import { inputDateTime } from '../../logic/date-time';
-import { uploadFile } from '../../logic/file-upload';
+import { upload } from '../../logic/upload';
 
 import { useUser } from '../UserProvider/UserProvider';
 
@@ -57,25 +51,19 @@ const EventSteps = ({ match }) => {
       if (user) {
         getEvent(id)
           .then((data) => {
-            if (data.errors) {
-              const error = data.errors[0];
-              setError(`${error.param} ${error.msg}`);
-              history.push('/events/new');
+            if (!(user._id === data.event.createdBy || user.admin)) {
+              history.push(`/events/${id}`);
             } else {
-              if (!(user._id === data.event.createdBy || user.admin)) {
-                history.push(`/events/${id}`);
-              } else {
-                setEvent(data.event);
-                setName(data.event.name);
-                setDescription(data.event.description);
-                setStartDate(inputDateTime(data.event.startDate));
-                setEndDate(inputDateTime(data.event.endDate));
-                setCreatedBy(data.event.createdBy);
-                setCoverPhoto(data.event.coverPhoto);
-              }
+              setEvent(data.event);
+              setName(data.event.name);
+              setDescription(data.event.description);
+              setStartDate(inputDateTime(data.event.startDate));
+              setEndDate(inputDateTime(data.event.endDate));
+              setCreatedBy(data.event.createdBy);
+              setCoverPhoto(data.event.coverPhoto);
             }
           })
-          .catch((error) => setError(error.message))
+          .catch((error) => setError(error))
           .finally(() => setLoading(false));
       }
     } else {
@@ -129,7 +117,7 @@ const EventSteps = ({ match }) => {
             endDate={endDate}
             handleEndDateChange={handleEndDateChange}
             coverPhoto={coverPhoto}
-            handleFileUpload={handleFileUpload}
+            handleUpload={handleUpload}
             validationErrors={validationErrors}
           />
         );
@@ -224,14 +212,22 @@ const EventSteps = ({ match }) => {
     }
   };
 
-  const handleFileUpload = (file) => {
+  const handleUpload = (file) => {
     if (file) {
       setLoading(true);
-      uploadFile(file)
+      setError(null);
+      setValidationErrors({});
+      upload(file)
         .then((data) => {
-          setCoverPhoto(data.uploadedFile.secure_url);
-          if (!updatedFields || !updatedFields.coverPhoto) {
-            setUpdatedFields({ ...updatedFields, coverPhoto: true });
+          if (data.errors) {
+            const error = data.errors[0];
+            setError(`${error.param.split('.')[1]} ${error.msg}`);
+            setValidationErrors(buildValidationErrorsObject(data.errors));
+          } else {
+            setCoverPhoto(data.uploadedFile.secure_url);
+            if (!updatedFields || !updatedFields.coverPhoto) {
+              setUpdatedFields({ ...updatedFields, coverPhoto: true });
+            }
           }
         })
         .catch((error) => setError(error))
@@ -265,15 +261,7 @@ const EventSteps = ({ match }) => {
           setValidationErrors(buildValidationErrorsObject(data.errors));
           setLoading(false);
         } else {
-          postAttendant(data.event._id, {
-            event: data.event._id,
-            user: user._id,
-          })
-            .then((data) => history.push(`/events/${data.attendant.event}`))
-            .catch((error) => {
-              setError(error);
-              setLoading(false);
-            });
+          history.push(`/events/${data.event._id}`);
         }
       })
       .catch((error) => {

@@ -3,11 +3,26 @@ const validator = require('express-validator');
 const User = require('../models/User');
 const Interest = require('../models/Interest');
 const Event = require('../models/Event');
+const Attendant = require('../models/Attendant');
+const Comment = require('../models/Comment');
+const Category = require('../models/Category');
 
-const buildValidator = (type, param, logIn = false) => {
-  const basic = validator.check(param).trim();
-  const escaped = validator.check(param).trim().escape();
-  const required = validator
+const buildValidator = (type, param, optional = false) => {
+  const basicOptional = validator
+    .check(param)
+    .trim()
+    .optional({ checkFalsy: true });
+  const basicRequired = validator
+    .check(param)
+    .trim()
+    .notEmpty()
+    .withMessage('is required');
+  const escapedOptional = validator
+    .check(param)
+    .trim()
+    .escape()
+    .optional({ checkFalsy: true });
+  const escapedRequired = validator
     .check(param)
     .trim()
     .escape()
@@ -16,19 +31,21 @@ const buildValidator = (type, param, logIn = false) => {
 
   switch (type) {
     case 'name':
-      return required
+      return escapedRequired
         .isLength({ max: 20 })
         .withMessage('too long')
         .matches(/^[a-z ]+$/i)
         .withMessage('must have letters (and spaces) only');
     case 'email':
-      return required
+      return escapedRequired
         .isEmail()
         .withMessage('is invalid')
+        .isLength({ max: 50 })
+        .withMessage('too long')
         .normalizeEmail()
         .custom((email, { req }) =>
           User.findOne({ email }).then((data) => {
-            if (!logIn && data && data._id != req.params.userId) {
+            if (!optional && data && data._id != req.params.userId) {
               throw new Error('a user with this email already exists');
             }
 
@@ -36,11 +53,11 @@ const buildValidator = (type, param, logIn = false) => {
           })
         );
     case 'password':
-      return required
-        .isLength({ min: logIn ? 0 : 8 })
+      return escapedRequired
+        .isLength({ min: optional ? 0 : 8 })
         .withMessage('must be at least 8 characters long');
     case 'confirmPassword':
-      return required.custom((confirmPassword, { req }) => {
+      return escapedRequired.custom((confirmPassword, { req }) => {
         if (confirmPassword !== req.body.user.password) {
           throw new Error("doesn't match");
         }
@@ -48,7 +65,7 @@ const buildValidator = (type, param, logIn = false) => {
         return confirmPassword;
       });
     case 'date':
-      return required
+      return escapedRequired
         .isISO8601()
         .withMessage('is invalid')
         .toDate()
@@ -69,62 +86,64 @@ const buildValidator = (type, param, logIn = false) => {
               throw new Error('must be in the future');
             }
 
-            if (param.includes('end') && date < req.body.event.startDate) {
+            if (param.includes('end') && date <= req.body.event.startDate) {
               throw new Error('must be after start date');
             }
           }
 
           return date;
         });
-    case 'userId':
-      return escaped
+    case 'id':
+      return (optional ? escapedOptional : escapedRequired)
         .isMongoId()
         .withMessage('is invalid')
-        .custom((userId) =>
-          User.findById(userId).then((data) => {
+        .custom((id) => {
+          let model;
+          switch (param) {
+            case 'userId':
+            case 'attendant.user':
+            case 'comment.user':
+              model = User;
+              break;
+            case 'user.interests.*._id':
+            case 'event.relatedInterests.*._id':
+              model = Interest;
+              break;
+            case 'eventId':
+            case 'attendant.event':
+            case 'comment.event':
+              model = Event;
+              break;
+            case 'attendantId':
+              model = Attendant;
+              break;
+            case 'comment.parentComment':
+              model = Comment;
+              break;
+            case 'interest.category':
+              model = Category;
+              break;
+            default:
+              throw new Error('is invalid');
+          }
+
+          return model.findById(id).then((data) => {
             if (!data) {
               throw new Error("doesn't exist");
             }
 
-            return userId;
-          })
-        );
-    case 'image':
-      return basic
+            return id;
+          });
+        });
+    case 'imageUrl':
+      return (optional ? basicOptional : basicRequired)
         .optional({ checkFalsy: true })
         .isURL()
         .withMessage('is invalid');
-    case 'interests':
-      return escaped
-        .optional({ checkFalsy: true })
-        .isMongoId()
-        .withMessage('is invalid')
-        .custom((interest) =>
-          Interest.findById(interest).then((data) => {
-            if (!data) {
-              throw new Error("doesn't exist");
-            }
-
-            return interest;
-          })
-        );
     case 'text':
-      return required;
-    case 'eventId':
-      return escaped
-        .isMongoId()
-        .withMessage('is invalid')
-        .custom((eventId) =>
-          Event.findById(eventId).then((data) => {
-            if (!data) {
-              throw new Error("doesn't exist");
-            }
-
-            return eventId;
-          })
-        );
+      return escapedRequired;
     default:
-      return escaped;
+      return escapedRequired;
   }
 };
 
@@ -141,15 +160,15 @@ const createValidation = (route) => {
     case 'usersGetId':
     case 'usersDeleteId':
     case 'usersGetEvents':
-      return [buildValidator('userId', 'userId')];
+      return [buildValidator('id', 'userId')];
     case 'usersPutId':
       return [
-        buildValidator('userId', 'userId'),
+        buildValidator('id', 'userId'),
         buildValidator('name', 'user.name'),
         buildValidator('email', 'user.email'),
         buildValidator('date', 'user.dateOfBirth'),
-        buildValidator('image', 'user.avatar'),
-        buildValidator('interests', 'user.interests.*._id'),
+        buildValidator('imageUrl', 'user.avatar', true),
+        buildValidator('id', 'user.interests.*._id', true),
       ];
     case 'usersLogIn':
       return [
@@ -163,22 +182,50 @@ const createValidation = (route) => {
         buildValidator('date', 'event.startDate'),
         buildValidator('date', 'event.endDate'),
         buildValidator('userId', 'event.createdBy'),
-        buildValidator('interests', 'event.relatedInterests.*._id'),
-        buildValidator('image', 'event.coverPhoto'),
+        buildValidator('id', 'event.relatedInterests.*._id', true),
+        buildValidator('imageUrl', 'event.coverPhoto', true),
       ];
     case 'eventsGetId':
     case 'eventsDeleteId':
-      return [buildValidator('eventId', 'eventId')];
+      return [buildValidator('id', 'eventId')];
     case 'eventsPutId':
       return [
-        buildValidator('eventId', 'eventId'),
+        buildValidator('id', 'eventId'),
         buildValidator('text', 'event.name'),
         buildValidator('text', 'event.description'),
         buildValidator('date', 'event.startDate'),
         buildValidator('date', 'event.endDate'),
         buildValidator('userId', 'event.createdBy'),
-        buildValidator('interests', 'event.relatedInterests.*._id'),
-        buildValidator('image', 'event.coverPhoto'),
+        buildValidator('id', 'event.relatedInterests.*._id', true),
+        buildValidator('imageUrl', 'event.coverPhoto', true),
+      ];
+    case 'attendantsGet':
+    case 'commentsGet':
+      return [buildValidator('id', 'eventId')];
+    case 'attendantsPost':
+      return [
+        buildValidator('id', 'eventId'),
+        buildValidator('id', 'attendant.event'),
+        buildValidator('id', 'attendant.user'),
+      ];
+    case 'attendantsDeleteId':
+      return [
+        buildValidator('id', 'eventId'),
+        buildValidator('id', 'attendantId'),
+      ];
+    case 'commentsPost':
+      return [
+        buildValidator('id', 'eventId'),
+        buildValidator('id', 'comment.event'),
+        buildValidator('id', 'comment.user'),
+        buildValidator('text', 'comment.content'),
+        buildValidator('id', 'comment.parentComment', true),
+      ];
+    case 'interestsPost':
+      return [
+        buildValidator('name', 'interest.name'),
+        buildValidator('imageUrl', 'interest.avatar'),
+        buildValidator('id', 'interest.category'),
       ];
     default:
       return [];

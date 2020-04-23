@@ -17,7 +17,7 @@ import CommentForm from '../CommentForm/CommentForm';
 import Style from '../Style/Style';
 
 const CommentCard = (props) => {
-  const { commentsGroup, handleClick } = props;
+  const { commentsGroup, handleClick, validationErrors } = props;
 
   const style = Style();
 
@@ -82,6 +82,7 @@ const CommentCard = (props) => {
               <CommentForm
                 parentComment={commentsGroup.comment._id}
                 handleClick={handleClick}
+                validationErrors={validationErrors}
               />
             </Grid>
           </Grid>

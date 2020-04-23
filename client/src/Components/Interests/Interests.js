@@ -29,7 +29,7 @@ const Interests = () => {
   useEffect(() => {
     getInterests()
       .then((data) => setInterests(groupInterests(data.interests)))
-      .catch((error) => setError(error.message))
+      .catch((error) => setError(error))
       .finally(() => setLoading(false));
   }, []);
 

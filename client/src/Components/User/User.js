@@ -31,15 +31,7 @@ const User = ({ match }) => {
   useEffect(() => {
     setError(null);
     getUser(userId)
-      .then((data) => {
-        if (data.errors) {
-          const error = data.errors[0];
-          setError(`${error.param} ${error.msg}`);
-          setLoading(false);
-        } else {
-          setUser(data.user);
-        }
-      })
+      .then((data) => setUser(data.user))
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
   }, [userId]);

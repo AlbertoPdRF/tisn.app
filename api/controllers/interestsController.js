@@ -5,8 +5,8 @@ exports.get = (req, res, next) => {
     .populate('category')
     .sort('name')
     .then((interests) => {
-      if (!interests) {
-        return res.sendStatus(400);
+      if (interests.length === 0) {
+        return res.sendStatus(404);
       }
 
       res.json({ interests });
@@ -14,47 +14,7 @@ exports.get = (req, res, next) => {
 };
 
 exports.post = (req, res, next) => {
-  const {
-    body: { interest },
-  } = req;
+  const interest = new Interest(req.body.interest);
 
-  if (!interest.name) {
-    return res.status(422).json({
-      errors: {
-        name: 'is required',
-      },
-    });
-  }
-
-  if (!interest.avatar) {
-    return res.status(422).json({
-      errors: {
-        avatar: 'is required',
-      },
-    });
-  }
-
-  if (!interest.category) {
-    return res.status(422).json({
-      errors: {
-        category: 'is required',
-      },
-    });
-  }
-
-  const finalInterest = new Interest(interest);
-
-  return finalInterest.save().then(() => res.json({ interest: finalInterest }));
-};
-
-exports.getId = (req, res, next) => {
-  return Interest.findById(req.params.id)
-    .populate('category')
-    .then((interest) => {
-      if (!interest) {
-        return res.sendStatus(400);
-      }
-
-      res.json({ interest });
-    });
+  return interest.save().then(() => res.json({ interest }));
 };
