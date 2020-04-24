@@ -1,4 +1,7 @@
 const Attendant = require('../models/Attendant');
+const Event = require('../models/Event');
+
+const async = require('async');
 
 exports.get = (req, res, next) => {
   return Attendant.find({ event: req.params.eventId })
@@ -7,9 +10,44 @@ exports.get = (req, res, next) => {
 };
 
 exports.post = (req, res, next) => {
-  const attendant = new Attendant(req.body.attendant);
+  const {
+    body: { attendant },
+  } = req;
 
-  return attendant.save().then(() => res.json({ attendant }));
+  async.parallel(
+    {
+      event: (callback) => Event.findById(attendant.event).exec(callback),
+      attendants: (callback) =>
+        Attendant.find({ event: attendant.event }).exec(callback),
+    },
+    (error, results) => {
+      if (error) {
+        return next(error);
+      }
+
+      if (!results) {
+        return res.sendStatus(404);
+      }
+
+      if (results.attendants.length >= results.event.attendantsLimit) {
+        return res.status(400).json({
+          errors: [
+            {
+              param: 'Attendants limit',
+              value: results.event.attendantsLimit,
+              msg: 'already met',
+            },
+          ],
+        });
+      }
+
+      const finalAttendant = new Attendant(attendant);
+
+      return finalAttendant
+        .save()
+        .then(() => res.json({ attendant: finalAttendant }));
+    }
+  );
 };
 
 exports.deleteId = (req, res, next) => {

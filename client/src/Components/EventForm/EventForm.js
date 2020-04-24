@@ -17,6 +17,8 @@ const EventForm = (props) => {
     handleEndDateChange,
     coverPhoto,
     handleUpload,
+    attendantsLimit,
+    handleAttendantsLimitChange,
     validationErrors,
   } = props;
 
@@ -93,6 +95,23 @@ const EventForm = (props) => {
             InputLabelProps={{ shrink: true }}
             error={!!validationErrors.endDate}
             helperText={validationErrors.endDate}
+          />
+        </Grid>
+        <Grid item>
+          <TextField
+            className={style.formInput}
+            type="number"
+            min="2"
+            step="1"
+            label="Attendants limit"
+            variant="outlined"
+            value={attendantsLimit}
+            onChange={(event) =>
+              handleAttendantsLimitChange(event.target.value)
+            }
+            InputLabelProps={{ shrink: true }}
+            error={!!validationErrors.attendantsLimit}
+            helperText={validationErrors.attendantsLimit}
           />
         </Grid>
       </Grid>

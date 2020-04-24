@@ -154,6 +154,9 @@ const Event = ({ match }) => {
     attendants &&
     attendants.some((attendant) => attendant.user._id === user._id);
 
+  const limitMet =
+    event && attendants && attendants.length >= event.attendantsLimit;
+
   return (
     <Fragment>
       {loading && <LinearProgress />}
@@ -189,6 +192,7 @@ const Event = ({ match }) => {
                       userAttending={userAttending}
                       handleClick={handleAttendantsClick}
                       attendants={attendants}
+                      limitMet={limitMet}
                     />
                   </TabPanel>
                   <TabPanel value={value} index={1}>
@@ -222,7 +226,7 @@ const Event = ({ match }) => {
                         <Typography variant="body1">
                           Only attendants can read and post comments.
                         </Typography>
-                        {futureEvent && (
+                        {futureEvent && !limitMet && (
                           <Button
                             style={{ marginTop: '16px' }}
                             variant="contained"

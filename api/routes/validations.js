@@ -142,6 +142,11 @@ const buildValidator = (type, param, optional = false) => {
         .withMessage('is invalid');
     case 'text':
       return escapedRequired;
+    case 'int':
+      return escapedRequired
+        .isInt({ min: 2 })
+        .withMessage('must be at least 2')
+        .toInt();
     default:
       return escapedRequired;
   }
@@ -184,6 +189,7 @@ const createValidation = (route) => {
         buildValidator('userId', 'event.createdBy'),
         buildValidator('id', 'event.relatedInterests.*._id', true),
         buildValidator('imageUrl', 'event.coverPhoto', true),
+        buildValidator('int', 'event.attendantsLimit'),
       ];
     case 'eventsGetId':
     case 'eventsDeleteId':
@@ -198,6 +204,7 @@ const createValidation = (route) => {
         buildValidator('userId', 'event.createdBy'),
         buildValidator('id', 'event.relatedInterests.*._id', true),
         buildValidator('imageUrl', 'event.coverPhoto', true),
+        buildValidator('int', 'event.attendantsLimit'),
       ];
     case 'attendantsGet':
     case 'commentsGet':

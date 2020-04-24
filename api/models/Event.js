@@ -11,6 +11,7 @@ const EventSchema = new Schema(
     createdBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     relatedInterests: [{ type: Schema.Types.ObjectId, ref: 'Interest' }],
     coverPhoto: { type: String },
+    attendantsLimit: { type: Number, required: true },
   },
   { timestamps: true }
 );

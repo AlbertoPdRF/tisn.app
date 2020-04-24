@@ -38,6 +38,7 @@ const EventSteps = ({ match }) => {
   const [interests, setInterests] = useState(null);
   const [relatedInterests, setRelatedInterests] = useState([]);
   const [coverPhoto, setCoverPhoto] = useState('');
+  const [attendantsLimit, setAttendantsLimit] = useState(0);
   const [updatedFields, setUpdatedFields] = useState(null);
   const [loading, setLoading] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
@@ -61,6 +62,7 @@ const EventSteps = ({ match }) => {
               setEndDate(inputDateTime(data.event.endDate));
               setCreatedBy(data.event.createdBy);
               setCoverPhoto(data.event.coverPhoto);
+              setAttendantsLimit(data.event.attendantsLimit);
             }
           })
           .catch((error) => setError(error))
@@ -73,6 +75,7 @@ const EventSteps = ({ match }) => {
       setEndDate('');
       setCreatedBy('');
       setCoverPhoto('');
+      setAttendantsLimit(0);
       setLoading(false);
     }
   }, [id, user, interests, history]);
@@ -118,6 +121,8 @@ const EventSteps = ({ match }) => {
             handleEndDateChange={handleEndDateChange}
             coverPhoto={coverPhoto}
             handleUpload={handleUpload}
+            attendantsLimit={attendantsLimit}
+            handleAttendantsLimitChange={handleAttendantsLimitChange}
             validationErrors={validationErrors}
           />
         );
@@ -235,6 +240,13 @@ const EventSteps = ({ match }) => {
     }
   };
 
+  const handleAttendantsLimitChange = (attendantsLimit) => {
+    setAttendantsLimit(attendantsLimit);
+    if (!updatedFields || !updatedFields.attendantsLimit) {
+      setUpdatedFields({ ...updatedFields, attendantsLimit: true });
+    }
+  };
+
   const handleRelatedInterestsChange = (relatedInterests) => {
     setRelatedInterests(relatedInterests);
     if (!updatedFields || !updatedFields.relatedInterests) {
@@ -254,6 +266,7 @@ const EventSteps = ({ match }) => {
       createdBy: user._id,
       relatedInterests,
       coverPhoto,
+      attendantsLimit,
     })
       .then((data) => {
         if (data.errors) {
@@ -282,6 +295,7 @@ const EventSteps = ({ match }) => {
       createdBy,
       relatedInterests,
       coverPhoto,
+      attendantsLimit,
     })
       .then((data) => {
         if (data.errors) {

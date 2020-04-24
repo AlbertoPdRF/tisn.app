@@ -21,6 +21,7 @@ const EventDetails = (props) => {
     userAttending,
     handleClick,
     attendants,
+    limitMet,
   } = props;
 
   const history = useHistory();
@@ -61,13 +62,20 @@ const EventDetails = (props) => {
               </Typography>
             ))}
           {futureEvent && (
-            <Button
-              variant={userAttending ? 'outlined' : 'contained'}
-              color={userAttending ? 'secondary' : 'primary'}
-              onClick={() => handleClick()}
-            >
-              {userAttending ? "I won't attend" : 'I will attend!'}
-            </Button>
+            <Fragment>
+              {(!limitMet || userAttending) && (
+                <Button
+                  variant={userAttending ? 'outlined' : 'contained'}
+                  color={userAttending ? 'secondary' : 'primary'}
+                  onClick={() => handleClick()}
+                >
+                  {userAttending ? "I won't attend" : 'I will attend!'}
+                </Button>
+              )}
+              <Typography gutterBottom variant="body1" color="textSecondary">
+                Attendants limit: {event.attendantsLimit}
+              </Typography>
+            </Fragment>
           )}
         </div>
         <Typography gutterBottom variant="h5" component="h3">
