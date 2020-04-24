@@ -29,6 +29,18 @@ exports.post = (req, res, next) => {
         return res.sendStatus(404);
       }
 
+      if (results.event.startDate < new Date()) {
+        return res.status(400).json({
+          errors: [
+            {
+              param: 'Start date',
+              value: results.event.startDate,
+              msg: 'already in the past',
+            },
+          ],
+        });
+      }
+
       if (results.attendants.length >= results.event.attendantsLimit) {
         return res.status(400).json({
           errors: [
