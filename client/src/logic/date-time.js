@@ -7,7 +7,7 @@ export const formatDate = (dateString) =>
   format(parseISO(dateString), 'MMM d, yyyy');
 
 export const inputDateTime = (dateString) =>
-  format(parseISO(dateString), "yyyy-MM-dd'T'hh:mm");
+  format(parseISO(dateString), "yyyy-MM-dd'T'HH:mm");
 
 export const formatDateTime = (dateTimeString) =>
   format(parseISO(dateTimeString), "H:mm'\n'MMM d, yyyy");
