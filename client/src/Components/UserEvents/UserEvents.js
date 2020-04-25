@@ -1,11 +1,12 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { useHistory } from 'react-router-dom';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
-import Link from '@material-ui/core/Link';
+import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 import AppBar from '@material-ui/core/AppBar';
@@ -26,6 +27,7 @@ import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 import Style from '../Style/Style';
 
 const UserEvents = () => {
+  const history = useHistory();
   const style = Style();
   const user = useUser();
 
@@ -91,16 +93,19 @@ const UserEvents = () => {
             handleDeleteClick={handleDeleteClick}
           />
         ) : (
-          <div className={style.center}>
-            <Typography variant="body1">
+          <div className={`${style.fullWidth} ${style.center}`}>
+            <Typography gutterBottom variant="body1">
               You have no {status} {type} events.
             </Typography>
-            <Link
-              href={`/events${type === 'attending' ? '' : '/new'}`}
-              variant="body1"
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() =>
+                history.push(`/events${type === 'attending' ? '' : '/new'}`)
+              }
             >
               {type === 'attending' ? 'Browse events!' : 'Create a new event!'}
-            </Link>
+            </Button>
           </div>
         )}
       </ExpansionPanelDetails>

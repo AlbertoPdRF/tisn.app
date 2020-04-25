@@ -166,7 +166,7 @@ const Event = ({ match }) => {
             <Grid item>
               <Typography variant="h2">Event</Typography>
             </Grid>
-            <Grid item style={{ width: '100%' }}>
+            <Grid item className={style.fullWidth}>
               <Paper>
                 <AppBar position="static" color="default">
                   <Tabs
@@ -223,12 +223,11 @@ const Event = ({ match }) => {
                       </Grid>
                     ) : (
                       <div className={style.center}>
-                        <Typography variant="body1">
+                        <Typography gutterBottom variant="body1">
                           Only attendants can read and post comments.
                         </Typography>
                         {futureEvent && !limitMet && (
                           <Button
-                            style={{ marginTop: '16px' }}
                             variant="contained"
                             color="primary"
                             onClick={() => handleAttendantsClick()}
