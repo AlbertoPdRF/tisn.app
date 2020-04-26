@@ -5,7 +5,7 @@ import GitHubIcon from '@material-ui/icons/GitHub';
 
 const WelcomeFooter = () => {
   return (
-    <Grid container spacing={1}>
+    <Grid container justify="flex-start" spacing={1}>
       <Grid item>
         <Link
           href="https://github.com/AlbertoPdRF/tisn"

@@ -11,7 +11,7 @@ const Welcome = () => {
 
   return (
     <div className={`${style.root} ${style.minHeight}`}>
-      <Grid container spacing={1} direction="column" className={style.grow}>
+      <Grid container className={style.grow} direction="column" spacing={1}>
         <Grid item>
           <WelcomeToolbar />
         </Grid>

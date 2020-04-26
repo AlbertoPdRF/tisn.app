@@ -73,7 +73,8 @@ const Interests = () => {
             <Typography variant="h2">Interests</Typography>
           </Grid>
           <Grid item>
-            {interests &&
+            {user &&
+              interests &&
               interests.map((interestsGroup) => (
                 <ExpansionPanel key={interestsGroup.category._id}>
                   <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>

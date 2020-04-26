@@ -7,7 +7,7 @@ const WelcomeToolbar = () => {
   const history = useHistory();
 
   return (
-    <Grid container alignItems="center" justify="flex-end" spacing={1}>
+    <Grid container justify="flex-end" spacing={1}>
       <Grid item>
         <Button
           variant="outlined"
