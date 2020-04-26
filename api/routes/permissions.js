@@ -1,17 +1,33 @@
 const permissions = (req, res, next) => {
-  const { payload } = req;
+  const { baseUrl, params, payload, body } = req;
 
   let id;
-  const url = req.baseUrl;
-  if (url === '/api/users') {
-    id = req.params.userId;
-  } else if (url.startsWith('/api/events')) {
-    if (url.endsWith('/attendants')) {
-      id = req.body.attendant.user;
-    } else if (url.endsWith('/comments')) {
-      id = req.body.comment.user;
+  if (baseUrl.startsWith('/api/users')) {
+    if (baseUrl.endsWith('/friendships')) {
+      if (params.userId === body.friendship.requestant) {
+        id = body.friendship.receivant;
+      } else {
+        if (body.friendship.accepted) {
+          id = body.friendship.receivant;
+        } else {
+          if (
+            body.friendship.requestant === payload._id ||
+            body.friendship.receivant === payload._id
+          ) {
+            id = payload._id;
+          }
+        }
+      }
     } else {
-      id = req.body.event.createdBy;
+      id = params.userId;
+    }
+  } else if (baseUrl.startsWith('/api/events')) {
+    if (baseUrl.endsWith('/attendants')) {
+      id = body.attendant.user;
+    } else if (baseUrl.endsWith('/comments')) {
+      id = body.comment.user;
+    } else {
+      id = body.event.createdBy;
     }
   }
 

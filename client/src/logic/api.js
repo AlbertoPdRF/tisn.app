@@ -80,6 +80,30 @@ export const postComment = (eventId, comment) => {
 
 export const getInterests = () => fetchApi('/interests', { method: 'GET' });
 
+export const getFriendships = (userId) =>
+  fetchApi(`/users/${userId}/friendships`, { method: 'GET' });
+
+export const postFriendship = (userId, friendship) => {
+  return fetchApi(`/users/${userId}/friendships`, {
+    method: 'POST',
+    body: JSON.stringify({ friendship }),
+  });
+};
+
+export const putFriendship = (userId, friendshipId, friendship) => {
+  return fetchApi(`/users/${userId}/friendships/${friendshipId}`, {
+    method: 'PUT',
+    body: JSON.stringify({ friendship }),
+  });
+};
+
+export const deleteFriendship = (userId, friendshipId, friendship) => {
+  return fetchApi(`/users/${userId}/friendships/${friendshipId}`, {
+    method: 'DELETE',
+    body: JSON.stringify({ friendship }),
+  });
+};
+
 const fetchApi = (path, fetchOptions = {}) => {
   return fetch(
     `${BASE_API_URL}${path}`,

@@ -28,6 +28,9 @@ const Style = makeStyles((theme) => ({
   center: {
     textAlign: 'center',
   },
+  justifyCenter: {
+    justifyContent: 'center',
+  },
   alignRight: {
     float: 'right',
     textAlign: 'right',
@@ -64,7 +67,10 @@ const Style = makeStyles((theme) => ({
   },
   userCard: {
     width: '150px',
-    height: '150px',
+    height: '125px',
+  },
+  userCardContent: {
+    marginTop: '-24px',
   },
   interestCard: {
     width: '250px',
@@ -92,6 +98,10 @@ const Style = makeStyles((theme) => ({
   },
   buttons: {
     margin: theme.spacing(0.5),
+  },
+  buttonsStacked: {
+    display: 'inline-block',
+    width: '100px',
   },
   image: {
     [theme.breakpoints.down('sm')]: {

@@ -55,4 +55,8 @@ router.post(
   usersController.logIn
 );
 
+const friendshipsRouter = require('./friendships');
+
+router.use('/:userId/friendships', friendshipsRouter);
+
 module.exports = router;

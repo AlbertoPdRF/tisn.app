@@ -26,7 +26,7 @@ const UserCard = (props) => {
           title={user.name}
         />
         {user.interests.length > 0 && (
-          <CardContent>
+          <CardContent className={style.userCardContent}>
             <AvatarGroup max={3}>
               {user.interests.map((interest) => (
                 <Avatar

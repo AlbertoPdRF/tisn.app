@@ -6,6 +6,7 @@ const Event = require('../models/Event');
 const Attendant = require('../models/Attendant');
 const Comment = require('../models/Comment');
 const Category = require('../models/Category');
+const Friendship = require('../models/Friendship');
 
 const buildValidator = (type, param, optional = false) => {
   const basicOptional = validator
@@ -103,6 +104,8 @@ const buildValidator = (type, param, optional = false) => {
             case 'userId':
             case 'attendant.user':
             case 'comment.user':
+            case 'friendship.requestant':
+            case 'friendship.receivant':
               model = User;
               break;
             case 'user.interests.*._id':
@@ -122,6 +125,9 @@ const buildValidator = (type, param, optional = false) => {
               break;
             case 'interest.category':
               model = Category;
+              break;
+            case 'friendshipId':
+              model = Friendship;
               break;
             default:
               throw new Error('is invalid');
@@ -147,6 +153,8 @@ const buildValidator = (type, param, optional = false) => {
         .isInt({ min: 2 })
         .withMessage('must be at least 2')
         .toInt();
+    case 'boolean':
+      return escapedRequired.isBoolean().withMessage('is invalid').toBoolean();
     default:
       return escapedRequired;
   }
@@ -165,6 +173,7 @@ const createValidation = (route) => {
     case 'usersGetId':
     case 'usersDeleteId':
     case 'usersGetEvents':
+    case 'friendshipsGet':
       return [buildValidator('id', 'userId')];
     case 'usersPutId':
       return [
@@ -193,6 +202,8 @@ const createValidation = (route) => {
       ];
     case 'eventsGetId':
     case 'eventsDeleteId':
+    case 'attendantsGet':
+    case 'commentsGet':
       return [buildValidator('id', 'eventId')];
     case 'eventsPutId':
       return [
@@ -206,9 +217,6 @@ const createValidation = (route) => {
         buildValidator('imageUrl', 'event.coverPhoto', true),
         buildValidator('int', 'event.attendantsLimit'),
       ];
-    case 'attendantsGet':
-    case 'commentsGet':
-      return [buildValidator('id', 'eventId')];
     case 'attendantsPost':
       return [
         buildValidator('id', 'eventId'),
@@ -233,6 +241,25 @@ const createValidation = (route) => {
         buildValidator('name', 'interest.name'),
         buildValidator('imageUrl', 'interest.avatar'),
         buildValidator('id', 'interest.category'),
+      ];
+    case 'friendshipsPost':
+      return [
+        buildValidator('id', 'userId'),
+        buildValidator('id', 'friendship.requestant'),
+        buildValidator('id', 'friendship.receivant'),
+      ];
+    case 'friendshipsPutId':
+      return [
+        buildValidator('id', 'userId'),
+        buildValidator('id', 'friendshipId'),
+        buildValidator('id', 'friendship.requestant'),
+        buildValidator('id', 'friendship.receivant'),
+        buildValidator('boolean', 'friendship.accepted'),
+      ];
+    case 'friendshipsDeleteId':
+      return [
+        buildValidator('id', 'userId'),
+        buildValidator('id', 'friendshipId'),
       ];
     default:
       return [];

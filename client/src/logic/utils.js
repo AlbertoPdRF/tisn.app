@@ -30,6 +30,28 @@ export const buildValidationErrorsObject = (errors) => {
   return errorsObject;
 };
 
+export const classifyFriendships = (friendships, currentUser) => {
+  const pending = [];
+  const accepted = [];
+  let currentUserFriendship;
+  friendships.forEach((friendship) => {
+    if (friendship.accepted) {
+      accepted.push(friendship);
+    } else {
+      pending.push(friendship);
+    }
+
+    if (
+      friendship.requestant._id === currentUser._id ||
+      friendship.receivant._id === currentUser._id
+    ) {
+      currentUserFriendship = friendship;
+    }
+  });
+
+  return { pending, accepted, currentUserFriendship };
+};
+
 export const classifyEvents = (events, referenceDate) => {
   const current = [];
   const past = [];

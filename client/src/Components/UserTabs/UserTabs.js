@@ -263,9 +263,7 @@ const UserTabs = ({ match }) => {
                       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
                         Delete account
                       </ExpansionPanelSummary>
-                      <ExpansionPanelDetails
-                        style={{ justifyContent: 'center' }}
-                      >
+                      <ExpansionPanelDetails className={style.justifyCenter}>
                         <Button
                           variant="outlined"
                           color="secondary"
