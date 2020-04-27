@@ -11,6 +11,7 @@ import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 
 import { formatDateTime } from '../../logic/date-time';
+import { decodeText } from '../../logic/utils';
 
 import CommentForm from '../CommentForm/CommentForm';
 
@@ -48,11 +49,9 @@ const CommentCard = (props) => {
           />
         </CardActionArea>
         <CardContent className={style.commentCardContent}>
-          {comment.content.split('\n').map((text, index) => (
-            <Typography key={index} variant="body1">
-              {text}
-            </Typography>
-          ))}
+          <Typography className={style.preLine} variant="body1">
+            {decodeText(comment.content)}
+          </Typography>
         </CardContent>
       </Fragment>
     );

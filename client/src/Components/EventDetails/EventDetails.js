@@ -9,6 +9,7 @@ import Chip from '@material-ui/core/Chip';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import Avatar from '@material-ui/core/Avatar';
 
+import { decodeText } from '../../logic/utils';
 import { formatDateTimeRange } from '../../logic/date-time';
 
 import Style from '../Style/Style';
@@ -27,6 +28,8 @@ const EventDetails = (props) => {
   const history = useHistory();
   const style = Style();
 
+  const decodedName = decodeText(event.name);
+
   return (
     <Card>
       <CardMedia
@@ -34,33 +37,20 @@ const EventDetails = (props) => {
         src={
           event.coverPhoto ? event.coverPhoto : '../../../event-placeholder.jpg'
         }
-        alt={event.name}
-        title={event.name}
+        alt={decodedName}
+        title={decodedName}
       />
       <CardContent>
         <div className={style.alignRight}>
-          {restrictedDisplay && (
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={() => history.push(`/events/${event._id}/edit`)}
-            >
-              Edit
-            </Button>
-          )}
-          {formatDateTimeRange(event.startDate, event.endDate)
-            .split('\n')
-            .map((text, index) => (
-              <Typography
-                key={index}
-                gutterBottom={!!index}
-                variant="h5"
-                component="p"
-                color="textSecondary"
-              >
-                {text}
-              </Typography>
-            ))}
+          <Typography
+            gutterBottom
+            className={style.preLine}
+            variant="h5"
+            component="p"
+            color="textSecondary"
+          >
+            {formatDateTimeRange(event.startDate, event.endDate)}
+          </Typography>
           {futureEvent && (
             <Fragment>
               {(!limitMet || userAttending) && (
@@ -75,25 +65,30 @@ const EventDetails = (props) => {
               <Typography gutterBottom variant="body1" color="textSecondary">
                 Attendants limit: {event.attendantsLimit}
               </Typography>
+              {restrictedDisplay && (
+                <Button
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => history.push(`/events/${event._id}/edit`)}
+                >
+                  Edit
+                </Button>
+              )}
             </Fragment>
           )}
         </div>
         <Typography gutterBottom variant="h5" component="h3">
-          {event.name}
+          {decodedName}
         </Typography>
-        <Fragment>
-          {event.description.split('\n').map((text, index) => (
-            <Typography
-              key={index}
-              gutterBottom
-              variant="body1"
-              component="p"
-              color="textSecondary"
-            >
-              {text}
-            </Typography>
-          ))}
-        </Fragment>
+        <Typography
+          gutterBottom
+          className={style.preLine}
+          variant="body1"
+          component="p"
+          color="textSecondary"
+        >
+          {decodeText(event.description)}
+        </Typography>
         {event.relatedInterests.length > 0 && (
           <Fragment>
             <Typography variant="h6" component="h4">

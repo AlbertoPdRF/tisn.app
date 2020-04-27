@@ -20,6 +20,7 @@ const CommentForm = (props) => {
   return (
     <TextField
       multiline
+      rowsMax={5}
       className={parentComment ? style.nestedComments : style.formInput}
       variant="outlined"
       placeholder="Write a comment..."

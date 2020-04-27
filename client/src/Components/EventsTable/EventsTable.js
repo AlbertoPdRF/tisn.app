@@ -1,5 +1,6 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import Link from '@material-ui/core/Link';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -7,10 +8,10 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TableCell from '@material-ui/core/TableCell';
 import TableBody from '@material-ui/core/TableBody';
-import Link from '@material-ui/core/Link';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
+import { decodeText } from '../../logic/utils';
 import { formatDateTime } from '../../logic/date-time';
 
 import { useConfirm } from 'material-ui-confirm';
@@ -23,6 +24,18 @@ const EventsTable = (props) => {
   const history = useHistory();
   const confirm = useConfirm();
   const style = Style();
+
+  const link = (event) => {
+    const decodedName = decodeText(event.name);
+
+    return (
+      <Link href={`/events/${event._id}`} variant="body1">
+        {decodedName.length < 30
+          ? decodedName
+          : `${decodedName.substring(0, 29)}...`}
+      </Link>
+    );
+  };
 
   return (
     events && (
@@ -40,29 +53,17 @@ const EventsTable = (props) => {
             {events.map((event) => (
               <TableRow key={event._id}>
                 <TableCell component="th" scope="row">
-                  <Link href={`/events/${event._id}`} variant="body1">
-                    {event.name.length < 30
-                      ? event.name
-                      : `${event.name.substring(0, 29)}...`}
-                  </Link>
+                  {link(event)}
                 </TableCell>
                 <TableCell align="right">
-                  {formatDateTime(event.startDate)
-                    .split('\n')
-                    .map((text, index) => (
-                      <Typography key={index} variant="body1">
-                        {text}
-                      </Typography>
-                    ))}
+                  <Typography className={style.preLine} variant="body1">
+                    {formatDateTime(event.startDate)}
+                  </Typography>
                 </TableCell>
                 <TableCell align="right">
-                  {formatDateTime(event.endDate)
-                    .split('\n')
-                    .map((text, index) => (
-                      <Typography key={index} variant="body1">
-                        {text}
-                      </Typography>
-                    ))}
+                  <Typography className={style.preLine} variant="body1">
+                    {formatDateTime(event.endDate)}
+                  </Typography>
                 </TableCell>
                 {displayActions && (
                   <TableCell align="center">

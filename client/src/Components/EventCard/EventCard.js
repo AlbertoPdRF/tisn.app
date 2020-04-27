@@ -8,12 +8,17 @@ import Typography from '@material-ui/core/Typography';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import Avatar from '@material-ui/core/Avatar';
 
+import { decodeText } from '../../logic/utils';
+
 import Style from '../Style/Style';
 
 const EventCard = (props) => {
   const { event } = props;
 
   const style = Style();
+
+  const decodedName = decodeText(event.name);
+  const decodedDescription = decodeText(event.description);
 
   return (
     <Card className={style.eventCard}>
@@ -29,9 +34,9 @@ const EventCard = (props) => {
               ? `${event.coverPhoto}`
               : '../../../event-placeholder.jpg'
           }
-          alt={event.name}
+          alt={decodedName}
           height="140"
-          title={event.name}
+          title={decodedName}
         />
         <CardContent>
           <AvatarGroup className={style.alignRight} max={2}>
@@ -44,14 +49,14 @@ const EventCard = (props) => {
             ))}
           </AvatarGroup>
           <Typography gutterBottom variant="h5" component="h3">
-            {event.name.length < 30
-              ? event.name
-              : `${event.name.substring(0, 29)}...`}
+            {decodedName.length < 30
+              ? decodedName
+              : `${decodedName.substring(0, 29)}...`}
           </Typography>
           <Typography variant="body1" color="textSecondary" component="p">
-            {event.description.length < 115
-              ? event.description
-              : `${event.description.substring(0, 114)}...`}
+            {decodedDescription.length < 115
+              ? decodedDescription
+              : `${decodedDescription.substring(0, 114)}...`}
           </Typography>
         </CardContent>
       </CardActionArea>
