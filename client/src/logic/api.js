@@ -90,6 +90,9 @@ export const postFriendship = (userId, friendship) => {
   });
 };
 
+export const getFriendship = (userId, friendshipId) =>
+  fetchApi(`/users/${userId}/friendships/${friendshipId}`, { method: 'GET' });
+
 export const putFriendship = (userId, friendshipId, friendship) => {
   return fetchApi(`/users/${userId}/friendships/${friendshipId}`, {
     method: 'PUT',
@@ -103,6 +106,17 @@ export const deleteFriendship = (userId, friendshipId, friendship) => {
     body: JSON.stringify({ friendship }),
   });
 };
+
+export const getMessages = (userId, friendshipId) =>
+  fetchApi(`/users/${userId}/friendships/${friendshipId}/messages`, {
+    method: 'GET',
+  });
+
+export const postMessage = (userId, friendshipId, message) =>
+  fetchApi(`/users/${userId}/friendships/${friendshipId}/messages`, {
+    method: 'POST',
+    body: JSON.stringify({ message }),
+  });
 
 const fetchApi = (path, fetchOptions = {}) => {
   return fetch(

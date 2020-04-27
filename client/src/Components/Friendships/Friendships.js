@@ -1,10 +1,12 @@
 import React from 'react';
+import { useHistory } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 
 import FriendshipsTable from '../FriendshipsTable/FriendshipsTable';
 import UserCard from '../UserCard/UserCard';
@@ -20,6 +22,7 @@ const Friendships = (props) => {
     acceptedFriendships,
   } = props;
 
+  const history = useHistory();
   const style = Style();
 
   const friendshipsPendingCurrentUserAction =
@@ -65,11 +68,20 @@ const Friendships = (props) => {
         ) : (
           <Grid item>
             <div className={`${style.fullWidth} ${style.center}`}>
-              <Typography variant="body1">
+              <Typography gutterBottom={userIsCurrentUser} variant="body1">
                 {`${
                   userIsCurrentUser ? 'You have' : `${user.name} has`
                 } no friendships.`}
               </Typography>
+              {userIsCurrentUser && (
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => history.push('/users')}
+                >
+                  Browse users!
+                </Button>
+              )}
             </div>
           </Grid>
         )}

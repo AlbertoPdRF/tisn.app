@@ -11,6 +11,8 @@ import Users from '../Users/Users';
 import User from '../User/User';
 import UserTabs from '../UserTabs/UserTabs';
 import Interests from '../Interests/Interests';
+import Chats from '../Chats/Chats';
+import Chat from '../Chat/Chat';
 
 import Welcome from '../Welcome/Welcome';
 import LogInForm from '../LogInForm/LogInForm';
@@ -30,6 +32,8 @@ const Navigation = () => {
       <PrivateRoute exact path="/users/:userId" component={User} />
       <PrivateRoute exact path="/users/:userId/edit" component={UserTabs} />
       <PrivateRoute exact path="/interests" component={Interests} />
+      <PrivateRoute exact path="/chats" component={Chats} />
+      <PrivateRoute exact path="/chats/:friendshipId" component={Chat} />
 
       <PublicRoute exact path="/welcome" component={Welcome} />
       <PublicRoute exact path="/log-in" component={LogInForm} />

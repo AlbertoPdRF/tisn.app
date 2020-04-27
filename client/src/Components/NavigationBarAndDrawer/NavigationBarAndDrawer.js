@@ -20,6 +20,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import ChatIcon from '@material-ui/icons/Chat';
 import Link from '@material-ui/core/Link';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 
@@ -186,14 +187,26 @@ const NavigationBarAndDrawer = (props) => {
             <IconButton
               edge="start"
               color="inherit"
-              aria-label="Open drawer"
               onClick={handleDrawerToggle}
             >
               <MenuIcon />
             </IconButton>
-            <Link variant="h4" color="inherit" underline="none" href="/">
+            <Link
+              className={style.grow}
+              variant="h4"
+              color="inherit"
+              underline="none"
+              href="/"
+            >
               Tisn
             </Link>
+            <IconButton
+              edge="end"
+              color="inherit"
+              onClick={() => history.push('/chats')}
+            >
+              <ChatIcon />
+            </IconButton>
           </Toolbar>
         </AppBar>
       </HideOnScroll>

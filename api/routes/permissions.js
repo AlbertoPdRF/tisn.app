@@ -1,11 +1,11 @@
 const permissions = (req, res, next) => {
-  const { baseUrl, params, payload, body } = req;
+  const { baseUrl, method, params, payload, body } = req;
 
   let id;
   if (baseUrl.startsWith('/api/users')) {
     if (baseUrl.endsWith('/friendships')) {
-      if (params.userId === body.friendship.requestant) {
-        id = body.friendship.receivant;
+      if (method === 'GET') {
+        id = payload._id;
       } else {
         if (body.friendship.accepted) {
           id = body.friendship.receivant;

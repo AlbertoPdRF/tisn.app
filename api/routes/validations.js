@@ -106,6 +106,7 @@ const buildValidator = (type, param, optional = false) => {
             case 'comment.user':
             case 'friendship.requestant':
             case 'friendship.receivant':
+            case 'message.user':
               model = User;
               break;
             case 'user.interests.*._id':
@@ -127,6 +128,7 @@ const buildValidator = (type, param, optional = false) => {
               model = Category;
               break;
             case 'friendshipId':
+            case 'message.friendship':
               model = Friendship;
               break;
             default:
@@ -248,6 +250,12 @@ const createValidation = (route) => {
         buildValidator('id', 'friendship.requestant'),
         buildValidator('id', 'friendship.receivant'),
       ];
+    case 'friendshipsGetId':
+    case 'friendshipsDeleteId':
+      return [
+        buildValidator('id', 'userId'),
+        buildValidator('id', 'friendshipId'),
+      ];
     case 'friendshipsPutId':
       return [
         buildValidator('id', 'userId'),
@@ -256,10 +264,18 @@ const createValidation = (route) => {
         buildValidator('id', 'friendship.receivant'),
         buildValidator('boolean', 'friendship.accepted'),
       ];
-    case 'friendshipsDeleteId':
+    case 'messagesGet':
       return [
         buildValidator('id', 'userId'),
         buildValidator('id', 'friendshipId'),
+      ];
+    case 'messagesPost':
+      return [
+        buildValidator('id', 'userId'),
+        buildValidator('id', 'friendshipId'),
+        buildValidator('id', 'message.friendship'),
+        buildValidator('id', 'message.user'),
+        buildValidator('text', 'message.content'),
       ];
     default:
       return [];

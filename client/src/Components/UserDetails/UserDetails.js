@@ -63,6 +63,21 @@ const UserDetails = (props) => {
                 </Button>
               </Fragment>
             ))}
+          {!userIsCurrentUser &&
+            currentUserFriendship &&
+            currentUserFriendship.accepted && (
+              <Button
+                className={style.alignRight}
+                style={{ marginTop: '8px' }}
+                variant="contained"
+                color="primary"
+                onClick={() =>
+                  history.push(`/chats/${currentUserFriendship._id}`)
+                }
+              >
+                Chat
+              </Button>
+            )}
           {restrictedDisplay && (
             <Button
               className={style.alignRight}

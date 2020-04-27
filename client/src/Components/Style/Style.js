@@ -115,6 +115,36 @@ const Style = makeStyles((theme) => ({
     borderRadius: '4px',
     borderColor: 'rgba(0, 0, 0, 0.23)',
   },
+  messagesCardContent: {
+    marginTop: '-8px',
+    height: '60vh',
+    overflowY: 'scroll',
+  },
+  message: {
+    [theme.breakpoints.down('sm')]: {
+      maxWidth: '75vw',
+    },
+    [theme.breakpoints.up('md')]: {
+      maxWidth: '720px',
+    },
+    borderRadius: '8px',
+    padding: '4px 8px',
+  },
+  messageSent: {
+    float: 'right',
+    textAlign: 'right',
+    color: theme.palette.primary.contrastText,
+    backgroundColor: theme.palette.primary.main,
+  },
+  messageReceived: {
+    float: 'left',
+    textAlign: 'left',
+    color: 'black',
+    backgroundColor: 'rgba(0, 0, 0, 0.14)',
+  },
+  preLine: {
+    whiteSpace: 'pre-line',
+  },
 }));
 
 export default Style;

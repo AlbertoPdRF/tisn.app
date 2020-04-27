@@ -24,6 +24,17 @@ router.post(
   friendshipsController.post
 );
 
+router.get(
+  '/:friendshipId',
+  [
+    auth.required,
+    permissions,
+    validations.create('friendshipsGetId'),
+    validations.run,
+  ],
+  friendshipsController.getId
+);
+
 router.put(
   '/:friendshipId',
   [
@@ -45,5 +56,9 @@ router.delete(
   ],
   friendshipsController.deleteId
 );
+
+const messagesRouter = require('./messages');
+
+router.use('/:friendshipId/messages', messagesRouter);
 
 module.exports = router;

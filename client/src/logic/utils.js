@@ -30,6 +30,10 @@ export const buildValidationErrorsObject = (errors) => {
   return errorsObject;
 };
 
+export const decodeText = (text) =>
+  new DOMParser().parseFromString(text, 'text/html').documentElement
+    .textContent;
+
 export const classifyFriendships = (friendships, currentUser) => {
   const pending = [];
   const accepted = [];

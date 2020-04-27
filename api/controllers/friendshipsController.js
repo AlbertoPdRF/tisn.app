@@ -1,4 +1,7 @@
 const Friendship = require('../models/Friendship');
+const Message = require('../models/Message');
+
+const async = require('async');
 
 exports.get = (req, res, next) => {
   const id = req.params.userId;
@@ -48,6 +51,32 @@ exports.post = (req, res, next) => {
     .then(() => res.json({ friendship: finalFriendship }));
 };
 
+exports.getId = (req, res, next) => {
+  return Friendship.findOne({
+    _id: req.params.friendshipId,
+    accepted: true,
+  })
+    .populate({
+      path: 'requestant',
+      select: 'name avatar interests',
+      populate: {
+        path: 'interests',
+        model: 'Interest',
+        select: 'name avatar',
+      },
+    })
+    .populate({
+      path: 'receivant',
+      select: 'name avatar interests',
+      populate: {
+        path: 'interests',
+        model: 'Interest',
+        select: 'name avatar',
+      },
+    })
+    .then((friendship) => res.json({ friendship }));
+};
+
 exports.putId = (req, res, next) => {
   const {
     body: { friendship },
@@ -70,13 +99,26 @@ exports.putId = (req, res, next) => {
 };
 
 exports.deleteId = (req, res, next) => {
-  return Friendship.findByIdAndRemove(req.params.friendshipId).then(
-    (friendship) => {
-      if (!friendship) {
+  const id = req.params.friendshipId;
+  async.parallel(
+    {
+      friendship: (callback) => Friendship.findByIdAndRemove(id).exec(callback),
+      messages: (callback) =>
+        Message.deleteMany({ friendship: id }).exec(callback),
+    },
+    (error, results) => {
+      if (error) {
+        return next(error);
+      }
+
+      if (!results) {
         return res.sendStatus(404);
       }
 
-      res.json({ friendship });
+      res.json({
+        friendship: results.friendship,
+        messages: results.messages,
+      });
     }
   );
 };
