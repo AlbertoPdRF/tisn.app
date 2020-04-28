@@ -33,7 +33,7 @@ exports.post = (req, res, next) => {
     body: { friendship },
   } = req;
 
-  if (friendship.accepted) {
+  if (friendship.accepted || friendship.acceptedAt) {
     return res.status(403).json({
       errors: [
         {

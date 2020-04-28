@@ -7,7 +7,7 @@ const permissions = (req, res, next) => {
       if (method === 'GET') {
         id = payload._id;
       } else {
-        if (body.friendship.accepted) {
+        if (body.friendship.accepted || body.friendship.acceptedAt) {
           id = body.friendship.receivant;
         } else {
           if (

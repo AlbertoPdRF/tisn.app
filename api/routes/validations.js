@@ -66,12 +66,12 @@ const buildValidator = (type, param, optional = false) => {
         return confirmPassword;
       });
     case 'date':
-      return escapedRequired
+      return (optional ? escapedOptional : escapedRequired)
         .isISO8601()
         .withMessage('is invalid')
         .toDate()
         .custom((date, { req }) => {
-          if (param.includes('Birth')) {
+          if (param.includes('dateOfBirth')) {
             const dateForMinimumAge = new Date();
             dateForMinimumAge.setFullYear(dateForMinimumAge.getFullYear() - 14);
             const maximumDate = new Date();
@@ -81,13 +81,13 @@ const buildValidator = (type, param, optional = false) => {
             } else if (date < maximumDate) {
               throw new Error('seems wrong');
             }
-          } else {
+          } else if (param.includes('startDate') || param.includes('endDate')) {
             const now = new Date();
             if (date < now) {
               throw new Error('must be in the future');
             }
 
-            if (param.includes('end') && date <= req.body.event.startDate) {
+            if (param.includes('endDate') && date <= req.body.event.startDate) {
               throw new Error('must be after start date');
             }
           }
@@ -263,6 +263,7 @@ const createValidation = (route) => {
         buildValidator('id', 'friendship.requestant'),
         buildValidator('id', 'friendship.receivant'),
         buildValidator('boolean', 'friendship.accepted'),
+        buildValidator('date', 'friendship.acceptedAt', true),
       ];
     case 'messagesGet':
       return [

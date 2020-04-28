@@ -112,6 +112,8 @@ const User = ({ match }) => {
 
       if (accept) {
         nonPopulatedFriendship.accepted = true;
+        nonPopulatedFriendship.acceptedAt = new Date();
+
         putFriendship(id, friendship._id, nonPopulatedFriendship)
           .then(() => setUpdateFriendships(true))
           .catch((error) => {

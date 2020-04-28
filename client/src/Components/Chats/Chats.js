@@ -59,7 +59,7 @@ const Chats = () => {
           </Avatar>
         }
         title={friendshipUser.name}
-        subheader={`Friends since ${formatDate(friendship.updatedAt)}`}
+        subheader={`Friends since ${formatDate(friendship.acceptedAt)}`}
       />
     );
   };
