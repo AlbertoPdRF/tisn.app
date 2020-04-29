@@ -20,14 +20,20 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import Badge from '@material-ui/core/Badge';
 import ChatIcon from '@material-ui/icons/Chat';
 import Link from '@material-ui/core/Link';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 
-import { getUser } from '../../logic/api';
+import { getUser, getNotifications } from '../../logic/api';
+import { classifyNotifications } from '../../logic/utils';
 import { logOut } from '../../logic/auth';
 
 import { useUser, useSetUser } from '../UserProvider/UserProvider';
+import {
+  useNotifications,
+  useSetNotifications,
+} from '../NotificationsProvider/NotificationsProvider';
 
 import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 
@@ -52,11 +58,15 @@ const NavigationBarAndDrawer = (props) => {
 
   const user = useUser();
   const setUser = useSetUser();
+  const notifications = useNotifications();
+  const setNotifications = useSetNotifications();
 
+  const [drawerOpen, setDrawerOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    setLoading(true);
     setError(null);
     getUser()
       .then((data) => setUser(data.user))
@@ -64,7 +74,16 @@ const NavigationBarAndDrawer = (props) => {
       .finally(() => setLoading(false));
   }, [setUser]);
 
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  useEffect(() => {
+    setLoading(true);
+    setError(null);
+    getNotifications()
+      .then((data) =>
+        setNotifications(classifyNotifications(data.notifications))
+      )
+      .catch((error) => setError(error))
+      .finally(() => setLoading(false));
+  }, [setNotifications]);
 
   const handleDrawerToggle = () => setDrawerOpen(!drawerOpen);
 
@@ -191,21 +210,21 @@ const NavigationBarAndDrawer = (props) => {
             >
               <MenuIcon />
             </IconButton>
-            <Link
-              className={style.grow}
-              variant="h4"
-              color="inherit"
-              underline="none"
-              href="/"
-            >
+            <Link variant="h4" color="inherit" underline="none" href="/">
               Tisn
             </Link>
+            <div className={style.grow} />
             <IconButton
               edge="end"
               color="inherit"
               onClick={() => history.push('/chats')}
             >
-              <ChatIcon />
+              <Badge
+                badgeContent={notifications && notifications.messages.length}
+                color="secondary"
+              >
+                <ChatIcon />
+              </Badge>
             </IconButton>
           </Toolbar>
         </AppBar>

@@ -118,6 +118,16 @@ export const postMessage = (userId, friendshipId, message) =>
     body: JSON.stringify({ message }),
   });
 
+export const getNotifications = (userId = getPayloadFromToken()._id) =>
+  fetchApi(`/users/${userId}/notifications`, { method: 'GET' });
+
+export const putNotification = (userId, notificationId, notification) => {
+  return fetchApi(`/users/${userId}/notifications/${notificationId}`, {
+    method: 'PUT',
+    body: JSON.stringify({ notification }),
+  });
+};
+
 const fetchApi = (path, fetchOptions = {}) => {
   return fetch(
     `${BASE_API_URL}${path}`,

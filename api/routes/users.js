@@ -55,6 +55,10 @@ router.post(
   usersController.logIn
 );
 
+const notificationsRouter = require('./notifications');
+
+router.use('/:userId/notifications', notificationsRouter);
+
 const friendshipsRouter = require('./friendships');
 
 router.use('/:userId/friendships', friendshipsRouter);

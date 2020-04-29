@@ -5,15 +5,20 @@ import Avatar from '@material-ui/core/Avatar';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import Badge from '@material-ui/core/Badge';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import Button from '@material-ui/core/Button';
 
 import { getFriendships } from '../../logic/api';
-import { classifyFriendships } from '../../logic/utils';
+import {
+  classifyFriendships,
+  buildMessagesNotificationsObject,
+} from '../../logic/utils';
 import { formatDate } from '../../logic/date-time';
 
 import { useUser } from '../UserProvider/UserProvider';
+import { useNotifications } from '../NotificationsProvider/NotificationsProvider';
 
 import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 
@@ -23,8 +28,10 @@ const Chats = () => {
   const history = useHistory();
   const style = Style();
   const user = useUser();
+  const notifications = useNotifications();
 
   const [friendships, setFriendships] = useState(null);
+  const [messagesNotifications, setMessagesNotifications] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -40,6 +47,14 @@ const Chats = () => {
         .finally(() => setLoading(false));
     }
   }, [user]);
+
+  useEffect(() => {
+    if (notifications) {
+      setMessagesNotifications(
+        buildMessagesNotificationsObject(notifications.messages)
+      );
+    }
+  }, [notifications]);
 
   const friendshipCardHeader = (friendship) => {
     const friendshipUser =
@@ -75,14 +90,22 @@ const Chats = () => {
           {friendships && friendships.length > 0
             ? friendships.map((friendship) => (
                 <Grid item key={friendship._id}>
-                  <Card>
-                    <CardActionArea
-                      component={Link}
-                      to={`/chats/${friendship._id}`}
-                    >
-                      {friendshipCardHeader(friendship)}
-                    </CardActionArea>
-                  </Card>
+                  <Badge
+                    badgeContent={
+                      messagesNotifications[friendship._id] &&
+                      messagesNotifications[friendship._id].length
+                    }
+                    color="secondary"
+                  >
+                    <Card>
+                      <CardActionArea
+                        component={Link}
+                        to={`/chats/${friendship._id}`}
+                      >
+                        {friendshipCardHeader(friendship)}
+                      </CardActionArea>
+                    </Card>
+                  </Badge>
                 </Grid>
               ))
             : !loading && (

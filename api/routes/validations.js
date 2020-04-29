@@ -7,6 +7,7 @@ const Attendant = require('../models/Attendant');
 const Comment = require('../models/Comment');
 const Category = require('../models/Category');
 const Friendship = require('../models/Friendship');
+const Notification = require('../models/Notification');
 
 const buildValidator = (type, param, optional = false) => {
   const basicOptional = validator
@@ -66,7 +67,7 @@ const buildValidator = (type, param, optional = false) => {
         return confirmPassword;
       });
     case 'date':
-      return (optional ? escapedOptional : escapedRequired)
+      return escapedRequired
         .isISO8601()
         .withMessage('is invalid')
         .toDate()
@@ -106,7 +107,8 @@ const buildValidator = (type, param, optional = false) => {
             case 'comment.user':
             case 'friendship.requestant':
             case 'friendship.receivant':
-            case 'message.user':
+            case 'message.user._id':
+            case 'notification.user':
               model = User;
               break;
             case 'user.interests.*._id':
@@ -128,8 +130,11 @@ const buildValidator = (type, param, optional = false) => {
               model = Category;
               break;
             case 'friendshipId':
-            case 'message.friendship':
+            case 'message.friendship._id':
               model = Friendship;
+              break;
+            case 'notificationId':
+              model = Notification;
               break;
             default:
               throw new Error('is invalid');
@@ -157,6 +162,10 @@ const buildValidator = (type, param, optional = false) => {
         .toInt();
     case 'boolean':
       return escapedRequired.isBoolean().withMessage('is invalid').toBoolean();
+    case 'path':
+      return basicRequired
+        .matches(/^\/([A-z0-9]+\/)*([A-z0-9]+)$/)
+        .withMessage('is invalid');
     default:
       return escapedRequired;
   }
@@ -176,6 +185,7 @@ const createValidation = (route) => {
     case 'usersDeleteId':
     case 'usersGetEvents':
     case 'friendshipsGet':
+    case 'notificationsGet':
       return [buildValidator('id', 'userId')];
     case 'usersPutId':
       return [
@@ -263,7 +273,7 @@ const createValidation = (route) => {
         buildValidator('id', 'friendship.requestant'),
         buildValidator('id', 'friendship.receivant'),
         buildValidator('boolean', 'friendship.accepted'),
-        buildValidator('date', 'friendship.acceptedAt', true),
+        buildValidator('date', 'friendship.acceptedAt'),
       ];
     case 'messagesGet':
       return [
@@ -274,9 +284,19 @@ const createValidation = (route) => {
       return [
         buildValidator('id', 'userId'),
         buildValidator('id', 'friendshipId'),
-        buildValidator('id', 'message.friendship'),
-        buildValidator('id', 'message.user'),
+        buildValidator('id', 'message.friendship._id'),
+        buildValidator('id', 'message.user._id'),
         buildValidator('text', 'message.content'),
+      ];
+    case 'notificationsPutId':
+      return [
+        buildValidator('id', 'userId'),
+        buildValidator('id', 'notificationId'),
+        buildValidator('id', 'notification.user'),
+        buildValidator('text', 'notification.content'),
+        buildValidator('path', 'notification.path'),
+        buildValidator('boolean', 'notification.read'),
+        buildValidator('date', 'notification.readAt'),
       ];
     default:
       return [];

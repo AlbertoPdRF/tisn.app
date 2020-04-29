@@ -30,6 +30,37 @@ export const buildValidationErrorsObject = (errors) => {
   return errorsObject;
 };
 
+export const classifyNotifications = (notifications) => {
+  const messages = [];
+  const regular = [];
+  notifications.forEach((notification) => {
+    if (notification.type === 'Message') {
+      if (!notification.read) {
+        messages.push(notification);
+      }
+    } else {
+      regular.push(notification);
+    }
+  });
+
+  return { messages, regular };
+};
+
+export const buildMessagesNotificationsObject = (notifications) => {
+  const messagesNotificationsObject = {};
+  notifications.forEach((notification) => {
+    const key = notification.path.split('/')[2];
+
+    if (!messagesNotificationsObject[key]) {
+      messagesNotificationsObject[key] = [];
+    }
+
+    messagesNotificationsObject[key].push(notification);
+  });
+
+  return messagesNotificationsObject;
+};
+
 export const decodeText = (text) =>
   new DOMParser().parseFromString(text, 'text/html').documentElement
     .textContent;

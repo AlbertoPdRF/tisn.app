@@ -1,4 +1,5 @@
 const Message = require('../models/Message');
+const Notification = require('../models/Notification');
 
 exports.get = (req, res, next) => {
   return Message.find({
@@ -7,7 +8,23 @@ exports.get = (req, res, next) => {
 };
 
 exports.post = (req, res, next) => {
-  const message = new Message(req.body.message);
+  const {
+    body: { message },
+  } = req;
+  const finalMessage = new Message(message);
 
-  return message.save().then(() => res.json({ message }));
+  return finalMessage.save().then(() => {
+    const notification = new Notification({
+      user:
+        message.friendship.requestant._id === message.user._id
+          ? message.friendship.receivant
+          : message.friendship.requestant,
+      type: 'Message',
+      content: `New message from ${message.user.name}`,
+      path: `/chats/${message.friendship._id}`,
+    });
+    notification.save();
+
+    res.json({ message });
+  });
 };

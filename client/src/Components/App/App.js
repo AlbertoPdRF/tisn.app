@@ -3,6 +3,7 @@ import { BrowserRouter } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 
 import { UserProvider } from '../UserProvider/UserProvider';
+import { NotificationsProvider } from '../NotificationsProvider/NotificationsProvider';
 import { ConfirmProvider } from 'material-ui-confirm';
 
 import Navigation from '../Navigation/Navigation';
@@ -11,10 +12,12 @@ const App = () => {
   return (
     <BrowserRouter>
       <UserProvider>
-        <ConfirmProvider>
-          <CssBaseline />
-          <Navigation />
-        </ConfirmProvider>
+        <NotificationsProvider>
+          <ConfirmProvider>
+            <CssBaseline />
+            <Navigation />
+          </ConfirmProvider>
+        </NotificationsProvider>
       </UserProvider>
     </BrowserRouter>
   );

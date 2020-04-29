@@ -13,10 +13,24 @@ import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import SendIcon from '@material-ui/icons/Send';
 
-import { getMessages, getFriendship, postMessage } from '../../logic/api';
-import { buildValidationErrorsObject, decodeText } from '../../logic/utils';
+import {
+  getMessages,
+  getFriendship,
+  postMessage,
+  putNotification,
+  getNotifications,
+} from '../../logic/api';
+import {
+  buildValidationErrorsObject,
+  decodeText,
+  classifyNotifications,
+} from '../../logic/utils';
 
 import { useUser } from '../UserProvider/UserProvider';
+import {
+  useNotifications,
+  useSetNotifications,
+} from '../NotificationsProvider/NotificationsProvider';
 
 import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 
@@ -25,11 +39,14 @@ import Style from '../Style/Style';
 const Chats = ({ match }) => {
   const style = Style();
   const user = useUser();
+  const notifications = useNotifications();
+  const setNotifications = useSetNotifications();
 
   const [friendship, setFriendship] = useState(null);
   const [userToDisplay, setUserToDisplay] = useState(null);
   const [messages, setMessages] = useState(null);
   const [updateMessages, setUpdateMessages] = useState(false);
+  const [updateNotifications, setUpdateNotifications] = useState(false);
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(true);
   const [validationErrors, setValidationErrors] = useState({});
@@ -87,14 +104,57 @@ const Chats = ({ match }) => {
     }
   }, [cardContentRef]);
 
+  useEffect(() => {
+    if (user && friendship && notifications) {
+      const chatNotifications = notifications.messages.filter(
+        (notification) => notification.path.split('/')[2] === friendship._id
+      );
+
+      if (chatNotifications.length > 0) {
+        setLoading(true);
+        setError(null);
+
+        chatNotifications.forEach((notification, index) => {
+          notification.read = true;
+          notification.readAt = new Date();
+
+          putNotification(user._id, notification._id, notification)
+            .then((data) => {
+              if (data.errors) {
+                setError('Something went wrong');
+              }
+
+              if (index === chatNotifications.length - 1) {
+                setUpdateNotifications(true);
+              }
+            })
+            .catch((error) => setError(error));
+        });
+      }
+    }
+  }, [user, friendship, notifications]);
+
+  useEffect(() => {
+    if (updateNotifications) {
+      setLoading(true);
+      setError(null);
+      getNotifications()
+        .then((data) =>
+          setNotifications(classifyNotifications(data.notifications))
+        )
+        .catch((error) => setError(error))
+        .finally(() => setLoading(false));
+    }
+  }, [updateNotifications, setNotifications]);
+
   const handleClick = () => {
     setLoading(true);
     setError(null);
     setValidationErrors({});
 
     const message = {
-      friendship: id,
-      user: user._id,
+      friendship,
+      user,
       content,
     };
 
