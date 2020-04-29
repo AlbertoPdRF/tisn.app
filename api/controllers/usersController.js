@@ -1,6 +1,8 @@
 const User = require('../models/User');
 const Attendant = require('../models/Attendant');
 const Event = require('../models/Event');
+const Friendship = require('../models/Friendship');
+const Message = require('../models/Message');
 
 const passport = require('passport');
 const async = require('async');
@@ -89,6 +91,35 @@ exports.deleteId = (req, res, next) => {
       user: (callback) => User.findByIdAndRemove(id).exec(callback),
       attendants: (callback) =>
         Attendant.deleteMany({ user: id }).exec(callback),
+      friendshipsAndMessages: (callback) =>
+        async.waterfall(
+          [
+            (waterfallCallback) =>
+              Friendship.find()
+                .or([{ requestant: id }, { receivant: id }])
+                .exec(waterfallCallback),
+            (friendships, waterfallCallback) => {
+              async.parallel(
+                {
+                  friendships: (parallelCallback) =>
+                    Friendship.deleteMany({
+                      _id: {
+                        $in: friendships.map((friendship) => friendship._id),
+                      },
+                    }).exec(parallelCallback),
+                  messages: (parallelCallback) =>
+                    Message.deleteMany({
+                      friendship: {
+                        $in: friendships.map((friendship) => friendship._id),
+                      },
+                    }).exec(parallelCallback),
+                },
+                (error, results) => waterfallCallback(error, results)
+              );
+            },
+          ],
+          (error, result) => callback(error, result)
+        ),
     },
     (error, results) => {
       if (error) {
@@ -102,6 +133,7 @@ exports.deleteId = (req, res, next) => {
       res.json({
         user: results.user.toJson(),
         attendants: results.attendants,
+        friendshipsAndMessages: results.friendshipsAndMessages,
       });
     }
   );
