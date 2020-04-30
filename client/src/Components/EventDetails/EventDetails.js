@@ -89,28 +89,24 @@ const EventDetails = (props) => {
         >
           {decodeText(event.description)}
         </Typography>
-        {event.relatedInterests.length > 0 && (
-          <Fragment>
-            <Typography variant="h6" component="h4">
-              Related interests:
-            </Typography>
-            {event.relatedInterests.map((interest) => (
-              <Chip
-                className={style.chip}
-                variant="outlined"
-                key={interest._id}
-                avatar={<Avatar src={interest.avatar} alt={interest.name} />}
-                label={interest.name}
-              />
-            ))}
-          </Fragment>
-        )}
+        <Typography variant="h6" component="h4">
+          Related interests:
+        </Typography>
+        {event.relatedInterests.map((interest) => (
+          <Chip
+            className={style.chip}
+            variant="outlined"
+            key={interest._id}
+            avatar={<Avatar src={interest.avatar} alt={interest.name} />}
+            label={interest.name}
+          />
+        ))}
         {attendants && attendants.length > 0 && (
           <Fragment>
             <Typography variant="h6" component="h4">
               Attendants:
             </Typography>
-            <AvatarGroup>
+            <AvatarGroup max={event.attendantsLimit}>
               {attendants.map((attendant) => (
                 <Avatar
                   key={attendant.user._id}

@@ -10,6 +10,7 @@ const Friendship = require('../models/Friendship');
 const Notification = require('../models/Notification');
 
 const buildValidator = (type, param, optional = false) => {
+  const check = validator.check(param);
   const basicOptional = validator
     .check(param)
     .trim()
@@ -72,15 +73,19 @@ const buildValidator = (type, param, optional = false) => {
         .withMessage('is invalid')
         .toDate()
         .custom((date, { req }) => {
+          const minimumDate = new Date();
+          minimumDate.setFullYear(minimumDate.getFullYear() - 100);
+          const maximumDate = new Date();
+          maximumDate.setFullYear(maximumDate.getFullYear() + 100);
+          if (date < minimumDate || date > maximumDate) {
+            throw new Error('seems wrong');
+          }
+
           if (param.includes('dateOfBirth')) {
             const dateForMinimumAge = new Date();
             dateForMinimumAge.setFullYear(dateForMinimumAge.getFullYear() - 14);
-            const maximumDate = new Date();
-            maximumDate.setFullYear(maximumDate.getFullYear() - 100);
             if (date > dateForMinimumAge) {
               throw new Error('you must be at least 14 years old');
-            } else if (date < maximumDate) {
-              throw new Error('seems wrong');
             }
           } else if (param.includes('startDate') || param.includes('endDate')) {
             const now = new Date();
@@ -170,6 +175,8 @@ const buildValidator = (type, param, optional = false) => {
       return escapedRequired
         .isIn(['General', 'Attendant', 'Comment', 'Friendship', 'Message'])
         .withMessage('is unknown');
+    case 'nonEmptyArray':
+      return check.isLength({ min: 1 }).withMessage('must have at least 1');
     default:
       return escapedRequired;
   }
@@ -212,7 +219,8 @@ const createValidation = (route) => {
         buildValidator('date', 'event.startDate'),
         buildValidator('date', 'event.endDate'),
         buildValidator('userId', 'event.createdBy'),
-        buildValidator('id', 'event.relatedInterests.*._id', true),
+        buildValidator('nonEmptyArray', 'event.relatedInterests'),
+        buildValidator('id', 'event.relatedInterests.*._id'),
         buildValidator('imageUrl', 'event.coverPhoto', true),
         buildValidator('int', 'event.attendantsLimit'),
       ];
@@ -229,7 +237,8 @@ const createValidation = (route) => {
         buildValidator('date', 'event.startDate'),
         buildValidator('date', 'event.endDate'),
         buildValidator('userId', 'event.createdBy'),
-        buildValidator('id', 'event.relatedInterests.*._id', true),
+        buildValidator('nonEmptyArray', 'event.relatedInterests'),
+        buildValidator('id', 'event.relatedInterests.*._id'),
         buildValidator('imageUrl', 'event.coverPhoto', true),
         buildValidator('int', 'event.attendantsLimit'),
       ];

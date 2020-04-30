@@ -9,7 +9,9 @@ const EventSchema = new Schema(
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
     createdBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
-    relatedInterests: [{ type: Schema.Types.ObjectId, ref: 'Interest' }],
+    relatedInterests: [
+      { type: Schema.Types.ObjectId, ref: 'Interest', required: true },
+    ],
     coverPhoto: { type: String },
     attendantsLimit: { type: Number, required: true },
   },
