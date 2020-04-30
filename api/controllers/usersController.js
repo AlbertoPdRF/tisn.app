@@ -3,6 +3,7 @@ const Attendant = require('../models/Attendant');
 const Event = require('../models/Event');
 const Friendship = require('../models/Friendship');
 const Message = require('../models/Message');
+const Notification = require('../models/Notification');
 
 const passport = require('passport');
 const async = require('async');
@@ -120,6 +121,8 @@ exports.deleteId = (req, res, next) => {
           ],
           (error, result) => callback(error, result)
         ),
+      notifications: (callback) =>
+        Notification.deleteMany({ user: id }).exec(callback),
     },
     (error, results) => {
       if (error) {
@@ -134,6 +137,7 @@ exports.deleteId = (req, res, next) => {
         user: results.user.toJson(),
         attendants: results.attendants,
         friendshipsAndMessages: results.friendshipsAndMessages,
+        notifications: results.notifications,
       });
     }
   );
