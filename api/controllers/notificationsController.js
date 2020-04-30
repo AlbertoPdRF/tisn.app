@@ -3,7 +3,9 @@ const Notification = require('../models/Notification');
 exports.get = (req, res, next) => {
   return Notification.find({
     user: req.params.userId,
-  }).then((notifications) => res.json({ notifications }));
+  })
+    .sort([['createdAt', -1]])
+    .then((notifications) => res.json({ notifications }));
 };
 
 exports.putId = (req, res, next) => {

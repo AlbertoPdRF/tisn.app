@@ -8,8 +8,9 @@ const NotificationSchema = new Schema(
     type: {
       type: String,
       required: true,
-      enum: ['Message'],
+      enum: ['General', 'Attendant', 'Comment', 'Friendship', 'Message'],
     },
+    title: { type: String, required: true },
     content: { type: String, required: true },
     path: { type: String, required: true },
     read: { type: Boolean, required: true, default: false },

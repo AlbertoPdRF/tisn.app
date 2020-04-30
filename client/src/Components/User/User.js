@@ -16,10 +16,16 @@ import {
   postFriendship,
   putFriendship,
   deleteFriendship,
+  putNotification,
+  getNotifications,
 } from '../../logic/api';
-import { classifyFriendships } from '../../logic/utils';
+import { classifyFriendships, classifyNotifications } from '../../logic/utils';
 
 import { useUser } from '../UserProvider/UserProvider';
+import {
+  useNotifications,
+  useSetNotifications,
+} from '../NotificationsProvider/NotificationsProvider';
 
 import { useConfirm } from 'material-ui-confirm';
 
@@ -33,6 +39,8 @@ import Style from '../Style/Style';
 const User = ({ match }) => {
   const style = Style();
   const currentUser = useUser();
+  const notifications = useNotifications();
+  const setNotifications = useSetNotifications();
   const confirm = useConfirm();
 
   const [value, setValue] = useState(0);
@@ -44,8 +52,16 @@ const User = ({ match }) => {
   const [acceptedFriendships, setAcceptedFriendships] = useState(null);
   const [currentUserFriendship, setCurrentUserFriendship] = useState(null);
   const [friendshipButtonHover, setFriendshipButtonHover] = useState(false);
+  const [updateNotifications, setUpdateNotifications] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const friendshipsTab = match.path.endsWith('/friendships');
+  useEffect(() => {
+    if (friendshipsTab) {
+      setValue(1);
+    }
+  }, [friendshipsTab]);
 
   const id = match.params.userId;
   useEffect(() => {
@@ -58,7 +74,9 @@ const User = ({ match }) => {
         setUser(currentUser);
         setRestrictedDisplay(true);
         setUpdateFriendships(true);
-        setValue(0);
+        if (!friendshipsTab) {
+          setValue(0);
+        }
         setLoading(false);
       } else {
         if (currentUser.admin) {
@@ -71,13 +89,15 @@ const User = ({ match }) => {
           .then((data) => {
             setUser(data.user);
             setUpdateFriendships(true);
-            setValue(0);
+            if (!friendshipsTab) {
+              setValue(0);
+            }
           })
           .catch((error) => setError(error))
           .finally(() => setLoading(false));
       }
     }
-  }, [id, currentUser]);
+  }, [id, currentUser, friendshipsTab]);
 
   useEffect(() => {
     if (currentUser && updateFriendships) {
@@ -101,20 +121,55 @@ const User = ({ match }) => {
     }
   }, [id, currentUser, updateFriendships]);
 
+  useEffect(() => {
+    if (currentUser && userIsCurrentUser && notifications) {
+      setError(null);
+
+      const friendshipNotifications = notifications.regular.filter(
+        (notification) => notification.type === 'Friendship'
+      );
+
+      if (value === 1 && friendshipNotifications.length > 0) {
+        friendshipNotifications.forEach((notification, index) => {
+          notification.read = true;
+          notification.readAt = new Date();
+
+          putNotification(currentUser._id, notification._id, notification)
+            .then((data) => {
+              if (data.errors) {
+                setError('Something went wrong');
+              }
+
+              if (index === friendshipNotifications.length - 1) {
+                setUpdateNotifications(true);
+              }
+            })
+            .catch((error) => setError(error));
+        });
+      }
+    }
+  }, [currentUser, userIsCurrentUser, value, notifications]);
+
+  useEffect(() => {
+    if (updateNotifications) {
+      setError(null);
+      getNotifications()
+        .then((data) =>
+          setNotifications(classifyNotifications(data.notifications))
+        )
+        .catch((error) => setError(error));
+    }
+  }, [updateNotifications, setNotifications]);
+
   const handleFriendshipClick = (friendship, accept = false) => {
     setLoading(true);
     setError(null);
     if (friendship) {
-      const nonPopulatedFriendship = {
-        requestant: friendship.requestant._id,
-        receivant: friendship.receivant._id,
-      };
-
       if (accept) {
-        nonPopulatedFriendship.accepted = true;
-        nonPopulatedFriendship.acceptedAt = new Date();
+        friendship.accepted = true;
+        friendship.acceptedAt = new Date();
 
-        putFriendship(id, friendship._id, nonPopulatedFriendship)
+        putFriendship(id, friendship._id, friendship)
           .then(() => setUpdateFriendships(true))
           .catch((error) => {
             setError(error);
@@ -135,7 +190,7 @@ const User = ({ match }) => {
           },
         })
           .then(() => {
-            deleteFriendship(id, friendship._id, nonPopulatedFriendship)
+            deleteFriendship(id, friendship._id, friendship)
               .then(() => setUpdateFriendships(true))
               .catch((error) => {
                 setError(error);
@@ -146,8 +201,8 @@ const User = ({ match }) => {
       }
     } else {
       postFriendship(id, {
-        requestant: currentUser._id,
-        receivant: id,
+        requestant: currentUser,
+        receivant: user,
       })
         .then(() => setUpdateFriendships(true))
         .catch((error) => {

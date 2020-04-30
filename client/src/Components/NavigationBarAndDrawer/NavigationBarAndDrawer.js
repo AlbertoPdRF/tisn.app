@@ -22,6 +22,7 @@ import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import Badge from '@material-ui/core/Badge';
 import ChatIcon from '@material-ui/icons/Chat';
+import NotificationsIcon from '@material-ui/icons/Notifications';
 import Link from '@material-ui/core/Link';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 
@@ -220,10 +221,22 @@ const NavigationBarAndDrawer = (props) => {
               onClick={() => history.push('/chats')}
             >
               <Badge
-                badgeContent={notifications && notifications.messages.length}
+                badgeContent={notifications && notifications.message.length}
                 color="secondary"
               >
                 <ChatIcon />
+              </Badge>
+            </IconButton>
+            <IconButton
+              edge="end"
+              color="inherit"
+              onClick={() => history.push('/notifications')}
+            >
+              <Badge
+                badgeContent={notifications && notifications.regular.length}
+                color="secondary"
+              >
+                <NotificationsIcon />
               </Badge>
             </IconButton>
           </Toolbar>

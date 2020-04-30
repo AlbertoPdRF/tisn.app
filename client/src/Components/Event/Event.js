@@ -17,10 +17,20 @@ import {
   deleteAttendant,
   getComments,
   postComment,
+  putNotification,
+  getNotifications,
 } from '../../logic/api';
-import { groupComments, buildValidationErrorsObject } from '../../logic/utils';
+import {
+  groupComments,
+  buildValidationErrorsObject,
+  classifyNotifications,
+} from '../../logic/utils';
 
 import { useUser } from '../UserProvider/UserProvider';
+import {
+  useNotifications,
+  useSetNotifications,
+} from '../NotificationsProvider/NotificationsProvider';
 
 import TabPanel from '../TabPanel/TabPanel';
 import EventDetails from '../EventDetails/EventDetails';
@@ -33,6 +43,8 @@ import Style from '../Style/Style';
 const Event = ({ match }) => {
   const style = Style();
   const user = useUser();
+  const notifications = useNotifications();
+  const setNotifications = useSetNotifications();
 
   const [value, setValue] = useState(0);
   const [event, setEvent] = useState(null);
@@ -40,9 +52,17 @@ const Event = ({ match }) => {
   const [updateAttendants, setUpdateAttendants] = useState(true);
   const [comments, setComments] = useState(null);
   const [updateComments, setUpdateComments] = useState(true);
+  const [updateNotifications, setUpdateNotifications] = useState(false);
   const [loading, setLoading] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
   const [error, setError] = useState(null);
+
+  const commentsTab = match.path.endsWith('/comments');
+  useEffect(() => {
+    if (commentsTab) {
+      setValue(1);
+    }
+  }, [commentsTab]);
 
   const id = match.params.eventId;
   useEffect(() => {
@@ -79,6 +99,60 @@ const Event = ({ match }) => {
     }
   }, [id, updateComments]);
 
+  useEffect(() => {
+    if (user && id && notifications) {
+      setError(null);
+
+      const attendantNotifications = notifications.regular.filter(
+        (notification) =>
+          notification.type === 'Attendant' &&
+          notification.path.split('/')[2] === id
+      );
+      const commentNotifications = notifications.regular.filter(
+        (notification) =>
+          notification.type === 'Comment' &&
+          notification.path.split('/')[2] === id
+      );
+
+      const markNotificationsAsRead = (notifications) => {
+        notifications.forEach((notification, index) => {
+          notification.read = true;
+          notification.readAt = new Date();
+
+          putNotification(user._id, notification._id, notification)
+            .then((data) => {
+              if (data.errors) {
+                setError('Something went wrong');
+              }
+
+              if (index === notifications.length - 1) {
+                setUpdateNotifications(true);
+              }
+            })
+            .catch((error) => setError(error));
+        });
+      };
+
+      if (value === 0 && attendantNotifications.length > 0) {
+        markNotificationsAsRead(attendantNotifications);
+      }
+      if (value === 1 && commentNotifications.length > 0) {
+        markNotificationsAsRead(commentNotifications);
+      }
+    }
+  }, [user, id, value, notifications]);
+
+  useEffect(() => {
+    if (updateNotifications) {
+      setError(null);
+      getNotifications()
+        .then((data) =>
+          setNotifications(classifyNotifications(data.notifications))
+        )
+        .catch((error) => setError(error));
+    }
+  }, [updateNotifications, setNotifications]);
+
   const handleAttendantsClick = () => {
     setLoading(true);
     setError(null);
@@ -86,12 +160,8 @@ const Event = ({ match }) => {
       const attendant = attendants.filter(
         (attendant) => attendant.user._id === user._id
       )[0];
-      const nonPopulatedAttendant = {
-        event: attendant.event,
-        user: attendant.user._id,
-      };
 
-      deleteAttendant(id, attendant._id, nonPopulatedAttendant)
+      deleteAttendant(id, attendant._id, attendant)
         .then(() => setUpdateAttendants(true))
         .catch((error) => {
           setError(error);
@@ -99,8 +169,8 @@ const Event = ({ match }) => {
         });
     } else {
       postAttendant(id, {
-        event: id,
-        user: user._id,
+        event,
+        user,
       })
         .then(() => setUpdateAttendants(true))
         .catch((error) => {
@@ -119,8 +189,8 @@ const Event = ({ match }) => {
     setError(null);
     setValidationErrors({});
     const comment = {
-      event: id,
-      user: user._id,
+      event,
+      user,
       content: commentContent,
     };
     if (parentComment) {

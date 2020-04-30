@@ -13,6 +13,7 @@ import UserTabs from '../UserTabs/UserTabs';
 import Interests from '../Interests/Interests';
 import Chats from '../Chats/Chats';
 import Chat from '../Chat/Chat';
+import Notifications from '../Notifications/Notifications';
 
 import Welcome from '../Welcome/Welcome';
 import LogInForm from '../LogInForm/LogInForm';
@@ -26,14 +27,23 @@ const Navigation = () => {
       <PrivateRoute exact path="/" component={Home} />
       <PrivateRoute exact path="/events/mine" component={UserEvents} />
       <PrivateRoute exact path="/events/new" component={EventSteps} />
-      <PrivateRoute exact path="/events/:eventId" component={Event} />
+      <PrivateRoute
+        exact
+        path={['/events/:eventId', '/events/:eventId/comments']}
+        component={Event}
+      />
       <PrivateRoute exact path="/events/:eventId/edit" component={EventSteps} />
       <PrivateRoute exact path="/users" component={Users} />
-      <PrivateRoute exact path="/users/:userId" component={User} />
+      <PrivateRoute
+        exact
+        path={['/users/:userId', '/users/:userId/friendships']}
+        component={User}
+      />
       <PrivateRoute exact path="/users/:userId/edit" component={UserTabs} />
       <PrivateRoute exact path="/interests" component={Interests} />
       <PrivateRoute exact path="/chats" component={Chats} />
       <PrivateRoute exact path="/chats/:friendshipId" component={Chat} />
+      <PrivateRoute exact path="/notifications" component={Notifications} />
 
       <PublicRoute exact path="/welcome" component={Welcome} />
       <PublicRoute exact path="/log-in" component={LogInForm} />

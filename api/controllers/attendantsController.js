@@ -1,7 +1,5 @@
 const Attendant = require('../models/Attendant');
-const Event = require('../models/Event');
-
-const async = require('async');
+const Notification = require('../models/Notification');
 
 exports.get = (req, res, next) => {
   return Attendant.find({ event: req.params.eventId })
@@ -14,52 +12,34 @@ exports.post = (req, res, next) => {
     body: { attendant },
   } = req;
 
-  async.parallel(
-    {
-      event: (callback) => Event.findById(attendant.event).exec(callback),
-      attendants: (callback) =>
-        Attendant.find({ event: attendant.event }).exec(callback),
-    },
-    (error, results) => {
-      if (error) {
-        return next(error);
-      }
-
-      if (!results) {
-        return res.sendStatus(404);
-      }
-
-      if (results.event.startDate < new Date()) {
-        return res.status(400).json({
-          errors: [
-            {
-              param: 'Start date',
-              value: results.event.startDate,
-              msg: 'already in the past',
-            },
-          ],
-        });
-      }
-
-      if (results.attendants.length >= results.event.attendantsLimit) {
-        return res.status(400).json({
-          errors: [
-            {
-              param: 'Attendants limit',
-              value: results.event.attendantsLimit,
-              msg: 'already met',
-            },
-          ],
-        });
-      }
-
+  Attendant.find({ event: attendant.event._id }).then((attendants) => {
+    if (attendants.length >= attendant.event.attendantsLimit) {
+      return res.status(400).json({
+        errors: [
+          {
+            param: 'Attendants limit',
+            value: attendant.event.attendantsLimit,
+            msg: 'has been met',
+          },
+        ],
+      });
+    } else {
       const finalAttendant = new Attendant(attendant);
 
-      return finalAttendant
-        .save()
-        .then(() => res.json({ attendant: finalAttendant }));
+      return finalAttendant.save().then(() => {
+        const notification = new Notification({
+          user: attendant.event.createdBy,
+          type: 'Attendant',
+          title: `${attendant.user.name} will attend to your event ${attendant.event.name}`,
+          content: 'Go to the event page to see all attendants',
+          path: `/events/${attendant.event._id}`,
+        });
+        notification.save();
+
+        res.json({ attendant: finalAttendant });
+      });
     }
-  );
+  });
 };
 
 exports.deleteId = (req, res, next) => {

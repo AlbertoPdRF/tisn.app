@@ -103,10 +103,10 @@ const buildValidator = (type, param, optional = false) => {
           let model;
           switch (param) {
             case 'userId':
-            case 'attendant.user':
-            case 'comment.user':
-            case 'friendship.requestant':
-            case 'friendship.receivant':
+            case 'attendant.user._id':
+            case 'comment.user._id':
+            case 'friendship.requestant._id':
+            case 'friendship.receivant._id':
             case 'message.user._id':
             case 'notification.user':
               model = User;
@@ -116,8 +116,8 @@ const buildValidator = (type, param, optional = false) => {
               model = Interest;
               break;
             case 'eventId':
-            case 'attendant.event':
-            case 'comment.event':
+            case 'attendant.event._id':
+            case 'comment.event._id':
               model = Event;
               break;
             case 'attendantId':
@@ -166,6 +166,10 @@ const buildValidator = (type, param, optional = false) => {
       return basicRequired
         .matches(/^\/([A-z0-9]+\/)*([A-z0-9]+)$/)
         .withMessage('is invalid');
+    case 'notificationType':
+      return escapedRequired
+        .isIn(['General', 'Attendant', 'Comment', 'Friendship', 'Message'])
+        .withMessage('is unknown');
     default:
       return escapedRequired;
   }
@@ -232,8 +236,8 @@ const createValidation = (route) => {
     case 'attendantsPost':
       return [
         buildValidator('id', 'eventId'),
-        buildValidator('id', 'attendant.event'),
-        buildValidator('id', 'attendant.user'),
+        buildValidator('id', 'attendant.event._id'),
+        buildValidator('id', 'attendant.user._id'),
       ];
     case 'attendantsDeleteId':
       return [
@@ -243,8 +247,8 @@ const createValidation = (route) => {
     case 'commentsPost':
       return [
         buildValidator('id', 'eventId'),
-        buildValidator('id', 'comment.event'),
-        buildValidator('id', 'comment.user'),
+        buildValidator('id', 'comment.event._id'),
+        buildValidator('id', 'comment.user._id'),
         buildValidator('text', 'comment.content'),
         buildValidator('id', 'comment.parentComment', true),
       ];
@@ -257,8 +261,8 @@ const createValidation = (route) => {
     case 'friendshipsPost':
       return [
         buildValidator('id', 'userId'),
-        buildValidator('id', 'friendship.requestant'),
-        buildValidator('id', 'friendship.receivant'),
+        buildValidator('id', 'friendship.requestant._id'),
+        buildValidator('id', 'friendship.receivant._id'),
       ];
     case 'friendshipsGetId':
     case 'friendshipsDeleteId':
@@ -270,8 +274,8 @@ const createValidation = (route) => {
       return [
         buildValidator('id', 'userId'),
         buildValidator('id', 'friendshipId'),
-        buildValidator('id', 'friendship.requestant'),
-        buildValidator('id', 'friendship.receivant'),
+        buildValidator('id', 'friendship.requestant._id'),
+        buildValidator('id', 'friendship.receivant._id'),
         buildValidator('boolean', 'friendship.accepted'),
         buildValidator('date', 'friendship.acceptedAt'),
       ];
@@ -293,6 +297,8 @@ const createValidation = (route) => {
         buildValidator('id', 'userId'),
         buildValidator('id', 'notificationId'),
         buildValidator('id', 'notification.user'),
+        buildValidator('notificationType', 'notification.type'),
+        buildValidator('text', 'notification.title'),
         buildValidator('text', 'notification.content'),
         buildValidator('path', 'notification.path'),
         buildValidator('boolean', 'notification.read'),

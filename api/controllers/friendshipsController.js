@@ -1,5 +1,6 @@
 const Friendship = require('../models/Friendship');
 const Message = require('../models/Message');
+const Notification = require('../models/Notification');
 
 const async = require('async');
 
@@ -25,6 +26,10 @@ exports.get = (req, res, next) => {
         select: 'name avatar',
       },
     })
+    .sort([
+      ['createdAt', -1],
+      ['acceptedAt', -1],
+    ])
     .then((friendships) => res.json({ friendships }));
 };
 
@@ -46,9 +51,18 @@ exports.post = (req, res, next) => {
 
   const finalFriendship = new Friendship(friendship);
 
-  return finalFriendship
-    .save()
-    .then(() => res.json({ friendship: finalFriendship }));
+  return finalFriendship.save().then(() => {
+    const notification = new Notification({
+      user: friendship.receivant._id,
+      type: 'Friendship',
+      title: `New friendship request from ${friendship.requestant.name}`,
+      content: 'Go to your profile to see all pending friendship requests',
+      path: `/users/${friendship.receivant._id}/friendships`,
+    });
+    notification.save();
+
+    res.json({ friendship: finalFriendship });
+  });
 };
 
 exports.getId = (req, res, next) => {
@@ -93,6 +107,15 @@ exports.putId = (req, res, next) => {
     if (!updatedFriendship) {
       return res.sendStatus(404);
     }
+
+    const notification = new Notification({
+      user: friendship.requestant._id,
+      type: 'Friendship',
+      title: `${friendship.receivant.name} has accepted your friendship request`,
+      content: 'Go to your profile to see all friendships',
+      path: `/users/${friendship.requestant._id}/friendships`,
+    });
+    notification.save();
 
     res.json({ friendship: updatedFriendship });
   });

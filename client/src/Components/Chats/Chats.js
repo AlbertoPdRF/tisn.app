@@ -13,7 +13,7 @@ import Button from '@material-ui/core/Button';
 import { getFriendships } from '../../logic/api';
 import {
   classifyFriendships,
-  buildMessagesNotificationsObject,
+  buildMessageNotificationsObject,
 } from '../../logic/utils';
 import { formatDate } from '../../logic/date-time';
 
@@ -31,7 +31,7 @@ const Chats = () => {
   const notifications = useNotifications();
 
   const [friendships, setFriendships] = useState(null);
-  const [messagesNotifications, setMessagesNotifications] = useState({});
+  const [messageNotifications, setMessageNotifications] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -50,8 +50,8 @@ const Chats = () => {
 
   useEffect(() => {
     if (notifications) {
-      setMessagesNotifications(
-        buildMessagesNotificationsObject(notifications.messages)
+      setMessageNotifications(
+        buildMessageNotificationsObject(notifications.message)
       );
     }
   }, [notifications]);
@@ -92,8 +92,8 @@ const Chats = () => {
                 <Grid item key={friendship._id}>
                   <Badge
                     badgeContent={
-                      messagesNotifications[friendship._id] &&
-                      messagesNotifications[friendship._id].length
+                      messageNotifications[friendship._id] &&
+                      messageNotifications[friendship._id].length
                     }
                     color="secondary"
                   >

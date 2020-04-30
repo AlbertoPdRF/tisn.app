@@ -31,34 +31,34 @@ export const buildValidationErrorsObject = (errors) => {
 };
 
 export const classifyNotifications = (notifications) => {
-  const messages = [];
+  const message = [];
   const regular = [];
   notifications.forEach((notification) => {
-    if (notification.type === 'Message') {
-      if (!notification.read) {
-        messages.push(notification);
+    if (!notification.read) {
+      if (notification.type === 'Message') {
+        message.push(notification);
+      } else {
+        regular.push(notification);
       }
-    } else {
-      regular.push(notification);
     }
   });
 
-  return { messages, regular };
+  return { message, regular };
 };
 
-export const buildMessagesNotificationsObject = (notifications) => {
-  const messagesNotificationsObject = {};
+export const buildMessageNotificationsObject = (notifications) => {
+  const messageNotificationsObject = {};
   notifications.forEach((notification) => {
     const key = notification.path.split('/')[2];
 
-    if (!messagesNotificationsObject[key]) {
-      messagesNotificationsObject[key] = [];
+    if (!messageNotificationsObject[key]) {
+      messageNotificationsObject[key] = [];
     }
 
-    messagesNotificationsObject[key].push(notification);
+    messageNotificationsObject[key].push(notification);
   });
 
-  return messagesNotificationsObject;
+  return messageNotificationsObject;
 };
 
 export const decodeText = (text) =>

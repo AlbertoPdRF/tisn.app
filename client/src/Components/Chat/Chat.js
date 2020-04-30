@@ -106,7 +106,7 @@ const Chats = ({ match }) => {
 
   useEffect(() => {
     if (user && friendship && notifications) {
-      const chatNotifications = notifications.messages.filter(
+      const chatNotifications = notifications.message.filter(
         (notification) => notification.path.split('/')[2] === friendship._id
       );
 

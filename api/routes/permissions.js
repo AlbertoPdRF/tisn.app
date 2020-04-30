@@ -7,12 +7,15 @@ const permissions = (req, res, next) => {
       if (method === 'GET') {
         id = payload._id;
       } else {
-        if (body.friendship.accepted || body.friendship.acceptedAt) {
-          id = body.friendship.receivant;
+        if (
+          (body.friendship.accepted || body.friendship.acceptedAt) &&
+          method !== 'DELETE'
+        ) {
+          id = body.friendship.receivant._id;
         } else {
           if (
-            body.friendship.requestant === payload._id ||
-            body.friendship.receivant === payload._id
+            body.friendship.requestant._id === payload._id ||
+            body.friendship.receivant._id === payload._id
           ) {
             id = payload._id;
           }
@@ -23,9 +26,9 @@ const permissions = (req, res, next) => {
     }
   } else if (baseUrl.startsWith('/api/events')) {
     if (baseUrl.endsWith('/attendants')) {
-      id = body.attendant.user;
+      id = body.attendant.user._id;
     } else if (baseUrl.endsWith('/comments')) {
-      id = body.comment.user;
+      id = body.comment.user._id;
     } else {
       id = body.event.createdBy;
     }

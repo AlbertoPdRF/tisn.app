@@ -11,6 +11,7 @@ exports.post = (req, res, next) => {
   const {
     body: { message },
   } = req;
+
   const finalMessage = new Message(message);
 
   return finalMessage.save().then(() => {
@@ -20,11 +21,12 @@ exports.post = (req, res, next) => {
           ? message.friendship.receivant
           : message.friendship.requestant,
       type: 'Message',
-      content: `New message from ${message.user.name}`,
+      title: `New message from ${message.user.name}`,
+      content: 'Go to your chat to see all unread messages',
       path: `/chats/${message.friendship._id}`,
     });
     notification.save();
 
-    res.json({ message });
+    res.json({ message: finalMessage });
   });
 };
