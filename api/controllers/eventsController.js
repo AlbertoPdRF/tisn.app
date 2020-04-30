@@ -17,9 +17,21 @@ exports.get = (req, res, next) => {
 };
 
 exports.post = (req, res, next) => {
-  const event = new Event(req.body.event);
+  const {
+    body: { event },
+  } = req;
 
-  return event.save().then(() => res.json({ event }));
+  const finalEvent = new Event(event);
+
+  return finalEvent.save().then(() => {
+    const attendant = new Attendant({
+      event: finalEvent._id,
+      user: finalEvent.createdBy,
+    });
+    attendant.save();
+
+    res.json({ event: finalEvent });
+  });
 };
 
 exports.getId = (req, res, next) => {
