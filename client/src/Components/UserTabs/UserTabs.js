@@ -15,8 +15,18 @@ import Button from '@material-ui/core/Button';
 
 import SwipeableViews from 'react-swipeable-views';
 
-import { getUser, putUser, deleteUser, getInterests } from '../../logic/api';
-import { buildValidationErrorsObject } from '../../logic/utils';
+import {
+  getUser,
+  putUser,
+  deleteUser,
+  getInterests,
+  putNotification,
+  getNotifications,
+} from '../../logic/api';
+import {
+  buildValidationErrorsObject,
+  classifyNotifications,
+} from '../../logic/utils';
 import { logOut } from '../../logic/auth';
 import { inputDate } from '../../logic/date-time';
 import { upload } from '../../logic/upload';
@@ -24,6 +34,10 @@ import { upload } from '../../logic/upload';
 import { useConfirm } from 'material-ui-confirm';
 
 import { useUser, useSetUser } from '../UserProvider/UserProvider';
+import {
+  useNotifications,
+  useSetNotifications,
+} from '../NotificationsProvider/NotificationsProvider';
 
 import TabPanel from '../TabPanel/TabPanel';
 import UserForm from '../UserForm/UserForm';
@@ -37,6 +51,8 @@ const UserTabs = ({ match }) => {
   const style = Style();
   const currentUser = useUser();
   const setCurrentUser = useSetUser();
+  const notifications = useNotifications();
+  const setNotifications = useSetNotifications();
   const confirm = useConfirm();
 
   const [value, setValue] = useState(0);
@@ -48,6 +64,7 @@ const UserTabs = ({ match }) => {
   const [avatar, setAvatar] = useState('');
   const [interests, setInterests] = useState([]);
   const [updatedFields, setUpdatedFields] = useState(null);
+  const [updateNotifications, setUpdateNotifications] = useState(false);
   const [loading, setLoading] = useState(true);
   const [validationErrors, setValidationErrors] = useState({});
   const [error, setError] = useState(null);
@@ -103,6 +120,46 @@ const UserTabs = ({ match }) => {
       setLoading(false);
     }
   }, [user, allInterests]);
+
+  useEffect(() => {
+    if (currentUser && notifications) {
+      setError(null);
+
+      const avatarNotifications = notifications.regular.filter(
+        (notification) => notification.type === 'Avatar'
+      );
+
+      if (avatarNotifications.length > 0) {
+        avatarNotifications.forEach((notification, index) => {
+          notification.read = true;
+          notification.readAt = new Date();
+
+          putNotification(currentUser._id, notification._id, notification)
+            .then((data) => {
+              if (data.errors) {
+                setError('Something went wrong');
+              }
+
+              if (index === avatarNotifications.length - 1) {
+                setUpdateNotifications(true);
+              }
+            })
+            .catch((error) => setError(error));
+        });
+      }
+    }
+  }, [currentUser, notifications]);
+
+  useEffect(() => {
+    if (updateNotifications) {
+      setError(null);
+      getNotifications()
+        .then((data) =>
+          setNotifications(classifyNotifications(data.notifications))
+        )
+        .catch((error) => setError(error));
+    }
+  }, [updateNotifications, setNotifications]);
 
   const handleNameChange = (name) => {
     setName(name);

@@ -173,9 +173,18 @@ const buildValidator = (type, param, optional = false) => {
         .withMessage('is invalid');
     case 'notificationType':
       return escapedRequired
-        .isIn(['General', 'Attendant', 'Comment', 'Friendship', 'Message'])
+        .isIn([
+          'Event',
+          'Avatar',
+          'Interests',
+          'Attendant',
+          'Comment',
+          'Friendship',
+          'Message',
+          'Announcement',
+        ])
         .withMessage('is unknown');
-    case 'nonEmptyArray':
+    case 'array':
       return check.isLength({ min: 1 }).withMessage('must have at least 1');
     default:
       return escapedRequired;
@@ -219,7 +228,7 @@ const createValidation = (route) => {
         buildValidator('date', 'event.startDate'),
         buildValidator('date', 'event.endDate'),
         buildValidator('userId', 'event.createdBy'),
-        buildValidator('nonEmptyArray', 'event.relatedInterests'),
+        buildValidator('array', 'event.relatedInterests'),
         buildValidator('id', 'event.relatedInterests.*._id'),
         buildValidator('imageUrl', 'event.coverPhoto', true),
         buildValidator('int', 'event.attendantsLimit'),
@@ -237,7 +246,7 @@ const createValidation = (route) => {
         buildValidator('date', 'event.startDate'),
         buildValidator('date', 'event.endDate'),
         buildValidator('userId', 'event.createdBy'),
-        buildValidator('nonEmptyArray', 'event.relatedInterests'),
+        buildValidator('array', 'event.relatedInterests'),
         buildValidator('id', 'event.relatedInterests.*._id'),
         buildValidator('imageUrl', 'event.coverPhoto', true),
         buildValidator('int', 'event.attendantsLimit'),

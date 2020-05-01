@@ -7,10 +7,19 @@ import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 
-import { getInterests, putUser } from '../../logic/api';
-import { groupInterests } from '../../logic/utils';
+import {
+  getInterests,
+  putUser,
+  putNotification,
+  getNotifications,
+} from '../../logic/api';
+import { groupInterests, classifyNotifications } from '../../logic/utils';
 
 import { useUser, useSetUser } from '../UserProvider/UserProvider';
+import {
+  useNotifications,
+  useSetNotifications,
+} from '../NotificationsProvider/NotificationsProvider';
 
 import InterestCard from '../InterestCard/InterestCard';
 import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
@@ -21,17 +30,61 @@ const Interests = () => {
   const style = Style();
   const user = useUser();
   const setUser = useSetUser();
+  const notifications = useNotifications();
+  const setNotifications = useSetNotifications();
 
   const [interests, setInterests] = useState(null);
+  const [updateNotifications, setUpdateNotifications] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
+    setError(null);
     getInterests()
       .then((data) => setInterests(groupInterests(data.interests)))
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
   }, []);
+
+  useEffect(() => {
+    if (user && notifications) {
+      setError(null);
+
+      const interestsNotifications = notifications.regular.filter(
+        (notification) => notification.type === 'Interests'
+      );
+
+      if (interestsNotifications.length > 0) {
+        interestsNotifications.forEach((notification, index) => {
+          notification.read = true;
+          notification.readAt = new Date();
+
+          putNotification(user._id, notification._id, notification)
+            .then((data) => {
+              if (data.errors) {
+                setError('Something went wrong');
+              }
+
+              if (index === interestsNotifications.length - 1) {
+                setUpdateNotifications(true);
+              }
+            })
+            .catch((error) => setError(error));
+        });
+      }
+    }
+  }, [user, notifications]);
+
+  useEffect(() => {
+    if (updateNotifications) {
+      setError(null);
+      getNotifications()
+        .then((data) =>
+          setNotifications(classifyNotifications(data.notifications))
+        )
+        .catch((error) => setError(error));
+    }
+  }, [updateNotifications, setNotifications]);
 
   const handleClick = (interest, userInterested) => {
     setLoading(true);

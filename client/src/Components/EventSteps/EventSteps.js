@@ -8,12 +8,26 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
-import { getInterests, getEvent, postEvent, putEvent } from '../../logic/api';
-import { buildValidationErrorsObject } from '../../logic/utils';
+import {
+  getInterests,
+  getEvent,
+  postEvent,
+  putEvent,
+  putNotification,
+  getNotifications,
+} from '../../logic/api';
+import {
+  buildValidationErrorsObject,
+  classifyNotifications,
+} from '../../logic/utils';
 import { inputDateTime } from '../../logic/date-time';
 import { upload } from '../../logic/upload';
 
 import { useUser } from '../UserProvider/UserProvider';
+import {
+  useNotifications,
+  useSetNotifications,
+} from '../NotificationsProvider/NotificationsProvider';
 
 import Style from '../Style/Style';
 
@@ -25,6 +39,8 @@ import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 const EventSteps = ({ match }) => {
   const history = useHistory();
   const user = useUser();
+  const notifications = useNotifications();
+  const setNotifications = useSetNotifications();
   const style = Style();
 
   const [activeStep, setActiveStep] = useState(0);
@@ -39,6 +55,7 @@ const EventSteps = ({ match }) => {
   const [coverPhoto, setCoverPhoto] = useState('');
   const [attendantsLimit, setAttendantsLimit] = useState(0);
   const [updatedFields, setUpdatedFields] = useState(null);
+  const [updateNotifications, setUpdateNotifications] = useState(false);
   const [loading, setLoading] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
   const [error, setError] = useState(null);
@@ -102,6 +119,46 @@ const EventSteps = ({ match }) => {
     }
     setLoading(false);
   }, [id, event, interests]);
+
+  useEffect(() => {
+    if (user && notifications) {
+      setError(null);
+
+      const eventNotifications = notifications.regular.filter(
+        (notification) => notification.type === 'Event'
+      );
+
+      if (eventNotifications.length > 0) {
+        eventNotifications.forEach((notification, index) => {
+          notification.read = true;
+          notification.readAt = new Date();
+
+          putNotification(user._id, notification._id, notification)
+            .then((data) => {
+              if (data.errors) {
+                setError('Something went wrong');
+              }
+
+              if (index === eventNotifications.length - 1) {
+                setUpdateNotifications(true);
+              }
+            })
+            .catch((error) => setError(error));
+        });
+      }
+    }
+  }, [user, notifications]);
+
+  useEffect(() => {
+    if (updateNotifications) {
+      setError(null);
+      getNotifications()
+        .then((data) =>
+          setNotifications(classifyNotifications(data.notifications))
+        )
+        .catch((error) => setError(error));
+    }
+  }, [updateNotifications, setNotifications]);
 
   const steps = ['Details', 'Interests', 'Preview'];
 

@@ -1,9 +1,12 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { Link } from 'react-router-dom';
-import AnnouncementIcon from '@material-ui/icons/Announcement';
+import AddIcon from '@material-ui/icons/Add';
+import AccountCircleIcon from '@material-ui/icons/AccountCircle';
+import CategoryIcon from '@material-ui/icons/Category';
 import PlusOneIcon from '@material-ui/icons/PlusOne';
 import AddCommentIcon from '@material-ui/icons/AddComment';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
+import AnnouncementIcon from '@material-ui/icons/Announcement';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -33,14 +36,20 @@ const Notifications = () => {
 
   const notificationAvatar = (type) => {
     switch (type) {
-      case 'General':
-        return <AnnouncementIcon />;
+      case 'Event':
+        return <AddIcon />;
+      case 'Avatar':
+        return <AccountCircleIcon />;
+      case 'Interests':
+        return <CategoryIcon />;
       case 'Attendant':
         return <PlusOneIcon />;
       case 'Comment':
         return <AddCommentIcon />;
       case 'Friendship':
         return <PersonAddIcon />;
+      case 'Announcement':
+        return <AnnouncementIcon />;
       default:
         return <AnnouncementIcon />;
     }
