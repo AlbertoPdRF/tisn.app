@@ -32,13 +32,17 @@ export const buildValidationErrorsObject = (errors) => {
 
 export const classifyNotifications = (notifications) => {
   const message = [];
+  const messageAll = [];
   const regular = [];
   const regularRead = [];
+
   notifications.forEach((notification) => {
     if (notification.type === 'Message') {
       if (!notification.read) {
         message.push(notification);
       }
+
+      messageAll.push(notification);
     } else {
       if (notification.read) {
         regularRead.push(notification);
@@ -48,7 +52,7 @@ export const classifyNotifications = (notifications) => {
     }
   });
 
-  return { message, regular, regularRead };
+  return { message, messageAll, regular, regularRead };
 };
 
 export const buildMessageNotificationsObject = (notifications) => {
@@ -91,6 +95,33 @@ export const classifyFriendships = (friendships, currentUser) => {
 
   return { pending, accepted, currentUserFriendship };
 };
+
+export const sortChats = (friendships, notifications) =>
+  friendships.sort((a, b) => {
+    const aNotifications = notifications[a._id];
+    const bNotifications = notifications[b._id];
+
+    if (aNotifications && bNotifications) {
+      const aLastDateTime = aNotifications[0].createdAt;
+      const bLastDateTime = bNotifications[0].createdAt;
+
+      return aLastDateTime < bLastDateTime
+        ? 1
+        : aLastDateTime > bLastDateTime
+        ? -1
+        : 0;
+    } else if (aNotifications && !bNotifications) {
+      return -1;
+    } else if (!aNotifications && bNotifications) {
+      return 1;
+    } else {
+      return a.acceptedAt < b.acceptedAt
+        ? 1
+        : a.acceptedAt > b.acceptedAt
+        ? -1
+        : 0;
+    }
+  });
 
 export const classifyEvents = (events, referenceDate) => {
   const current = [];

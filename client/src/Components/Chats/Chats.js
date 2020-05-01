@@ -14,8 +14,9 @@ import { getFriendships } from '../../logic/api';
 import {
   classifyFriendships,
   buildMessageNotificationsObject,
+  sortChats,
 } from '../../logic/utils';
-import { formatDate } from '../../logic/date-time';
+import { formatDateTime, formatDate } from '../../logic/date-time';
 
 import { useUser } from '../UserProvider/UserProvider';
 import { useNotifications } from '../NotificationsProvider/NotificationsProvider';
@@ -32,6 +33,7 @@ const Chats = () => {
 
   const [friendships, setFriendships] = useState(null);
   const [messageNotifications, setMessageNotifications] = useState({});
+  const [messageAllNotifications, setMessageAllNotifications] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -53,8 +55,17 @@ const Chats = () => {
       setMessageNotifications(
         buildMessageNotificationsObject(notifications.message)
       );
+      setMessageAllNotifications(
+        buildMessageNotificationsObject(notifications.messageAll)
+      );
     }
   }, [notifications]);
+
+  useEffect(() => {
+    if (friendships && messageAllNotifications) {
+      setFriendships(sortChats(friendships, messageAllNotifications));
+    }
+  }, [friendships, messageAllNotifications]);
 
   const friendshipCardHeader = (friendship) => {
     const friendshipUser =
@@ -74,7 +85,14 @@ const Chats = () => {
           </Avatar>
         }
         title={friendshipUser.name}
-        subheader={`Friends since ${formatDate(friendship.acceptedAt)}`}
+        subheader={
+          messageAllNotifications[friendship._id]
+            ? `Last message at ${formatDateTime(
+                messageAllNotifications[friendship._id][0].createdAt
+              )}`
+            : `Friends since ${formatDate(friendship.acceptedAt)}`
+        }
+        subheaderTypographyProps={{ className: style.preLine }}
       />
     );
   };
