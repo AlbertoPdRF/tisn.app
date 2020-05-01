@@ -5,6 +5,9 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 
@@ -21,6 +24,7 @@ const LogInForm = () => {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
   const [error, setError] = useState('');
@@ -71,11 +75,21 @@ const LogInForm = () => {
           <Grid item>
             <TextField
               className={style.formInput}
-              type="password"
+              type={showPassword ? 'text' : 'password'}
               label="Password"
               variant="outlined"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
+              InputProps={{
+                endAdornment: (
+                  <IconButton
+                    color="primary"
+                    onClick={() => setShowPassword(!showPassword)}
+                  >
+                    {showPassword ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                  </IconButton>
+                ),
+              }}
               error={!!validationErrors.password}
               helperText={validationErrors.password}
             />

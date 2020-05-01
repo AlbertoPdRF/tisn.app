@@ -5,6 +5,9 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
+import IconButton from '@material-ui/core/IconButton';
+import VisibilityIcon from '@material-ui/icons/Visibility';
+import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
 
@@ -23,6 +26,7 @@ const SignUpForm = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPasswords, setShowPasswords] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
   const [loading, setLoading] = useState(false);
@@ -83,11 +87,21 @@ const SignUpForm = () => {
           <Grid item>
             <TextField
               className={style.formInput}
-              type="password"
+              type={showPasswords ? 'text' : 'password'}
               label="Password"
               variant="outlined"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
+              InputProps={{
+                endAdornment: (
+                  <IconButton
+                    color="primary"
+                    onClick={() => setShowPasswords(!showPasswords)}
+                  >
+                    {showPasswords ? <VisibilityIcon /> : <VisibilityOffIcon />}
+                  </IconButton>
+                ),
+              }}
               error={!!validationErrors.password}
               helperText={validationErrors.password}
             />
@@ -95,7 +109,7 @@ const SignUpForm = () => {
           <Grid item>
             <TextField
               className={style.formInput}
-              type="password"
+              type={showPasswords ? 'text' : 'password'}
               label="Confirm password"
               variant="outlined"
               value={confirmPassword}
