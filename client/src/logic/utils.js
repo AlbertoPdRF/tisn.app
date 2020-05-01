@@ -33,17 +33,22 @@ export const buildValidationErrorsObject = (errors) => {
 export const classifyNotifications = (notifications) => {
   const message = [];
   const regular = [];
+  const regularRead = [];
   notifications.forEach((notification) => {
-    if (!notification.read) {
-      if (notification.type === 'Message') {
+    if (notification.type === 'Message') {
+      if (!notification.read) {
         message.push(notification);
+      }
+    } else {
+      if (notification.read) {
+        regularRead.push(notification);
       } else {
         regular.push(notification);
       }
     }
   });
 
-  return { message, regular };
+  return { message, regular, regularRead };
 };
 
 export const buildMessageNotificationsObject = (notifications) => {
