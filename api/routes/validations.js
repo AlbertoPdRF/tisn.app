@@ -68,7 +68,7 @@ const buildValidator = (type, param, optional = false) => {
         return confirmPassword;
       });
     case 'date':
-      return escapedRequired
+      return (optional ? escapedOptional : escapedRequired)
         .isISO8601()
         .withMessage('is invalid')
         .toDate()
@@ -116,9 +116,10 @@ const buildValidator = (type, param, optional = false) => {
             case 'notification.user':
               model = User;
               break;
-            case 'interests.*':
             case 'user.interests.*._id':
             case 'event.relatedInterests.*._id':
+            case 'interests.*':
+            case 'relatedInterests.*':
               model = Interest;
               break;
             case 'eventId':
@@ -160,7 +161,7 @@ const buildValidator = (type, param, optional = false) => {
         .isURL()
         .withMessage('is invalid');
     case 'text':
-      return escapedRequired;
+      return optional ? escapedOptional : escapedRequired;
     case 'int':
       return escapedRequired
         .isInt({ min: 2 })
@@ -232,6 +233,15 @@ const createValidation = (route) => {
       return [
         buildValidator('email', 'user.email', true),
         buildValidator('password', 'user.password', true),
+      ];
+    case 'eventsGet':
+      return [
+        buildValidator('date', 'fromDate', true),
+        buildValidator('toArray', 'interests', true),
+        buildValidator('id', 'interests.*', true),
+        buildValidator('text', 'name', true),
+        buildValidator('toArray', 'relatedInterests', true),
+        buildValidator('id', 'relatedInterests.*', true),
       ];
     case 'eventsPost':
       return [

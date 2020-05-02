@@ -5,15 +5,27 @@ const Comment = require('../models/Comment');
 const async = require('async');
 
 exports.get = (req, res, next) => {
-  return Event.find()
-    .populate('relatedInterests', 'name avatar')
-    .then((events) => {
-      if (events.length === 0) {
-        return res.sendStatus(404);
-      }
+  const { query } = req;
 
-      res.json({ events });
-    });
+  const filter = {};
+  if (query.fromDate) {
+    filter.startDate = { $gte: query.fromDate };
+  }
+  if (query.interests) {
+    filter.relatedInterests = { $in: query.interests };
+  }
+
+  if (query.name) {
+    filter.name = { $regex: query.name, $options: 'i' };
+  }
+  if (query.relatedInterests) {
+    filter.relatedInterests = { $all: query.relatedInterests };
+  }
+
+  return Event.find(filter)
+    .populate('relatedInterests', 'name avatar')
+    .sort('startDate')
+    .then((events) => res.json({ events }));
 };
 
 exports.post = (req, res, next) => {

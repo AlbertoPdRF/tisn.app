@@ -7,7 +7,11 @@ const permissions = require('./permissions');
 
 const eventsController = require('../controllers/eventsController');
 
-router.get('/', auth.required, eventsController.get);
+router.get(
+  '/',
+  [auth.required, validations.create('eventsGet'), validations.run],
+  eventsController.get
+);
 
 router.post(
   '/',

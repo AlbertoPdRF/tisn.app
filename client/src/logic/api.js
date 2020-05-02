@@ -27,7 +27,8 @@ export const deleteUser = (userId = getPayloadFromToken()._id) =>
 export const getUserEvents = (userId = getPayloadFromToken()._id) =>
   fetchApi(`/users/${userId}/events`, { method: 'GET' });
 
-export const getEvents = () => fetchApi('/events', { method: 'GET' });
+export const getEvents = (query = '') =>
+  fetchApi(`/events${query}`, { method: 'GET' });
 
 export const postEvent = (event) => {
   return fetchApi('/events', {
