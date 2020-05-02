@@ -27,8 +27,8 @@ exports.get = (req, res, next) => {
       },
     })
     .sort([
-      ['createdAt', -1],
       ['acceptedAt', -1],
+      ['createdAt', -1],
     ])
     .then((friendships) => res.json({ friendships }));
 };
