@@ -1,6 +1,9 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { useHistory } from 'react-router-dom';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 
 import { getEvents } from '../../logic/api';
 import { inputDate } from '../../logic/date-time';
@@ -13,6 +16,7 @@ import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 import Style from '../Style/Style';
 
 const Home = () => {
+  const history = useHistory();
   const style = Style();
   const user = useUser();
 
@@ -44,13 +48,37 @@ const Home = () => {
       {loading && <LinearProgress />}
       <div className={style.root}>
         <Grid container justify="center" spacing={2}>
-          {events &&
-            events.length > 0 &&
-            events.map((event) => (
-              <Grid item key={event._id}>
-                <EventCard event={event} />
+          {events && events.length > 0 && (
+            <Fragment>
+              {events.map((event) => (
+                <Grid item key={event._id}>
+                  <EventCard event={event} />
+                </Grid>
+              ))}
+              <Grid item className={`${style.fullWidth} ${style.center}`}>
+                <Typography variant="body1">
+                  We have no more event recommendations for you right now,
+                  please check back later or
+                </Typography>
+                <Button
+                  className={style.buttons}
+                  variant="contained"
+                  color="primary"
+                  onClick={() => history.push('/events')}
+                >
+                  Browse all events
+                </Button>
+                <Button
+                  className={style.buttons}
+                  variant="outlined"
+                  color="primary"
+                  onClick={() => history.push('/interests')}
+                >
+                  Adjust your interests
+                </Button>
               </Grid>
-            ))}
+            </Fragment>
+          )}
         </Grid>
       </div>
       {error && <ErrorSnackbar error={error} />}
