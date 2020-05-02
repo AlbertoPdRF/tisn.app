@@ -4,6 +4,7 @@ import { Switch, Redirect } from 'react-router-dom';
 import { PublicRoute, PrivateRoute, AdminRoute } from '../Router/Router';
 
 import Home from '../Home/Home';
+import Events from '../Events/Events';
 import UserEvents from '../UserEvents/UserEvents';
 import EventSteps from '../EventSteps/EventSteps';
 import Event from '../Event/Event';
@@ -25,6 +26,7 @@ const Navigation = () => {
   return (
     <Switch>
       <PrivateRoute exact path="/" component={Home} />
+      <PrivateRoute exact path="/events" component={Events} />
       <PrivateRoute exact path="/events/mine" component={UserEvents} />
       <PrivateRoute exact path="/events/new" component={EventSteps} />
       <PrivateRoute

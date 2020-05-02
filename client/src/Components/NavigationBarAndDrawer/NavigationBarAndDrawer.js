@@ -10,6 +10,7 @@ import Avatar from '@material-ui/core/Avatar';
 import ListItemText from '@material-ui/core/ListItemText';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import HomeIcon from '@material-ui/icons/Home';
+import DateRangeIcon from '@material-ui/icons/DateRange';
 import EventIcon from '@material-ui/icons/Event';
 import AddIcon from '@material-ui/icons/Add';
 import PeopleIcon from '@material-ui/icons/People';
@@ -119,6 +120,18 @@ const NavigationBarAndDrawer = (props) => {
           <ListItemText primary="Home" />
         </ListItem>
         <Divider />
+        <ListItem
+          button
+          onClick={() => {
+            history.push('/events');
+            handleDrawerToggle();
+          }}
+        >
+          <ListItemIcon>
+            <DateRangeIcon />
+          </ListItemIcon>
+          <ListItemText primary="Events" />
+        </ListItem>
         <ListItem
           button
           onClick={() => {

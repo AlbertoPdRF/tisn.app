@@ -1,6 +1,7 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 
 import { getEvents } from '../../logic/api';
 
@@ -9,7 +10,7 @@ import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 
 import Style from '../Style/Style';
 
-const Home = () => {
+const Events = () => {
   const style = Style();
 
   const [events, setEvents] = useState(null);
@@ -30,6 +31,9 @@ const Home = () => {
       {loading && <LinearProgress />}
       <div className={style.root}>
         <Grid container justify="center" spacing={2}>
+          <Grid item className={`${style.fullWidth} ${style.center}`}>
+            <Typography variant="h2">Events</Typography>
+          </Grid>
           {events &&
             events.length > 0 &&
             events.map((event) => (
@@ -44,4 +48,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Events;
