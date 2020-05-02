@@ -10,15 +10,21 @@ const async = require('async');
 const mongoose = require('mongoose');
 
 exports.get = (req, res, next) => {
-  return User.find()
-    .populate('interests', 'name avatar')
-    .then((users) => {
-      if (users.length === 0) {
-        return res.sendStatus(404);
-      }
+  const { query } = req;
 
-      res.json({ users: users.map((user) => user.toJson()) });
-    });
+  const filter = {};
+  if (query.name) {
+    filter.name = { $regex: query.name, $options: 'i' };
+      }
+  if (query.interests) {
+    filter.interests = { $all: query.interests };
+  }
+
+  return User.find(filter)
+    .populate('interests', 'name avatar')
+    .collation({ locale: 'en' })
+    .sort('name')
+    .then((users) => res.json({ users: users.map((user) => user.toJson()) }));
 };
 
 exports.post = (req, res, next) => {

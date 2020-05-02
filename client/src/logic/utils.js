@@ -4,7 +4,8 @@ const getOrdinal = (n) =>
 export const buildValidationErrorsObject = (errors) => {
   const errorsObject = {};
   errors.forEach((error) => {
-    let key = error.param.split('.')[1];
+    let splittedError = error.param.split('.');
+    let key = splittedError[1] ? splittedError[1] : splittedError[0];
     let number;
     if (key.includes('[')) {
       const splitted = key.split('[');

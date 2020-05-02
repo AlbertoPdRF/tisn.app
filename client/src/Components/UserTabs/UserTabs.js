@@ -308,12 +308,14 @@ const UserTabs = ({ match }) => {
                     />
                   </TabPanel>
                   <TabPanel value={value} index={1}>
-                    <InterestsSelect
-                      allInterests={allInterests}
-                      interests={interests}
-                      handleInterestsChange={handleInterestsChange}
-                      validationErrors={validationErrors}
-                    />
+                    {allInterests && (
+                      <InterestsSelect
+                        allInterests={allInterests}
+                        interests={interests}
+                        handleInterestsChange={handleInterestsChange}
+                        validationErrors={validationErrors}
+                      />
+                    )}
                   </TabPanel>
                   <TabPanel value={value} index={2}>
                     <ExpansionPanel className={style.formInput}>

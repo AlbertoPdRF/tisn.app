@@ -7,7 +7,11 @@ const permissions = require('./permissions');
 
 const usersController = require('../controllers/usersController');
 
-router.get('/', auth.required, usersController.get);
+router.get(
+  '/',
+  [auth.required, validations.create('usersGet'), validations.run],
+  usersController.get
+);
 
 router.post(
   '/',

@@ -34,7 +34,7 @@ const buildValidator = (type, param, optional = false) => {
 
   switch (type) {
     case 'name':
-      return escapedRequired
+      return (optional ? escapedOptional : escapedRequired)
         .isLength({ max: 20 })
         .withMessage('too long')
         .matches(/^[a-z ]+$/i)
@@ -116,6 +116,7 @@ const buildValidator = (type, param, optional = false) => {
             case 'notification.user':
               model = User;
               break;
+            case 'interests.*':
             case 'user.interests.*._id':
             case 'event.relatedInterests.*._id':
               model = Interest;
@@ -185,7 +186,12 @@ const buildValidator = (type, param, optional = false) => {
         ])
         .withMessage('is unknown');
     case 'array':
-      return check.isLength({ min: 1 }).withMessage('must have at least 1');
+      return check
+        .toArray()
+        .isLength({ min: 1 })
+        .withMessage('must have at least 1');
+    case 'toArray':
+      return check.toArray();
     default:
       return escapedRequired;
   }
@@ -193,6 +199,12 @@ const buildValidator = (type, param, optional = false) => {
 
 const createValidation = (route) => {
   switch (route) {
+    case 'usersGet':
+      return [
+        buildValidator('name', 'name', true),
+        buildValidator('toArray', 'interests', true),
+        buildValidator('id', 'interests.*', true),
+      ];
     case 'usersPost':
       return [
         buildValidator('name', 'user.name'),

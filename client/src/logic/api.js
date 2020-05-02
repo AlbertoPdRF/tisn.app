@@ -1,7 +1,8 @@
 import { BASE_API_URL } from './env';
 import { accessToken, getPayloadFromToken } from './auth';
 
-export const getUsers = () => fetchApi('/users', { method: 'GET' });
+export const getUsers = (query = '') =>
+  fetchApi(`/users${query}`, { method: 'GET' });
 
 export const postUser = (user, path = '') => {
   return fetchApi(`/users/${path}`, {
