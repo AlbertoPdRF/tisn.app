@@ -33,7 +33,6 @@ const Chats = () => {
 
   const [friendships, setFriendships] = useState(null);
   const [messageNotifications, setMessageNotifications] = useState({});
-  const [messageAllNotifications, setMessageAllNotifications] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -55,17 +54,14 @@ const Chats = () => {
       setMessageNotifications(
         buildMessageNotificationsObject(notifications.message)
       );
-      setMessageAllNotifications(
-        buildMessageNotificationsObject(notifications.messageAll)
-      );
     }
   }, [notifications]);
 
   useEffect(() => {
-    if (friendships && messageAllNotifications) {
-      setFriendships(sortChats(friendships, messageAllNotifications));
+    if (friendships) {
+      setFriendships(sortChats(friendships));
     }
-  }, [friendships, messageAllNotifications]);
+  }, [friendships]);
 
   const friendshipCardHeader = (friendship) => {
     const friendshipUser =
@@ -86,10 +82,8 @@ const Chats = () => {
         }
         title={friendshipUser.name}
         subheader={
-          messageAllNotifications[friendship._id]
-            ? `Last message at ${formatDateTime(
-                messageAllNotifications[friendship._id][0].createdAt
-              )}`
+          friendship.lastMessageAt
+            ? `Last message at ${formatDateTime(friendship.lastMessageAt)}`
             : `Friends since ${formatDate(friendship.acceptedAt)}`
         }
         subheaderTypographyProps={{ className: style.preLine }}

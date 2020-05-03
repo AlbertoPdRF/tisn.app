@@ -8,6 +8,7 @@ const FriendshipSchema = new Schema(
     receivant: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     accepted: { type: Boolean, required: true, default: false },
     acceptedAt: { type: Date },
+    lastMessageAt: { type: Date },
   },
   { timestamps: true }
 );
