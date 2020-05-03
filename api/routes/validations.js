@@ -34,10 +34,10 @@ const buildValidator = (type, param, optional = false) => {
 
   switch (type) {
     case 'name':
-      return (optional ? escapedOptional : escapedRequired)
+      return (optional ? basicOptional : basicRequired)
         .isLength({ max: 20 })
         .withMessage('too long')
-        .matches(/^[a-z ]+$/i)
+        .matches(/^[a-zA-ZÀ-ÖØ-öø-ſ -']+$/)
         .withMessage('must have letters (and spaces) only');
     case 'email':
       return escapedRequired
