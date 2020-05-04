@@ -15,7 +15,14 @@ exports.get = (req, res, next) => {
   const filter = {};
   if (query.name) {
     filter.name = { $regex: query.name, $options: 'i' };
-      }
+  }
+  if (query.country) {
+    filter.country = query.country;
+
+    if (query.region) {
+      filter.region = query.region;
+    }
+  }
   if (query.interests) {
     filter.interests = { $all: query.interests };
   }

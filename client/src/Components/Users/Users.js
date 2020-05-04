@@ -3,6 +3,8 @@ import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 
+import countries from 'country-region-data';
+
 import { getUsers, getInterests } from '../../logic/api';
 import { buildValidationErrorsObject } from '../../logic/utils';
 
@@ -17,6 +19,9 @@ const Users = () => {
 
   const [users, setUsers] = useState(null);
   const [name, setName] = useState('');
+  const [country, setCountry] = useState(null);
+  const [regions, setRegions] = useState([]);
+  const [region, setRegion] = useState(null);
   const [allInterests, setAllInterests] = useState(null);
   const [interests, setInterests] = useState([]);
   const [query, setQuery] = useState('');
@@ -56,12 +61,36 @@ const Users = () => {
 
   const handleNameChange = (name) => setName(name);
 
+  const handleCountryChange = (country) => {
+    setCountry(country);
+
+    if (country) {
+      setRegions(
+        countries.filter(
+          (c) => c.countryShortCode === country.countryShortCode
+        )[0].regions
+      );
+    } else {
+      setRegions([]);
+    }
+    setRegion(null);
+  };
+
+  const handleRegionChange = (region) => setRegion(region);
+
   const handleInterestsChange = (interests) => setInterests(interests);
 
   const handleSearchClick = () => {
     const params = new URLSearchParams();
     if (name) {
       params.append('name', name);
+    }
+    if (country) {
+      params.append('country', country.countryShortCode);
+
+      if (region) {
+        params.append('region', region.shortCode);
+      }
     }
     if (interests.length > 0) {
       interests.forEach((interest) => {
@@ -85,6 +114,12 @@ const Users = () => {
             <UserSearchForm
               name={name}
               handleNameChange={handleNameChange}
+              countries={countries}
+              country={country}
+              handleCountryChange={handleCountryChange}
+              regions={regions}
+              region={region}
+              handleRegionChange={handleRegionChange}
               allInterests={allInterests}
               interests={interests}
               handleInterestsChange={handleInterestsChange}

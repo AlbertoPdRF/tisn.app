@@ -1,4 +1,5 @@
 const validator = require('express-validator');
+const countries = require('country-region-data');
 
 const User = require('../models/User');
 const Interest = require('../models/Interest');
@@ -100,6 +101,40 @@ const buildValidator = (type, param, optional = false) => {
 
           return date;
         });
+    case 'country':
+      return (optional ? escapedOptional : escapedRequired)
+        .isISO31661Alpha2()
+        .withMessage('is invalid')
+        .custom((country) => {
+          if (!countries.some((c) => c.countryShortCode === country)) {
+            throw new Error('is invalid');
+          }
+
+          return country;
+        });
+    case 'region':
+      return (optional ? escapedOptional : escapedRequired).custom(
+        (region, { req }) => {
+          let country;
+          if (req.body.user && req.body.user.country) {
+            country = req.body.user.country;
+          } else if (req.query.country) {
+            country = req.query.country;
+          }
+          if (!country) {
+            throw new Error('country is required when region is specified');
+          }
+
+        const regions = countries.filter(
+            (c) => c.countryShortCode === country
+        )[0].regions;
+        if (!regions.some((r) => r.shortCode === region)) {
+          throw new Error('is invalid');
+        }
+
+        return region;
+        }
+      );
     case 'id':
       return (optional ? escapedOptional : escapedRequired)
         .isMongoId()
@@ -203,6 +238,8 @@ const createValidation = (route) => {
     case 'usersGet':
       return [
         buildValidator('name', 'name', true),
+        buildValidator('country', 'country', true),
+        buildValidator('region', 'region', true),
         buildValidator('toArray', 'interests', true),
         buildValidator('id', 'interests.*', true),
       ];
@@ -213,6 +250,8 @@ const createValidation = (route) => {
         buildValidator('password', 'user.password'),
         buildValidator('confirmPassword', 'user.confirmPassword'),
         buildValidator('date', 'user.dateOfBirth'),
+        buildValidator('country', 'user.country'),
+        buildValidator('region', 'user.region'),
       ];
     case 'usersGetId':
     case 'usersDeleteId':
@@ -226,6 +265,8 @@ const createValidation = (route) => {
         buildValidator('name', 'user.name'),
         buildValidator('email', 'user.email'),
         buildValidator('date', 'user.dateOfBirth'),
+        buildValidator('country', 'user.country'),
+        buildValidator('region', 'user.region'),
         buildValidator('imageUrl', 'user.avatar', true),
         buildValidator('id', 'user.interests.*._id', true),
       ];

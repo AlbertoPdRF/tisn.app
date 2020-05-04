@@ -8,8 +8,11 @@ import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
 import Link from '@material-ui/core/Link';
+
+import countries from 'country-region-data';
 
 import { postUser } from '../../logic/api';
 import { buildValidationErrorsObject } from '../../logic/utils';
@@ -29,15 +32,37 @@ const SignUpForm = () => {
   const [showPasswords, setShowPasswords] = useState(false);
   const [confirmPassword, setConfirmPassword] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
+  const [country, setCountry] = useState(null);
+  const [regions, setRegions] = useState([]);
+  const [region, setRegion] = useState(null);
   const [loading, setLoading] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
   const [error, setError] = useState(null);
+
+  const handleCountryChange = (country) => {
+    setCountry(country);
+
+    setRegions(
+      countries.filter(
+        (c) => c.countryShortCode === country.countryShortCode
+      )[0].regions
+    );
+    setRegion(null);
+  };
 
   const handleSignUpClick = () => {
     setLoading(true);
     setError(null);
     setValidationErrors({});
-    postUser({ name, email, password, confirmPassword, dateOfBirth })
+    postUser({
+      name,
+      email,
+      password,
+      confirmPassword,
+      dateOfBirth,
+      country: country.countryShortCode,
+      region: region.shortCode,
+    })
       .then((data) => {
         if (data.errors) {
           setError('The form contains errors');
@@ -132,6 +157,48 @@ const SignUpForm = () => {
             />
           </Grid>
           <Grid item>
+            <Autocomplete
+              className={style.formInput}
+              disableClearable
+              options={countries}
+              getOptionLabel={(country) => country.countryName}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="outlined"
+                  label="Country"
+                  error={!!validationErrors.country}
+                  helperText={validationErrors.country}
+                />
+              )}
+              noOptionsText="No matching country"
+              value={country}
+              onChange={(event, country) => handleCountryChange(country)}
+            />
+          </Grid>
+          {regions && regions.length > 0 && (
+            <Grid item>
+              <Autocomplete
+                className={style.formInput}
+                disableClearable
+                options={regions}
+                getOptionLabel={(region) => region.name}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    variant="outlined"
+                    label="Region"
+                    error={!!validationErrors.region}
+                    helperText={validationErrors.region}
+                  />
+                )}
+                noOptionsText="No matching region"
+                value={region}
+                onChange={(event, region) => setRegion(region)}
+              />
+            </Grid>
+          )}
+          <Grid item>
             <Button
               variant="contained"
               color="primary"
@@ -142,6 +209,8 @@ const SignUpForm = () => {
                 !password ||
                 !confirmPassword ||
                 !dateOfBirth ||
+                !country ||
+                !region ||
                 loading
               }
             >

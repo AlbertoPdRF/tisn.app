@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { useState, useEffect, Fragment } from 'react';
 import { useHistory } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -6,6 +6,8 @@ import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
+
+import countries from 'country-region-data';
 
 import { formatDate } from '../../logic/date-time';
 
@@ -23,6 +25,21 @@ const UserDetails = (props) => {
 
   const history = useHistory();
   const style = Style();
+
+  const [country, setCountry] = useState('');
+  const [region, setRegion] = useState('');
+
+  useEffect(() => {
+    if (user) {
+      const c = countries.filter(
+        (country) => country.countryShortCode === user.country
+      )[0];
+      setCountry(c.countryName);
+      setRegion(
+        c.regions.filter((region) => region.shortCode === user.region)[0].name
+      );
+    }
+  }, [user]);
 
   return (
     <Card>
@@ -93,6 +110,7 @@ const UserDetails = (props) => {
         <Typography variant="h5" component="h3">
           {user.name}
         </Typography>
+        <Typography variant="body1">{`${region}, ${country}`}</Typography>
         <Typography gutterBottom variant="body1" color="textSecondary">
           {`Joined on ${formatDate(user.createdAt)}`}
         </Typography>

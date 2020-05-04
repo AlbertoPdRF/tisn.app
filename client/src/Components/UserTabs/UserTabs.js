@@ -14,6 +14,8 @@ import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
 import Button from '@material-ui/core/Button';
 
 import SwipeableViews from 'react-swipeable-views';
+import countries from 'country-region-data';
+import { useConfirm } from 'material-ui-confirm';
 
 import {
   getUser,
@@ -30,8 +32,6 @@ import {
 import { logOut } from '../../logic/auth';
 import { inputDate } from '../../logic/date-time';
 import { upload } from '../../logic/upload';
-
-import { useConfirm } from 'material-ui-confirm';
 
 import { useUser, useSetUser } from '../UserProvider/UserProvider';
 import {
@@ -61,6 +61,9 @@ const UserTabs = ({ match }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
+  const [country, setCountry] = useState(null);
+  const [regions, setRegions] = useState([]);
+  const [region, setRegion] = useState(null);
   const [avatar, setAvatar] = useState('');
   const [interests, setInterests] = useState([]);
   const [updatedFields, setUpdatedFields] = useState(null);
@@ -91,10 +94,22 @@ const UserTabs = ({ match }) => {
   useEffect(() => {
     if (user) {
       setLoading(true);
+
       setName(user.name);
       setEmail(user.email);
       setDateOfBirth(inputDate(user.dateOfBirth));
+
+      const c = countries.filter(
+        (country) => country.countryShortCode === user.country
+      )[0];
+      setCountry(c);
+      setRegions(c.regions);
+      setRegion(
+        c.regions.filter((region) => region.shortCode === user.region)[0]
+      );
+
       setAvatar(user.avatar);
+
       setLoading(false);
     }
   }, [user]);
@@ -182,6 +197,27 @@ const UserTabs = ({ match }) => {
     }
   };
 
+  const handleCountryChange = (country) => {
+    setCountry(country);
+    if (!updatedFields || !updatedFields.country) {
+      setUpdatedFields({ ...updatedFields, country: true });
+    }
+
+    setRegions(
+      countries.filter(
+        (c) => c.countryShortCode === country.countryShortCode
+      )[0].regions
+    );
+    setRegion(null);
+  };
+
+  const handleRegionChange = (region) => {
+    setRegion(region);
+    if (!updatedFields || !updatedFields.region) {
+      setUpdatedFields({ ...updatedFields, region: true });
+    }
+  };
+
   const handleUpload = (file) => {
     if (file) {
       setLoading(true);
@@ -220,6 +256,8 @@ const UserTabs = ({ match }) => {
       name,
       email,
       dateOfBirth,
+      country: country.countryShortCode,
+      region: region.shortCode,
       avatar,
       interests,
     })
@@ -302,6 +340,12 @@ const UserTabs = ({ match }) => {
                       handleEmailChange={handleEmailChange}
                       dateOfBirth={dateOfBirth}
                       handleDateOfBirthChange={handleDateOfBirthChange}
+                      countries={countries}
+                      country={country}
+                      handleCountryChange={handleCountryChange}
+                      regions={regions}
+                      region={region}
+                      handleRegionChange={handleRegionChange}
                       avatar={avatar}
                       handleUpload={handleUpload}
                       validationErrors={validationErrors}
@@ -366,7 +410,13 @@ const UserTabs = ({ match }) => {
               color="primary"
               onClick={() => handleEditClick()}
               disabled={
-                !updatedFields || !name || !email || !dateOfBirth || loading
+                !updatedFields ||
+                !name ||
+                !email ||
+                !dateOfBirth ||
+                !country ||
+                !region ||
+                loading
               }
             >
               Edit

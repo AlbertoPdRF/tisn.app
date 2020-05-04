@@ -1,8 +1,9 @@
 import React from 'react';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
 import Avatar from '@material-ui/core/Avatar';
+import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import Style from '../Style/Style';
 
@@ -14,6 +15,12 @@ const UserForm = (props) => {
     handleEmailChange,
     dateOfBirth,
     handleDateOfBirthChange,
+    countries,
+    country,
+    handleCountryChange,
+    regions,
+    region,
+    handleRegionChange,
     avatar,
     handleUpload,
     validationErrors,
@@ -81,6 +88,48 @@ const UserForm = (props) => {
             helperText={validationErrors.dateOfBirth}
           />
         </Grid>
+        <Grid item>
+          <Autocomplete
+            className={style.formInput}
+            disableClearable
+            options={countries}
+            getOptionLabel={(country) => country.countryName}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                label="Country"
+                error={!!validationErrors.country}
+                helperText={validationErrors.country}
+              />
+            )}
+            noOptionsText="No matching country"
+            value={country}
+            onChange={(event, country) => handleCountryChange(country)}
+          />
+        </Grid>
+        {regions && regions.length > 0 && (
+          <Grid item>
+            <Autocomplete
+              className={style.formInput}
+              disableClearable
+              options={regions}
+              getOptionLabel={(region) => region.name}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="outlined"
+                  label="Region"
+                  error={!!validationErrors.region}
+                  helperText={validationErrors.region}
+                />
+              )}
+              noOptionsText="No matching region"
+              value={region}
+              onChange={(event, region) => handleRegionChange(region)}
+            />
+          </Grid>
+        )}
       </Grid>
     </Box>
   );

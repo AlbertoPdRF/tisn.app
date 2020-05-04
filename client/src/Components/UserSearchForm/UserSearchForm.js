@@ -2,6 +2,7 @@ import React from 'react';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
 
 import InterestsSelect from '../InterestsSelect/InterestsSelect';
@@ -12,6 +13,12 @@ const UserSearchForm = (props) => {
   const {
     name,
     handleNameChange,
+    countries,
+    country,
+    handleCountryChange,
+    regions,
+    region,
+    handleRegionChange,
     allInterests,
     interests,
     handleInterestsChange,
@@ -36,6 +43,46 @@ const UserSearchForm = (props) => {
             helperText={validationErrors.name}
           />
         </Grid>
+        <Grid item>
+          <Autocomplete
+            className={style.formInput}
+            options={countries}
+            getOptionLabel={(country) => country.countryName}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                label="Country"
+                error={!!validationErrors.country}
+                helperText={validationErrors.country}
+              />
+            )}
+            noOptionsText="No matching country"
+            value={country}
+            onChange={(event, country) => handleCountryChange(country)}
+          />
+        </Grid>
+        {regions && regions.length > 0 && (
+          <Grid item>
+            <Autocomplete
+              className={style.formInput}
+              options={regions}
+              getOptionLabel={(region) => region.name}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="outlined"
+                  label="Region"
+                  error={!!validationErrors.region}
+                  helperText={validationErrors.region}
+                />
+              )}
+              noOptionsText="No matching region"
+              value={region}
+              onChange={(event, region) => handleRegionChange(region)}
+            />
+          </Grid>
+        )}
         {allInterests && (
           <Grid item>
             <InterestsSelect
