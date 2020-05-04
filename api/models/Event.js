@@ -8,6 +8,8 @@ const EventSchema = new Schema(
     description: { type: String, required: true },
     startDate: { type: Date, required: true },
     endDate: { type: Date, required: true },
+    country: { type: String, required: true },
+    region: { type: String, required: true },
     createdBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
     relatedInterests: [
       { type: Schema.Types.ObjectId, ref: 'Interest', required: true },

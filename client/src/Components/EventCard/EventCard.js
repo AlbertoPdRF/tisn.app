@@ -45,6 +45,7 @@ const EventCard = (props) => {
                 key={interest._id}
                 src={interest.avatar}
                 alt={interest.name}
+                title={interest.name}
               />
             ))}
           </AvatarGroup>

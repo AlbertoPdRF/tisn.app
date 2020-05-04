@@ -120,6 +120,8 @@ const buildValidator = (type, param, optional = false) => {
             country = req.body.user.country;
           } else if (req.query.country) {
             country = req.query.country;
+          } else if (req.body.event && req.body.event.country) {
+            country = req.body.event.country;
           }
           if (!country) {
             throw new Error('country is required when region is specified');
@@ -278,6 +280,8 @@ const createValidation = (route) => {
     case 'eventsGet':
       return [
         buildValidator('date', 'fromDate', true),
+        buildValidator('country', 'country', true),
+        buildValidator('region', 'region', true),
         buildValidator('toArray', 'interests', true),
         buildValidator('id', 'interests.*', true),
         buildValidator('text', 'name', true),
@@ -290,6 +294,8 @@ const createValidation = (route) => {
         buildValidator('text', 'event.description'),
         buildValidator('date', 'event.startDate'),
         buildValidator('date', 'event.endDate'),
+        buildValidator('country', 'event.country'),
+        buildValidator('region', 'event.region'),
         buildValidator('userId', 'event.createdBy'),
         buildValidator('array', 'event.relatedInterests'),
         buildValidator('id', 'event.relatedInterests.*._id'),
@@ -308,6 +314,8 @@ const createValidation = (route) => {
         buildValidator('text', 'event.description'),
         buildValidator('date', 'event.startDate'),
         buildValidator('date', 'event.endDate'),
+        buildValidator('country', 'event.country'),
+        buildValidator('region', 'event.region'),
         buildValidator('userId', 'event.createdBy'),
         buildValidator('array', 'event.relatedInterests'),
         buildValidator('id', 'event.relatedInterests.*._id'),

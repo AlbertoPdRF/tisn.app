@@ -8,6 +8,8 @@ import StepLabel from '@material-ui/core/StepLabel';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
 
+import countries from 'country-region-data';
+
 import {
   getInterests,
   getEvent,
@@ -17,6 +19,7 @@ import {
   getNotifications,
 } from '../../logic/api';
 import {
+  decodeText,
   buildValidationErrorsObject,
   classifyNotifications,
 } from '../../logic/utils';
@@ -49,11 +52,14 @@ const EventSteps = ({ match }) => {
   const [description, setDescription] = useState('');
   const [startDate, setStartDate] = useState('');
   const [endDate, setEndDate] = useState('');
+  const [country, setCountry] = useState(null);
+  const [regions, setRegions] = useState([]);
+  const [region, setRegion] = useState(null);
   const [createdBy, setCreatedBy] = useState('');
   const [interests, setInterests] = useState(null);
   const [relatedInterests, setRelatedInterests] = useState([]);
   const [coverPhoto, setCoverPhoto] = useState('');
-  const [attendantsLimit, setAttendantsLimit] = useState(0);
+  const [attendantsLimit, setAttendantsLimit] = useState('');
   const [updatedFields, setUpdatedFields] = useState(null);
   const [updateNotifications, setUpdateNotifications] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -72,10 +78,22 @@ const EventSteps = ({ match }) => {
               history.push(`/events/${id}`);
             } else {
               setEvent(data.event);
-              setName(data.event.name);
-              setDescription(data.event.description);
+              setName(decodeText(data.event.name));
+              setDescription(decodeText(data.event.description));
               setStartDate(inputDateTime(data.event.startDate));
               setEndDate(inputDateTime(data.event.endDate));
+
+              const c = countries.filter(
+                (country) => country.countryShortCode === data.event.country
+              )[0];
+              setCountry(c);
+              setRegions(c.regions);
+              setRegion(
+                c.regions.filter(
+                  (region) => region.shortCode === data.event.region
+                )[0]
+              );
+
               setCreatedBy(data.event.createdBy);
               setCoverPhoto(data.event.coverPhoto);
               setAttendantsLimit(data.event.attendantsLimit);
@@ -89,9 +107,13 @@ const EventSteps = ({ match }) => {
       setDescription('');
       setStartDate('');
       setEndDate('');
+      setCountry(null);
+      setRegions([]);
+      setRegion(null);
       setCreatedBy('');
       setCoverPhoto('');
-      setAttendantsLimit(0);
+      setAttendantsLimit('');
+      setActiveStep(0);
       setLoading(false);
     }
   }, [id, user, interests, history]);
@@ -175,6 +197,12 @@ const EventSteps = ({ match }) => {
             handleStartDateChange={handleStartDateChange}
             endDate={endDate}
             handleEndDateChange={handleEndDateChange}
+            countries={countries}
+            country={country}
+            handleCountryChange={handleCountryChange}
+            regions={regions}
+            region={region}
+            handleRegionChange={handleRegionChange}
             coverPhoto={coverPhoto}
             handleUpload={handleUpload}
             attendantsLimit={attendantsLimit}
@@ -184,12 +212,14 @@ const EventSteps = ({ match }) => {
         );
       case 1:
         return (
-          <InterestsSelect
-            allInterests={interests}
-            interests={relatedInterests}
-            handleInterestsChange={handleRelatedInterestsChange}
-            validationErrors={validationErrors}
-          />
+          interests && (
+            <InterestsSelect
+              allInterests={interests}
+              interests={relatedInterests}
+              handleInterestsChange={handleRelatedInterestsChange}
+              validationErrors={validationErrors}
+            />
+          )
         );
       case 2:
         return (
@@ -204,6 +234,31 @@ const EventSteps = ({ match }) => {
         );
       default:
         return 'Unknown step';
+    }
+  };
+
+  const isNextOrCreateDisabled = () => {
+    const firstNextDisabled =
+      !name ||
+      !description ||
+      !startDate ||
+      !endDate ||
+      !country ||
+      !region ||
+      !attendantsLimit;
+    const secondNextDisabled =
+      !relatedInterests || relatedInterests.length === 0;
+    const createDisabled =
+      firstNextDisabled || secondNextDisabled || loading || !updatedFields;
+    switch (activeStep) {
+      case 0:
+        return firstNextDisabled;
+      case 1:
+        return secondNextDisabled;
+      case 2:
+        return createDisabled;
+      default:
+        return true;
     }
   };
 
@@ -240,6 +295,27 @@ const EventSteps = ({ match }) => {
     setEndDate(endDate);
     if (!updatedFields || !updatedFields.endDate) {
       setUpdatedFields({ ...updatedFields, endDate: true });
+    }
+  };
+
+  const handleCountryChange = (country) => {
+    setCountry(country);
+    if (!updatedFields || !updatedFields.country) {
+      setUpdatedFields({ ...updatedFields, country: true });
+    }
+
+    setRegions(
+      countries.filter(
+        (c) => c.countryShortCode === country.countryShortCode
+      )[0].regions
+    );
+    setRegion(null);
+  };
+
+  const handleRegionChange = (region) => {
+    setRegion(region);
+    if (!updatedFields || !updatedFields.region) {
+      setUpdatedFields({ ...updatedFields, region: true });
     }
   };
 
@@ -289,6 +365,8 @@ const EventSteps = ({ match }) => {
       description,
       startDate,
       endDate,
+      country: country.countryShortCode,
+      region: region.shortCode,
       createdBy: user._id,
       relatedInterests,
       coverPhoto,
@@ -318,6 +396,8 @@ const EventSteps = ({ match }) => {
       description,
       startDate,
       endDate,
+      country: country.countryShortCode,
+      region: region.shortCode,
       createdBy,
       relatedInterests,
       coverPhoto,
@@ -392,15 +472,7 @@ const EventSteps = ({ match }) => {
                       : handleNewClick()
                     : handleNext();
                 }}
-                disabled={
-                  lastStep &&
-                  (!name ||
-                    !description ||
-                    !startDate ||
-                    !endDate ||
-                    loading ||
-                    !updatedFields)
-                }
+                disabled={isNextOrCreateDisabled()}
               >
                 {lastStep ? (id ? 'Edit' : 'Create') : 'Next'}
               </Button>

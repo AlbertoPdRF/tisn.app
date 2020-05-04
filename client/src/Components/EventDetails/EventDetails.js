@@ -1,5 +1,5 @@
-import React, { Fragment } from 'react';
-import { useHistory } from 'react-router-dom';
+import React, { useState, useEffect, Fragment } from 'react';
+import { useHistory, Link } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
@@ -8,6 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import Avatar from '@material-ui/core/Avatar';
+
+import countries from 'country-region-data';
 
 import { decodeText } from '../../logic/utils';
 import { formatDateTimeRange } from '../../logic/date-time';
@@ -28,6 +30,21 @@ const EventDetails = (props) => {
   const history = useHistory();
   const style = Style();
 
+  const [country, setCountry] = useState('');
+  const [region, setRegion] = useState('');
+
+  useEffect(() => {
+    if (event) {
+      const c = countries.filter(
+        (country) => country.countryShortCode === event.country
+      )[0];
+      setCountry(c.countryName);
+      setRegion(
+        c.regions.filter((region) => region.shortCode === event.region)[0].name
+      );
+    }
+  }, [event]);
+
   const decodedName = decodeText(event.name);
 
   return (
@@ -42,14 +59,11 @@ const EventDetails = (props) => {
       />
       <CardContent>
         <div className={style.alignRight}>
-          <Typography
-            gutterBottom
-            className={style.preLine}
-            variant="h5"
-            component="p"
-            color="textSecondary"
-          >
+          <Typography className={style.preLine} variant="h5" component="p">
             {formatDateTimeRange(event.startDate, event.endDate)}
+          </Typography>
+          <Typography gutterBottom variant="body1">
+            {`${region}, ${country}`}
           </Typography>
           {futureEvent && (
             <Fragment>
@@ -62,7 +76,7 @@ const EventDetails = (props) => {
                   {userAttending ? "I won't attend" : 'I will attend!'}
                 </Button>
               )}
-              <Typography gutterBottom variant="body1" color="textSecondary">
+              <Typography gutterBottom variant="body1">
                 Attendants limit: {event.attendantsLimit}
               </Typography>
               {restrictedDisplay && (
@@ -112,6 +126,12 @@ const EventDetails = (props) => {
                   key={attendant.user._id}
                   src={attendant.user.avatar}
                   alt={`${attendant.user.name}'s avatar`}
+                  title={attendant.user.name}
+                  component={Link}
+                  to={`/users/${attendant.user._id}`}
+                  color="inherit"
+                  underline="none"
+                  style={{ textDecoration: 'none' }}
                 >
                   {attendant.user.name.charAt(0).toUpperCase()}
                 </Avatar>

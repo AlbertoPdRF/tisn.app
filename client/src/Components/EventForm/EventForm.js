@@ -2,6 +2,7 @@ import React from 'react';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
+import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import Style from '../Style/Style';
 
@@ -15,6 +16,12 @@ const EventForm = (props) => {
     handleStartDateChange,
     endDate,
     handleEndDateChange,
+    countries,
+    country,
+    handleCountryChange,
+    regions,
+    region,
+    handleRegionChange,
     coverPhoto,
     handleUpload,
     attendantsLimit,
@@ -98,6 +105,48 @@ const EventForm = (props) => {
           />
         </Grid>
         <Grid item>
+          <Autocomplete
+            className={style.formInput}
+            disableClearable
+            options={countries}
+            getOptionLabel={(country) => country.countryName}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                variant="outlined"
+                label="Country"
+                error={!!validationErrors.country}
+                helperText={validationErrors.country}
+              />
+            )}
+            noOptionsText="No matching country"
+            value={country}
+            onChange={(event, country) => handleCountryChange(country)}
+          />
+        </Grid>
+        {regions && regions.length > 0 && (
+          <Grid item>
+            <Autocomplete
+              className={style.formInput}
+              disableClearable
+              options={regions}
+              getOptionLabel={(region) => region.name}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  variant="outlined"
+                  label="Region"
+                  error={!!validationErrors.region}
+                  helperText={validationErrors.region}
+                />
+              )}
+              noOptionsText="No matching region"
+              value={region}
+              onChange={(event, region) => handleRegionChange(region)}
+            />
+          </Grid>
+        )}
+        <Grid item>
           <TextField
             className={style.formInput}
             type="number"
@@ -109,7 +158,6 @@ const EventForm = (props) => {
             onChange={(event) =>
               handleAttendantsLimitChange(event.target.value)
             }
-            InputLabelProps={{ shrink: true }}
             error={!!validationErrors.attendantsLimit}
             helperText={validationErrors.attendantsLimit}
           />

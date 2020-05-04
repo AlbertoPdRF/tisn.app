@@ -11,6 +11,13 @@ exports.get = (req, res, next) => {
   if (query.fromDate) {
     filter.startDate = { $gte: query.fromDate };
   }
+  if (query.country) {
+    filter.country = query.country;
+
+    if (query.region) {
+      filter.region = query.region;
+    }
+  }
   if (query.interests) {
     filter.relatedInterests = { $in: query.interests };
   }

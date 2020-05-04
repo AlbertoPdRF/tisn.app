@@ -5,6 +5,8 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
+import countries from 'country-region-data';
+
 import { getEvents } from '../../logic/api';
 import { inputDate } from '../../logic/date-time';
 
@@ -21,6 +23,8 @@ const Home = () => {
   const user = useUser();
 
   const [events, setEvents] = useState(null);
+  const [country, setCountry] = useState(null);
+  const [region, setRegion] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -30,6 +34,8 @@ const Home = () => {
 
       const params = new URLSearchParams();
       params.append('fromDate', inputDate(new Date().toISOString()));
+      params.append('country', user.country);
+      params.append('region', user.region);
       if (user.interests.length > 0) {
         user.interests.forEach((interest) => {
           params.append('interests', interest._id);
@@ -40,6 +46,15 @@ const Home = () => {
         .then((data) => setEvents(data.events))
         .catch((error) => setError(error))
         .finally(() => setLoading(false));
+
+      const c = countries.filter(
+        (country) => country.countryShortCode === user.country
+      )[0];
+      setCountry(c.countryName);
+      const r = c.regions.filter(
+        (region) => region.shortCode === user.region
+      )[0];
+      setRegion(r.name);
     }
   }, [user]);
 
@@ -57,8 +72,7 @@ const Home = () => {
               ))}
               <Grid item className={`${style.fullWidth} ${style.center}`}>
                 <Typography variant="body1">
-                  We have no more event recommendations for you right now,
-                  please check back later or
+                  {`We have no more event recommendations for you in ${region}, ${country} right now, please check back later or`}
                 </Typography>
                 <Button
                   className={style.buttons}
