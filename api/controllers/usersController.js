@@ -82,6 +82,10 @@ exports.post = (req, res, next) => {
 
     async.series([
       (callback) => {
+        emails.emailConfirmation(finalUser);
+        callback();
+      },
+      (callback) => {
         eventNotification.save();
         callback();
       },
@@ -91,10 +95,6 @@ exports.post = (req, res, next) => {
       },
       (callback) => {
         interestsNotification.save();
-        callback();
-      },
-      (callback) => {
-        emails.emailConfirmation(finalUser);
         callback();
       },
     ]);

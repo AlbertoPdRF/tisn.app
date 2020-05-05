@@ -36,7 +36,7 @@ import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 
 import Style from '../Style/Style';
 
-const Chats = ({ match }) => {
+const Chat = ({ match }) => {
   const style = Style();
   const user = useUser();
   const notifications = useNotifications();
@@ -260,4 +260,4 @@ const Chats = ({ match }) => {
   );
 };
 
-export default Chats;
+export default Chat;

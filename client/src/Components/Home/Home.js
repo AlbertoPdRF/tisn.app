@@ -63,7 +63,7 @@ const Home = () => {
       {loading && <LinearProgress />}
       <div className={style.root}>
         <Grid container justify="center" spacing={2}>
-          {events && events.length > 0 && (
+          {events && (
             <Fragment>
               {events.map((event) => (
                 <Grid item key={event._id}>

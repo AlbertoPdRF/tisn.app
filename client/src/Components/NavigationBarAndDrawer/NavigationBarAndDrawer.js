@@ -66,12 +66,19 @@ const NavigationBarAndDrawer = (props) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [logUserOut, setLogUserOut] = useState(false);
 
   useEffect(() => {
     setLoading(true);
     setError(null);
     getUser()
-      .then((data) => setUser(data.user))
+      .then((data) => {
+        if (data.errors) {
+          setLogUserOut(true);
+        } else {
+          setUser(data.user);
+        }
+      })
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
   }, [setUser]);
@@ -86,6 +93,14 @@ const NavigationBarAndDrawer = (props) => {
       .catch((error) => setError(error))
       .finally(() => setLoading(false));
   }, [setNotifications]);
+
+  useEffect(() => {
+    if (logUserOut) {
+      setUser(null);
+      logOut();
+      history.push('/welcome');
+    }
+  }, [logUserOut, setUser, history]);
 
   const handleDrawerToggle = () => setDrawerOpen(!drawerOpen);
 
@@ -198,9 +213,8 @@ const NavigationBarAndDrawer = (props) => {
         <ListItem
           button
           onClick={() => {
-            logOut();
-            setUser(null);
-            history.push('/welcome');
+            setLogUserOut(true);
+            handleDrawerToggle();
           }}
         >
           <ListItemIcon>

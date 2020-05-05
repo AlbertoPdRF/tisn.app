@@ -100,10 +100,7 @@ const Interests = () => {
     }
 
     putUser(user._id, {
-      name: user.name,
-      email: user.email,
-      dateOfBirth: user.dateOfBirth,
-      avatar: user.avatar,
+      ...user,
       interests: userInterests,
     })
       .then((data) => {
