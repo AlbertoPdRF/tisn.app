@@ -12,6 +12,7 @@ const NotificationSchema = new Schema(
         'Event',
         'Avatar',
         'Interests',
+        'Email',
         'Attendant',
         'Comment',
         'Friendship',

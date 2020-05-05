@@ -53,6 +53,28 @@ router.get(
   usersController.getEvents
 );
 
+router.get(
+  '/:userId/send-email-confirmation-email',
+  [
+    auth.required,
+    permissions,
+    validations.create('usersSendEmailConfirmationEmail'),
+    validations.run,
+  ],
+  usersController.sendEmailConfirmationEmail
+);
+
+router.get(
+  '/:userId/confirm-email',
+  [
+    auth.required,
+    permissions,
+    validations.create('usersConfirmEmail'),
+    validations.run,
+  ],
+  usersController.confirmEmail
+);
+
 router.post(
   '/log-in',
   [validations.create('usersLogIn'), validations.run],

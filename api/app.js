@@ -14,6 +14,7 @@ const mongoDB = process.env.DB_URL;
 mongoose.connect(mongoDB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  useCreateIndex: true,
 });
 mongoose.set('useFindAndModify', false);
 const db = mongoose.connection;

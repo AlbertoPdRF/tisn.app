@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import AddIcon from '@material-ui/icons/Add';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 import CategoryIcon from '@material-ui/icons/Category';
+import EmailIcon from '@material-ui/icons/Email';
 import PlusOneIcon from '@material-ui/icons/PlusOne';
 import AddCommentIcon from '@material-ui/icons/AddComment';
 import PersonAddIcon from '@material-ui/icons/PersonAdd';
@@ -50,6 +51,8 @@ const Notifications = () => {
         return <AccountCircleIcon />;
       case 'Interests':
         return <CategoryIcon />;
+      case 'Email':
+        return <EmailIcon />;
       case 'Attendant':
         return <PlusOneIcon />;
       case 'Comment':

@@ -4,10 +4,13 @@ const Event = require('../models/Event');
 const Friendship = require('../models/Friendship');
 const Message = require('../models/Message');
 const Notification = require('../models/Notification');
+const Token = require('../models/Token');
 
 const passport = require('passport');
 const async = require('async');
 const mongoose = require('mongoose');
+
+const emails = require('../utils/emails');
 
 exports.get = (req, res, next) => {
   const { query } = req;
@@ -39,7 +42,7 @@ exports.post = (req, res, next) => {
     body: { user },
   } = req;
 
-  if (user.admin) {
+  if (user.emailConfirmed || user.emailConfirmedAt || user.admin) {
     return res.status(403).json({
       errors: [
         {
@@ -90,6 +93,10 @@ exports.post = (req, res, next) => {
         interestsNotification.save();
         callback();
       },
+      (callback) => {
+        emails.emailConfirmation(finalUser);
+        callback();
+      },
     ]);
 
     res.json({ user: finalUser.toAuthJson() });
@@ -124,15 +131,32 @@ exports.putId = (req, res, next) => {
     });
   }
 
-  User.findByIdAndUpdate(req.params.userId, user, { new: true })
-    .populate('interests', 'name avatar')
-    .then((updatedUser) => {
-      if (!updatedUser) {
-        return res.sendStatus(404);
-      }
+  User.findById(req.params.userId).then((foundUser) => {
+    if (!foundUser) {
+      return res.sendStatus(404);
+    }
 
-      res.json({ user: updatedUser.toJson() });
-    });
+    const oldEmail = foundUser.email;
+
+    User.findByIdAndUpdate(req.params.userId, user, { new: true })
+      .populate('interests', 'name avatar')
+      .then((updatedUser) => {
+        if (!updatedUser) {
+          return res.sendStatus(404);
+        }
+
+        if (updatedUser.email !== oldEmail) {
+          emails.emailConfirmation(updatedUser);
+
+          updatedUser.emailConfirmed = false;
+          updatedUser.emailConfirmedAt = undefined;
+
+          updatedUser.save();
+        }
+
+        res.json({ user: updatedUser.toJson() });
+      });
+  });
 };
 
 exports.deleteId = (req, res, next) => {
@@ -231,6 +255,43 @@ exports.getEvents = (req, res, next) => {
           attending: results.attending.map((attendant) => attendant.event),
           created: results.created,
         },
+      });
+    }
+  );
+};
+
+exports.sendEmailConfirmationEmail = (req, res, next) => {
+  User.findById(req.params.userId).then((foundUser) => {
+    if (!foundUser) {
+      return res.sendStatus(404);
+    }
+
+    emails.emailConfirmation(foundUser);
+
+    res.json({ user: foundUser.toJson() });
+  });
+};
+
+exports.confirmEmail = (req, res, next) => {
+  Token.findOne({ user: req.params.userId, token: req.query.token }).then(
+    (token) => {
+      if (!token) {
+        return res.sendStatus(404);
+      }
+
+      User.findByIdAndUpdate(
+        token.user,
+        {
+          emailConfirmed: true,
+          emailConfirmedAt: new Date(),
+        },
+        { new: true }
+      ).then((updatedUser) => {
+        if (!updatedUser) {
+          return res.sendStatus(404);
+        }
+
+        res.json({ user: updatedUser.toJson() });
       });
     }
   );

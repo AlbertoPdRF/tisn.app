@@ -127,14 +127,14 @@ const buildValidator = (type, param, optional = false) => {
             throw new Error('country is required when region is specified');
           }
 
-        const regions = countries.filter(
+          const regions = countries.filter(
             (c) => c.countryShortCode === country
-        )[0].regions;
-        if (!regions.some((r) => r.shortCode === region)) {
-          throw new Error('is invalid');
-        }
+          )[0].regions;
+          if (!regions.some((r) => r.shortCode === region)) {
+            throw new Error('is invalid');
+          }
 
-        return region;
+          return region;
         }
       );
     case 'id':
@@ -216,6 +216,7 @@ const buildValidator = (type, param, optional = false) => {
           'Event',
           'Avatar',
           'Interests',
+          'Email',
           'Attendant',
           'Comment',
           'Friendship',
@@ -230,6 +231,8 @@ const buildValidator = (type, param, optional = false) => {
         .withMessage('must have at least 1');
     case 'toArray':
       return check.toArray();
+    case 'token':
+      return escapedRequired.isAlphanumeric().withMessage('is invalid');
     default:
       return escapedRequired;
   }
@@ -258,6 +261,7 @@ const createValidation = (route) => {
     case 'usersGetId':
     case 'usersDeleteId':
     case 'usersGetEvents':
+    case 'usersSendEmailConfirmationEmail':
     case 'friendshipsGet':
     case 'notificationsGet':
       return [buildValidator('id', 'userId')];
@@ -272,6 +276,8 @@ const createValidation = (route) => {
         buildValidator('imageUrl', 'user.avatar', true),
         buildValidator('id', 'user.interests.*._id', true),
       ];
+    case 'usersConfirmEmail':
+      return [buildValidator('id', 'userId'), buildValidator('token', 'token')];
     case 'usersLogIn':
       return [
         buildValidator('email', 'user.email', true),

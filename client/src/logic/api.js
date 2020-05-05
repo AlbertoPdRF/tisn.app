@@ -130,6 +130,9 @@ export const putNotification = (userId, notificationId, notification) => {
   });
 };
 
+export const getUsersEmail = (location) =>
+  fetchApi(`${location.pathname}${location.search}`, { method: 'GET' });
+
 const fetchApi = (path, fetchOptions = {}) => {
   return fetch(
     `${BASE_API_URL}${path}`,

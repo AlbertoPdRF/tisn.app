@@ -15,6 +15,7 @@ import Interests from '../Interests/Interests';
 import Chats from '../Chats/Chats';
 import Chat from '../Chat/Chat';
 import Notifications from '../Notifications/Notifications';
+import Email from '../Email/Email';
 
 import Welcome from '../Welcome/Welcome';
 import LogInForm from '../LogInForm/LogInForm';
@@ -46,6 +47,14 @@ const Navigation = () => {
       <PrivateRoute exact path="/chats" component={Chats} />
       <PrivateRoute exact path="/chats/:friendshipId" component={Chat} />
       <PrivateRoute exact path="/notifications" component={Notifications} />
+      <PrivateRoute
+        exact
+        path={[
+          '/users/:userId/confirm-email',
+          '/users/:userId/send-email-confirmation-email',
+        ]}
+        component={Email}
+      />
 
       <PublicRoute exact path="/welcome" component={Welcome} />
       <PublicRoute exact path="/log-in" component={LogInForm} />
