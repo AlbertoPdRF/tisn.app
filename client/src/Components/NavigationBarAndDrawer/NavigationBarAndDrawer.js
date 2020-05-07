@@ -73,26 +73,31 @@ const NavigationBarAndDrawer = (props) => {
     setError(null);
     getUser()
       .then((data) => {
-        if (data.errors) {
+        if (data.error || data.errors) {
           setLogUserOut(true);
         } else {
           setUser(data.user);
+          setLoading(false);
         }
       })
-      .catch((error) => setError(error))
-      .finally(() => setLoading(false));
+      .catch((error) => {
+        setError(error);
+        setLoading(false);
+      });
   }, [setUser]);
 
   useEffect(() => {
-    setLoading(true);
-    setError(null);
-    getNotifications()
-      .then((data) =>
-        setNotifications(classifyNotifications(data.notifications))
-      )
-      .catch((error) => setError(error))
-      .finally(() => setLoading(false));
-  }, [setNotifications]);
+    if (user) {
+      setLoading(true);
+      setError(null);
+      getNotifications()
+        .then((data) =>
+          setNotifications(classifyNotifications(data.notifications))
+        )
+        .catch((error) => setError(error))
+        .finally(() => setLoading(false));
+    }
+  }, [user, setNotifications]);
 
   useEffect(() => {
     if (logUserOut) {
