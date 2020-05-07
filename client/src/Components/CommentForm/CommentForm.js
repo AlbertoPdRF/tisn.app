@@ -29,7 +29,7 @@ const CommentForm = (props) => {
       InputProps={{
         endAdornment: (
           <Button
-            variant="contained"
+            variant="text"
             color="primary"
             onClick={() => {
               setLoading(true);

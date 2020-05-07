@@ -133,7 +133,7 @@ const Interests = () => {
                   <ExpansionPanelDetails>
                     <Grid container justify="center" spacing={2}>
                       {interestsGroup.interests.map((interest) => (
-                        <Grid item key={interest._id}>
+                        <Grid item key={interest._id} md={4} sm={6} xs={12}>
                           <InterestCard
                             interest={interest}
                             userInterested={user.interests.some(

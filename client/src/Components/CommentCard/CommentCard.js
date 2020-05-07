@@ -89,7 +89,7 @@ const CommentCard = (props) => {
       ) : (
         <CardActions className={style.commentCardActions}>
           <Button
-            variant="contained"
+            variant="text"
             color="primary"
             onClick={() => setNestedDisplay(true)}
           >

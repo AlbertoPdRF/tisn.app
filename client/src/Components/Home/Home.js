@@ -66,7 +66,7 @@ const Home = () => {
           {events && (
             <Fragment>
               {events.map((event) => (
-                <Grid item key={event._id}>
+                <Grid item key={event._id} md={4} sm={6} xs={12}>
                   <EventCard event={event} />
                 </Grid>
               ))}

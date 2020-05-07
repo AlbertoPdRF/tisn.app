@@ -38,10 +38,6 @@ const Style = makeStyles((theme) => ({
   drawerPaper: {
     width: '250px',
   },
-  eventCard: {
-    width: '300px',
-    height: '300px',
-  },
   commentCard: {
     [theme.breakpoints.down('sm')]: {
       width: '75vw',
@@ -65,16 +61,8 @@ const Style = makeStyles((theme) => ({
       width: '672px',
     },
   },
-  userCard: {
-    width: '150px',
-    height: '125px',
-  },
   userCardContent: {
     marginTop: '-24px',
-  },
-  interestCard: {
-    width: '250px',
-    height: '100px',
   },
   interestCardActions: {
     float: 'right',

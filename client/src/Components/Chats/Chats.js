@@ -1,11 +1,11 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { useHistory, Link } from 'react-router-dom';
 import CardHeader from '@material-ui/core/CardHeader';
+import Badge from '@material-ui/core/Badge';
 import Avatar from '@material-ui/core/Avatar';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Badge from '@material-ui/core/Badge';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import Button from '@material-ui/core/Button';
@@ -72,13 +72,22 @@ const Chats = () => {
     return (
       <CardHeader
         avatar={
-          <Avatar
-            src={friendshipUser.avatar}
-            alt={`${friendshipUser.name}'s avatar`}
-            style={{ margin: '4px' }}
+          <Badge
+            badgeContent={
+              messageNotifications[friendship._id] &&
+              messageNotifications[friendship._id].length
+            }
+            color="secondary"
+            overlap="circle"
           >
-            {friendshipUser.name.charAt(0).toUpperCase()}
-          </Avatar>
+            <Avatar
+              src={friendshipUser.avatar}
+              alt={`${friendshipUser.name}'s avatar`}
+              style={{ margin: '4px' }}
+            >
+              {friendshipUser.name.charAt(0).toUpperCase()}
+            </Avatar>
+          </Badge>
         }
         title={friendshipUser.name}
         subheader={
@@ -101,23 +110,15 @@ const Chats = () => {
           </Grid>
           {friendships && friendships.length > 0
             ? friendships.map((friendship) => (
-                <Grid item key={friendship._id}>
-                  <Badge
-                    badgeContent={
-                      messageNotifications[friendship._id] &&
-                      messageNotifications[friendship._id].length
-                    }
-                    color="secondary"
-                  >
-                    <Card>
-                      <CardActionArea
-                        component={Link}
-                        to={`/chats/${friendship._id}`}
-                      >
-                        {friendshipCardHeader(friendship)}
-                      </CardActionArea>
-                    </Card>
-                  </Badge>
+                <Grid item key={friendship._id} md={4} sm={6} xs={12}>
+                  <Card>
+                    <CardActionArea
+                      component={Link}
+                      to={`/chats/${friendship._id}`}
+                    >
+                      {friendshipCardHeader(friendship)}
+                    </CardActionArea>
+                  </Card>
                 </Grid>
               ))
             : !loading && (

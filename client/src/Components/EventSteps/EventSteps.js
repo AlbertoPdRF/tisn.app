@@ -437,9 +437,16 @@ const EventSteps = ({ match }) => {
       </Stepper>
       {activeStep !== steps.length && (
         <div className={style.root}>
-          <Grid container direction="column" alignItems="center" spacing={2}>
-            <Grid item>{getStepContent(activeStep)}</Grid>
-            <Grid item>
+          <Grid container justify="center" spacing={2}>
+            <Grid
+              item
+              md={activeStep === 2 && 4}
+              sm={activeStep === 2 && 6}
+              xs={activeStep === 2 && 12}
+            >
+              {getStepContent(activeStep)}
+            </Grid>
+            <Grid item className={`${style.fullWidth} ${style.center}`}>
               <Button
                 className={style.buttons}
                 variant="outlined"

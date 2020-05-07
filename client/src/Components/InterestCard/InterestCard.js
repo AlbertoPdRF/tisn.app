@@ -13,7 +13,7 @@ const InterestCard = (props) => {
   const style = Style();
 
   return (
-    <Card className={style.interestCard}>
+    <Card>
       <CardHeader
         avatar={
           <Avatar src={interest.avatar} alt={interest.name}>
@@ -24,7 +24,7 @@ const InterestCard = (props) => {
       />
       <CardActions className={style.interestCardActions}>
         <Button
-          variant={userInterested ? 'outlined' : 'contained'}
+          variant="text"
           color={userInterested ? 'secondary' : 'primary'}
           onClick={() => handleClick(interest, userInterested)}
         >

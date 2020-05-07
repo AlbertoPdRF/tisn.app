@@ -30,9 +30,9 @@ const EventsTable = (props) => {
 
     return (
       <Link href={`/events/${event._id}`} variant="body1">
-        {decodedName.length < 30
+        {decodedName.length < 20
           ? decodedName
-          : `${decodedName.substring(0, 29)}...`}
+          : `${decodedName.substring(0, 19)}...`}
       </Link>
     );
   };

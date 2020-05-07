@@ -55,7 +55,7 @@ const Friendships = (props) => {
           )}
         {acceptedFriendships && acceptedFriendships.length > 0 ? (
           acceptedFriendships.map((friendship) => (
-            <Grid item key={friendship._id}>
+            <Grid item key={friendship._id} md={4} sm={6} xs={12}>
               <UserCard
                 user={
                   friendship.requestant._id === user._id

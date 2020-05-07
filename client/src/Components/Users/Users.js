@@ -130,7 +130,7 @@ const Users = () => {
           </Grid>
           {users && users.length > 0
             ? users.map((user) => (
-                <Grid item key={user._id}>
+                <Grid item key={user._id} md={4} sm={6} xs={12}>
                   <UserCard user={user} />
                 </Grid>
               ))

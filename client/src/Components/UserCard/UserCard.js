@@ -15,7 +15,7 @@ const UserCard = (props) => {
   const style = Style();
 
   return (
-    <Card className={style.userCard}>
+    <Card>
       <CardActionArea component={Link} to={`/users/${user._id}`}>
         <CardHeader
           avatar={
@@ -27,7 +27,7 @@ const UserCard = (props) => {
         />
         {user.interests.length > 0 && (
           <CardContent className={style.userCardContent}>
-            <AvatarGroup max={3}>
+            <AvatarGroup max={7}>
               {user.interests.map((interest) => (
                 <Avatar
                   key={interest._id}

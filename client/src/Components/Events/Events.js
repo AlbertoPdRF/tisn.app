@@ -169,7 +169,7 @@ const Events = () => {
           </Grid>
           {events && events.length > 0
             ? events.map((event) => (
-                <Grid item key={event._id}>
+                <Grid item key={event._id} md={4} sm={6} xs={12}>
                   <EventCard event={event} />
                 </Grid>
               ))

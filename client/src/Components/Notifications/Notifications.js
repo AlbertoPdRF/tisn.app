@@ -69,7 +69,7 @@ const Notifications = () => {
   const notificationsGrid = (notifications) => (
     <Grid container justify="center" spacing={2}>
       {notifications.map((notification) => (
-        <Grid item key={notification._id}>
+        <Grid item key={notification._id} sm={6} xs={12}>
           <Card>
             <CardActionArea component={Link} to={notification.path}>
               <CardHeader

@@ -21,7 +21,7 @@ const EventCard = (props) => {
   const decodedDescription = decodeText(event.description);
 
   return (
-    <Card className={style.eventCard}>
+    <Card>
       <CardActionArea
         component={Link}
         to={event._id ? `/events/${event._id}` : '/events'}
@@ -50,14 +50,14 @@ const EventCard = (props) => {
             ))}
           </AvatarGroup>
           <Typography gutterBottom variant="h5" component="h3">
-            {decodedName.length < 30
+            {decodedName.length < 20
               ? decodedName
-              : `${decodedName.substring(0, 29)}...`}
+              : `${decodedName.substring(0, 19)}...`}
           </Typography>
           <Typography variant="body1" color="textSecondary" component="p">
-            {decodedDescription.length < 115
+            {decodedDescription.length < 140
               ? decodedDescription
-              : `${decodedDescription.substring(0, 114)}...`}
+              : `${decodedDescription.substring(0, 139)}...`}
           </Typography>
         </CardContent>
       </CardActionArea>
