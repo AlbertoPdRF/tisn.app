@@ -70,9 +70,13 @@ const CommentCard = (props) => {
             spacing={2}
           >
             {commentsGroup.nestedComments.length > 0 &&
-              commentsGroup.nestedComments.map((nestedComment) => (
+              commentsGroup.nestedComments.map((nestedComment, index) => (
                 <Grid item key={nestedComment._id}>
-                  <Card className={style.nestedComments}>
+                  <Card
+                    elevation={0}
+                    className={style.nestedComments}
+                    style={{ marginTop: !!index && '-32px' }}
+                  >
                     {cardFragment(nestedComment)}
                   </Card>
                 </Grid>

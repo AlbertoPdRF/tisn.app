@@ -39,7 +39,7 @@ const EventsTable = (props) => {
 
   return (
     events && (
-      <TableContainer component={Paper}>
+      <TableContainer elevation={0} component={Paper}>
         <Table>
           <TableHead>
             <TableRow>

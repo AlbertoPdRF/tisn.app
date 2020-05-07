@@ -18,7 +18,7 @@ const FriendshipsTable = (props) => {
 
   return (
     friendships && (
-      <TableContainer component={Paper}>
+      <TableContainer elevation={0} component={Paper}>
         <Table>
           <TableHead>
             <TableRow>

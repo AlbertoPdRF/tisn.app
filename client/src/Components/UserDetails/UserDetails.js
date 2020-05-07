@@ -42,7 +42,7 @@ const UserDetails = (props) => {
   }, [user]);
 
   return (
-    <Card>
+    <Card elevation={0}>
       <CardContent>
         <Avatar
           className={style.avatar}

@@ -48,7 +48,7 @@ const EventDetails = (props) => {
   const decodedName = decodeText(event.name);
 
   return (
-    <Card>
+    <Card elevation={0}>
       <CardMedia
         component="img"
         src={
