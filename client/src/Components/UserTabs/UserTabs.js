@@ -176,6 +176,21 @@ const UserTabs = ({ match }) => {
     }
   }, [updateNotifications, setNotifications]);
 
+  useEffect(() => {
+    if (
+      validationErrors.name ||
+      validationErrors.email ||
+      validationErrors.dateOfBirth ||
+      validationErrors.country ||
+      validationErrors.region ||
+      validationErrors.avatar
+    ) {
+      setValue(0);
+    } else if (validationErrors.interests) {
+      setValue(1);
+    }
+  }, [validationErrors]);
+
   const handleNameChange = (name) => {
     setName(name);
     if (!updatedFields || !updatedFields.name) {
@@ -248,7 +263,7 @@ const UserTabs = ({ match }) => {
     }
   };
 
-  const handleEditClick = () => {
+  const handleSaveClick = () => {
     setLoading(true);
     setError(null);
     setValidationErrors({});
@@ -408,7 +423,7 @@ const UserTabs = ({ match }) => {
               className={style.buttons}
               variant="contained"
               color="primary"
-              onClick={() => handleEditClick()}
+              onClick={() => handleSaveClick()}
               disabled={
                 !updatedFields ||
                 !name ||
@@ -419,7 +434,7 @@ const UserTabs = ({ match }) => {
                 loading
               }
             >
-              Edit
+              Save
             </Button>
           </Grid>
         </Grid>

@@ -2,6 +2,8 @@ import React from 'react';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import Chip from '@material-ui/core/Chip';
+import Typography from '@material-ui/core/Typography';
+import Link from '@material-ui/core/Link';
 import Avatar from '@material-ui/core/Avatar';
 
 import Style from '../Style/Style';
@@ -40,7 +42,18 @@ const InterestsSelect = (props) => {
           }
         />
       )}
-      noOptionsText="No matching interests"
+      noOptionsText={
+        <Typography variant="body1">
+          {`No matching interest. `}
+          <Link
+            href="mailto:Tisn <support@tisn.app>"
+            variant="body1"
+            onMouseDown={(event) => event.preventDefault()}
+          >
+            Ask us to add it!
+          </Link>
+        </Typography>
+      }
       value={interests}
       onChange={(event, interests) => handleInterestsChange(interests)}
       renderTags={(interests, getTagProps) =>

@@ -64,6 +64,7 @@ const EventSteps = ({ match }) => {
   const [updateNotifications, setUpdateNotifications] = useState(false);
   const [loading, setLoading] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
+  const [stepHasError, setStepWithError] = useState({});
   const [error, setError] = useState(null);
 
   const id = match.params.eventId;
@@ -182,6 +183,27 @@ const EventSteps = ({ match }) => {
     }
   }, [updateNotifications, setNotifications]);
 
+  useEffect(() => {
+    const errorInFirstStep =
+      validationErrors.name ||
+      validationErrors.description ||
+      validationErrors.startDate ||
+      validationErrors.endDate ||
+      validationErrors.country ||
+      validationErrors.region ||
+      validationErrors.coverPhoto ||
+      validationErrors.attendantsLimit;
+    const errorInSecondStep = validationErrors.relatedInterests;
+
+    setStepWithError({ '0': errorInFirstStep, '1': errorInSecondStep });
+
+    if (errorInFirstStep) {
+      setActiveStep(0);
+    } else if (errorInSecondStep) {
+      setActiveStep(1);
+    }
+  }, [validationErrors]);
+
   const steps = ['Details', 'Interests', 'Preview'];
 
   const getStepContent = (step) => {
@@ -262,10 +284,10 @@ const EventSteps = ({ match }) => {
     }
   };
 
-  const handleNext = () =>
+  const handleNextClick = () =>
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
 
-  const handleBack = () =>
+  const handleBackClick = () =>
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
 
   const lastStep = activeStep === steps.length - 1;
@@ -356,7 +378,7 @@ const EventSteps = ({ match }) => {
     }
   };
 
-  const handleNewClick = () => {
+  const handleCreateClick = () => {
     setLoading(true);
     setError(null);
     setValidationErrors({});
@@ -387,7 +409,7 @@ const EventSteps = ({ match }) => {
       });
   };
 
-  const handleEditClick = () => {
+  const handleSaveClick = () => {
     setLoading(true);
     setError(null);
     setValidationErrors({});
@@ -429,9 +451,9 @@ const EventSteps = ({ match }) => {
         style={{ backgroundColor: 'inherit' }}
         activeStep={activeStep}
       >
-        {steps.map((step) => (
+        {steps.map((step, index) => (
           <Step key={step}>
-            <StepLabel>{step}</StepLabel>
+            <StepLabel error={stepHasError[`${index}`]}>{step}</StepLabel>
           </Step>
         ))}
       </Stepper>
@@ -463,7 +485,7 @@ const EventSteps = ({ match }) => {
                   className={style.buttons}
                   variant="outlined"
                   color="primary"
-                  onClick={() => handleBack()}
+                  onClick={() => handleBackClick()}
                 >
                   Back
                 </Button>
@@ -475,13 +497,13 @@ const EventSteps = ({ match }) => {
                 onClick={() => {
                   lastStep
                     ? id
-                      ? handleEditClick()
-                      : handleNewClick()
-                    : handleNext();
+                      ? handleSaveClick()
+                      : handleCreateClick()
+                    : handleNextClick();
                 }}
                 disabled={isNextOrCreateDisabled()}
               >
-                {lastStep ? (id ? 'Edit' : 'Create') : 'Next'}
+                {lastStep ? (id ? 'Save' : 'Create') : 'Next'}
               </Button>
             </Grid>
           </Grid>

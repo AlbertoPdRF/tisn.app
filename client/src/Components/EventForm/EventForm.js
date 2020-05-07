@@ -4,6 +4,8 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
+import { inputDateTime } from '../../logic/date-time';
+
 import Style from '../Style/Style';
 
 const EventForm = (props) => {
@@ -86,6 +88,9 @@ const EventForm = (props) => {
             variant="outlined"
             value={startDate}
             onChange={(event) => handleStartDateChange(event.target.value)}
+            InputProps={{
+              inputProps: { min: inputDateTime(new Date().toISOString()) },
+            }}
             InputLabelProps={{ shrink: true }}
             error={!!validationErrors.startDate}
             helperText={validationErrors.startDate}
@@ -99,6 +104,7 @@ const EventForm = (props) => {
             variant="outlined"
             value={endDate}
             onChange={(event) => handleEndDateChange(event.target.value)}
+            InputProps={{ inputProps: { min: startDate } }}
             InputLabelProps={{ shrink: true }}
             error={!!validationErrors.endDate}
             helperText={validationErrors.endDate}
@@ -158,6 +164,9 @@ const EventForm = (props) => {
             onChange={(event) =>
               handleAttendantsLimitChange(event.target.value)
             }
+            InputProps={{
+              inputProps: { min: 2 },
+            }}
             error={!!validationErrors.attendantsLimit}
             helperText={validationErrors.attendantsLimit}
           />
