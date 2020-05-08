@@ -1,5 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
+import CardActionArea from '@material-ui/core/CardActionArea';
 import CardHeader from '@material-ui/core/CardHeader';
 import Avatar from '@material-ui/core/Avatar';
 import CardActions from '@material-ui/core/CardActions';
@@ -14,14 +16,21 @@ const InterestCard = (props) => {
 
   return (
     <Card>
-      <CardHeader
-        avatar={
-          <Avatar src={interest.avatar} alt={interest.name}>
-            {interest.name.charAt(0).toUpperCase()}
-          </Avatar>
-        }
-        title={interest.name}
-      />
+      <CardActionArea
+        component={Link}
+        to={`/events?interest=${interest._id}`}
+        color="inherit"
+        underline="none"
+      >
+        <CardHeader
+          avatar={
+            <Avatar src={interest.avatar} alt={interest.name}>
+              {interest.name.charAt(0).toUpperCase()}
+            </Avatar>
+          }
+          title={interest.name}
+        />
+      </CardActionArea>
       <CardActions className={style.interestCardActions}>
         <Button
           variant="text"
