@@ -179,8 +179,8 @@ const Chat = ({ match }) => {
     <Fragment>
       {loading && <LinearProgress />}
       {userToDisplay && (
-        <div className={style.root}>
-          <Card className={style.grow}>
+        <div className={`${style.root} ${style.fullHeight}`}>
+          <Card className={`${style.grow} ${style.messagesCard}`}>
             <CardActionArea
               component={Link}
               to={`/users/${userToDisplay._id}`}
@@ -230,6 +230,7 @@ const Chat = ({ match }) => {
             </CardContent>
             <CardActions>
               <TextField
+                autoFocus
                 multiline
                 rowsMax={3}
                 className={`${style.fullWidth} ${style.center}`}
@@ -247,6 +248,17 @@ const Chat = ({ match }) => {
                       <SendIcon />
                     </IconButton>
                   ),
+                }}
+                onKeyPress={(event) => {
+                  if (
+                    event.key === 'Enter' &&
+                    !event.shiftKey &&
+                    content &&
+                    !loading
+                  ) {
+                    event.preventDefault();
+                    handleClick();
+                  }
                 }}
                 error={!!validationErrors.content}
                 helperText={validationErrors.content}

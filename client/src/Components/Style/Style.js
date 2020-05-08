@@ -25,6 +25,14 @@ const Style = makeStyles((theme) => ({
   fullWidth: {
     width: '100%',
   },
+  fullHeight: {
+    [theme.breakpoints.down('sm')]: {
+      height: 'calc(100vh - 56px)',
+    },
+    [theme.breakpoints.up('md')]: {
+      height: 'calc(100vh - 64px)',
+    },
+  },
   center: {
     textAlign: 'center',
   },
@@ -103,9 +111,13 @@ const Style = makeStyles((theme) => ({
     borderRadius: '4px',
     borderColor: 'rgba(0, 0, 0, 0.23)',
   },
+  messagesCard: {
+    display: 'flex',
+    flexDirection: 'column',
+  },
   messagesCardContent: {
+    flexGrow: 1,
     marginTop: '-8px',
-    height: '60vh',
     overflowY: 'scroll',
   },
   message: {

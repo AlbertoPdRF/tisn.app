@@ -22,7 +22,6 @@ const CommentForm = (props) => {
       multiline
       rowsMax={5}
       className={parentComment ? style.nestedComments : style.formInput}
-      style={{ marginTop: !!parentComment && '-32px' }}
       variant="outlined"
       placeholder="Write a comment..."
       value={content}
