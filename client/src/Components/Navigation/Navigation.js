@@ -42,7 +42,11 @@ const Navigation = () => {
         path={['/users/:userId', '/users/:userId/friendships']}
         component={User}
       />
-      <PrivateRoute exact path="/users/:userId/edit" component={UserTabs} />
+      <PrivateRoute
+        exact
+        path={['/users/:userId/edit', '/users/:userId/edit/interests']}
+        component={UserTabs}
+      />
       <PrivateRoute exact path="/interests" component={Interests} />
       <PrivateRoute exact path="/chats" component={Chats} />
       <PrivateRoute exact path="/chats/:friendshipId" component={Chat} />

@@ -124,7 +124,7 @@ const UserDetails = (props) => {
             </Typography>
           </Fragment>
         )}
-        {user.interests.length > 0 && (
+        {(userIsCurrentUser || user.interests.length > 0) && (
           <Fragment>
             <Typography variant="h6" component="h4">
               Interests:
@@ -136,8 +136,22 @@ const UserDetails = (props) => {
                 key={interest._id}
                 avatar={<Avatar src={interest.avatar} alt={interest.name} />}
                 label={interest.name}
+                clickable
+                onClick={() => history.push(`/events?interest=${interest._id}`)}
               />
             ))}
+            {userIsCurrentUser && (
+              <Chip
+                className={style.chip}
+                variant="outlined"
+                color="primary"
+                label="Manage"
+                clickable
+                onClick={() =>
+                  history.push(`/users/${user._id}/edit/interests`)
+                }
+              />
+            )}
           </Fragment>
         )}
       </CardContent>

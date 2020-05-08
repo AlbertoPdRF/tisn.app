@@ -35,6 +35,10 @@ const Events = () => {
   const [validationErrors, setValidationErrors] = useState({});
   const [error, setError] = useState(null);
 
+  const interestParam = new URLSearchParams(window.location.search).get(
+    'interest'
+  );
+
   useEffect(() => {
     if (user) {
       const now = inputDate(new Date().toISOString());
@@ -55,10 +59,14 @@ const Events = () => {
         country: c.countryShortCode,
         region: r.shortCode,
       });
+      if (interestParam) {
+        params.append('relatedInterests', interestParam);
+      }
+
       setQuery(`?${params.toString()}`);
       setUpdateEvents(true);
     }
-  }, [user]);
+  }, [user, interestParam]);
 
   useEffect(() => {
     if (updateEvents) {
@@ -88,6 +96,14 @@ const Events = () => {
       .then((data) => setAllInterests(data.interests))
       .catch((error) => setError(error));
   }, []);
+
+  useEffect(() => {
+    if (interestParam && allInterests) {
+      setRelatedInterests(
+        allInterests.filter((interest) => interest._id === interestParam)
+      );
+    }
+  }, [interestParam, allInterests]);
 
   const handleFromDateChange = (fromDate) => setFromDate(fromDate);
 
