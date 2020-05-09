@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import countries from 'country-region-data';
 
 import { getEvents, getInterests } from '../../logic/api';
-import { inputDate } from '../../logic/date-time';
+import { formatInputDate } from '../../logic/date-time';
 import { buildValidationErrorsObject } from '../../logic/utils';
 
 import { useUser } from '../UserProvider/UserProvider';
@@ -41,8 +41,8 @@ const Events = () => {
 
   useEffect(() => {
     if (user) {
-      const now = inputDate(new Date().toISOString());
-      setFromDate(now);
+      const now = new Date().toISOString();
+      setFromDate(formatInputDate(now));
 
       const c = countries.filter(
         (country) => country.countryShortCode === user.country
@@ -132,7 +132,7 @@ const Events = () => {
   const handleSearchClick = () => {
     const params = new URLSearchParams();
     if (fromDate) {
-      params.append('fromDate', fromDate);
+      params.append('fromDate', new Date(`${fromDate}T00:00`).toISOString());
     }
     if (country) {
       params.append('country', country.countryShortCode);

@@ -4,7 +4,7 @@ import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
-import { inputDateTime } from '../../logic/date-time';
+import { formatInputDateTime } from '../../logic/date-time';
 
 import Style from '../Style/Style';
 
@@ -89,7 +89,9 @@ const EventForm = (props) => {
             value={startDate}
             onChange={(event) => handleStartDateChange(event.target.value)}
             InputProps={{
-              inputProps: { min: inputDateTime(new Date().toISOString()) },
+              inputProps: {
+                min: formatInputDateTime(new Date().toISOString()),
+              },
             }}
             InputLabelProps={{ shrink: true }}
             error={!!validationErrors.startDate}

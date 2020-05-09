@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^7.1.2",
     "country-region-data": "^1.6.0",
     "date-fns": "^2.11.1",
+    "date-fns-tz": "^1.0.10",
     "material-ui-confirm": "^2.0.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",

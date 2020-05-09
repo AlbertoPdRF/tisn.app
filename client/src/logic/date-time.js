@@ -1,24 +1,37 @@
 import { format, parseISO } from 'date-fns';
+import { utcToZonedTime } from 'date-fns-tz';
 
-export const inputDate = (dateString) =>
-  format(parseISO(dateString), 'yyyy-MM-dd');
+const formatUtcToTimeZone = (dateString, formatString) =>
+  format(
+    utcToZonedTime(
+      parseISO(dateString),
+      Intl.DateTimeFormat().resolvedOptions().timeZone
+    ),
+    formatString
+  );
+
+export const formatInputDate = (dateString) =>
+  formatUtcToTimeZone(dateString, 'yyyy-MM-dd');
 
 export const formatDate = (dateString) =>
-  format(parseISO(dateString), 'MMM d, yyyy');
+  formatUtcToTimeZone(dateString, 'MMM d, yyyy');
 
-export const inputDateTime = (dateString) =>
-  format(parseISO(dateString), "yyyy-MM-dd'T'HH:mm");
+export const formatInputDateTime = (dateString) =>
+  formatUtcToTimeZone(dateString, "yyyy-MM-dd'T'HH:mm");
 
 export const formatDateTime = (dateTimeString) =>
-  format(parseISO(dateTimeString), "H:mm'\n'MMM d, yyyy");
+  formatUtcToTimeZone(dateTimeString, "H:mm'\n'MMM d, yyyy");
 
 export const formatDateTimeRange = (startString, endString) => {
-  const [startMinute, startHour, startDay, startMonth, startYear] = format(
-    parseISO(startString),
-    'mm H d MMM yyyy'
-  ).split(' ');
-  const [endMinute, endHour, endDay, endMonth, endYear] = format(
-    parseISO(endString),
+  const [
+    startMinute,
+    startHour,
+    startDay,
+    startMonth,
+    startYear,
+  ] = formatUtcToTimeZone(startString, 'mm H d MMM yyyy').split(' ');
+  const [endMinute, endHour, endDay, endMonth, endYear] = formatUtcToTimeZone(
+    endString,
     'mm H d MMM yyyy'
   ).split(' ');
 

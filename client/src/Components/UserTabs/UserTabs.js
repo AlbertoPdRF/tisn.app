@@ -30,7 +30,7 @@ import {
   classifyNotifications,
 } from '../../logic/utils';
 import { logOut } from '../../logic/auth';
-import { inputDate } from '../../logic/date-time';
+import { formatInputDate } from '../../logic/date-time';
 import { upload } from '../../logic/upload';
 
 import { useUser, useSetUser } from '../UserProvider/UserProvider';
@@ -104,7 +104,7 @@ const UserTabs = ({ match }) => {
 
       setName(user.name);
       setEmail(user.email);
-      setDateOfBirth(inputDate(user.dateOfBirth));
+      setDateOfBirth(formatInputDate(user.dateOfBirth));
 
       const c = countries.filter(
         (country) => country.countryShortCode === user.country

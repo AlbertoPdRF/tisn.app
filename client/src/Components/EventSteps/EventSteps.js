@@ -23,7 +23,7 @@ import {
   buildValidationErrorsObject,
   classifyNotifications,
 } from '../../logic/utils';
-import { inputDateTime } from '../../logic/date-time';
+import { formatInputDateTime } from '../../logic/date-time';
 import { upload } from '../../logic/upload';
 
 import { useUser } from '../UserProvider/UserProvider';
@@ -81,8 +81,8 @@ const EventSteps = ({ match }) => {
               setEvent(data.event);
               setName(decodeText(data.event.name));
               setDescription(decodeText(data.event.description));
-              setStartDate(inputDateTime(data.event.startDate));
-              setEndDate(inputDateTime(data.event.endDate));
+              setStartDate(formatInputDateTime(data.event.startDate));
+              setEndDate(formatInputDateTime(data.event.endDate));
 
               const c = countries.filter(
                 (country) => country.countryShortCode === data.event.country
@@ -385,8 +385,8 @@ const EventSteps = ({ match }) => {
     postEvent({
       name,
       description,
-      startDate,
-      endDate,
+      startDate: new Date(startDate),
+      endDate: new Date(endDate),
       country: country.countryShortCode,
       region: region.shortCode,
       createdBy: user._id,
@@ -416,8 +416,8 @@ const EventSteps = ({ match }) => {
     putEvent(id, {
       name,
       description,
-      startDate,
-      endDate,
+      startDate: new Date(startDate),
+      endDate: new Date(endDate),
       country: country.countryShortCode,
       region: region.shortCode,
       createdBy,

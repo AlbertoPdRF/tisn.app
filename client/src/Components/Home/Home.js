@@ -8,7 +8,6 @@ import Button from '@material-ui/core/Button';
 import countries from 'country-region-data';
 
 import { getEvents } from '../../logic/api';
-import { inputDate } from '../../logic/date-time';
 
 import { useUser } from '../UserProvider/UserProvider';
 
@@ -33,7 +32,7 @@ const Home = () => {
       setError(null);
 
       const params = new URLSearchParams();
-      params.append('fromDate', inputDate(new Date().toISOString()));
+      params.append('fromDate', new Date().toISOString());
       params.append('country', user.country);
       params.append('region', user.region);
       if (user.interests.length > 0) {
