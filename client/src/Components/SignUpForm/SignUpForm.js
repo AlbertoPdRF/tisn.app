@@ -1,4 +1,5 @@
 import React, { useState, Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Box from '@material-ui/core/Box';
@@ -22,6 +23,7 @@ import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 import Style from '../Style/Style';
 
 const SignUpForm = () => {
+  const { t } = useTranslation();
   const history = useHistory();
   const style = Style();
 
@@ -64,7 +66,7 @@ const SignUpForm = () => {
     })
       .then((data) => {
         if (data.errors) {
-          setError('The form contains errors');
+          setError(t('signUpForm.error.formContainsErrors'));
           setValidationErrors(buildValidationErrorsObject(data.errors));
           setLoading(false);
         } else {
@@ -84,12 +86,12 @@ const SignUpForm = () => {
       <Box p={1}>
         <Grid container direction="column" alignItems="center" spacing={2}>
           <Grid item>
-            <Typography variant="h2">Sign up</Typography>
+            <Typography variant="h2">{t('signUpForm.title')}</Typography>
           </Grid>
           <Grid item>
             <TextField
               className={style.formInput}
-              label="Name"
+              label={t('signUpForm.name')}
               variant="outlined"
               value={name}
               onChange={(event) => setName(event.target.value)}
@@ -100,7 +102,7 @@ const SignUpForm = () => {
           <Grid item>
             <TextField
               className={style.formInput}
-              label="Email"
+              label={t('signUpForm.email')}
               variant="outlined"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
@@ -112,7 +114,7 @@ const SignUpForm = () => {
             <TextField
               className={style.formInput}
               type={showPasswords ? 'text' : 'password'}
-              label="Password"
+              label={t('signUpForm.password')}
               variant="outlined"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
@@ -134,7 +136,7 @@ const SignUpForm = () => {
             <TextField
               className={style.formInput}
               type={showPasswords ? 'text' : 'password'}
-              label="Confirm password"
+              label={t('signUpForm.confirmPassword')}
               variant="outlined"
               value={confirmPassword}
               onChange={(event) => setConfirmPassword(event.target.value)}
@@ -146,7 +148,7 @@ const SignUpForm = () => {
             <TextField
               className={style.formInput}
               type="date"
-              label="Date of birth"
+              label={t('signUpForm.dateOfBirth')}
               variant="outlined"
               value={dateOfBirth}
               onChange={(event) => setDateOfBirth(event.target.value)}
@@ -165,12 +167,12 @@ const SignUpForm = () => {
                 <TextField
                   {...params}
                   variant="outlined"
-                  label="Country"
+                  label={t('signUpForm.country')}
                   error={!!validationErrors.country}
                   helperText={validationErrors.country}
                 />
               )}
-              noOptionsText="No matching country"
+              noOptionsText={t('signUpForm.noMatchingCountry')}
               value={country}
               onChange={(event, country) => handleCountryChange(country)}
             />
@@ -186,12 +188,12 @@ const SignUpForm = () => {
                   <TextField
                     {...params}
                     variant="outlined"
-                    label="Region"
+                    label={t('signUpForm.region')}
                     error={!!validationErrors.region}
                     helperText={validationErrors.region}
                   />
                 )}
-                noOptionsText="No matching region"
+                noOptionsText={t('signUpForm.noMatchingRegion')}
                 value={region}
                 onChange={(event, region) => setRegion(region)}
               />
@@ -213,7 +215,7 @@ const SignUpForm = () => {
                 loading
               }
             >
-              Sign up
+              {t('signUpForm.signUp')}
             </Button>
           </Grid>
         </Grid>

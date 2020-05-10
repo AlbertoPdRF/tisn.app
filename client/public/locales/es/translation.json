@@ -1,0 +1,42 @@
+{
+  "logInForm": {
+    "title": "Entrar",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "logIn": "Entrar",
+    "error": {
+      "wrongEmailAndOrPassword": "Correo electrónico y/o contraseña incorrectos",
+      "formContainsErrors": "El formulario contiene errores"
+    }
+  },
+  "signUpForm": {
+    "title": "Registrarse",
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "confirmPassword": "Confirmar contraseña",
+    "dateOfBirth": "Fecha de nacimiento",
+    "country": "País",
+    "noMatchingCountry": "Ningún país coincide",
+    "region": "Región",
+    "noMatchingRegion": "Ninguna región coincide",
+    "signUp": "Registrarse",
+    "error": {
+      "formContainsErrors": "El formulario contiene errores"
+    }
+  },
+  "welcome": {
+    "title": "La red social de los introvertidos",
+    "slogan": "¡Conoce gente mientras haces lo que te gusta!",
+    "overview": "Nunca ha sido tan fácil:",
+    "overviewInterestsTitle": "Selecciona tus intereses",
+    "overviewEventsTitle": "Busca eventos",
+    "overviewEventsSubheader": "¡Y crea los tuyos propios!",
+    "overviewPeopleTitle": "¡Conoce gente!"
+  },
+  "welcomeNavigationBar": {
+    "title": "Tisn",
+    "logIn": "Entrar",
+    "signUp": "Registrarse"
+  }
+}

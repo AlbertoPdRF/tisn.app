@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
+import LinearProgress from '@material-ui/core/LinearProgress';
 
 import { UserProvider } from '../UserProvider/UserProvider';
 import { NotificationsProvider } from '../NotificationsProvider/NotificationsProvider';
@@ -14,8 +15,10 @@ const App = () => {
       <UserProvider>
         <NotificationsProvider>
           <ConfirmProvider>
-            <CssBaseline />
-            <Navigation />
+            <Suspense fallback={<LinearProgress />}>
+              <CssBaseline />
+              <Navigation />
+            </Suspense>
           </ConfirmProvider>
         </NotificationsProvider>
       </UserProvider>

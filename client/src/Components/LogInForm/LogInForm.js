@@ -1,4 +1,5 @@
 import React, { useState, Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Box from '@material-ui/core/Box';
@@ -18,6 +19,7 @@ import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 import Style from '../Style/Style';
 
 const LogInForm = () => {
+  const { t } = useTranslation();
   const history = useHistory();
   const style = Style();
 
@@ -35,10 +37,10 @@ const LogInForm = () => {
     logIn({ email, password })
       .then((data) => {
         if (data.error) {
-          setError('Wrong email and/or password');
+          setError(t('logInForm.error.wrongEmailAndOrPassword'));
           setLoading(false);
         } else if (data.errors) {
-          setError('The form contains errors');
+          setError(t('logInForm.error.formContainsErrors'));
           setValidationErrors(buildValidationErrorsObject(data.errors));
           setLoading(false);
         } else {
@@ -58,12 +60,12 @@ const LogInForm = () => {
       <Box p={1}>
         <Grid container direction="column" alignItems="center" spacing={2}>
           <Grid item>
-            <Typography variant="h2">Log in</Typography>
+            <Typography variant="h2">{t('logInForm.title')}</Typography>
           </Grid>
           <Grid item>
             <TextField
               className={style.formInput}
-              label="Email"
+              label={t('logInForm.email')}
               variant="outlined"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
@@ -75,7 +77,7 @@ const LogInForm = () => {
             <TextField
               className={style.formInput}
               type={showPassword ? 'text' : 'password'}
-              label="Password"
+              label={t('logInForm.password')}
               variant="outlined"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
@@ -100,7 +102,7 @@ const LogInForm = () => {
               onClick={() => handleClick()}
               disabled={!email || !password || loading}
             >
-              Log in
+              {t('logInForm.logIn')}
             </Button>
           </Grid>
         </Grid>

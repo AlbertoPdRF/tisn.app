@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useTheme } from '@material-ui/core/styles';
 import useMediaQuery from '@material-ui/core/useMediaQuery';
@@ -10,6 +11,7 @@ import Button from '@material-ui/core/Button';
 import Style from '../Style/Style';
 
 const WelcomeNavigationBar = () => {
+  const { t } = useTranslation();
   const history = useHistory();
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down('xs'));
@@ -25,7 +27,7 @@ const WelcomeNavigationBar = () => {
           underline="none"
           href="/"
         >
-          Tisn
+          {t('welcomeNavigationBar.title')}
         </Link>
         <div className={style.grow} />
         <Button
@@ -36,7 +38,7 @@ const WelcomeNavigationBar = () => {
           color="inherit"
           onClick={() => history.push('/log-in')}
         >
-          Log in
+          {t('welcomeNavigationBar.logIn')}
         </Button>
         <Button
           edge="end"
@@ -46,7 +48,7 @@ const WelcomeNavigationBar = () => {
           color="inherit"
           onClick={() => history.push('/sign-up')}
         >
-          Sign up
+          {t('welcomeNavigationBar.signUp')}
         </Button>
       </Toolbar>
     </AppBar>

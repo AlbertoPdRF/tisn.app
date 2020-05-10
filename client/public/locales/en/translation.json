@@ -1,0 +1,42 @@
+{
+  "logInForm": {
+    "title": "Log in",
+    "email": "Email",
+    "password": "Password",
+    "logIn": "Log in",
+    "error": {
+      "wrongEmailAndOrPassword": "Wrong email and/or password",
+      "formContainsErrors": "The form contains errors"
+    }
+  },
+  "signUpForm": {
+    "title": "Sign up",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "confirmPassword": "Confirm password",
+    "dateOfBirth": "Date of birth",
+    "country": "Country",
+    "noMatchingCountry": "No matching country",
+    "region": "Region",
+    "noMatchingRegion": "No matching region",
+    "signUp": "Sign up",
+    "error": {
+      "formContainsErrors": "The form contains errors"
+    }
+  },
+  "welcome": {
+    "title": "The introverts' social network",
+    "slogan": "Meet people while doing what you enjoy!",
+    "overview": "It has never been easier:",
+    "overviewInterestsTitle": "Select your interests",
+    "overviewEventsTitle": "Browse events",
+    "overviewEventsSubheader": "And create your own!",
+    "overviewPeopleTitle": "Meet people!"
+  },
+  "welcomeNavigationBar": {
+    "title": "Tisn",
+    "logIn": "Log in",
+    "signUp": "Sign up"
+  }
+}

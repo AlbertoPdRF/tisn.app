@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Card from '@material-ui/core/Card';
@@ -14,6 +15,7 @@ import FacebookIcon from '@material-ui/icons/Facebook';
 import Style from '../Style/Style';
 
 const Welcome = () => {
+  const { t } = useTranslation();
   const style = Style();
 
   return (
@@ -21,17 +23,17 @@ const Welcome = () => {
       <Grid container direction="column" alignItems="center">
         <Grid item className={style.center}>
           <Typography variant="h5" component="h2">
-            The introverts' social network
+            {t('welcome.title')}
           </Typography>
         </Grid>
         <Grid item className={style.center}>
           <Typography gutterBottom variant="body1" color="primary">
-            Meet people while doing what you enjoy!
+            {t('welcome.slogan')}
           </Typography>
         </Grid>
         <Grid item className={style.center} style={{ marginTop: '16px' }}>
           <Typography gutterBottom variant="body1">
-            It has never been easier:
+            {t('welcome.overview')}
           </Typography>
         </Grid>
         <Grid item>
@@ -40,7 +42,7 @@ const Welcome = () => {
               <Card>
                 <CardHeader
                   avatar={<CategoryIcon />}
-                  title="Select your interests"
+                  title={t('welcome.overviewInterestsTitle')}
                   titleTypographyProps={{ variant: 'h6', component: 'h3' }}
                 />
               </Card>
@@ -49,9 +51,9 @@ const Welcome = () => {
               <Card>
                 <CardHeader
                   avatar={<DateRangeIcon />}
-                  title="Browse events"
+                  title={t('welcome.overviewEventsTitle')}
                   titleTypographyProps={{ variant: 'h6', component: 'h3' }}
-                  subheader="And create your own!"
+                  subheader={t('welcome.overviewEventsSubheader')}
                 />
               </Card>
             </Grid>
@@ -59,7 +61,7 @@ const Welcome = () => {
               <Card>
                 <CardHeader
                   avatar={<PeopleIcon />}
-                  title="Meet people!"
+                  title={t('welcome.overviewPeopleTitle')}
                   titleTypographyProps={{ variant: 'h6', component: 'h3' }}
                 />
               </Card>
