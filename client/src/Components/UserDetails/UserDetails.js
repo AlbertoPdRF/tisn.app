@@ -45,9 +45,9 @@ const UserDetails = (props) => {
     <Card elevation={0}>
       <CardContent>
         <Avatar
-          className={style.avatar}
           src={user.avatar}
           alt={`${user.avatar}'s avatar`}
+          style={{ height: '200px', width: '200px', margin: 'auto' }}
         >
           {user.name.charAt(0).toUpperCase()}
         </Avatar>

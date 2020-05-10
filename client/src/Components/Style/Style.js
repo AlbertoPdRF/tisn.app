@@ -81,11 +81,6 @@ const Style = makeStyles((theme) => ({
       width: '720px',
     },
   },
-  avatar: {
-    height: '200px',
-    width: '200px',
-    margin: 'auto',
-  },
   chip: {
     margin: theme.spacing(0.5),
   },

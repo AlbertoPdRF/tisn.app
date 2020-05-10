@@ -33,9 +33,9 @@ const UserForm = (props) => {
       <Grid container direction="column" alignItems="center" spacing={2}>
         <Grid item>
           <Avatar
-            className={style.avatar}
             src={avatar}
             alt={`${name}'s avatar`}
+            style={{ height: '200px', width: '200px', margin: 'auto' }}
           >
             {name.charAt(0).toUpperCase()}
           </Avatar>

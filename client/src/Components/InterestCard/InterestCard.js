@@ -23,11 +23,7 @@ const InterestCard = (props) => {
         underline="none"
       >
         <CardHeader
-          avatar={
-            <Avatar src={interest.avatar} alt={interest.name}>
-              {interest.name.charAt(0).toUpperCase()}
-            </Avatar>
-          }
+          avatar={<Avatar src={interest.avatar} alt={interest.name} />}
           title={interest.name}
         />
       </CardActionArea>

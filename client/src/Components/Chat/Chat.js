@@ -234,6 +234,7 @@ const Chat = ({ match }) => {
                 multiline
                 rowsMax={3}
                 className={`${style.fullWidth} ${style.center}`}
+                size="small"
                 variant="outlined"
                 placeholder="Write a message..."
                 value={content}

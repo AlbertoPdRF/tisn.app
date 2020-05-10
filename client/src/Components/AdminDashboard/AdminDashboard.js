@@ -9,9 +9,9 @@ const AdminDashboard = () => {
 
   return (
     <div className={style.root}>
-      <Grid container spacing={1} direction="column" className={style.grow}>
+      <Grid container direction="column" alignItems="center" spacing={2}>
         <Grid item className={style.center}>
-          <Typography variant="h1">Admin dashboard</Typography>
+          <Typography variant="h2">Admin dashboard</Typography>
         </Grid>
       </Grid>
     </div>
