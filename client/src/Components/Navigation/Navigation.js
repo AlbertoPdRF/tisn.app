@@ -1,7 +1,7 @@
 import React from 'react';
 import { Switch, Redirect } from 'react-router-dom';
 
-import { PublicRoute, PrivateRoute, AdminRoute } from '../Router/Router';
+import { PublicRoute, PrivateRoute, AdminRoute } from '../Routes/Routes';
 
 import Home from '../Home/Home';
 import Events from '../Events/Events';

@@ -10,7 +10,6 @@ import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
 
 import countries from 'country-region-data';
 
@@ -85,7 +84,7 @@ const SignUpForm = () => {
       <Box p={1}>
         <Grid container direction="column" alignItems="center" spacing={2}>
           <Grid item>
-            <Typography variant="h1">Sign up</Typography>
+            <Typography variant="h2">Sign up</Typography>
           </Grid>
           <Grid item>
             <TextField
@@ -216,11 +215,6 @@ const SignUpForm = () => {
             >
               Sign up
             </Button>
-          </Grid>
-          <Grid item>
-            <Link href="/log-in">Log in</Link>
-            {' | '}
-            <Link href="/">Home</Link>
           </Grid>
         </Grid>
       </Box>

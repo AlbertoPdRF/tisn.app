@@ -3,6 +3,7 @@ import { Route, Redirect } from 'react-router-dom';
 
 import { isLoggedIn, isAdmin } from '../../logic/auth';
 
+import WelcomeNavigationBar from '../WelcomeNavigationBar/WelcomeNavigationBar';
 import NavigationBarAndDrawer from '../NavigationBarAndDrawer/NavigationBarAndDrawer';
 
 export const PublicRoute = ({ component: Component, ...rest }) => {
@@ -11,7 +12,10 @@ export const PublicRoute = ({ component: Component, ...rest }) => {
       {...rest}
       render={(props) =>
         !isLoggedIn() ? (
-          <Component {...props} />
+          <Fragment>
+            <WelcomeNavigationBar />
+            <Component {...props} />
+          </Fragment>
         ) : (
           <Redirect to={{ pathname: '/' }} />
         )

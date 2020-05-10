@@ -9,7 +9,6 @@ import IconButton from '@material-ui/core/IconButton';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 import VisibilityOffIcon from '@material-ui/icons/VisibilityOff';
 import Button from '@material-ui/core/Button';
-import Link from '@material-ui/core/Link';
 
 import { buildValidationErrorsObject } from '../../logic/utils';
 import { logIn, setUserSession } from '../../logic/auth';
@@ -59,7 +58,7 @@ const LogInForm = () => {
       <Box p={1}>
         <Grid container direction="column" alignItems="center" spacing={2}>
           <Grid item>
-            <Typography variant="h1">Log in</Typography>
+            <Typography variant="h2">Log in</Typography>
           </Grid>
           <Grid item>
             <TextField
@@ -103,11 +102,6 @@ const LogInForm = () => {
             >
               Log in
             </Button>
-          </Grid>
-          <Grid item>
-            <Link href="/sign-up">Sign up</Link>
-            {' | '}
-            <Link href="/">Home</Link>
           </Grid>
         </Grid>
       </Box>

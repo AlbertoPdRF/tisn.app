@@ -16,9 +16,6 @@ const Style = makeStyles((theme) => ({
       margin: 'auto',
     },
   },
-  minHeight: {
-    minHeight: '100vh',
-  },
   grow: {
     flexGrow: 1,
   },
@@ -26,10 +23,10 @@ const Style = makeStyles((theme) => ({
     width: '100%',
   },
   fullHeight: {
-    [theme.breakpoints.down('sm')]: {
+    [theme.breakpoints.down('xs')]: {
       height: 'calc(100vh - 56px)',
     },
-    [theme.breakpoints.up('md')]: {
+    [theme.breakpoints.up('sm')]: {
       height: 'calc(100vh - 64px)',
     },
   },
@@ -98,6 +95,9 @@ const Style = makeStyles((theme) => ({
   buttonsStacked: {
     display: 'inline-block',
     width: '100px',
+  },
+  signUpButton: {
+    color: theme.palette.primary.main,
   },
   image: {
     [theme.breakpoints.down('sm')]: {
