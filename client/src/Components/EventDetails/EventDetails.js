@@ -40,9 +40,9 @@ const EventDetails = (props) => {
       const c = countries.filter(
         (country) => country.countryShortCode === event.country
       )[0];
-      setCountry(c.countryName);
+      setCountry(c);
       setRegion(
-        c.regions.filter((region) => region.shortCode === event.region)[0].name
+        c.regions.filter((region) => region.shortCode === event.region)[0]
       );
     }
   }, [event]);
@@ -65,7 +65,9 @@ const EventDetails = (props) => {
             {formatDateTimeRange(event.startDate, event.endDate)}
           </Typography>
           <Typography gutterBottom variant="body1">
-            {`${region}, ${country}`}
+            {`${region.name}, ${t(
+              `countriesList.${country.countryShortCode}`
+            )}`}
           </Typography>
           {futureEvent && (
             <Fragment>

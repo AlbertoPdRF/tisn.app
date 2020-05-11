@@ -36,9 +36,9 @@ const UserDetails = (props) => {
       const c = countries.filter(
         (country) => country.countryShortCode === user.country
       )[0];
-      setCountry(c.countryName);
+      setCountry(c);
       setRegion(
-        c.regions.filter((region) => region.shortCode === user.region)[0].name
+        c.regions.filter((region) => region.shortCode === user.region)[0]
       );
     }
   }, [user]);
@@ -112,7 +112,9 @@ const UserDetails = (props) => {
         <Typography variant="h5" component="h3">
           {user.name}
         </Typography>
-        <Typography variant="body1">{`${region}, ${country}`}</Typography>
+        <Typography variant="body1">
+          {`${region.name}, ${t(`countriesList.${country.countryShortCode}`)}`}
+        </Typography>
         <Typography gutterBottom variant="body1" color="textSecondary">
           {t('userDetails.joined', {
             userCreatedAt: formatDate(user.createdAt),

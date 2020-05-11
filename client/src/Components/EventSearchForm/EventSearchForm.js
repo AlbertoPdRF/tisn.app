@@ -52,8 +52,15 @@ const EventSearchForm = (props) => {
         <Grid item>
           <Autocomplete
             className={style.formInput}
-            options={countries}
-            getOptionLabel={(country) => country.countryName}
+            options={countries.sort(
+              (a, b) =>
+                -t(`countriesList.${b.countryShortCode}`).localeCompare(
+                  t(`countriesList.${a.countryShortCode}`)
+                )
+            )}
+            getOptionLabel={(country) =>
+              t(`countriesList.${country.countryShortCode}`)
+            }
             renderInput={(params) => (
               <TextField
                 {...params}

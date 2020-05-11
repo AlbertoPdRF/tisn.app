@@ -51,11 +51,10 @@ const Home = () => {
       const c = countries.filter(
         (country) => country.countryShortCode === user.country
       )[0];
-      setCountry(c.countryName);
-      const r = c.regions.filter(
-        (region) => region.shortCode === user.region
-      )[0];
-      setRegion(r.name);
+      setCountry(c);
+      setRegion(
+        c.regions.filter((region) => region.shortCode === user.region)[0]
+      );
     }
   }, [user]);
 
@@ -74,8 +73,8 @@ const Home = () => {
               <Grid item className={`${style.fullWidth} ${style.center}`}>
                 <Typography variant="body1">
                   {t('home.noRecommendations', {
-                    region,
-                    country,
+                    region: region.name,
+                    country: t(`countriesList.${country.countryShortCode}`),
                   })}
                 </Typography>
                 <Button
