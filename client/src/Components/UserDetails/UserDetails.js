@@ -140,8 +140,13 @@ const UserDetails = (props) => {
                 className={style.chip}
                 variant="outlined"
                 key={interest._id}
-                avatar={<Avatar src={interest.avatar} alt={interest.name} />}
-                label={interest.name}
+                avatar={
+                  <Avatar
+                    src={interest.avatar}
+                    alt={t(`interestsList.${interest.name}`)}
+                  />
+                }
+                label={t(`interestsList.${interest.name}`)}
                 clickable
                 onClick={() => history.push(`/events?interest=${interest._id}`)}
               />

@@ -119,8 +119,13 @@ const EventDetails = (props) => {
             className={style.chip}
             variant="outlined"
             key={interest._id}
-            avatar={<Avatar src={interest.avatar} alt={interest.name} />}
-            label={interest.name}
+            avatar={
+              <Avatar
+                src={interest.avatar}
+                alt={t(`interestsList.${interest.name}`)}
+              />
+            }
+            label={t(`interestsList.${interest.name}`)}
           />
         ))}
         {attendants && attendants.length > 0 && (

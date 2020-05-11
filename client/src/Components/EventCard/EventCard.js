@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -15,6 +16,7 @@ import Style from '../Style/Style';
 const EventCard = (props) => {
   const { event } = props;
 
+  const { t } = useTranslation();
   const style = Style();
 
   const decodedName = decodeText(event.name);
@@ -44,8 +46,8 @@ const EventCard = (props) => {
               <Avatar
                 key={interest._id}
                 src={interest.avatar}
-                alt={interest.name}
-                title={interest.name}
+                alt={t(`interestsList.${interest.name}`)}
+                title={t(`interestsList.${interest.name}`)}
               />
             ))}
           </AvatarGroup>

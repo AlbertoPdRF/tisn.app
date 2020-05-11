@@ -25,8 +25,13 @@ const InterestCard = (props) => {
         underline="none"
       >
         <CardHeader
-          avatar={<Avatar src={interest.avatar} alt={interest.name} />}
-          title={interest.name}
+          avatar={
+            <Avatar
+              src={interest.avatar}
+              alt={t(`interestsList.${interest.name}`)}
+            />
+          }
+          title={t(`interestsList.${interest.name}`)}
         />
       </CardActionArea>
       <CardActions className={style.interestCardActions}>

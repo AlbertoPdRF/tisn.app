@@ -37,8 +37,8 @@ const UserCard = (props) => {
                 <Avatar
                   key={interest._id}
                   src={interest.avatar}
-                  alt={interest.name}
-                  title={interest.name}
+                  alt={t(`interestsList.${interest.name}`)}
+                  title={t(`interestsList.${interest.name}`)}
                 />
               ))}
             </AvatarGroup>

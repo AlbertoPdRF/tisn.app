@@ -26,11 +26,21 @@ const InterestsSelect = (props) => {
       multiple
       disableClearable
       filterSelectedOptions
-      options={allInterests.sort(
-        (a, b) => -b.category.name.localeCompare(a.category.name)
-      )}
-      groupBy={(interest) => interest.category.name}
-      getOptionLabel={(interest) => interest.name}
+      options={allInterests
+        .sort(
+          (a, b) =>
+            -t(`interestsList.${b.name}`).localeCompare(
+              t(`interestsList.${a.name}`)
+            )
+        )
+        .sort(
+          (a, b) =>
+            -t(`categoriesList.${b.category.name}`).localeCompare(
+              t(`categoriesList.${a.category.name}`)
+            )
+        )}
+      groupBy={(interest) => t(`categoriesList.${interest.category.name}`)}
+      getOptionLabel={(interest) => t(`interestsList.${interest.name}`)}
       renderInput={(params) => (
         <TextField
           {...params}
@@ -63,8 +73,13 @@ const InterestsSelect = (props) => {
           <Chip
             className={style.chip}
             variant="outlined"
-            avatar={<Avatar src={interest.avatar} alt={interest.name} />}
-            label={interest.name}
+            avatar={
+              <Avatar
+                src={interest.avatar}
+                alt={t(`interestsList.${interest.name}`)}
+              />
+            }
+            label={t(`interestsList.${interest.name}`)}
             {...getTagProps({ index })}
           />
         ))

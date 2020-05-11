@@ -127,29 +127,43 @@ const Interests = () => {
           <Grid item>
             {user &&
               interests &&
-              interests.map((interestsGroup) => (
-                <ExpansionPanel key={interestsGroup.category._id}>
-                  <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    {interestsGroup.category.name}
-                  </ExpansionPanelSummary>
-                  <ExpansionPanelDetails>
-                    <Grid container justify="center" spacing={2}>
-                      {interestsGroup.interests.map((interest) => (
-                        <Grid item key={interest._id} md={4} sm={6} xs={12}>
-                          <InterestCard
-                            interest={interest}
-                            userInterested={user.interests.some(
-                              (userInterest) =>
-                                userInterest._id === interest._id
-                            )}
-                            handleClick={handleClick}
-                          />
-                        </Grid>
-                      ))}
-                    </Grid>
-                  </ExpansionPanelDetails>
-                </ExpansionPanel>
-              ))}
+              interests
+                .sort(
+                  (a, b) =>
+                    -t(`categoriesList.${b.category.name}`).localeCompare(
+                      t(`categoriesList.${a.category.name}`)
+                    )
+                )
+                .map((interestsGroup) => (
+                  <ExpansionPanel key={interestsGroup.category._id}>
+                    <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
+                      {t(`categoriesList.${interestsGroup.category.name}`)}
+                    </ExpansionPanelSummary>
+                    <ExpansionPanelDetails>
+                      <Grid container justify="center" spacing={2}>
+                        {interestsGroup.interests
+                          .sort(
+                            (a, b) =>
+                              -t(`interestsList.${b.name}`).localeCompare(
+                                t(`interestsList.${a.name}`)
+                              )
+                          )
+                          .map((interest) => (
+                            <Grid item key={interest._id} md={4} sm={6} xs={12}>
+                              <InterestCard
+                                interest={interest}
+                                userInterested={user.interests.some(
+                                  (userInterest) =>
+                                    userInterest._id === interest._id
+                                )}
+                                handleClick={handleClick}
+                              />
+                            </Grid>
+                          ))}
+                      </Grid>
+                    </ExpansionPanelDetails>
+                  </ExpansionPanel>
+                ))}
           </Grid>
         </Grid>
       </div>
