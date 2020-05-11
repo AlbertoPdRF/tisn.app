@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -27,6 +28,7 @@ import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 import Style from '../Style/Style';
 
 const UserEvents = () => {
+  const { t } = useTranslation();
   const history = useHistory();
   const style = Style();
   const user = useUser();
@@ -83,7 +85,7 @@ const UserEvents = () => {
   const expansionPanel = (defaultExpanded, status, type, events) => (
     <ExpansionPanel defaultExpanded={defaultExpanded}>
       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-        {status === 'current' ? 'Current' : 'Past'}
+        {status === 'current' ? t('userEvents.current') : t('userEvents.past')}
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
         {events.length > 0 ? (
@@ -95,7 +97,13 @@ const UserEvents = () => {
         ) : (
           <div className={`${style.fullWidth} ${style.center}`}>
             <Typography gutterBottom variant="body1">
-              You have no {status} {type} events.
+              {status === 'current'
+                ? type === 'attending'
+                  ? t('userEvents.noCurrentAttending')
+                  : t('userEvents.noCurrentCreated')
+                : type === 'attending'
+                ? t('userEvents.noPastAttending')
+                : t('userEvents.noPastCreated')}
             </Typography>
             <Button
               variant="contained"
@@ -104,7 +112,9 @@ const UserEvents = () => {
                 history.push(`/events${type === 'attending' ? '' : '/new'}`)
               }
             >
-              {type === 'attending' ? 'Browse events!' : 'Create a new event!'}
+              {type === 'attending'
+                ? t('userEvents.browse')
+                : t('userEvents.create')}
             </Button>
           </div>
         )}
@@ -118,7 +128,7 @@ const UserEvents = () => {
       <div className={style.root}>
         <Grid container direction="column" alignItems="center" spacing={2}>
           <Grid item>
-            <Typography variant="h2">My events</Typography>
+            <Typography variant="h2">{t('userEvents.title')}</Typography>
           </Grid>
           <Grid item style={{ maxWidth: '100vw' }}>
             <Paper>
@@ -130,8 +140,8 @@ const UserEvents = () => {
                   textColor="primary"
                   variant="fullWidth"
                 >
-                  <Tab label="Attending" />
-                  <Tab label="Created" />
+                  <Tab label={t('userEvents.attending')} />
+                  <Tab label={t('userEvents.created')} />
                 </Tabs>
               </AppBar>
               {user && (

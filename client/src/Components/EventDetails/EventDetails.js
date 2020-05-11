@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory, Link } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
@@ -27,6 +28,7 @@ const EventDetails = (props) => {
     limitMet,
   } = props;
 
+  const { t } = useTranslation();
   const history = useHistory();
   const style = Style();
 
@@ -73,11 +75,15 @@ const EventDetails = (props) => {
                   color={userAttending ? 'secondary' : 'primary'}
                   onClick={() => handleClick()}
                 >
-                  {userAttending ? "I won't attend" : 'I will attend!'}
+                  {userAttending
+                    ? t('eventDetails.notAttend')
+                    : t('eventDetails.attend')}
                 </Button>
               )}
               <Typography gutterBottom variant="body1">
-                Attendants limit: {event.attendantsLimit}
+                {t('eventDetails.attendantsLimit', {
+                  attendantsLimit: event.attendantsLimit,
+                })}
               </Typography>
               {restrictedDisplay && (
                 <Button
@@ -85,7 +91,7 @@ const EventDetails = (props) => {
                   color="primary"
                   onClick={() => history.push(`/events/${event._id}/edit`)}
                 >
-                  Edit
+                  {t('eventDetails.edit')}
                 </Button>
               )}
             </Fragment>
@@ -104,7 +110,7 @@ const EventDetails = (props) => {
           {decodeText(event.description)}
         </Typography>
         <Typography variant="h6" component="h4">
-          Related interests:
+          {t('eventDetails.relatedInterests')}
         </Typography>
         {event.relatedInterests.map((interest) => (
           <Chip
@@ -118,14 +124,14 @@ const EventDetails = (props) => {
         {attendants && attendants.length > 0 && (
           <Fragment>
             <Typography variant="h6" component="h4">
-              Attendants:
+              {t('eventDetails.attendants')}
             </Typography>
             <AvatarGroup max={event.attendantsLimit}>
               {attendants.map((attendant) => (
                 <Avatar
                   key={attendant.user._id}
                   src={attendant.user.avatar}
-                  alt={`${attendant.user.name}'s avatar`}
+                  alt={t('eventDetails.avatar', { name: attendant.user.name })}
                   title={attendant.user.name}
                   component={Link}
                   to={`/users/${attendant.user._id}`}

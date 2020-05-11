@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -18,6 +19,7 @@ import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 import Style from '../Style/Style';
 
 const Events = () => {
+  const { t } = useTranslation();
   const style = Style();
   const user = useUser();
 
@@ -76,7 +78,7 @@ const Events = () => {
       getEvents(query)
         .then((data) => {
           if (data.errors) {
-            setError('The form contains errors');
+            setError(t('events.error.formErrors'));
             setValidationErrors(buildValidationErrorsObject(data.errors));
           } else {
             setEvents(data.events);
@@ -88,7 +90,7 @@ const Events = () => {
           setLoading(false);
         });
     }
-  }, [updateEvents, query]);
+  }, [updateEvents, query, t]);
 
   useEffect(() => {
     setError(null);
@@ -161,7 +163,7 @@ const Events = () => {
       <div className={style.root}>
         <Grid container justify="center" spacing={2}>
           <Grid item className={`${style.fullWidth} ${style.center}`}>
-            <Typography variant="h2">Events</Typography>
+            <Typography variant="h2">{t('events.title')}</Typography>
           </Grid>
           <Grid item className={`${style.fullWidth} ${style.center}`}>
             <EventSearchForm
@@ -192,7 +194,7 @@ const Events = () => {
             : !loading && (
                 <Grid item className={`${style.fullWidth} ${style.center}`}>
                   <Typography variant="body1">
-                    There are no events matching this filter
+                    {t('events.noEvents')}
                   </Typography>
                 </Grid>
               )}

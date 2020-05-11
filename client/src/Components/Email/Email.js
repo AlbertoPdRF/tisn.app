@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
@@ -23,6 +24,7 @@ import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 import Style from '../Style/Style';
 
 const Email = ({ match }) => {
+  const { t } = useTranslation();
   const history = useHistory();
   const style = Style();
   const user = useUser();
@@ -44,7 +46,7 @@ const Email = ({ match }) => {
       getUsersEmail(location)
         .then((data) => {
           if (data.errors) {
-            setError('Something went wrong');
+            setError(t('email.error.generic'));
           } else {
             if (location.pathname.endsWith('send-email-confirmation-email')) {
               setEmailSent(true);
@@ -63,7 +65,7 @@ const Email = ({ match }) => {
                   putNotification(user._id, notification._id, notification)
                     .then((data) => {
                       if (data.errors) {
-                        setError('Something went wrong');
+                        setError(t('email.error.generic'));
                       }
 
                       if (index === emailNotifications.length - 1) {
@@ -79,7 +81,7 @@ const Email = ({ match }) => {
         .catch((error) => setError(error))
         .finally(() => setLoading(false));
     }
-  }, [user, id, notifications]);
+  }, [user, id, notifications, t]);
 
   useEffect(() => {
     if (updateNotifications) {
@@ -103,8 +105,8 @@ const Email = ({ match }) => {
             <Grid item>
               <Typography gutterBottom variant="body1">
                 {emailConfirmed
-                  ? `Your email ${user.email} has been confirmed!`
-                  : `A confirmation email has been sent to ${user.email}`}
+                  ? t('email.confirmed', { email: user.email })
+                  : t('email.confirmation', { email: user.email })}
               </Typography>
             </Grid>
             <Grid item>
@@ -113,7 +115,7 @@ const Email = ({ match }) => {
                 color="primary"
                 onClick={() => history.push('/')}
               >
-                Take me home
+                {t('email.home')}
               </Button>
             </Grid>
           </Grid>

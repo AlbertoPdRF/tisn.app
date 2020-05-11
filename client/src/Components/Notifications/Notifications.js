@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import AddIcon from '@material-ui/icons/Add';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
@@ -26,6 +27,7 @@ import { useNotifications } from '../NotificationsProvider/NotificationsProvider
 import Style from '../Style/Style';
 
 const Notifications = () => {
+  const { t } = useTranslation();
   const style = Style();
   const notifications = useNotifications();
 
@@ -92,14 +94,14 @@ const Notifications = () => {
         <div className={style.root}>
           <Grid container direction="column" alignItems="center" spacing={2}>
             <Grid item>
-              <Typography variant="h2">Notifications</Typography>
+              <Typography variant="h2">{t('notifications.title')}</Typography>
             </Grid>
             <Grid item>
               {regularNotifications && regularNotifications.length > 0 ? (
                 notificationsGrid(regularNotifications)
               ) : (
                 <Typography variant="body1">
-                  You have no new notifications!
+                  {t('notifications.noNew')}
                 </Typography>
               )}
             </Grid>
@@ -107,7 +109,7 @@ const Notifications = () => {
               <Grid item>
                 <ExpansionPanel>
                   <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                    Read
+                    {t('notifications.read')}
                   </ExpansionPanelSummary>
                   <ExpansionPanelDetails>
                     {notificationsGrid(regularReadNotifications)}

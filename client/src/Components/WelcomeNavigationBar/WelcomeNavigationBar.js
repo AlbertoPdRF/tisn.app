@@ -27,7 +27,7 @@ const WelcomeNavigationBar = () => {
           underline="none"
           href="/"
         >
-          {t('welcomeNavigationBar.title')}
+          Tisn
         </Link>
         <div className={style.grow} />
         <Button

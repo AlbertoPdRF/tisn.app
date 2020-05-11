@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
@@ -17,6 +18,7 @@ import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 import Style from '../Style/Style';
 
 const Home = () => {
+  const { t } = useTranslation();
   const history = useHistory();
   const style = Style();
   const user = useUser();
@@ -71,7 +73,10 @@ const Home = () => {
               ))}
               <Grid item className={`${style.fullWidth} ${style.center}`}>
                 <Typography variant="body1">
-                  {`We have no more event recommendations for you in ${region}, ${country} right now, please check back later or`}
+                  {t('home.noRecommendations', {
+                    region,
+                    country,
+                  })}
                 </Typography>
                 <Button
                   className={style.buttons}
@@ -79,7 +84,7 @@ const Home = () => {
                   color="primary"
                   onClick={() => history.push('/events')}
                 >
-                  Browse all events
+                  {t('home.browse')}
                 </Button>
                 <Button
                   className={style.buttons}
@@ -87,7 +92,7 @@ const Home = () => {
                   color="primary"
                   onClick={() => history.push('/interests')}
                 >
-                  Adjust your interests
+                  {t('home.interests')}
                 </Button>
               </Grid>
             </Fragment>

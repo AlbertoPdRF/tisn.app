@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -12,6 +13,7 @@ import Style from '../Style/Style';
 const InterestCard = (props) => {
   const { interest, userInterested, handleClick } = props;
 
+  const { t } = useTranslation();
   const style = Style();
 
   return (
@@ -33,7 +35,7 @@ const InterestCard = (props) => {
           color={userInterested ? 'secondary' : 'primary'}
           onClick={() => handleClick(interest, userInterested)}
         >
-          {userInterested ? 'Remove' : 'Add'}
+          {userInterested ? t('interestsCard.remove') : t('interestsCard.add')}
         </Button>
       </CardActions>
     </Card>

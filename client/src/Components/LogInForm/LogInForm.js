@@ -40,7 +40,7 @@ const LogInForm = () => {
           setError(t('logInForm.error.wrongEmailAndOrPassword'));
           setLoading(false);
         } else if (data.errors) {
-          setError(t('logInForm.error.formContainsErrors'));
+          setError(t('logInForm.error.formErrors'));
           setValidationErrors(buildValidationErrorsObject(data.errors));
           setLoading(false);
         } else {

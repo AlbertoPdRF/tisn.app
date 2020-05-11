@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import Grid from '@material-ui/core/Grid';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
@@ -22,6 +23,7 @@ const Friendships = (props) => {
     acceptedFriendships,
   } = props;
 
+  const { t } = useTranslation();
   const history = useHistory();
   const style = Style();
 
@@ -41,7 +43,7 @@ const Friendships = (props) => {
             <Grid item className={style.fullWidth}>
               <ExpansionPanel>
                 <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                  Pending
+                  {t('friendships.pending')}
                 </ExpansionPanelSummary>
                 <ExpansionPanelDetails>
                   <FriendshipsTable
@@ -69,9 +71,9 @@ const Friendships = (props) => {
           <Grid item>
             <div className={`${style.fullWidth} ${style.center}`}>
               <Typography gutterBottom={userIsCurrentUser} variant="body1">
-                {`${
-                  userIsCurrentUser ? 'You have' : `${user.name} has`
-                } no friendships.`}
+                {userIsCurrentUser
+                  ? t('friendships.haveNoFriendships')
+                  : t('friendships.hasNoFriendships', { name: user.name })}
               </Typography>
               {userIsCurrentUser && (
                 <Button
@@ -79,7 +81,7 @@ const Friendships = (props) => {
                   color="primary"
                   onClick={() => history.push('/users')}
                 >
-                  Browse users!
+                  {t('friendships.browse')}
                 </Button>
               )}
             </div>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography';
@@ -40,6 +41,7 @@ import EventCard from '../EventCard/EventCard';
 import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 
 const EventSteps = ({ match }) => {
+  const { t } = useTranslation();
   const history = useHistory();
   const user = useUser();
   const notifications = useNotifications();
@@ -159,7 +161,7 @@ const EventSteps = ({ match }) => {
           putNotification(user._id, notification._id, notification)
             .then((data) => {
               if (data.errors) {
-                setError('Something went wrong');
+                setError(t('eventSteps.generic'));
               }
 
               if (index === eventNotifications.length - 1) {
@@ -170,7 +172,7 @@ const EventSteps = ({ match }) => {
         });
       }
     }
-  }, [user, notifications]);
+  }, [user, notifications, t]);
 
   useEffect(() => {
     if (updateNotifications) {
@@ -204,7 +206,11 @@ const EventSteps = ({ match }) => {
     }
   }, [validationErrors]);
 
-  const steps = ['Details', 'Interests', 'Preview'];
+  const steps = [
+    t('eventSteps.details'),
+    t('eventSteps.interests'),
+    t('eventSteps.preview'),
+  ];
 
   const getStepContent = (step) => {
     switch (step) {
@@ -255,7 +261,7 @@ const EventSteps = ({ match }) => {
           />
         );
       default:
-        return 'Unknown step';
+        return t('eventSteps.unknownStep');
     }
   };
 
@@ -396,7 +402,7 @@ const EventSteps = ({ match }) => {
     })
       .then((data) => {
         if (data.errors) {
-          setError('The form contains errors');
+          setError(t('eventSteps.formErrors'));
           setValidationErrors(buildValidationErrorsObject(data.errors));
           setLoading(false);
         } else {
@@ -427,7 +433,7 @@ const EventSteps = ({ match }) => {
     })
       .then((data) => {
         if (data.errors) {
-          setError('The form contains errors');
+          setError(t('eventSteps.formErrors'));
           setValidationErrors(buildValidationErrorsObject(data.errors));
           setLoading(false);
         } else {
@@ -444,7 +450,7 @@ const EventSteps = ({ match }) => {
     <Fragment>
       {loading && <LinearProgress />}
       <Typography className={style.center} variant="h2">
-        {`${id ? 'Edit' : 'New'} event`}
+        {id ? t('eventSteps.editTitle') : t('eventSteps.createTitle')}
       </Typography>
       <Stepper
         className={`${style.root} ${style.fullWidth}`}
@@ -478,7 +484,7 @@ const EventSteps = ({ match }) => {
                 }
                 disabled={loading}
               >
-                Cancel
+                {t('eventSteps.cancel')}
               </Button>
               {!!activeStep && (
                 <Button
@@ -487,7 +493,7 @@ const EventSteps = ({ match }) => {
                   color="primary"
                   onClick={() => handleBackClick()}
                 >
-                  Back
+                  {t('eventSteps.back')}
                 </Button>
               )}
               <Button
@@ -503,7 +509,11 @@ const EventSteps = ({ match }) => {
                 }}
                 disabled={isNextOrCreateDisabled()}
               >
-                {lastStep ? (id ? 'Save' : 'Create') : 'Next'}
+                {lastStep
+                  ? id
+                    ? t('eventSteps.save')
+                    : t('eventSteps.create')
+                  : t('eventSteps.next')}
               </Button>
             </Grid>
           </Grid>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -23,6 +24,7 @@ const UserDetails = (props) => {
     restrictedDisplay,
   } = props;
 
+  const { t } = useTranslation();
   const history = useHistory();
   const style = Style();
 
@@ -46,7 +48,7 @@ const UserDetails = (props) => {
       <CardContent>
         <Avatar
           src={user.avatar}
-          alt={`${user.avatar}'s avatar`}
+          alt={t('userDetails.avatar', { name: user.name })}
           style={{ height: '200px', width: '200px', margin: 'auto' }}
         >
           {user.name.charAt(0).toUpperCase()}
@@ -67,7 +69,7 @@ const UserDetails = (props) => {
                     handleFriendshipClick(currentUserFriendship, true)
                   }
                 >
-                  Accept
+                  {t('userDetails.accept')}
                 </Button>
                 <Button
                   className={style.alignRight}
@@ -76,7 +78,7 @@ const UserDetails = (props) => {
                   color="secondary"
                   onClick={() => handleFriendshipClick(currentUserFriendship)}
                 >
-                  Reject
+                  {t('userDetails.reject')}
                 </Button>
               </Fragment>
             ))}
@@ -92,7 +94,7 @@ const UserDetails = (props) => {
                   history.push(`/chats/${currentUserFriendship._id}`)
                 }
               >
-                Chat
+                {t('userDetails.chat')}
               </Button>
             )}
           {restrictedDisplay && (
@@ -103,7 +105,7 @@ const UserDetails = (props) => {
               color="primary"
               onClick={() => history.push(`/users/${user._id}/edit`)}
             >
-              Edit
+              {t('userDetails.edit')}
             </Button>
           )}
         </div>
@@ -112,7 +114,9 @@ const UserDetails = (props) => {
         </Typography>
         <Typography variant="body1">{`${region}, ${country}`}</Typography>
         <Typography gutterBottom variant="body1" color="textSecondary">
-          {`Joined on ${formatDate(user.createdAt)}`}
+          {t('userDetails.joined', {
+            userCreatedAt: formatDate(user.createdAt),
+          })}
         </Typography>
         {restrictedDisplay && (
           <Fragment>
@@ -127,7 +131,7 @@ const UserDetails = (props) => {
         {(userIsCurrentUser || user.interests.length > 0) && (
           <Fragment>
             <Typography variant="h6" component="h4">
-              Interests:
+              {t('userDetails.interests')}
             </Typography>
             {user.interests.map((interest) => (
               <Chip
@@ -145,7 +149,7 @@ const UserDetails = (props) => {
                 className={style.chip}
                 variant="outlined"
                 color="primary"
-                label="Manage"
+                label={t('userDetails.manage')}
                 clickable
                 onClick={() =>
                   history.push(`/users/${user._id}/edit/interests`)

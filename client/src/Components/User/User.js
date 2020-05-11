@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 import Button from '@material-ui/core/Button';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
@@ -37,6 +38,7 @@ import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 import Style from '../Style/Style';
 
 const User = ({ match }) => {
+  const { t } = useTranslation();
   const style = Style();
   const currentUser = useUser();
   const notifications = useNotifications();
@@ -137,7 +139,7 @@ const User = ({ match }) => {
           putNotification(currentUser._id, notification._id, notification)
             .then((data) => {
               if (data.errors) {
-                setError('Something went wrong');
+                setError(t('user.error.generic'));
               }
 
               if (index === friendshipNotifications.length - 1) {
@@ -148,7 +150,7 @@ const User = ({ match }) => {
         });
       }
     }
-  }, [currentUser, userIsCurrentUser, value, notifications]);
+  }, [currentUser, userIsCurrentUser, value, notifications, t]);
 
   useEffect(() => {
     if (updateNotifications) {
@@ -177,13 +179,16 @@ const User = ({ match }) => {
           });
       } else {
         confirm({
-          description:
-            'A new friendship request will have to be sent if you want to become friends!',
-          confirmationText: friendship.accepted ? 'Unfriend' : 'Delete',
+          title: t('user.confirm.title'),
+          description: t('user.confirm.description'),
+          confirmationText: friendship.accepted
+            ? t('user.confirm.unfriendConfirmationText')
+            : t('user.confirm.deleteConfirmationText'),
           confirmationButtonProps: {
             variant: 'contained',
             color: 'secondary',
           },
+          cancellationText: t('user.confirm.cancellationText'),
           cancellationButtonProps: {
             variant: 'contained',
             color: 'primary',
@@ -230,19 +235,19 @@ const User = ({ match }) => {
     if (friendship) {
       if (friendship.accepted) {
         if (friendshipButtonHover) {
-          text = 'Unfriend';
+          text = t('user.unfriend');
         } else {
-          text = 'Friends';
+          text = t('user.friends');
         }
       } else {
         if (friendshipButtonHover) {
-          text = 'Delete';
+          text = t('user.delete');
         } else {
-          text = 'Pending';
+          text = t('user.pending');
         }
       }
     } else {
-      text = 'Befriend';
+      text = t('user.befriend');
     }
 
     return (
@@ -268,7 +273,9 @@ const User = ({ match }) => {
           <Grid container direction="column" alignItems="center" spacing={2}>
             <Grid item>
               <Typography variant="h2">
-                {userIsCurrentUser ? 'My profile' : 'Profile'}
+                {userIsCurrentUser
+                  ? t('user.myProfileTitle')
+                  : t('user.profileTitle')}
               </Typography>
             </Grid>
             <Grid item className={style.fullWidth}>
@@ -281,8 +288,8 @@ const User = ({ match }) => {
                     textColor="primary"
                     variant="fullWidth"
                   >
-                    <Tab label="Details" />
-                    <Tab label="Friendships" />
+                    <Tab label={t('user.details')} />
+                    <Tab label={t('user.friendships')} />
                   </Tabs>
                 </AppBar>
                 <SwipeableViews

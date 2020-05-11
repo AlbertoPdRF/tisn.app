@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -41,6 +42,7 @@ import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 import Style from '../Style/Style';
 
 const Event = ({ match }) => {
+  const { t } = useTranslation();
   const style = Style();
   const user = useUser();
   const notifications = useNotifications();
@@ -122,7 +124,7 @@ const Event = ({ match }) => {
           putNotification(user._id, notification._id, notification)
             .then((data) => {
               if (data.errors) {
-                setError('Something went wrong');
+                setError(t('event.error.generic'));
               }
 
               if (index === notifications.length - 1) {
@@ -140,7 +142,7 @@ const Event = ({ match }) => {
         markNotificationsAsRead(commentNotifications);
       }
     }
-  }, [user, id, value, notifications]);
+  }, [user, id, value, notifications, t]);
 
   useEffect(() => {
     if (updateNotifications) {
@@ -200,7 +202,7 @@ const Event = ({ match }) => {
     postComment(id, comment)
       .then((data) => {
         if (data.errors) {
-          setError('The form contains errors');
+          setError(t('event.error.formErrors'));
           setValidationErrors(buildValidationErrorsObject(data.errors));
           setLoading(false);
         } else {
@@ -246,8 +248,8 @@ const Event = ({ match }) => {
                     textColor="primary"
                     variant="fullWidth"
                   >
-                    <Tab label="Details" />
-                    <Tab label="Comments" />
+                    <Tab label={t('event.details')} />
+                    <Tab label={t('event.comments')} />
                   </Tabs>
                 </AppBar>
                 <SwipeableViews
@@ -294,7 +296,7 @@ const Event = ({ match }) => {
                     ) : (
                       <div className={style.center}>
                         <Typography gutterBottom variant="body1">
-                          Only attendants can read and post comments.
+                          {t('event.onlyAttendants')}
                         </Typography>
                         {futureEvent && !limitMet && (
                           <Button
@@ -302,7 +304,7 @@ const Event = ({ match }) => {
                             color="primary"
                             onClick={() => handleAttendantsClick()}
                           >
-                            I will attend!
+                            {t('event.attend')}
                           </Button>
                         )}
                       </div>

@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
@@ -29,6 +30,7 @@ const EventSearchForm = (props) => {
     loading,
   } = props;
 
+  const { t } = useTranslation();
   const style = Style();
 
   return (
@@ -38,7 +40,7 @@ const EventSearchForm = (props) => {
           <TextField
             className={style.formInput}
             type="date"
-            label="From date"
+            label={t('eventSearchForm.fromDate')}
             variant="outlined"
             value={fromDate}
             onChange={(event) => handleFromDateChange(event.target.value)}
@@ -56,12 +58,12 @@ const EventSearchForm = (props) => {
               <TextField
                 {...params}
                 variant="outlined"
-                label="Country"
+                label={t('eventSearchForm.country')}
                 error={!!validationErrors.country}
                 helperText={validationErrors.country}
               />
             )}
-            noOptionsText="No matching country"
+            noOptionsText={t('eventSearchForm.noMatchingCountry')}
             value={country}
             onChange={(event, country) => handleCountryChange(country)}
           />
@@ -76,12 +78,12 @@ const EventSearchForm = (props) => {
                 <TextField
                   {...params}
                   variant="outlined"
-                  label="Region"
+                  label={t('eventSearchForm.region')}
                   error={!!validationErrors.region}
                   helperText={validationErrors.region}
                 />
               )}
-              noOptionsText="No matching region"
+              noOptionsText={t('eventSearchForm.noMatchingRegion')}
               value={region}
               onChange={(event, region) => handleRegionChange(region)}
             />
@@ -90,7 +92,7 @@ const EventSearchForm = (props) => {
         <Grid item>
           <TextField
             className={style.formInput}
-            label="Name"
+            label={t('eventSearchForm.name')}
             variant="outlined"
             value={name}
             onChange={(event) => handleNameChange(event.target.value)}
@@ -115,7 +117,7 @@ const EventSearchForm = (props) => {
             onClick={() => handleSearchClick()}
             disabled={loading}
           >
-            Search
+            {t('eventSearchForm.search')}
           </Button>
         </Grid>
       </Grid>

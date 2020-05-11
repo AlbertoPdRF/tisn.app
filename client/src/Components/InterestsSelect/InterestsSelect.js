@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import TextField from '@material-ui/core/TextField';
 import Chip from '@material-ui/core/Chip';
@@ -16,6 +17,7 @@ const InterestsSelect = (props) => {
     validationErrors,
   } = props;
 
+  const { t } = useTranslation();
   const style = Style();
 
   return (
@@ -33,7 +35,7 @@ const InterestsSelect = (props) => {
         <TextField
           {...params}
           variant="outlined"
-          label="Interests"
+          label={t('interestsSelect.interests')}
           error={
             !!validationErrors.interests || !!validationErrors.relatedInterests
           }
@@ -44,13 +46,13 @@ const InterestsSelect = (props) => {
       )}
       noOptionsText={
         <Typography variant="body1">
-          {`No matching interest. `}
+          {`${t('interestsSelect.noMatchingInterest')}. `}
           <Link
             href="mailto:Tisn <support@tisn.app>"
             variant="body1"
             onMouseDown={(event) => event.preventDefault()}
           >
-            Ask us to add it!
+            {t('interestsSelect.askUs')}
           </Link>
         </Typography>
       }

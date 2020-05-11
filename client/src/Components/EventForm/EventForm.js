@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
@@ -31,6 +32,7 @@ const EventForm = (props) => {
     validationErrors,
   } = props;
 
+  const { t } = useTranslation();
   const style = Style();
 
   return (
@@ -38,7 +40,11 @@ const EventForm = (props) => {
       <Grid container direction="column" alignItems="center" spacing={2}>
         {coverPhoto && (
           <Grid item>
-            <img className={style.image} src={coverPhoto} alt="Event cover" />
+            <img
+              className={style.image}
+              src={coverPhoto}
+              alt={t('eventForm.cover')}
+            />
           </Grid>
         )}
         <Grid item>
@@ -46,7 +52,7 @@ const EventForm = (props) => {
             className={style.formInput}
             type="file"
             accept="image/*"
-            label="Cover photo"
+            label={t('eventForm.coverPhoto')}
             variant="outlined"
             onChange={(event) => handleUpload(event.target.files[0])}
             InputLabelProps={{ shrink: true }}
@@ -59,7 +65,7 @@ const EventForm = (props) => {
         <Grid item>
           <TextField
             className={style.formInput}
-            label="Name"
+            label={t('eventForm.name')}
             variant="outlined"
             value={name}
             onChange={(event) => handleNameChange(event.target.value)}
@@ -72,7 +78,7 @@ const EventForm = (props) => {
             className={style.formInput}
             multiline
             rows={5}
-            label="Description"
+            label={t('eventForm.description')}
             variant="outlined"
             value={description}
             onChange={(event) => handleDescriptionChange(event.target.value)}
@@ -84,7 +90,7 @@ const EventForm = (props) => {
           <TextField
             className={style.formInput}
             type="datetime-local"
-            label="Start date and time"
+            label={t('eventForm.startDate')}
             variant="outlined"
             value={startDate}
             onChange={(event) => handleStartDateChange(event.target.value)}
@@ -102,7 +108,7 @@ const EventForm = (props) => {
           <TextField
             className={style.formInput}
             type="datetime-local"
-            label="End date and time"
+            label={t('eventForm.endDate')}
             variant="outlined"
             value={endDate}
             onChange={(event) => handleEndDateChange(event.target.value)}
@@ -122,12 +128,12 @@ const EventForm = (props) => {
               <TextField
                 {...params}
                 variant="outlined"
-                label="Country"
+                label={t('eventForm.country')}
                 error={!!validationErrors.country}
                 helperText={validationErrors.country}
               />
             )}
-            noOptionsText="No matching country"
+            noOptionsText={t('eventForm.noMatchingCountry')}
             value={country}
             onChange={(event, country) => handleCountryChange(country)}
           />
@@ -143,12 +149,12 @@ const EventForm = (props) => {
                 <TextField
                   {...params}
                   variant="outlined"
-                  label="Region"
+                  label={t('eventForm.region')}
                   error={!!validationErrors.region}
                   helperText={validationErrors.region}
                 />
               )}
-              noOptionsText="No matching region"
+              noOptionsText={t('eventForm.noMatchingRegion')}
               value={region}
               onChange={(event, region) => handleRegionChange(region)}
             />
@@ -160,7 +166,7 @@ const EventForm = (props) => {
             type="number"
             min="2"
             step="1"
-            label="Attendants limit"
+            label={t('eventForm.attendantsLimit')}
             variant="outlined"
             value={attendantsLimit}
             onChange={(event) =>

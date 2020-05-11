@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import Slide from '@material-ui/core/Slide';
@@ -55,6 +56,8 @@ const HideOnScroll = (props) => {
 
 const NavigationBarAndDrawer = (props) => {
   const { container } = props;
+
+  const { t } = useTranslation();
   const history = useHistory();
   const style = Style();
 
@@ -120,7 +123,10 @@ const NavigationBarAndDrawer = (props) => {
           }}
         >
           <ListItemAvatar>
-            <Avatar src={user.avatar} alt={`${user.name}'s avatar`}>
+            <Avatar
+              src={user.avatar}
+              alt={t('navigationBarAndDrawer.avatar', { name: user.name })}
+            >
               {user.name.charAt(0).toUpperCase()}
             </Avatar>
           </ListItemAvatar>
@@ -137,7 +143,7 @@ const NavigationBarAndDrawer = (props) => {
           <ListItemIcon>
             <HomeIcon />
           </ListItemIcon>
-          <ListItemText primary="Home" />
+          <ListItemText primary={t('navigationBarAndDrawer.home')} />
         </ListItem>
         <Divider />
         <ListItem
@@ -150,7 +156,7 @@ const NavigationBarAndDrawer = (props) => {
           <ListItemIcon>
             <DateRangeIcon />
           </ListItemIcon>
-          <ListItemText primary="Events" />
+          <ListItemText primary={t('navigationBarAndDrawer.events')} />
         </ListItem>
         <ListItem
           button
@@ -162,7 +168,7 @@ const NavigationBarAndDrawer = (props) => {
           <ListItemIcon>
             <EventIcon />
           </ListItemIcon>
-          <ListItemText primary="My events" />
+          <ListItemText primary={t('navigationBarAndDrawer.myEvents')} />
         </ListItem>
         <ListItem
           button
@@ -174,7 +180,7 @@ const NavigationBarAndDrawer = (props) => {
           <ListItemIcon>
             <AddIcon />
           </ListItemIcon>
-          <ListItemText primary="New event" />
+          <ListItemText primary={t('navigationBarAndDrawer.createEvent')} />
         </ListItem>
         <Divider />
         <ListItem
@@ -187,7 +193,7 @@ const NavigationBarAndDrawer = (props) => {
           <ListItemIcon>
             <PeopleIcon />
           </ListItemIcon>
-          <ListItemText primary="Users" />
+          <ListItemText primary={t('navigationBarAndDrawer.users')} />
         </ListItem>
         <ListItem
           button
@@ -199,7 +205,7 @@ const NavigationBarAndDrawer = (props) => {
           <ListItemIcon>
             <PersonIcon />
           </ListItemIcon>
-          <ListItemText primary="My profile" />
+          <ListItemText primary={t('navigationBarAndDrawer.myProfile')} />
         </ListItem>
         <Divider />
         <ListItem
@@ -212,7 +218,7 @@ const NavigationBarAndDrawer = (props) => {
           <ListItemIcon>
             <CategoryIcon />
           </ListItemIcon>
-          <ListItemText primary="Interests" />
+          <ListItemText primary={t('navigationBarAndDrawer.interests')} />
         </ListItem>
         <Divider />
         <ListItem
@@ -225,7 +231,7 @@ const NavigationBarAndDrawer = (props) => {
           <ListItemIcon>
             <ExitToAppIcon />
           </ListItemIcon>
-          <ListItemText primary="Log out" />
+          <ListItemText primary={t('navigationBarAndDrawer.logOut')} />
         </ListItem>
       </List>
     </Fragment>

@@ -1,4 +1,5 @@
 import React, { useState, Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import CardActionArea from '@material-ui/core/CardActionArea';
 import CardHeader from '@material-ui/core/CardHeader';
@@ -20,6 +21,7 @@ import Style from '../Style/Style';
 const CommentCard = (props) => {
   const { commentsGroup, handleClick, validationErrors } = props;
 
+  const { t } = useTranslation();
   const style = Style();
 
   const [nestedDisplay, setNestedDisplay] = useState(
@@ -27,7 +29,9 @@ const CommentCard = (props) => {
   );
 
   const cardFragment = (comment) => {
-    const user = comment.user ? comment.user : { name: '[Deleted user]' };
+    const user = comment.user
+      ? comment.user
+      : { name: t('commentCard.deletedUser') };
 
     return (
       <Fragment>
@@ -40,7 +44,10 @@ const CommentCard = (props) => {
         >
           <CardHeader
             avatar={
-              <Avatar src={user.avatar} alt={`${user.name}'s avatar`}>
+              <Avatar
+                src={user.avatar}
+                alt={t('commentCard.avatar', { name: user.name })}
+              >
                 {user.name.charAt(0).toUpperCase()}
               </Avatar>
             }
@@ -102,7 +109,7 @@ const CommentCard = (props) => {
             color="primary"
             onClick={() => setNestedDisplay(true)}
           >
-            Reply
+            {t('commentCard.reply')}
           </Button>
         </CardActions>
       )}

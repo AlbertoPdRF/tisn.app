@@ -66,7 +66,7 @@ const SignUpForm = () => {
     })
       .then((data) => {
         if (data.errors) {
-          setError(t('signUpForm.error.formContainsErrors'));
+          setError(t('signUpForm.error.formErrors'));
           setValidationErrors(buildValidationErrorsObject(data.errors));
           setLoading(false);
         } else {

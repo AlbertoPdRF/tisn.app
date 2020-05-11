@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Typography from '@material-ui/core/Typography';
@@ -47,6 +48,7 @@ import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 import Style from '../Style/Style';
 
 const UserTabs = ({ match }) => {
+  const { t } = useTranslation();
   const history = useHistory();
   const style = Style();
   const currentUser = useUser();
@@ -159,7 +161,7 @@ const UserTabs = ({ match }) => {
           putNotification(currentUser._id, notification._id, notification)
             .then((data) => {
               if (data.errors) {
-                setError('Something went wrong');
+                setError(t('userTabs.error.generic'));
               }
 
               if (index === avatarNotifications.length - 1) {
@@ -170,7 +172,7 @@ const UserTabs = ({ match }) => {
         });
       }
     }
-  }, [currentUser, notifications]);
+  }, [currentUser, notifications, t]);
 
   useEffect(() => {
     if (updateNotifications) {
@@ -285,7 +287,7 @@ const UserTabs = ({ match }) => {
     })
       .then((data) => {
         if (data.errors) {
-          setError('The form contains errors');
+          setError(t('userTabs.error.formErrors'));
           setValidationErrors(buildValidationErrorsObject(data.errors));
           setLoading(false);
         } else {
@@ -332,7 +334,7 @@ const UserTabs = ({ match }) => {
       <div className={style.root}>
         <Grid container direction="column" alignItems="center" spacing={2}>
           <Grid item>
-            <Typography variant="h2">Edit profile</Typography>
+            <Typography variant="h2">{t('userTabs.title')}</Typography>
           </Grid>
           <Grid item>
             <Paper>
@@ -344,9 +346,9 @@ const UserTabs = ({ match }) => {
                   textColor="primary"
                   variant="fullWidth"
                 >
-                  <Tab label="Details" />
-                  <Tab label="Interests" />
-                  <Tab label="Settings" />
+                  <Tab label={t('userTabs.details')} />
+                  <Tab label={t('userTabs.interests')} />
+                  <Tab label={t('userTabs.settings')} />
                 </Tabs>
               </AppBar>
               {user && (
@@ -386,7 +388,7 @@ const UserTabs = ({ match }) => {
                   <TabPanel value={value} index={2}>
                     <ExpansionPanel className={style.formInput}>
                       <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                        Delete account
+                        {t('userTabs.deleteAccount')}
                       </ExpansionPanelSummary>
                       <ExpansionPanelDetails className={style.justifyCenter}>
                         <Button
@@ -394,13 +396,18 @@ const UserTabs = ({ match }) => {
                           color="secondary"
                           onClick={() => {
                             confirm({
-                              description:
-                                'Deleting your account is a permanent action!',
-                              confirmationText: 'Delete',
+                              title: t('userTabs.confirm.title'),
+                              description: t('userTabs.confirm.description'),
+                              confirmationText: t(
+                                'userTabs.confirm.confirmationText'
+                              ),
                               confirmationButtonProps: {
                                 variant: 'contained',
                                 color: 'secondary',
                               },
+                              cancellationText: t(
+                                'userTabs.confirm.cancellationText'
+                              ),
                               cancellationButtonProps: {
                                 variant: 'contained',
                                 color: 'primary',
@@ -408,7 +415,7 @@ const UserTabs = ({ match }) => {
                             }).then(() => handleDeleteClick());
                           }}
                         >
-                          Delete
+                          {t('userTabs.delete')}
                         </Button>
                       </ExpansionPanelDetails>
                     </ExpansionPanel>
@@ -424,7 +431,7 @@ const UserTabs = ({ match }) => {
               color="primary"
               onClick={() => history.push(`/users/${userId}`)}
             >
-              Cancel
+              {t('userTabs.cancel')}
             </Button>
             <Button
               className={style.buttons}
@@ -441,7 +448,7 @@ const UserTabs = ({ match }) => {
                 loading
               }
             >
-              Save
+              {t('userTabs.save')}
             </Button>
           </Grid>
         </Grid>

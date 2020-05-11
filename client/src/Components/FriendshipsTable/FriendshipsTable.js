@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -14,6 +15,7 @@ import Style from '../Style/Style';
 const FriendshipsTable = (props) => {
   const { friendships, displayActions, handleFriendshipClick } = props;
 
+  const { t } = useTranslation();
   const style = Style();
 
   return (
@@ -22,8 +24,12 @@ const FriendshipsTable = (props) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
-              {displayActions && <TableCell align="center">Actions</TableCell>}
+              <TableCell>{t('friendshipsTable.name')}</TableCell>
+              {displayActions && (
+                <TableCell align="center">
+                  {t('friendshipsTable.actions')}
+                </TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -45,7 +51,7 @@ const FriendshipsTable = (props) => {
                       color="primary"
                       onClick={() => handleFriendshipClick(friendship, true)}
                     >
-                      Accept
+                      {t('friendshipsTable.accept')}
                     </Button>
                     <Button
                       className={style.buttons}
@@ -53,7 +59,7 @@ const FriendshipsTable = (props) => {
                       color="secondary"
                       onClick={() => handleFriendshipClick(friendship)}
                     >
-                      Reject
+                      {t('friendshipsTable.reject')}
                     </Button>
                   </TableCell>
                 )}

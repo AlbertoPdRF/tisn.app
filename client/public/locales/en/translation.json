@@ -1,4 +1,156 @@
 {
+  "adminDashboard": {
+    "title": "Admin dashboard"
+  },
+  "chat": {
+    "avatar": "{{name}}'s avatar",
+    "message": "Write a message...",
+    "error": {
+      "generic": "Something went wrong",
+      "formErrors": "The form contains errors"
+    }
+  },
+  "chats": {
+    "avatar": "{{name}}'s avatar",
+    "lastMessage": "Last message at {{lastMessageAt}}",
+    "noMessages": "Friends since {{friendshipAcceptedAt}}",
+    "title": "Chats",
+    "noFriendships": "You have no friends",
+    "browseUsers": "Browse users!"
+  },
+  "commentCard": {
+    "deletedUser": "[Deleted user]",
+    "avatar": "{{name}}'s avatar",
+    "reply": "Reply"
+  },
+  "commentForm": {
+    "comment": "Write a comment...",
+    "post": "Post"
+  },
+  "email": {
+    "confirmed": "Your email {{email}} has been confirmed!",
+    "confirmation": "A confirmation email has been sent to {{email}}",
+    "home": "Take me home",
+    "error": {
+      "generic": "Something went wrong"
+    }
+  },
+  "errorSnackbar": {
+    "error": {
+      "generic": "Something went wrong"
+    }
+  },
+  "event": {
+    "details": "Details",
+    "comments": "Comments",
+    "onlyAttendants": "Only attendants can read and post comments",
+    "attend": "I will attend!",
+    "error": {
+      "generic": "Something went wrong",
+      "formErrors": "The form contains errors"
+    }
+  },
+  "eventDetails": {
+    "notAttend": "I won't attend",
+    "attend": "I will attend!",
+    "attendantsLimit": "Attendants limit: {{attendantsLimit}}",
+    "edit": "Edit",
+    "relatedInterests": "Related interests:",
+    "attendants": "Attendants:",
+    "avatar": "{{name}}'s avatar"
+  },
+  "eventForm": {
+    "cover": "Event cover",
+    "coverPhoto": "Cover photo",
+    "name": "Name",
+    "description": "Description",
+    "startDate": "Start date and time",
+    "endDate": "End date and time",
+    "country": "Country",
+    "noMatchingCountry": "No matching country",
+    "region": "Region",
+    "noMatchingRegion": "No matching region",
+    "attendantsLimit": "Attendants limit"
+  },
+  "events": {
+    "title": "Events",
+    "noEvents": "There are no events matching this filter",
+    "error": {
+      "formErrors": "The form contains errors"
+    }
+  },
+  "eventSearchForm": {
+    "fromDate": "From date",
+    "country": "Country",
+    "noMatchingCountry": "No matching country",
+    "region": "Region",
+    "noMatchingRegion": "No matching region",
+    "name": "Name",
+    "search": "Search"
+  },
+  "eventsTable": {
+    "name": "Name",
+    "startDate": "Start date",
+    "endDate": "End date",
+    "actions": "Actions",
+    "edit": "Edit",
+    "delete": "Delete",
+    "confirm": {
+      "title": "Are you sure?",
+      "description": "Deleting an event is a permanent action!",
+      "confirmationText": "Delete",
+      "cancellationText": "Cancel"
+    }
+  },
+  "eventSteps": {
+    "editTitle": "Edit event",
+    "createTitle": "Create event",
+    "details": "Details",
+    "interests": "Interests",
+    "preview": "Preview",
+    "cancel": "Cancel",
+    "back": "Back",
+    "save": "Save",
+    "create": "Create",
+    "next": "Next",
+    "error": {
+      "generic": "Something went wrong",
+      "unknownStep": "Unknown step",
+      "formErrors": "The form contains errors"
+    }
+  },
+  "friendships": {
+    "pending": "Pending requests",
+    "haveNoFriendships": "You have no friends",
+    "hasNoFriendships": "{{name}} has no friends",
+    "browse": "Browse users!"
+  },
+  "friendshipsTable": {
+    "name": "Name",
+    "actions": "Actions",
+    "accept": "Accept",
+    "reject": "Reject"
+  },
+  "home": {
+    "noRecommendations": "We have no more event recommendations for you in {{region}}, {{country}} right now, please check back later or",
+    "browse": "Browse all events",
+    "interests": "Adjust your interests"
+  },
+  "interestsCard": {
+    "remove": "Remove",
+    "add": "Add"
+  },
+  "interests": {
+    "title": "Interests",
+    "error": {
+      "generic": "Something went wrong"
+    }
+  },
+  "interestsSelect": {
+    "interests": "Interests",
+    "noMatchingInterest": "No matching interest",
+    "askUs": "Ask us to add it!"
+  },
   "logInForm": {
     "title": "Log in",
     "email": "Email",
@@ -6,8 +158,24 @@
     "logIn": "Log in",
     "error": {
       "wrongEmailAndOrPassword": "Wrong email and/or password",
-      "formContainsErrors": "The form contains errors"
+      "formErrors": "The form contains errors"
     }
+  },
+  "navigationBarAndDrawer": {
+    "avatar": "{{name}}'s avatar",
+    "home": "Home",
+    "events": "Events",
+    "myEvents": "My events",
+    "createEvent": "Create event",
+    "users": "Users",
+    "myProfile": "My profile",
+    "interests": "Interests",
+    "logOut": "Log out"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "noNew": "You have no new notifications",
+    "read": "Read"
   },
   "signUpForm": {
     "title": "Sign up",
@@ -22,7 +190,101 @@
     "noMatchingRegion": "No matching region",
     "signUp": "Sign up",
     "error": {
-      "formContainsErrors": "The form contains errors"
+      "formErrors": "The form contains errors"
+    }
+  },
+  "user": {
+    "myProfileTitle": "My profile",
+    "profileTitle": "Profile",
+    "unfriend": "Unfriend",
+    "friends": "Friends",
+    "delete": "Delete",
+    "pending": "Pending",
+    "befriend": "Befriend",
+    "details": "Details",
+    "friendships": "Friends",
+    "confirm": {
+      "title": "Are you sure?",
+      "description": "A new friendship request will have to be sent if you want to become friends!",
+      "unfriendConfirmationText": "Unfriend",
+      "deleteConfirmationText": "Delete",
+      "cancellationText": "Cancel"
+    },
+    "error": {
+      "generic": "Something went wrong"
+    }
+  },
+  "userCard": {
+    "avatar": "{{name}}'s avatar"
+  },
+  "userDetails": {
+    "avatar": "{{name}}'s avatar",
+    "accept": "Accept",
+    "reject": "Reject",
+    "chat": "Chat",
+    "edit": "Edit",
+    "joined": "Joined on {{userCreatedAt}}",
+    "interests": "Interests:",
+    "manage": "Manage"
+  },
+  "userEvents": {
+    "title": "My events",
+    "current": "Current",
+    "past": "Past",
+    "noCurrentAttending": "You have no current attending events",
+    "noPastAttending": "You have no past attending events",
+    "noCurrentCreated": "You have no current created events",
+    "noPastCreated": "You have no past created events",
+    "browse": "Browse events!",
+    "create": "Create a new event!",
+    "attending": "Attending",
+    "created": "Created"
+  },
+  "userForm": {
+    "avatarAlt": "{{name}}'s avatar",
+    "avatar": "Avatar",
+    "name": "Name",
+    "email": "Email",
+    "dateOfBirth": "Date of birth",
+    "country": "Country",
+    "noMatchingCountry": "No matching country",
+    "region": "Region",
+    "noMatchingRegion": "No matching region"
+  },
+  "users": {
+    "title": "Users",
+    "noUsers": "There are no users matching this filter",
+    "error": {
+      "formErrors": "The form contains errors"
+    }
+  },
+  "userSearchForm": {
+    "name": "Name",
+    "country": "Country",
+    "noMatchingCountry": "No matching country",
+    "region": "Region",
+    "noMatchingRegion": "No matching region",
+    "search": "Search"
+  },
+  "userTabs": {
+    "title": "Edit profile",
+    "details": "Details",
+    "interests": "Interests",
+    "settings": "Settings",
+    "deleteAccount": "Delete account",
+    "delete": "Delete",
+    "cancel": "Cancel",
+    "save": "Save",
+    "confirm": {
+      "title": "Are you sure?",
+      "description": "Deleting your account is a permanent action!",
+      "confirmationText": "Delete",
+      "cancellationText": "Cancel"
+    },
+    "error": {
+      "generic": "Something went wrong",
+      "unknownStep": "Unknown step",
+      "formErrors": "The form contains errors"
     }
   },
   "welcome": {
@@ -35,7 +297,6 @@
     "overviewPeopleTitle": "Meet people!"
   },
   "welcomeNavigationBar": {
-    "title": "Tisn",
     "logIn": "Log in",
     "signUp": "Sign up"
   }

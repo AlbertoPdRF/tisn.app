@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -12,6 +13,7 @@ import Style from '../Style/Style';
 const UserCard = (props) => {
   const { user } = props;
 
+  const { t } = useTranslation();
   const style = Style();
 
   return (
@@ -19,7 +21,10 @@ const UserCard = (props) => {
       <CardActionArea component={Link} to={`/users/${user._id}`}>
         <CardHeader
           avatar={
-            <Avatar src={user.avatar} alt={`${user.name}'s avatar`}>
+            <Avatar
+              src={user.avatar}
+              alt={t('userCard.avatar', { name: user.name })}
+            >
               {user.name.charAt(0).toUpperCase()}
             </Avatar>
           }

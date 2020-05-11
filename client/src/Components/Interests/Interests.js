@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -27,6 +28,7 @@ import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 import Style from '../Style/Style';
 
 const Interests = () => {
+  const { t } = useTranslation();
   const style = Style();
   const user = useUser();
   const setUser = useSetUser();
@@ -62,7 +64,7 @@ const Interests = () => {
           putNotification(user._id, notification._id, notification)
             .then((data) => {
               if (data.errors) {
-                setError('Something went wrong');
+                setError(t('interests.error.generic'));
               }
 
               if (index === interestsNotifications.length - 1) {
@@ -73,7 +75,7 @@ const Interests = () => {
         });
       }
     }
-  }, [user, notifications]);
+  }, [user, notifications, t]);
 
   useEffect(() => {
     if (updateNotifications) {
@@ -105,7 +107,7 @@ const Interests = () => {
     })
       .then((data) => {
         if (data.errors) {
-          setError('Something went wrong');
+          setError(t('interests.error.generic'));
         } else {
           setUser(data.user);
         }
@@ -120,7 +122,7 @@ const Interests = () => {
       <div className={style.root}>
         <Grid container direction="column" alignItems="center" spacing={2}>
           <Grid item>
-            <Typography variant="h2">Interests</Typography>
+            <Typography variant="h2">{t('interests.title')}</Typography>
           </Grid>
           <Grid item>
             {user &&

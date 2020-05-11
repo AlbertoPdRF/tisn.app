@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import Link from '@material-ui/core/Link';
 import TableContainer from '@material-ui/core/TableContainer';
@@ -21,6 +22,7 @@ import Style from '../Style/Style';
 const EventsTable = (props) => {
   const { events, displayActions, handleDeleteClick } = props;
 
+  const { t } = useTranslation();
   const history = useHistory();
   const confirm = useConfirm();
   const style = Style();
@@ -43,10 +45,12 @@ const EventsTable = (props) => {
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Name</TableCell>
-              <TableCell align="right">Start date</TableCell>
-              <TableCell align="right">End date</TableCell>
-              {displayActions && <TableCell align="center">Actions</TableCell>}
+              <TableCell>{t('eventsTable.name')}</TableCell>
+              <TableCell align="right">{t('eventsTable.startDate')}</TableCell>
+              <TableCell align="right">{t('eventsTable.endDate')}</TableCell>
+              {displayActions && (
+                <TableCell align="center">{t('eventsTable.actions')}</TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>
@@ -73,7 +77,7 @@ const EventsTable = (props) => {
                       color="primary"
                       onClick={() => history.push(`/events/${event._id}/edit`)}
                     >
-                      Edit
+                      {t('eventsTable.edit')}
                     </Button>
                     <Button
                       className={style.buttons}
@@ -81,13 +85,18 @@ const EventsTable = (props) => {
                       color="secondary"
                       onClick={() => {
                         confirm({
-                          description:
-                            'Deleting an event is a permanent action!',
-                          confirmationText: 'Delete',
+                          title: t('eventsTable.confirm.title'),
+                          description: t('eventsTable.confirm.description'),
+                          confirmationText: t(
+                            'eventsTable.confirm.confirmationText'
+                          ),
                           confirmationButtonProps: {
                             variant: 'contained',
                             color: 'secondary',
                           },
+                          cancellationText: t(
+                            'eventsTable.confirm.cancellationText'
+                          ),
                           cancellationButtonProps: {
                             variant: 'contained',
                             color: 'primary',
@@ -95,7 +104,7 @@ const EventsTable = (props) => {
                         }).then(() => handleDeleteClick(event));
                       }}
                     >
-                      Delete
+                      {t('eventsTable.delete')}
                     </Button>
                   </TableCell>
                 )}

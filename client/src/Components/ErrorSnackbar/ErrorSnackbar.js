@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Portal from '@material-ui/core/Portal';
 
 import ClosableSnackbar from '../ClosableSnackbar/ClosableSnackbar';
@@ -6,7 +7,10 @@ import ClosableSnackbar from '../ClosableSnackbar/ClosableSnackbar';
 const ErrorSnackbar = (props) => {
   const { error } = props;
 
-  const message = typeof error === 'string' ? error : 'Something went wrong';
+  const { t } = useTranslation();
+
+  const message =
+    typeof error === 'string' ? error : t('errorSnackbar.error.generic');
 
   return (
     <Portal>

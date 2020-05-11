@@ -1,4 +1,156 @@
 {
+  "adminDashboard": {
+    "title": "Panel de administración"
+  },
+  "chat": {
+    "avatar": "Avatar de {{name}}",
+    "message": "Escribe un mensaje...",
+    "error": {
+      "generic": "Algo ha ido mal",
+      "formErrors": "El formulario contiene errores"
+    }
+  },
+  "chats": {
+    "avatar": "Avatar de {{name}}",
+    "lastMessage": "Último mensaje a las {{lastMessageAt}}",
+    "noMessages": "Amigos desde el {{friendshipAcceptedAt}}",
+    "title": "Chats",
+    "noFriendships": "No tienes amigos",
+    "browseUsers": "¡Busca usuarios!"
+  },
+  "commentCard": {
+    "deletedUser": "[Usuario eliminado]",
+    "avatar": "Avatar de {{name}}",
+    "reply": "Responder"
+  },
+  "commentForm": {
+    "comment": "Escribe un comentario...",
+    "post": "Publicar"
+  },
+  "email": {
+    "confirmed": "¡Tu correo electrónico {{email}} ha sido confirmado!",
+    "confirmation": "Un correo electrónico de confirmación ha sido enviado a {{email}}",
+    "home": "Llévame al inicio",
+    "error": {
+      "generic": "Algo ha ido mal"
+    }
+  },
+  "errorSnackbar": {
+    "error": {
+      "generic": "Algo ha ido mal"
+    }
+  },
+  "event": {
+    "details": "Detalles",
+    "comments": "Comentarios",
+    "onlyAttendants": "Solo los asistentes pueden leer y publicar comentarios",
+    "attend": "¡Asistiré!",
+    "error": {
+      "generic": "Algo ha ido mal",
+      "formErrors": "El formulario contiene errores"
+    }
+  },
+  "eventDetails": {
+    "notAttend": "No asistiré",
+    "attend": "¡Asistiré!",
+    "attendantsLimit": "Límite de asistentes: {{attendantsLimit}}",
+    "edit": "Editar",
+    "relatedInterests": "Intereses relacionados:",
+    "attendants": "Asistentes:",
+    "avatar": "Avatar de {{name}}"
+  },
+  "eventForm": {
+    "cover": "Portada del evento",
+    "coverPhoto": "Foto de portada",
+    "name": "Nombre",
+    "description": "Descripción",
+    "startDate": "Fecha y hora de inicio",
+    "endDate": "Fecha y hora de finalización",
+    "country": "País",
+    "noMatchingCountry": "Ningún país coincide",
+    "region": "Región",
+    "noMatchingRegion": "Ninguna región coincide",
+    "attendantsLimit": "Límite de asistentes"
+  },
+  "events": {
+    "title": "Eventos",
+    "noEvents": "No hay eventos que coincidan con este filtro",
+    "error": {
+      "formErrors": "El formulario contiene errores"
+    }
+  },
+  "eventSearchForm": {
+    "fromDate": "Desde la fecha",
+    "country": "País",
+    "noMatchingCountry": "Ningún país coincide",
+    "region": "Región",
+    "noMatchingRegion": "Ninguna región coincide",
+    "name": "Nombre",
+    "search": "Buscar"
+  },
+  "eventsTable": {
+    "name": "Nombre",
+    "startDate": "Fecha de inicio",
+    "endDate": "Fecha de finalización",
+    "actions": "Acciones",
+    "edit": "Editar",
+    "delete": "Eliminar",
+    "confirm": {
+      "title": "¿Estás seguro?",
+      "description": "¡Eliminar un evento es una acción permanente!",
+      "confirmationText": "Eliminar",
+      "cancellationText": "Cancelar"
+    }
+  },
+  "eventSteps": {
+    "editTitle": "Editar evento",
+    "createTitle": "Crear evento",
+    "details": "Detalles",
+    "interests": "Intereses",
+    "preview": "Vista previa",
+    "cancel": "Cancelar",
+    "back": "Atrás",
+    "save": "Guardar",
+    "create": "Crear",
+    "next": "Siguiente",
+    "error": {
+      "generic": "Algo ha ido mal",
+      "unknownStep": "Paso desconocido",
+      "formErrors": "El formulario contiene errores"
+    }
+  },
+  "friendships": {
+    "pending": "Solicitudes pendientes",
+    "haveNoFriendships": "No tienes amigos",
+    "hasNoFriendships": "{{name}} no tiene amigos",
+    "browse": "¡Busca usuarios!"
+  },
+  "friendshipsTable": {
+    "name": "Nombre",
+    "actions": "Acciones",
+    "accept": "Aceptar",
+    "reject": "Rechazar"
+  },
+  "home": {
+    "noRecommendations": "No tenemos más recomendaciones de eventos para ti en {{region}}, {{country}} ahora mismo, por favor vuelve más tarde o",
+    "browse": "Busca entre todos los eventos",
+    "interests": "Ajusta tus intereses"
+  },
+  "interestsCard": {
+    "remove": "Eliminar",
+    "add": "Añadir"
+  },
+  "interests": {
+    "title": "Intereses",
+    "error": {
+      "generic": "Algo ha ido mal"
+    }
+  },
+  "interestsSelect": {
+    "interests": "Intereses",
+    "noMatchingInterest": "Ningún interés coincide",
+    "askUs": "¡Pídenos que lo añadamos!"
+  },
   "logInForm": {
     "title": "Entrar",
     "email": "Correo electrónico",
@@ -6,8 +158,24 @@
     "logIn": "Entrar",
     "error": {
       "wrongEmailAndOrPassword": "Correo electrónico y/o contraseña incorrectos",
-      "formContainsErrors": "El formulario contiene errores"
+      "formErrors": "El formulario contiene errores"
     }
+  },
+  "navigationBarAndDrawer": {
+    "avatar": "Avatar de {{name}}",
+    "home": "Inicio",
+    "events": "Eventos",
+    "myEvents": "Mis eventos",
+    "createEvent": "Crear evento",
+    "users": "Usuarios",
+    "myProfile": "Mi perfil",
+    "interests": "Intereses",
+    "logOut": "Salir"
+  },
+  "notifications": {
+    "title": "Notificaciones",
+    "noNew": "No tienes notificaciones nuevas",
+    "read": "Leídas"
   },
   "signUpForm": {
     "title": "Registrarse",
@@ -22,7 +190,101 @@
     "noMatchingRegion": "Ninguna región coincide",
     "signUp": "Registrarse",
     "error": {
-      "formContainsErrors": "El formulario contiene errores"
+      "formErrors": "El formulario contiene errores"
+    }
+  },
+  "user": {
+    "myProfileTitle": "Mi perfil",
+    "profileTitle": "Perfil",
+    "unfriend": "Eliminar",
+    "friends": "Amigos",
+    "delete": "Eliminar",
+    "pending": "Pendiente",
+    "befriend": "Añadir",
+    "details": "Detalles",
+    "friendships": "Amigos",
+    "confirm": {
+      "title": "¿Estás seguro?",
+      "description": "¡Una nueva solicitud de amistad tendrá que ser enviada si queréis ser amigos!",
+      "unfriendConfirmationText": "Eliminar",
+      "deleteConfirmationText": "Eliminar",
+      "cancellationText": "Cancelar"
+    },
+    "error": {
+      "generic": "Something went wrong"
+    }
+  },
+  "userCard": {
+    "avatar": "Avatar de {{name}}"
+  },
+  "userDetails": {
+    "avatar": "Avatar de {{name}}",
+    "accept": "Aceptar",
+    "reject": "Rechazar",
+    "chat": "Chatear",
+    "edit": "Editar",
+    "joined": "Se unió el {{userCreatedAt}}",
+    "interests": "Intereses:",
+    "manage": "Gestionar"
+  },
+  "userEvents": {
+    "title": "Mis eventos",
+    "current": "Actuales",
+    "past": "Pasados",
+    "noCurrentAttending": "No tienes eventos actuales como asistente",
+    "noPastAttending": "No tienes eventos pasados como asistente",
+    "noCurrentCreated": "No tienes eventos creados actuales",
+    "noPastCreated": "No tienes eventos creados pasados",
+    "browse": "¡Busca eventos!",
+    "create": "¡Crea un nuevo evento!",
+    "attending": "Como asistente",
+    "created": "Creados"
+  },
+  "userForm": {
+    "avatarAlt": "Avatar de {{name}}",
+    "avatar": "Avatar",
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "dateOfBirth": "Fecha de nacimiento",
+    "country": "País",
+    "noMatchingCountry": "Ningún país coincide",
+    "region": "Región",
+    "noMatchingRegion": "Ninguna región coincide"
+  },
+  "users": {
+    "title": "Usuarios",
+    "noUsers": "No hay usuarios que coincidan con este filtro",
+    "error": {
+      "formErrors": "El formulario contiene errores"
+    }
+  },
+  "userSearchForm": {
+    "name": "Nombre",
+    "country": "País",
+    "noMatchingCountry": "Ningún país coincide",
+    "region": "Región",
+    "noMatchingRegion": "Ninguna región coincide",
+    "search": "Buscar"
+  },
+  "userTabs": {
+    "title": "Editar perfil",
+    "details": "Detalles",
+    "interests": "Intereses",
+    "settings": "Ajustes",
+    "deleteAccount": "Eliminar cuenta",
+    "delete": "Eliminar",
+    "cancel": "Cancelar",
+    "save": "Guardar",
+    "confirm": {
+      "title": "¿Estás seguro?",
+      "description": "¡Eliminar tu cuenta es una acción permanente!",
+      "confirmationText": "Eliminar",
+      "cancellationText": "Cancelar"
+    },
+    "error": {
+      "generic": "Something went wrong",
+      "unknownStep": "Unknown step",
+      "formErrors": "The form contains errors"
     }
   },
   "welcome": {
@@ -35,7 +297,6 @@
     "overviewPeopleTitle": "¡Conoce gente!"
   },
   "welcomeNavigationBar": {
-    "title": "Tisn",
     "logIn": "Entrar",
     "signUp": "Registrarse"
   }

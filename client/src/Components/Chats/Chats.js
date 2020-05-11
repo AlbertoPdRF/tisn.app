@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useHistory, Link } from 'react-router-dom';
 import CardHeader from '@material-ui/core/CardHeader';
 import Badge from '@material-ui/core/Badge';
@@ -26,6 +27,7 @@ import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 import Style from '../Style/Style';
 
 const Chats = () => {
+  const { t } = useTranslation();
   const history = useHistory();
   const style = Style();
   const user = useUser();
@@ -82,7 +84,7 @@ const Chats = () => {
           >
             <Avatar
               src={friendshipUser.avatar}
-              alt={`${friendshipUser.name}'s avatar`}
+              alt={t('chats.avatar', { name: friendshipUser.name })}
               style={{ margin: '4px' }}
             >
               {friendshipUser.name.charAt(0).toUpperCase()}
@@ -92,8 +94,12 @@ const Chats = () => {
         title={friendshipUser.name}
         subheader={
           friendship.lastMessageAt
-            ? `Last message at ${formatDateTime(friendship.lastMessageAt)}`
-            : `Friends since ${formatDate(friendship.acceptedAt)}`
+            ? t('chats.lastMessage', {
+                lastMessageAt: formatDateTime(friendship.lastMessageAt),
+              })
+            : t('chats.noMessages', {
+                friendshipAcceptedAt: formatDate(friendship.acceptedAt),
+              })
         }
         subheaderTypographyProps={{ className: style.preLine }}
       />
@@ -106,7 +112,7 @@ const Chats = () => {
       <div className={style.root}>
         <Grid container justify="center" spacing={2}>
           <Grid item className={`${style.fullWidth} ${style.center}`}>
-            <Typography variant="h2">Chats</Typography>
+            <Typography variant="h2">{t('chats.title')}</Typography>
           </Grid>
           {friendships && friendships.length > 0
             ? friendships.map((friendship) => (
@@ -124,14 +130,14 @@ const Chats = () => {
             : !loading && (
                 <Grid item className={`${style.fullWidth} ${style.center}`}>
                   <Typography gutterBottom variant="body1">
-                    You have no friendships.
+                    {t('chats.noFriendships')}
                   </Typography>
                   <Button
                     variant="contained"
                     color="primary"
                     onClick={() => history.push('/users')}
                   >
-                    Browse users!
+                    {t('chats.browseUsers')}
                   </Button>
                 </Grid>
               )}

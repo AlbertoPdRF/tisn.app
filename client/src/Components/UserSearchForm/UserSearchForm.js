@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import TextField from '@material-ui/core/TextField';
@@ -27,6 +28,7 @@ const UserSearchForm = (props) => {
     loading,
   } = props;
 
+  const { t } = useTranslation();
   const style = Style();
 
   return (
@@ -35,7 +37,7 @@ const UserSearchForm = (props) => {
         <Grid item>
           <TextField
             className={style.formInput}
-            label="Name"
+            label={t('userSearchForm.name')}
             variant="outlined"
             value={name}
             onChange={(event) => handleNameChange(event.target.value)}
@@ -52,12 +54,12 @@ const UserSearchForm = (props) => {
               <TextField
                 {...params}
                 variant="outlined"
-                label="Country"
+                label={t('userSearchForm.country')}
                 error={!!validationErrors.country}
                 helperText={validationErrors.country}
               />
             )}
-            noOptionsText="No matching country"
+            noOptionsText={t('userSearchForm.noMatchingCountry')}
             value={country}
             onChange={(event, country) => handleCountryChange(country)}
           />
@@ -72,12 +74,12 @@ const UserSearchForm = (props) => {
                 <TextField
                   {...params}
                   variant="outlined"
-                  label="Region"
+                  label={t('userSearchForm.region')}
                   error={!!validationErrors.region}
                   helperText={validationErrors.region}
                 />
               )}
-              noOptionsText="No matching region"
+              noOptionsText={t('userSearchForm.noMatchingRegion')}
               value={region}
               onChange={(event, region) => handleRegionChange(region)}
             />
@@ -100,7 +102,7 @@ const UserSearchForm = (props) => {
             onClick={() => handleSearchClick()}
             disabled={loading}
           >
-            Search
+            {t('userSearchForm.search')}
           </Button>
         </Grid>
       </Grid>

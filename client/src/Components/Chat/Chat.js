@@ -1,4 +1,5 @@
 import React, { useState, useEffect, createRef, Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Card from '@material-ui/core/Card';
@@ -37,6 +38,7 @@ import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 import Style from '../Style/Style';
 
 const Chat = ({ match }) => {
+  const { t } = useTranslation();
   const style = Style();
   const user = useUser();
   const notifications = useNotifications();
@@ -121,7 +123,7 @@ const Chat = ({ match }) => {
           putNotification(user._id, notification._id, notification)
             .then((data) => {
               if (data.errors) {
-                setError('Something went wrong');
+                setError(t('chat.error.generic'));
               }
 
               if (index === chatNotifications.length - 1) {
@@ -132,7 +134,7 @@ const Chat = ({ match }) => {
         });
       }
     }
-  }, [user, friendship, notifications]);
+  }, [user, friendship, notifications, t]);
 
   useEffect(() => {
     if (updateNotifications) {
@@ -161,7 +163,7 @@ const Chat = ({ match }) => {
     postMessage(user._id, id, message)
       .then((data) => {
         if (data.errors) {
-          setError('The form contains errors');
+          setError(t('chat.error.formErrors'));
           setValidationErrors(buildValidationErrorsObject(data.errors));
           setLoading(false);
         } else {
@@ -191,7 +193,7 @@ const Chat = ({ match }) => {
                 avatar={
                   <Avatar
                     src={userToDisplay.avatar}
-                    alt={`${userToDisplay.name}'s avatar`}
+                    alt={t('chat.avatar', { name: userToDisplay.name })}
                   >
                     {userToDisplay.name.charAt(0).toUpperCase()}
                   </Avatar>
@@ -236,7 +238,7 @@ const Chat = ({ match }) => {
                 className={`${style.fullWidth} ${style.center}`}
                 size="small"
                 variant="outlined"
-                placeholder="Write a message..."
+                placeholder={t('chat.message')}
                 value={content}
                 onChange={(event) => setContent(event.target.value)}
                 InputProps={{

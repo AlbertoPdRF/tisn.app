@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 
@@ -7,6 +8,7 @@ import Style from '../Style/Style';
 const CommentForm = (props) => {
   const { parentComment, handleClick, validationErrors } = props;
 
+  const { t } = useTranslation();
   const style = Style();
 
   const [content, setContent] = useState('');
@@ -23,7 +25,7 @@ const CommentForm = (props) => {
       rowsMax={5}
       className={parentComment ? style.nestedComments : style.formInput}
       variant="outlined"
-      placeholder="Write a comment..."
+      placeholder={t('commentForm.comment')}
       value={content}
       onChange={(event) => setContent(event.target.value)}
       InputProps={{
@@ -37,7 +39,7 @@ const CommentForm = (props) => {
             }}
             disabled={!content || loading}
           >
-            Post
+            {t('commentForm.post')}
           </Button>
         ),
       }}

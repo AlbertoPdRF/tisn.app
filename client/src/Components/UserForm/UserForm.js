@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import Avatar from '@material-ui/core/Avatar';
@@ -26,6 +27,7 @@ const UserForm = (props) => {
     validationErrors,
   } = props;
 
+  const { t } = useTranslation();
   const style = Style();
 
   return (
@@ -34,7 +36,7 @@ const UserForm = (props) => {
         <Grid item>
           <Avatar
             src={avatar}
-            alt={`${name}'s avatar`}
+            alt={t('userForm.avatarAlt', { name })}
             style={{ height: '200px', width: '200px', margin: 'auto' }}
           >
             {name.charAt(0).toUpperCase()}
@@ -45,7 +47,7 @@ const UserForm = (props) => {
             className={style.formInput}
             type="file"
             accept="image/*"
-            label="Avatar"
+            label={t('userForm.avatar')}
             variant="outlined"
             onChange={(event) => handleUpload(event.target.files[0])}
             InputLabelProps={{ shrink: true }}
@@ -56,7 +58,7 @@ const UserForm = (props) => {
         <Grid item>
           <TextField
             className={style.formInput}
-            label="Name"
+            label={t('userForm.name')}
             variant="outlined"
             value={name}
             onChange={(event) => handleNameChange(event.target.value)}
@@ -67,7 +69,7 @@ const UserForm = (props) => {
         <Grid item>
           <TextField
             className={style.formInput}
-            label="Email"
+            label={t('userForm.email')}
             variant="outlined"
             value={email}
             onChange={(event) => handleEmailChange(event.target.value)}
@@ -79,7 +81,7 @@ const UserForm = (props) => {
           <TextField
             className={style.formInput}
             type="date"
-            label="Date of birth"
+            label={t('userForm.dateOfBirth')}
             variant="outlined"
             value={dateOfBirth}
             onChange={(event) => handleDateOfBirthChange(event.target.value)}
@@ -98,12 +100,12 @@ const UserForm = (props) => {
               <TextField
                 {...params}
                 variant="outlined"
-                label="Country"
+                label={t('userForm.country')}
                 error={!!validationErrors.country}
                 helperText={validationErrors.country}
               />
             )}
-            noOptionsText="No matching country"
+            noOptionsText={t('userForm.noMatchingCountry')}
             value={country}
             onChange={(event, country) => handleCountryChange(country)}
           />
@@ -119,12 +121,12 @@ const UserForm = (props) => {
                 <TextField
                   {...params}
                   variant="outlined"
-                  label="Region"
+                  label={t('userForm.region')}
                   error={!!validationErrors.region}
                   helperText={validationErrors.region}
                 />
               )}
-              noOptionsText="No matching region"
+              noOptionsText={t('userForm.noMatchingRegion')}
               value={region}
               onChange={(event, region) => handleRegionChange(region)}
             />

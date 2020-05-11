@@ -1,4 +1,5 @@
 import React, { useState, useEffect, Fragment } from 'react';
+import { useTranslation } from 'react-i18next';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -15,6 +16,7 @@ import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 import Style from '../Style/Style';
 
 const Users = () => {
+  const { t } = useTranslation();
   const style = Style();
 
   const [users, setUsers] = useState(null);
@@ -38,7 +40,7 @@ const Users = () => {
       getUsers(query)
         .then((data) => {
           if (data.errors) {
-            setError('The form contains errors');
+            setError(t('users.formErrors'));
             setValidationErrors(buildValidationErrorsObject(data.errors));
           } else {
             setUsers(data.users);
@@ -50,7 +52,7 @@ const Users = () => {
           setLoading(false);
         });
     }
-  }, [updateUsers, query]);
+  }, [updateUsers, query, t]);
 
   useEffect(() => {
     setError(null);
@@ -108,7 +110,7 @@ const Users = () => {
       <div className={style.root}>
         <Grid container justify="center" spacing={2}>
           <Grid item className={`${style.fullWidth} ${style.center}`}>
-            <Typography variant="h2">Users</Typography>
+            <Typography variant="h2">{t('users.title')}</Typography>
           </Grid>
           <Grid item className={`${style.fullWidth} ${style.center}`}>
             <UserSearchForm
@@ -136,9 +138,7 @@ const Users = () => {
               ))
             : !loading && (
                 <Grid item className={`${style.fullWidth} ${style.center}`}>
-                  <Typography variant="body1">
-                    There are no users matching this filter
-                  </Typography>
+                  <Typography variant="body1">{t('users.noUsers')}</Typography>
                 </Grid>
               )}
         </Grid>
