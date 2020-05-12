@@ -27,10 +27,8 @@ exports.post = (req, res, next) => {
         message.friendship.requestant._id === message.user._id
           ? message.friendship.receivant
           : message.friendship.requestant,
-      type: 'Message',
-      title: `New message from ${message.user.name}`,
-      content: 'Go to your chat to see all unread messages',
-      path: `/chats/${message.friendship._id}`,
+      type: 'newMessage',
+      referencedFriendship: message.friendship._id,
     });
     notification.save();
 

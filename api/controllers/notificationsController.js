@@ -4,6 +4,9 @@ exports.get = (req, res, next) => {
   return Notification.find({
     user: req.params.userId,
   })
+    .populate('referencedUser', 'name')
+    .populate('referencedEvent', 'name')
+    .populate('referencedFriendship', '_id')
     .sort([['createdAt', -1]])
     .then((notifications) => res.json({ notifications }));
 };

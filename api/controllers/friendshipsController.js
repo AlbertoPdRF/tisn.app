@@ -58,10 +58,8 @@ exports.post = (req, res, next) => {
   return finalFriendship.save().then(() => {
     const notification = new Notification({
       user: friendship.receivant._id,
-      type: 'Friendship',
-      title: `New friendship request from ${friendship.requestant.name}`,
-      content: 'Go to your profile to see all pending friendship requests',
-      path: `/users/${friendship.receivant._id}/friendships`,
+      type: 'newFriendshipRequest',
+      referencedUser: friendship.requestant._id,
     });
     notification.save();
 
@@ -114,10 +112,8 @@ exports.putId = (req, res, next) => {
 
     const notification = new Notification({
       user: friendship.requestant._id,
-      type: 'Friendship',
-      title: `${friendship.receivant.name} has accepted your friendship request`,
-      content: 'Go to your profile to see all friendships',
-      path: `/users/${friendship.requestant._id}/friendships`,
+      type: 'acceptedFriendshipRequest',
+      referencedUser: friendship.receivant._id,
     });
     notification.save();
 

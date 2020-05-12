@@ -21,10 +21,9 @@ exports.post = (req, res, next) => {
         if (attendant.user != comment.user._id) {
           const notification = new Notification({
             user: attendant.user,
-            type: 'Comment',
-            title: `New comment from ${comment.user.name} in the event ${comment.event.name}`,
-            content: 'Go to the event page to see all comments',
-            path: `/events/${comment.event._id}/comments`,
+            type: 'newComment',
+            referencedUser: comment.user._id,
+            referencedEvent: comment.event._id,
           });
           notification.save();
         }

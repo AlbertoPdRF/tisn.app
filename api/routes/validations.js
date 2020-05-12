@@ -151,6 +151,7 @@ const buildValidator = (type, param, optional = false) => {
             case 'friendship.receivant._id':
             case 'message.user._id':
             case 'notification.user':
+            case 'notification.referencedUser._id':
               model = User;
               break;
             case 'user.interests.*._id':
@@ -162,6 +163,7 @@ const buildValidator = (type, param, optional = false) => {
             case 'eventId':
             case 'attendant.event._id':
             case 'comment.event._id':
+            case 'notification.referencedEvent._id':
               model = Event;
               break;
             case 'attendantId':
@@ -175,6 +177,7 @@ const buildValidator = (type, param, optional = false) => {
               break;
             case 'friendshipId':
             case 'message.friendship._id':
+            case 'notification.referencedFriendship._id':
               model = Friendship;
               break;
             case 'notificationId':
@@ -206,22 +209,18 @@ const buildValidator = (type, param, optional = false) => {
         .toInt();
     case 'boolean':
       return escapedRequired.isBoolean().withMessage('is invalid').toBoolean();
-    case 'path':
-      return basicRequired
-        .matches(/^\/([A-z0-9]+\/)*([A-z0-9]+)$/)
-        .withMessage('is invalid');
     case 'notificationType':
       return escapedRequired
         .isIn([
-          'Event',
-          'Avatar',
-          'Interests',
-          'Email',
-          'Attendant',
-          'Comment',
-          'Friendship',
-          'Message',
-          'Announcement',
+          'confirmEmail',
+          'createEvent',
+          'uploadAvatar',
+          'selectInterests',
+          'newAttendant',
+          'newComment',
+          'newFriendshipRequest',
+          'acceptedFriendshipRequest',
+          'newMessage',
         ])
         .withMessage('is unknown');
     case 'array':
@@ -393,9 +392,9 @@ const createValidation = (route) => {
         buildValidator('id', 'notificationId'),
         buildValidator('id', 'notification.user'),
         buildValidator('notificationType', 'notification.type'),
-        buildValidator('text', 'notification.title'),
-        buildValidator('text', 'notification.content'),
-        buildValidator('path', 'notification.path'),
+        buildValidator('id', 'notification.referencedUser._id', true),
+        buildValidator('id', 'notification.referencedEvent._id', true),
+        buildValidator('id', 'notification.referencedFriendship._id', true),
         buildValidator('boolean', 'notification.read'),
         buildValidator('date', 'notification.readAt'),
       ];

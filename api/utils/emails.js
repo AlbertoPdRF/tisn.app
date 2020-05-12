@@ -7,22 +7,20 @@ const sendgrid = require('@sendgrid/mail');
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 
 const emailConfirmation = (user) => {
-  Notification.findOne({ user, type: 'Email' }, {}, { sort: { _id: -1 } }).then(
-    (notification) => {
-      if (!notification || notification.read) {
-        const emailNotification = new Notification({
-          user,
-          type: 'Email',
-          title: 'Confirm your email',
-          content:
-            'Click here if you need the confirmation email to be sent again',
-          path: `/users/${user._id}/send-email-confirmation-email`,
-        });
+  Notification.findOne(
+    { user, type: 'confirmEmail' },
+    {},
+    { sort: { _id: -1 } }
+  ).then((notification) => {
+    if (!notification || notification.read) {
+      const emailNotification = new Notification({
+        user,
+        type: 'confirmEmail',
+      });
 
-        emailNotification.save();
-      }
+      emailNotification.save();
     }
-  );
+  });
 
   const token = new Token({
     user,

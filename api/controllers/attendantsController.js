@@ -29,10 +29,9 @@ exports.post = (req, res, next) => {
       return finalAttendant.save().then(() => {
         const notification = new Notification({
           user: attendant.event.createdBy,
-          type: 'Attendant',
-          title: `${attendant.user.name} will attend to your event ${attendant.event.name}`,
-          content: 'Go to the event page to see all attendants',
-          path: `/events/${attendant.event._id}`,
+          type: 'newAttendant',
+          referencedUser: attendant.user._id,
+          referencedEvent: attendant.event._id,
         });
         notification.save();
 

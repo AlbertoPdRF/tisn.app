@@ -37,12 +37,17 @@ export const classifyNotifications = (notifications) => {
   const regularRead = [];
 
   notifications.forEach((notification) => {
-    if (notification.type === 'Message') {
-      if (!notification.read) {
+    if (notification.type === 'newMessage') {
+      if (!notification.read && notification.referencedFriendship) {
         message.push(notification);
       }
     } else {
-      if (notification.read) {
+      if (
+        notification.read ||
+        ((notification.type === 'newAttendant' ||
+          notification.type === 'newComment') &&
+          !notification.referencedEvent)
+      ) {
         regularRead.push(notification);
       } else {
         regular.push(notification);
@@ -53,10 +58,10 @@ export const classifyNotifications = (notifications) => {
   return { message, regular, regularRead };
 };
 
-export const buildMessageNotificationsObject = (notifications) => {
+export const buildMessageNotificationsObject = (messageNotifications) => {
   const messageNotificationsObject = {};
-  notifications.forEach((notification) => {
-    const key = notification.path.split('/')[2];
+  messageNotifications.forEach((notification) => {
+    const key = notification.referencedFriendship._id;
 
     if (!messageNotificationsObject[key]) {
       messageNotificationsObject[key] = [];

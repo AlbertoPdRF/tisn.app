@@ -128,7 +128,7 @@ const User = ({ match }) => {
       setError(null);
 
       const friendshipNotifications = notifications.regular.filter(
-        (notification) => notification.type === 'Friendship'
+        (notification) => notification.type.endsWith('FriendshipRequest')
       );
 
       if (value === 1 && friendshipNotifications.length > 0) {

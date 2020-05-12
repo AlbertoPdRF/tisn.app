@@ -174,6 +174,40 @@
   },
   "notifications": {
     "title": "Notifications",
+    "confirmEmail": {
+      "title": "Confirm your email",
+      "subheader": "Click here if you need the confirmation email to be sent again"
+    },
+    "createEvent": {
+      "title": "Create your first event!",
+      "subheader": "Create an event to meet people with interests similar to yours"
+    },
+    "uploadAvatar": {
+      "title": "Upload an avatar!",
+      "subheader": "Having an avatar will make the experience more personal"
+    },
+    "selectInterests": {
+      "title": "Select your interests!",
+      "subheader": "You will get event recommendations according to your interests"
+    },
+    "newAttendant": {
+      "title": "{{userName}} will attend to your event {{eventName}}",
+      "subheader": "Go to the event page to see all attendants"
+    },
+    "newComment": {
+      "title": "New comment from {{userName}} in the event {{eventName}}",
+      "subheader": "Go to the event page to see all comments"
+    },
+    "newFriendshipRequest": {
+      "title": "New friendship request from {{name}}",
+      "subheader": "Go to your profile to see all pending friendship requests"
+    },
+    "acceptedFriendshipRequest": {
+      "title": "{{name}} has accepted your friendship request",
+      "subheader": "Go to your profile to see all your friends"
+    },
+    "deletedUser": "[Deleted user]",
+    "deletedEvent": "[Deleted event]",
     "noNew": "You have no new notifications",
     "read": "Read"
   },

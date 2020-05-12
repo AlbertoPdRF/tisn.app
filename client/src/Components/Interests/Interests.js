@@ -53,7 +53,7 @@ const Interests = () => {
       setError(null);
 
       const interestsNotifications = notifications.regular.filter(
-        (notification) => notification.type === 'Interests'
+        (notification) => notification.type === 'selectInterests'
       );
 
       if (interestsNotifications.length > 0) {

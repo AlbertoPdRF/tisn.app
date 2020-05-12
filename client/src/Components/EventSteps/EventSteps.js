@@ -150,7 +150,7 @@ const EventSteps = ({ match }) => {
       setError(null);
 
       const eventNotifications = notifications.regular.filter(
-        (notification) => notification.type === 'Event'
+        (notification) => notification.type === 'createEvent'
       );
 
       if (eventNotifications.length > 0) {

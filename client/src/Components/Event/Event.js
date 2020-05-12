@@ -107,13 +107,13 @@ const Event = ({ match }) => {
 
       const attendantNotifications = notifications.regular.filter(
         (notification) =>
-          notification.type === 'Attendant' &&
-          notification.path.split('/')[2] === id
+          notification.type === 'newAttendant' &&
+          notification.referencedEvent._id === id
       );
       const commentNotifications = notifications.regular.filter(
         (notification) =>
-          notification.type === 'Comment' &&
-          notification.path.split('/')[2] === id
+          notification.type === 'newComment' &&
+          notification.referencedEvent._id === id
       );
 
       const markNotificationsAsRead = (notifications) => {

@@ -60,24 +60,15 @@ exports.post = (req, res, next) => {
   return finalUser.save().then(() => {
     const eventNotification = new Notification({
       user: finalUser._id,
-      type: 'Event',
-      title: 'Create your first event!',
-      content: 'Create an event to meet people with interests similar to yours',
-      path: '/events/new',
+      type: 'createEvent',
     });
     const avatarNotification = new Notification({
       user: finalUser._id,
-      type: 'Avatar',
-      title: 'Upload an avatar!',
-      content: 'Having an avatar will make the experience more personal',
-      path: `/users/${finalUser._id}/edit`,
+      type: 'uploadAvatar',
     });
     const interestsNotification = new Notification({
       user: finalUser._id,
-      type: 'Interests',
-      title: 'Select your interests!',
-      content: 'You will get event recommendations according to your interests',
-      path: '/interests',
+      type: 'selectInterests',
     });
 
     async.series([

@@ -54,7 +54,7 @@ const Email = ({ match }) => {
               setEmailConfirmed(true);
 
               const emailNotifications = notifications.regular.filter(
-                (notification) => notification.type === 'Email'
+                (notification) => notification.type === 'confirmEmail'
               );
 
               if (emailNotifications.length > 0) {
@@ -102,7 +102,7 @@ const Email = ({ match }) => {
       {(emailConfirmed || emailSent) && (
         <div className={style.root}>
           <Grid container direction="column" alignItems="center" spacing={2}>
-            <Grid item>
+            <Grid item className={style.center}>
               <Typography gutterBottom variant="body1">
                 {emailConfirmed
                   ? t('email.confirmed', { email: user.email })

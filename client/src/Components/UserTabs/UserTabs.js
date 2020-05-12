@@ -150,7 +150,7 @@ const UserTabs = ({ match }) => {
       setError(null);
 
       const avatarNotifications = notifications.regular.filter(
-        (notification) => notification.type === 'Avatar'
+        (notification) => notification.type === 'uploadAvatar'
       );
 
       if (avatarNotifications.length > 0) {
