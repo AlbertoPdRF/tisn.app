@@ -61,7 +61,7 @@ const EventDetails = (props) => {
       />
       <CardContent>
         <div className={style.alignRight}>
-          <Typography className={style.preLine} variant="h5" component="p">
+          <Typography className={style.preLine} variant="body1">
             {formatDateTimeRange(event.startDate, event.endDate)}
           </Typography>
           <Typography gutterBottom variant="body1">

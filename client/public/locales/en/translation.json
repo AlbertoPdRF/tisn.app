@@ -12,14 +12,15 @@
   },
   "chats": {
     "avatar": "{{name}}'s avatar",
-    "lastMessage": "Last message at {{lastMessageAt}}",
-    "noMessages": "Friends since {{friendshipAcceptedAt}}",
+    "lastMessage": "Last message {{timeDistance}} ago",
+    "noMessages": "Friends since {{timeDistance}} ago",
     "title": "Chats",
     "noFriendships": "You have no friends",
     "browseUsers": "Browse users!"
   },
   "commentCard": {
     "deletedUser": "[Deleted user]",
+    "posted": "{{timeDistance}} ago",
     "avatar": "{{name}}'s avatar",
     "reply": "Reply"
   },
@@ -257,7 +258,7 @@
     "reject": "Reject",
     "chat": "Chat",
     "edit": "Edit",
-    "joined": "Joined on {{userCreatedAt}}",
+    "joined": "Joined {{timeDistance}} ago",
     "interests": "Interests:",
     "manage": "Manage"
   },

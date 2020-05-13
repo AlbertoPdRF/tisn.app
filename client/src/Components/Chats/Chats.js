@@ -17,7 +17,7 @@ import {
   buildMessageNotificationsObject,
   sortChats,
 } from '../../logic/utils';
-import { formatDateTime, formatDate } from '../../logic/date-time';
+import { distanceToNow } from '../../logic/date-time';
 
 import { useUser } from '../UserProvider/UserProvider';
 import { useNotifications } from '../NotificationsProvider/NotificationsProvider';
@@ -95,10 +95,10 @@ const Chats = () => {
         subheader={
           friendship.lastMessageAt
             ? t('chats.lastMessage', {
-                lastMessageAt: formatDateTime(friendship.lastMessageAt),
+                timeDistance: distanceToNow(friendship.lastMessageAt),
               })
             : t('chats.noMessages', {
-                friendshipAcceptedAt: formatDate(friendship.acceptedAt),
+                timeDistance: distanceToNow(friendship.acceptedAt),
               })
         }
         subheaderTypographyProps={{ className: style.preLine }}

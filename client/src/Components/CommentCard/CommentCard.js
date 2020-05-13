@@ -11,7 +11,7 @@ import Grid from '@material-ui/core/Grid';
 import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 
-import { formatDateTime } from '../../logic/date-time';
+import { distanceToNow } from '../../logic/date-time';
 import { decodeText } from '../../logic/utils';
 
 import CommentForm from '../CommentForm/CommentForm';
@@ -52,7 +52,9 @@ const CommentCard = (props) => {
               </Avatar>
             }
             title={user.name}
-            subheader={formatDateTime(comment.createdAt)}
+            subheader={t('commentCard.posted', {
+              timeDistance: distanceToNow(comment.createdAt),
+            })}
           />
         </CardActionArea>
         <CardContent className={style.commentCardContent}>

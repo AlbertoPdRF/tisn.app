@@ -10,7 +10,7 @@ import Chip from '@material-ui/core/Chip';
 
 import countries from 'country-region-data';
 
-import { formatDate } from '../../logic/date-time';
+import { distanceToNow, formatDate } from '../../logic/date-time';
 
 import Style from '../Style/Style';
 
@@ -117,7 +117,7 @@ const UserDetails = (props) => {
         </Typography>
         <Typography gutterBottom variant="body1" color="textSecondary">
           {t('userDetails.joined', {
-            userCreatedAt: formatDate(user.createdAt),
+            timeDistance: distanceToNow(user.createdAt),
           })}
         </Typography>
         {restrictedDisplay && (

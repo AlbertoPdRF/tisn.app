@@ -12,14 +12,15 @@
   },
   "chats": {
     "avatar": "Avatar de {{name}}",
-    "lastMessage": "Último mensaje a las {{lastMessageAt}}",
-    "noMessages": "Amigos desde el {{friendshipAcceptedAt}}",
+    "lastMessage": "Último mensaje hace {{timeDistance}}",
+    "noMessages": "Amigos desde hace {{timeDistance}}",
     "title": "Chats",
     "noFriendships": "No tienes amigos",
     "browseUsers": "¡Busca usuarios!"
   },
   "commentCard": {
     "deletedUser": "[Usuario eliminado]",
+    "posted": "Hace {{timeDistance}}",
     "avatar": "Avatar de {{name}}",
     "reply": "Responder"
   },
@@ -257,7 +258,7 @@
     "reject": "Rechazar",
     "chat": "Chatear",
     "edit": "Editar",
-    "joined": "Se unió el {{userCreatedAt}}",
+    "joined": "Se unió hace {{timeDistance}}",
     "interests": "Intereses:",
     "manage": "Gestionar"
   },
