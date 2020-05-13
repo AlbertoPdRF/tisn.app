@@ -40,6 +40,10 @@ const Style = makeStyles((theme) => ({
     float: 'right',
     textAlign: 'right',
   },
+  alignLeft: {
+    float: 'left',
+    textAlign: 'left',
+  },
   drawerPaper: {
     width: '250px',
   },

@@ -116,7 +116,7 @@ const UserDetails = (props) => {
           {`${region.name}, ${t(`countriesList.${country.countryShortCode}`)}`}
         </Typography>
         <Typography gutterBottom variant="body1" color="textSecondary">
-          {t('userDetails.joined', {
+          {t(`userDetails.${userIsCurrentUser ? 'you' : 'user'}Joined`, {
             timeDistance: distanceToNow(user.createdAt),
           })}
         </Typography>

@@ -54,7 +54,8 @@
   "eventDetails": {
     "notAttend": "No asistiré",
     "attend": "¡Asistiré!",
-    "attendantsLimit": "Límite de asistentes: {{attendantsLimit}}",
+    "spot": "{{count}} plaza restante\n(máx.: {{max}})",
+    "spot_plural": "{{count}} plazas restantes\n(máx.: {{max}})",
     "edit": "Editar",
     "relatedInterests": "Intereses relacionados:",
     "attendants": "Asistentes:",
@@ -258,7 +259,8 @@
     "reject": "Rechazar",
     "chat": "Chatear",
     "edit": "Editar",
-    "joined": "Se unió hace {{timeDistance}}",
+    "userJoined": "Se unió hace {{timeDistance}}",
+    "youJoined": "Te uniste hace {{timeDistance}}",
     "interests": "Intereses:",
     "manage": "Gestionar"
   },

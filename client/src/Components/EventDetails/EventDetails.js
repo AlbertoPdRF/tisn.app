@@ -7,6 +7,8 @@ import CardContent from '@material-ui/core/CardContent';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import Chip from '@material-ui/core/Chip';
+import ScheduleIcon from '@material-ui/icons/Schedule';
+import RoomIcon from '@material-ui/icons/Room';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import Avatar from '@material-ui/core/Avatar';
 
@@ -60,45 +62,37 @@ const EventDetails = (props) => {
         title={decodedName}
       />
       <CardContent>
-        <div className={style.alignRight}>
-          <Typography className={style.preLine} variant="body1">
-            {formatDateTimeRange(event.startDate, event.endDate)}
-          </Typography>
-          <Typography gutterBottom variant="body1">
-            {`${region.name}, ${t(
-              `countriesList.${country.countryShortCode}`
-            )}`}
-          </Typography>
-          {futureEvent && (
-            <Fragment>
-              {(!limitMet || userAttending) && (
-                <Button
-                  variant={userAttending ? 'outlined' : 'contained'}
-                  color={userAttending ? 'secondary' : 'primary'}
-                  onClick={() => handleClick()}
-                >
-                  {userAttending
-                    ? t('eventDetails.notAttend')
-                    : t('eventDetails.attend')}
-                </Button>
-              )}
-              <Typography gutterBottom variant="body1">
-                {t('eventDetails.attendantsLimit', {
-                  attendantsLimit: event.attendantsLimit,
+        {futureEvent && (
+          <div className={style.alignRight}>
+            {(!limitMet || userAttending) && (
+              <Button
+                variant={userAttending ? 'outlined' : 'contained'}
+                color={userAttending ? 'secondary' : 'primary'}
+                onClick={() => handleClick()}
+              >
+                {userAttending
+                  ? t('eventDetails.notAttend')
+                  : t('eventDetails.attend')}
+              </Button>
+            )}
+            <Typography gutterBottom className={style.preLine} variant="body1">
+              {attendants &&
+                t('eventDetails.spot', {
+                  count: event.attendantsLimit - attendants.length,
+                  max: event.attendantsLimit,
                 })}
-              </Typography>
-              {restrictedDisplay && (
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  onClick={() => history.push(`/events/${event._id}/edit`)}
-                >
-                  {t('eventDetails.edit')}
-                </Button>
-              )}
-            </Fragment>
-          )}
-        </div>
+            </Typography>
+            {restrictedDisplay && (
+              <Button
+                variant="outlined"
+                color="primary"
+                onClick={() => history.push(`/events/${event._id}/edit`)}
+              >
+                {t('eventDetails.edit')}
+              </Button>
+            )}
+          </div>
+        )}
         <Typography gutterBottom variant="h5" component="h3">
           {decodedName}
         </Typography>
@@ -110,6 +104,14 @@ const EventDetails = (props) => {
           color="textSecondary"
         >
           {decodeText(event.description)}
+        </Typography>
+        <ScheduleIcon className={style.alignLeft} />
+        <Typography gutterBottom variant="body1">
+          {formatDateTimeRange(event.startDate, event.endDate)}
+        </Typography>
+        <RoomIcon className={style.alignLeft} />
+        <Typography gutterBottom variant="body1">
+          {`${region.name}, ${t(`countriesList.${country.countryShortCode}`)}`}
         </Typography>
         <Typography variant="h6" component="h4">
           {t('eventDetails.relatedInterests')}
@@ -126,6 +128,8 @@ const EventDetails = (props) => {
               />
             }
             label={t(`interestsList.${interest.name}`)}
+            clickable
+            onClick={() => history.push(`/events?interest=${interest._id}`)}
           />
         ))}
         {attendants && attendants.length > 0 && (

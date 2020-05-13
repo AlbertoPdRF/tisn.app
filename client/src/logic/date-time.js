@@ -34,13 +34,13 @@ export const distanceToNow = (dateTimeString) =>
 export const formatDateTimeRange = (startString, endString) => {
   const [startTime, startDate] = formatUtcToTimeZone(
     startString,
-    "p'\n'P"
+    "p'\n'PPP"
   ).split('\n');
-  const [endTime, endDate] = formatUtcToTimeZone(endString, "p'\n'P'").split(
+  const [endTime, endDate] = formatUtcToTimeZone(endString, "p'\n'PPP'").split(
     '\n'
   );
 
   return startDate === endDate
-    ? `${startTime} - ${endTime}\n${startDate}`
-    : `${startTime}\n${startDate}\n-\n${endTime}\n${endDate}`;
+    ? `${startTime} - ${endTime}, ${startDate}`
+    : `${startTime}, ${startDate} - ${endTime}, ${endDate}`;
 };

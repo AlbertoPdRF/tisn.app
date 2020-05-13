@@ -54,7 +54,8 @@
   "eventDetails": {
     "notAttend": "I won't attend",
     "attend": "I will attend!",
-    "attendantsLimit": "Attendants limit: {{attendantsLimit}}",
+    "spot": "{{count}} spot left\n(max.: {{max}})",
+    "spot_plural": "{{count}} spots left\n(max.: {{max}})",
     "edit": "Edit",
     "relatedInterests": "Related interests:",
     "attendants": "Attendants:",
@@ -258,7 +259,8 @@
     "reject": "Reject",
     "chat": "Chat",
     "edit": "Edit",
-    "joined": "Joined {{timeDistance}} ago",
+    "userJoined": "Joined {{timeDistance}} ago",
+    "youJoined": "You joined {{timeDistance}} ago",
     "interests": "Interests:",
     "manage": "Manage"
   },
