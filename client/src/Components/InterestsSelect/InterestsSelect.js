@@ -50,7 +50,10 @@ const InterestsSelect = (props) => {
             !!validationErrors.interests || !!validationErrors.relatedInterests
           }
           helperText={
-            validationErrors.interests || validationErrors.relatedInterests
+            (validationErrors.interests &&
+              t(`errorsList.${validationErrors.interests}`)) ||
+            (validationErrors.relatedInterests &&
+              t(`errorsList.${validationErrors.relatedInterests}`))
           }
         />
       )}

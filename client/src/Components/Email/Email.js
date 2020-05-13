@@ -46,7 +46,7 @@ const Email = ({ match }) => {
       getUsersEmail(location)
         .then((data) => {
           if (data.errors) {
-            setError(t('email.error.generic'));
+            setError(t('errorsList.generic'));
           } else {
             if (location.pathname.endsWith('send-email-confirmation-email')) {
               setEmailSent(true);
@@ -65,7 +65,7 @@ const Email = ({ match }) => {
                   putNotification(user._id, notification._id, notification)
                     .then((data) => {
                       if (data.errors) {
-                        setError(t('email.error.generic'));
+                        setError(t('errorsList.generic'));
                       }
 
                       if (index === emailNotifications.length - 1) {

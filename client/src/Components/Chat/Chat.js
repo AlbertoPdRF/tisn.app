@@ -124,7 +124,7 @@ const Chat = ({ match }) => {
           putNotification(user._id, notification._id, notification)
             .then((data) => {
               if (data.errors) {
-                setError(t('chat.error.generic'));
+                setError(t('errorsList.generic'));
               }
 
               if (index === chatNotifications.length - 1) {
@@ -164,7 +164,7 @@ const Chat = ({ match }) => {
     postMessage(user._id, id, message)
       .then((data) => {
         if (data.errors) {
-          setError(t('chat.error.formErrors'));
+          setError(t('errorsList.formErrors'));
           setValidationErrors(buildValidationErrorsObject(data.errors));
           setLoading(false);
         } else {
@@ -265,7 +265,10 @@ const Chat = ({ match }) => {
                   }
                 }}
                 error={!!validationErrors.content}
-                helperText={validationErrors.content}
+                helperText={
+                  validationErrors.content &&
+                  t(`errorsList.${validationErrors.content}`)
+                }
               />
             </CardActions>
           </Card>

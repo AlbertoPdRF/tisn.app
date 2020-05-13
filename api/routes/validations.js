@@ -37,7 +37,7 @@ const buildValidator = (type, param, optional = false) => {
     case 'name':
       return (optional ? basicOptional : basicRequired)
         .isLength({ max: 20 })
-        .withMessage('too long')
+        .withMessage('is too long')
         .matches(/^[a-zA-ZÀ-ÖØ-öø-ſ -']+$/)
         .withMessage('must have letters (and spaces) only');
     case 'email':
@@ -45,7 +45,7 @@ const buildValidator = (type, param, optional = false) => {
         .isEmail()
         .withMessage('is invalid')
         .isLength({ max: 50 })
-        .withMessage('too long')
+        .withMessage('is too long')
         .normalizeEmail()
         .custom((email, { req }) =>
           User.findOne({ email }).then((data) => {
@@ -59,7 +59,7 @@ const buildValidator = (type, param, optional = false) => {
     case 'password':
       return escapedRequired
         .isLength({ min: optional ? 0 : 8 })
-        .withMessage('must be at least 8 characters long');
+        .withMessage('must have at least 8 characters');
     case 'confirmPassword':
       return escapedRequired.custom((confirmPassword, { req }) => {
         if (confirmPassword !== req.body.user.password) {
@@ -95,7 +95,7 @@ const buildValidator = (type, param, optional = false) => {
             }
 
             if (param.includes('endDate') && date <= req.body.event.startDate) {
-              throw new Error('must be after start date');
+              throw new Error('must be after the start date and time');
             }
           }
 
@@ -124,7 +124,9 @@ const buildValidator = (type, param, optional = false) => {
             country = req.body.event.country;
           }
           if (!country) {
-            throw new Error('country is required when region is specified');
+            throw new Error(
+              'the country is required when a region is specified'
+            );
           }
 
           const regions = countries.filter(

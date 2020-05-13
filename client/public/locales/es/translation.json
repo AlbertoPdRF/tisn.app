@@ -4,11 +4,7 @@
   },
   "chat": {
     "avatar": "Avatar de {{name}}",
-    "message": "Escribe un mensaje...",
-    "error": {
-      "generic": "Algo ha ido mal",
-      "formErrors": "El formulario contiene errores"
-    }
+    "message": "Escribe un mensaje..."
   },
   "chats": {
     "avatar": "Avatar de {{name}}",
@@ -31,25 +27,13 @@
   "email": {
     "confirmed": "¡Tu correo electrónico {{email}} ha sido confirmado!",
     "confirmation": "Un correo electrónico de confirmación ha sido enviado a {{email}}",
-    "home": "Llévame al inicio",
-    "error": {
-      "generic": "Algo ha ido mal"
-    }
-  },
-  "errorSnackbar": {
-    "error": {
-      "generic": "Algo ha ido mal"
-    }
+    "home": "Llévame al inicio"
   },
   "event": {
     "details": "Detalles",
     "comments": "Comentarios",
     "onlyAttendants": "Solo los asistentes pueden leer y publicar comentarios",
-    "attend": "¡Asistiré!",
-    "error": {
-      "generic": "Algo ha ido mal",
-      "formErrors": "El formulario contiene errores"
-    }
+    "attend": "¡Asistiré!"
   },
   "eventDetails": {
     "notAttend": "No asistiré",
@@ -76,10 +60,7 @@
   },
   "events": {
     "title": "Eventos",
-    "noEvents": "No hay eventos que coincidan con este filtro",
-    "error": {
-      "formErrors": "El formulario contiene errores"
-    }
+    "noEvents": "No hay eventos que coincidan con este filtro"
   },
   "eventSearchForm": {
     "fromDate": "Desde la fecha",
@@ -114,12 +95,7 @@
     "back": "Atrás",
     "save": "Guardar",
     "create": "Crear",
-    "next": "Siguiente",
-    "error": {
-      "generic": "Algo ha ido mal",
-      "unknownStep": "Paso desconocido",
-      "formErrors": "El formulario contiene errores"
-    }
+    "next": "Siguiente"
   },
   "friendships": {
     "pending": "Solicitudes pendientes",
@@ -143,10 +119,7 @@
     "add": "Añadir"
   },
   "interests": {
-    "title": "Intereses",
-    "error": {
-      "generic": "Algo ha ido mal"
-    }
+    "title": "Intereses"
   },
   "interestsSelect": {
     "interests": "Intereses",
@@ -157,11 +130,7 @@
     "title": "Entrar",
     "email": "Correo electrónico",
     "password": "Contraseña",
-    "logIn": "Entrar",
-    "error": {
-      "wrongEmailAndOrPassword": "Correo electrónico y/o contraseña incorrectos",
-      "formErrors": "El formulario contiene errores"
-    }
+    "logIn": "Entrar"
   },
   "navigationBarAndDrawer": {
     "avatar": "Avatar de {{name}}",
@@ -224,10 +193,7 @@
     "noMatchingCountry": "Ningún país coincide",
     "region": "Región",
     "noMatchingRegion": "Ninguna región coincide",
-    "signUp": "Registrarse",
-    "error": {
-      "formErrors": "El formulario contiene errores"
-    }
+    "signUp": "Registrarse"
   },
   "user": {
     "myProfileTitle": "Mi perfil",
@@ -245,9 +211,6 @@
       "unfriendConfirmationText": "Eliminar",
       "deleteConfirmationText": "Eliminar",
       "cancellationText": "Cancelar"
-    },
-    "error": {
-      "generic": "Something went wrong"
     }
   },
   "userCard": {
@@ -290,10 +253,7 @@
   },
   "users": {
     "title": "Usuarios",
-    "noUsers": "No hay usuarios que coincidan con este filtro",
-    "error": {
-      "formErrors": "El formulario contiene errores"
-    }
+    "noUsers": "No hay usuarios que coincidan con este filtro"
   },
   "userSearchForm": {
     "name": "Nombre",
@@ -317,11 +277,6 @@
       "description": "¡Eliminar tu cuenta es una acción permanente!",
       "confirmationText": "Eliminar",
       "cancellationText": "Cancelar"
-    },
-    "error": {
-      "generic": "Something went wrong",
-      "unknownStep": "Unknown step",
-      "formErrors": "The form contains errors"
     }
   },
   "welcome": {
@@ -336,6 +291,28 @@
   "welcomeNavigationBar": {
     "logIn": "Entrar",
     "signUp": "Registrarse"
+  },
+
+  "errorsList": {
+    "generic": "Algo ha ido mal",
+    "formErrors": "El formulario contiene errores",
+    "is required": "es obligatorio",
+    "is too long": "es demasiado largo",
+    "must have letters (and spaces) only": "debe tener solo letras (y espacios)",
+    "is invalid": "es inválido",
+    "a user with this email already exists": "ya existe un usuario con este correo electrónico",
+    "must have at least 8 characters": "debe tener al menos 8 caracteres",
+    "doesn't match": "no coincide",
+    "seems wrong": "parece equivocada",
+    "you must be at least 14 years old": "debes tener al menos 14 años",
+    "must be in the future": "debe ser en el futuro",
+    "must be after the start date and time": "debe ser después de la fecha y hora de inicio",
+    "the country is required when a region is specified": "el país es obligatorio cuando la región es especificada",
+    "doesn't exist": "no existe",
+    "must be at least 2": "debe ser al menos 2",
+    "is unknown": "es desconocido",
+    "must have at least 1": "debe tener al menos 1",
+    "wrongEmailAndOrPassword": "Correo electrónico y/o contraseña incorrectos"
   },
 
   "countriesList": {

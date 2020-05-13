@@ -124,7 +124,7 @@ const Event = ({ match }) => {
           putNotification(user._id, notification._id, notification)
             .then((data) => {
               if (data.errors) {
-                setError(t('event.error.generic'));
+                setError(t('errorsList.generic'));
               }
 
               if (index === notifications.length - 1) {
@@ -202,7 +202,7 @@ const Event = ({ match }) => {
     postComment(id, comment)
       .then((data) => {
         if (data.errors) {
-          setError(t('event.error.formErrors'));
+          setError(t('errorsList.formErrors'));
           setValidationErrors(buildValidationErrorsObject(data.errors));
           setLoading(false);
         } else {

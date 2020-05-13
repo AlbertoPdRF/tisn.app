@@ -66,7 +66,7 @@ const SignUpForm = () => {
     })
       .then((data) => {
         if (data.errors) {
-          setError(t('signUpForm.error.formErrors'));
+          setError(t('errorsList.formErrors'));
           setValidationErrors(buildValidationErrorsObject(data.errors));
           setLoading(false);
         } else {
@@ -96,7 +96,10 @@ const SignUpForm = () => {
               value={name}
               onChange={(event) => setName(event.target.value)}
               error={!!validationErrors.name}
-              helperText={validationErrors.name}
+              helperText={
+                validationErrors.name &&
+                t(`errorsList.${validationErrors.name}`)
+              }
             />
           </Grid>
           <Grid item>
@@ -107,7 +110,10 @@ const SignUpForm = () => {
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               error={!!validationErrors.email}
-              helperText={validationErrors.email}
+              helperText={
+                validationErrors.email &&
+                t(`errorsList.${validationErrors.email}`)
+              }
             />
           </Grid>
           <Grid item>
@@ -129,7 +135,10 @@ const SignUpForm = () => {
                 ),
               }}
               error={!!validationErrors.password}
-              helperText={validationErrors.password}
+              helperText={
+                validationErrors.password &&
+                t(`errorsList.${validationErrors.password}`)
+              }
             />
           </Grid>
           <Grid item>
@@ -141,7 +150,10 @@ const SignUpForm = () => {
               value={confirmPassword}
               onChange={(event) => setConfirmPassword(event.target.value)}
               error={!!validationErrors.confirmPassword}
-              helperText={validationErrors.confirmPassword}
+              helperText={
+                validationErrors.confirmPassword &&
+                t(`errorsList.${validationErrors.confirmPassword}`)
+              }
             />
           </Grid>
           <Grid item>
@@ -154,7 +166,10 @@ const SignUpForm = () => {
               onChange={(event) => setDateOfBirth(event.target.value)}
               InputLabelProps={{ shrink: true }}
               error={!!validationErrors.dateOfBirth}
-              helperText={validationErrors.dateOfBirth}
+              helperText={
+                validationErrors.dateOfBirth &&
+                t(`errorsList.${validationErrors.dateOfBirth}`)
+              }
             />
           </Grid>
           <Grid item>
@@ -176,7 +191,10 @@ const SignUpForm = () => {
                   variant="outlined"
                   label={t('signUpForm.country')}
                   error={!!validationErrors.country}
-                  helperText={validationErrors.country}
+                  helperText={
+                    validationErrors.country &&
+                    t(`errorsList.${validationErrors.country}`)
+                  }
                 />
               )}
               noOptionsText={t('signUpForm.noMatchingCountry')}
@@ -197,7 +215,10 @@ const SignUpForm = () => {
                     variant="outlined"
                     label={t('signUpForm.region')}
                     error={!!validationErrors.region}
-                    helperText={validationErrors.region}
+                    helperText={
+                      validationErrors.region &&
+                      t(`errorsList.${validationErrors.region}`)
+                    }
                   />
                 )}
                 noOptionsText={t('signUpForm.noMatchingRegion')}

@@ -161,7 +161,7 @@ const EventSteps = ({ match }) => {
           putNotification(user._id, notification._id, notification)
             .then((data) => {
               if (data.errors) {
-                setError(t('eventSteps.generic'));
+                setError(t('errorsList.generic'));
               }
 
               if (index === eventNotifications.length - 1) {
@@ -261,7 +261,7 @@ const EventSteps = ({ match }) => {
           />
         );
       default:
-        return t('eventSteps.unknownStep');
+        return;
     }
   };
 
@@ -355,8 +355,7 @@ const EventSteps = ({ match }) => {
       upload(file)
         .then((data) => {
           if (data.errors) {
-            const error = data.errors[0];
-            setError(`${error.param.split('.')[1]} ${error.msg}`);
+            setError(t('errorsList.formErrors'));
             setValidationErrors(buildValidationErrorsObject(data.errors));
           } else {
             setCoverPhoto(data.uploadedFile.secure_url);
@@ -402,7 +401,7 @@ const EventSteps = ({ match }) => {
     })
       .then((data) => {
         if (data.errors) {
-          setError(t('eventSteps.formErrors'));
+          setError(t('errorsList.formErrors'));
           setValidationErrors(buildValidationErrorsObject(data.errors));
           setLoading(false);
         } else {
@@ -433,7 +432,7 @@ const EventSteps = ({ match }) => {
     })
       .then((data) => {
         if (data.errors) {
-          setError(t('eventSteps.formErrors'));
+          setError(t('errorsList.formErrors'));
           setValidationErrors(buildValidationErrorsObject(data.errors));
           setLoading(false);
         } else {

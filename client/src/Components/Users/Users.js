@@ -40,7 +40,7 @@ const Users = () => {
       getUsers(query)
         .then((data) => {
           if (data.errors) {
-            setError(t('users.formErrors'));
+            setError(t('errorsList.formErrors'));
             setValidationErrors(buildValidationErrorsObject(data.errors));
           } else {
             setUsers(data.users);

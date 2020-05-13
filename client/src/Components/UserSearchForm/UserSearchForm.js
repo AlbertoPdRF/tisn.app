@@ -42,7 +42,9 @@ const UserSearchForm = (props) => {
             value={name}
             onChange={(event) => handleNameChange(event.target.value)}
             error={!!validationErrors.name}
-            helperText={validationErrors.name}
+            helperText={
+              validationErrors.name && t(`errorsList.${validationErrors.name}`)
+            }
           />
         </Grid>
         <Grid item>
@@ -63,7 +65,10 @@ const UserSearchForm = (props) => {
                 variant="outlined"
                 label={t('userSearchForm.country')}
                 error={!!validationErrors.country}
-                helperText={validationErrors.country}
+                helperText={
+                  validationErrors.country &&
+                  t(`errorsList.${validationErrors.country}`)
+                }
               />
             )}
             noOptionsText={t('userSearchForm.noMatchingCountry')}
@@ -83,7 +88,10 @@ const UserSearchForm = (props) => {
                   variant="outlined"
                   label={t('userSearchForm.region')}
                   error={!!validationErrors.region}
-                  helperText={validationErrors.region}
+                  helperText={
+                    validationErrors.region &&
+                    t(`errorsList.${validationErrors.region}`)
+                  }
                 />
               )}
               noOptionsText={t('userSearchForm.noMatchingRegion')}

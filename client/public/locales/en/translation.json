@@ -4,11 +4,7 @@
   },
   "chat": {
     "avatar": "{{name}}'s avatar",
-    "message": "Write a message...",
-    "error": {
-      "generic": "Something went wrong",
-      "formErrors": "The form contains errors"
-    }
+    "message": "Write a message..."
   },
   "chats": {
     "avatar": "{{name}}'s avatar",
@@ -31,25 +27,13 @@
   "email": {
     "confirmed": "Your email {{email}} has been confirmed!",
     "confirmation": "A confirmation email has been sent to {{email}}",
-    "home": "Take me home",
-    "error": {
-      "generic": "Something went wrong"
-    }
-  },
-  "errorSnackbar": {
-    "error": {
-      "generic": "Something went wrong"
-    }
+    "home": "Take me home"
   },
   "event": {
     "details": "Details",
     "comments": "Comments",
     "onlyAttendants": "Only attendants can read and post comments",
-    "attend": "I will attend!",
-    "error": {
-      "generic": "Something went wrong",
-      "formErrors": "The form contains errors"
-    }
+    "attend": "I will attend!"
   },
   "eventDetails": {
     "notAttend": "I won't attend",
@@ -76,10 +60,7 @@
   },
   "events": {
     "title": "Events",
-    "noEvents": "There are no events matching this filter",
-    "error": {
-      "formErrors": "The form contains errors"
-    }
+    "noEvents": "There are no events matching this filter"
   },
   "eventSearchForm": {
     "fromDate": "From date",
@@ -114,12 +95,7 @@
     "back": "Back",
     "save": "Save",
     "create": "Create",
-    "next": "Next",
-    "error": {
-      "generic": "Something went wrong",
-      "unknownStep": "Unknown step",
-      "formErrors": "The form contains errors"
-    }
+    "next": "Next"
   },
   "friendships": {
     "pending": "Pending requests",
@@ -143,10 +119,7 @@
     "add": "Add"
   },
   "interests": {
-    "title": "Interests",
-    "error": {
-      "generic": "Something went wrong"
-    }
+    "title": "Interests"
   },
   "interestsSelect": {
     "interests": "Interests",
@@ -157,11 +130,7 @@
     "title": "Log in",
     "email": "Email",
     "password": "Password",
-    "logIn": "Log in",
-    "error": {
-      "wrongEmailAndOrPassword": "Wrong email and/or password",
-      "formErrors": "The form contains errors"
-    }
+    "logIn": "Log in"
   },
   "navigationBarAndDrawer": {
     "avatar": "{{name}}'s avatar",
@@ -224,10 +193,7 @@
     "noMatchingCountry": "No matching country",
     "region": "Region",
     "noMatchingRegion": "No matching region",
-    "signUp": "Sign up",
-    "error": {
-      "formErrors": "The form contains errors"
-    }
+    "signUp": "Sign up"
   },
   "user": {
     "myProfileTitle": "My profile",
@@ -245,9 +211,6 @@
       "unfriendConfirmationText": "Unfriend",
       "deleteConfirmationText": "Delete",
       "cancellationText": "Cancel"
-    },
-    "error": {
-      "generic": "Something went wrong"
     }
   },
   "userCard": {
@@ -290,10 +253,7 @@
   },
   "users": {
     "title": "Users",
-    "noUsers": "There are no users matching this filter",
-    "error": {
-      "formErrors": "The form contains errors"
-    }
+    "noUsers": "There are no users matching this filter"
   },
   "userSearchForm": {
     "name": "Name",
@@ -317,11 +277,6 @@
       "description": "Deleting your account is a permanent action!",
       "confirmationText": "Delete",
       "cancellationText": "Cancel"
-    },
-    "error": {
-      "generic": "Something went wrong",
-      "unknownStep": "Unknown step",
-      "formErrors": "The form contains errors"
     }
   },
   "welcome": {
@@ -336,6 +291,28 @@
   "welcomeNavigationBar": {
     "logIn": "Log in",
     "signUp": "Sign up"
+  },
+
+  "errorsList": {
+    "generic": "Something went wrong",
+    "formErrors": "The form contains errors",
+    "is required": "is required",
+    "is too long": "is too long",
+    "must have letters (and spaces) only": "must have letters (and spaces) only",
+    "is invalid": "is invalid",
+    "a user with this email already exists": "a user with this email already exists",
+    "must have at least 8 characters": "must have at least 8 characters",
+    "doesn't match": "doesn't match",
+    "seems wrong": "seems wrong",
+    "you must be at least 14 years old": "you must be at least 14 years old",
+    "must be in the future": "must be in the future",
+    "must be after the start date and time": "must be after the start date and time",
+    "the country is required when a region is specified": "the country is required when a region is specified",
+    "doesn't exist": "doesn't exist",
+    "must be at least 2": "must be at least 2",
+    "is unknown": "is unknown",
+    "must have at least 1": "must have at least 1",
+    "wrongEmailAndOrPassword": "Wrong email and/or password"
   },
 
   "countriesList": {

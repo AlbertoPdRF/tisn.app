@@ -46,7 +46,10 @@ const EventSearchForm = (props) => {
             onChange={(event) => handleFromDateChange(event.target.value)}
             InputLabelProps={{ shrink: true }}
             error={!!validationErrors.fromDate}
-            helperText={validationErrors.fromDate}
+            helperText={
+              validationErrors.fromDate &&
+              t(`errorsList.${validationErrors.fromDate}`)
+            }
           />
         </Grid>
         <Grid item>
@@ -67,7 +70,10 @@ const EventSearchForm = (props) => {
                 variant="outlined"
                 label={t('eventSearchForm.country')}
                 error={!!validationErrors.country}
-                helperText={validationErrors.country}
+                helperText={
+                  validationErrors.country &&
+                  t(`errorsList.${validationErrors.country}`)
+                }
               />
             )}
             noOptionsText={t('eventSearchForm.noMatchingCountry')}
@@ -87,7 +93,10 @@ const EventSearchForm = (props) => {
                   variant="outlined"
                   label={t('eventSearchForm.region')}
                   error={!!validationErrors.region}
-                  helperText={validationErrors.region}
+                  helperText={
+                    validationErrors.region &&
+                    t(`errorsList.${validationErrors.region}`)
+                  }
                 />
               )}
               noOptionsText={t('eventSearchForm.noMatchingRegion')}
@@ -104,7 +113,9 @@ const EventSearchForm = (props) => {
             value={name}
             onChange={(event) => handleNameChange(event.target.value)}
             error={!!validationErrors.name}
-            helperText={validationErrors.name}
+            helperText={
+              validationErrors.name && t(`errorsList.${validationErrors.name}`)
+            }
           />
         </Grid>
         {allInterests && (

@@ -139,7 +139,7 @@ const User = ({ match }) => {
           putNotification(currentUser._id, notification._id, notification)
             .then((data) => {
               if (data.errors) {
-                setError(t('user.error.generic'));
+                setError(t('errorsList.generic'));
               }
 
               if (index === friendshipNotifications.length - 1) {

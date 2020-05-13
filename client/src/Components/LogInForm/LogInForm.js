@@ -37,10 +37,10 @@ const LogInForm = () => {
     logIn({ email, password })
       .then((data) => {
         if (data.error) {
-          setError(t('logInForm.error.wrongEmailAndOrPassword'));
+          setError(t('errorsList.wrongEmailAndOrPassword'));
           setLoading(false);
         } else if (data.errors) {
-          setError(t('logInForm.error.formErrors'));
+          setError(t('errorsList.formErrors'));
           setValidationErrors(buildValidationErrorsObject(data.errors));
           setLoading(false);
         } else {
@@ -70,7 +70,10 @@ const LogInForm = () => {
               value={email}
               onChange={(event) => setEmail(event.target.value)}
               error={!!validationErrors.email}
-              helperText={validationErrors.email}
+              helperText={
+                validationErrors.email &&
+                t(`errorsList.${validationErrors.email}`)
+              }
             />
           </Grid>
           <Grid item>
@@ -92,7 +95,10 @@ const LogInForm = () => {
                 ),
               }}
               error={!!validationErrors.password}
-              helperText={validationErrors.password}
+              helperText={
+                validationErrors.password &&
+                t(`errorsList.${validationErrors.password}`)
+              }
             />
           </Grid>
           <Grid item>

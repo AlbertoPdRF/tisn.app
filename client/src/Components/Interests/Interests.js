@@ -64,7 +64,7 @@ const Interests = () => {
           putNotification(user._id, notification._id, notification)
             .then((data) => {
               if (data.errors) {
-                setError(t('interests.error.generic'));
+                setError(t('errorsList.generic'));
               }
 
               if (index === interestsNotifications.length - 1) {
@@ -107,7 +107,7 @@ const Interests = () => {
     })
       .then((data) => {
         if (data.errors) {
-          setError(t('interests.error.generic'));
+          setError(t('errorsList.generic'));
         } else {
           setUser(data.user);
         }

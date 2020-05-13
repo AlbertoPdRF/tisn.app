@@ -69,8 +69,7 @@ const UserEvents = () => {
     deleteEvent(event._id, event)
       .then((data) => {
         if (data.errors) {
-          const error = data.errors[0];
-          setError(`${error.param} ${error.msg}`);
+          setError(t('errorsList.generic'));
           setLoading(false);
         } else {
           setUpdateEvents(true);

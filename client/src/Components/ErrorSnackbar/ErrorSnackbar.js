@@ -9,8 +9,7 @@ const ErrorSnackbar = (props) => {
 
   const { t } = useTranslation();
 
-  const message =
-    typeof error === 'string' ? error : t('errorSnackbar.error.generic');
+  const message = typeof error === 'string' ? error : t('errorsList.generic');
 
   return (
     <Portal>

@@ -161,7 +161,7 @@ const UserTabs = ({ match }) => {
           putNotification(currentUser._id, notification._id, notification)
             .then((data) => {
               if (data.errors) {
-                setError(t('userTabs.error.generic'));
+                setError(t('errorsList.generic'));
               }
 
               if (index === avatarNotifications.length - 1) {
@@ -250,8 +250,7 @@ const UserTabs = ({ match }) => {
       upload(file)
         .then((data) => {
           if (data.errors) {
-            const error = data.errors[0];
-            setError(`${error.param.split('.')[1]} ${error.msg}`);
+            setError(t('errorsList.formErrors'));
             setValidationErrors(buildValidationErrorsObject(data.errors));
           } else {
             setAvatar(data.uploadedFile.secure_url);
@@ -287,7 +286,7 @@ const UserTabs = ({ match }) => {
     })
       .then((data) => {
         if (data.errors) {
-          setError(t('userTabs.error.formErrors'));
+          setError(t('errorsList.formErrors'));
           setValidationErrors(buildValidationErrorsObject(data.errors));
           setLoading(false);
         } else {
@@ -309,8 +308,7 @@ const UserTabs = ({ match }) => {
     deleteUser(userId)
       .then((data) => {
         if (data.errors) {
-          const error = data.errors[0];
-          setError(`${error.param} ${error.msg}`);
+          setError(t('errorsList.generic'));
           setLoading(false);
         } else {
           if (currentUser._id === userId) {

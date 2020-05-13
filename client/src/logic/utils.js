@@ -1,30 +1,14 @@
-const getOrdinal = (n) =>
-  n + (['st', 'nd', 'rd'][((((n + 90) % 100) - 10) % 10) - 1] || 'th');
-
 export const buildValidationErrorsObject = (errors) => {
   const errorsObject = {};
   errors.forEach((error) => {
-    let splittedError = error.param.split('.');
+    const splittedError = error.param.split('.');
     let key = splittedError[1] ? splittedError[1] : splittedError[0];
-    let number;
     if (key.includes('[')) {
-      const splitted = key.split('[');
-      key = splitted[0];
-      number = parseInt(splitted[1].slice(0, -1)) + 1;
+      key = key.split('[')[0];
     }
 
     if (!errorsObject[key]) {
-      if (!number) {
-        errorsObject[key] = error.msg;
-      } else {
-        let keyToShow = key;
-        if (keyToShow.startsWith('related')) {
-          keyToShow = keyToShow.replace('I', ' i');
-        }
-        errorsObject[key] = `${getOrdinal(number)} ${keyToShow.slice(0, -1)} ${
-          error.msg
-        }`;
-      }
+      errorsObject[key] = error.msg;
     }
   });
 

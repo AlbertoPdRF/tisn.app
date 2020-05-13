@@ -58,7 +58,10 @@ const EventForm = (props) => {
             InputLabelProps={{ shrink: true }}
             error={!!validationErrors.fileType || !!validationErrors.coverPhoto}
             helperText={
-              validationErrors.fileType || validationErrors.coverPhoto
+              (validationErrors.fileType &&
+                t(`errorsList.${validationErrors.fileType}`)) ||
+              (validationErrors.coverPhoto &&
+                t(`errorsList.${validationErrors.coverPhoto}`))
             }
           />
         </Grid>
@@ -70,7 +73,9 @@ const EventForm = (props) => {
             value={name}
             onChange={(event) => handleNameChange(event.target.value)}
             error={!!validationErrors.name}
-            helperText={validationErrors.name}
+            helperText={
+              validationErrors.name && t(`errorsList.${validationErrors.name}`)
+            }
           />
         </Grid>
         <Grid item>
@@ -83,7 +88,10 @@ const EventForm = (props) => {
             value={description}
             onChange={(event) => handleDescriptionChange(event.target.value)}
             error={!!validationErrors.description}
-            helperText={validationErrors.description}
+            helperText={
+              validationErrors.description &&
+              t(`errorsList.${validationErrors.description}`)
+            }
           />
         </Grid>
         <Grid item>
@@ -101,7 +109,10 @@ const EventForm = (props) => {
             }}
             InputLabelProps={{ shrink: true }}
             error={!!validationErrors.startDate}
-            helperText={validationErrors.startDate}
+            helperText={
+              validationErrors.startDate &&
+              t(`errorsList.${validationErrors.startDate}`)
+            }
           />
         </Grid>
         <Grid item>
@@ -115,7 +126,10 @@ const EventForm = (props) => {
             InputProps={{ inputProps: { min: startDate } }}
             InputLabelProps={{ shrink: true }}
             error={!!validationErrors.endDate}
-            helperText={validationErrors.endDate}
+            helperText={
+              validationErrors.endDate &&
+              t(`errorsList.${validationErrors.endDate}`)
+            }
           />
         </Grid>
         <Grid item>
@@ -137,7 +151,10 @@ const EventForm = (props) => {
                 variant="outlined"
                 label={t('eventForm.country')}
                 error={!!validationErrors.country}
-                helperText={validationErrors.country}
+                helperText={
+                  validationErrors.country &&
+                  t(`errorsList.${validationErrors.country}`)
+                }
               />
             )}
             noOptionsText={t('eventForm.noMatchingCountry')}
@@ -158,7 +175,10 @@ const EventForm = (props) => {
                   variant="outlined"
                   label={t('eventForm.region')}
                   error={!!validationErrors.region}
-                  helperText={validationErrors.region}
+                  helperText={
+                    validationErrors.region &&
+                    t(`errorsList.${validationErrors.region}`)
+                  }
                 />
               )}
               noOptionsText={t('eventForm.noMatchingRegion')}
@@ -183,7 +203,10 @@ const EventForm = (props) => {
               inputProps: { min: 2 },
             }}
             error={!!validationErrors.attendantsLimit}
-            helperText={validationErrors.attendantsLimit}
+            helperText={
+              validationErrors.attendantsLimit &&
+              t(`errorsList.${validationErrors.attendantsLimit}`)
+            }
           />
         </Grid>
       </Grid>

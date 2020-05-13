@@ -44,7 +44,9 @@ const CommentForm = (props) => {
         ),
       }}
       error={!!validationErrors.content}
-      helperText={validationErrors.content}
+      helperText={
+        validationErrors.content && t(`errorsList.${validationErrors.content}`)
+      }
     />
   );
 };

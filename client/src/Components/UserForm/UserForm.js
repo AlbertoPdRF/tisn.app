@@ -52,7 +52,12 @@ const UserForm = (props) => {
             onChange={(event) => handleUpload(event.target.files[0])}
             InputLabelProps={{ shrink: true }}
             error={!!validationErrors.fileType || !!validationErrors.avatar}
-            helperText={validationErrors.fileType || validationErrors.avatar}
+            helperText={
+              (validationErrors.fileType &&
+                t(`errorsList.${validationErrors.fileType}`)) ||
+              (validationErrors.avatar &&
+                t(`errorsList.${validationErrors.avatar}`))
+            }
           />
         </Grid>
         <Grid item>
@@ -63,7 +68,9 @@ const UserForm = (props) => {
             value={name}
             onChange={(event) => handleNameChange(event.target.value)}
             error={!!validationErrors.name}
-            helperText={validationErrors.name}
+            helperText={
+              validationErrors.name && t(`errorsList.${validationErrors.name}`)
+            }
           />
         </Grid>
         <Grid item>
@@ -74,7 +81,10 @@ const UserForm = (props) => {
             value={email}
             onChange={(event) => handleEmailChange(event.target.value)}
             error={!!validationErrors.email}
-            helperText={validationErrors.email}
+            helperText={
+              validationErrors.email &&
+              t(`errorsList.${validationErrors.email}`)
+            }
           />
         </Grid>
         <Grid item>
@@ -87,7 +97,10 @@ const UserForm = (props) => {
             onChange={(event) => handleDateOfBirthChange(event.target.value)}
             InputLabelProps={{ shrink: true }}
             error={!!validationErrors.dateOfBirth}
-            helperText={validationErrors.dateOfBirth}
+            helperText={
+              validationErrors.dateOfBirth &&
+              t(`errorsList.${validationErrors.dateOfBirth}`)
+            }
           />
         </Grid>
         <Grid item>
@@ -109,7 +122,10 @@ const UserForm = (props) => {
                 variant="outlined"
                 label={t('userForm.country')}
                 error={!!validationErrors.country}
-                helperText={validationErrors.country}
+                helperText={
+                  validationErrors.country &&
+                  t(`errorsList.${validationErrors.country}`)
+                }
               />
             )}
             noOptionsText={t('userForm.noMatchingCountry')}
@@ -130,7 +146,10 @@ const UserForm = (props) => {
                   variant="outlined"
                   label={t('userForm.region')}
                   error={!!validationErrors.region}
-                  helperText={validationErrors.region}
+                  helperText={
+                    validationErrors.region &&
+                    t(`errorsList.${validationErrors.region}`)
+                  }
                 />
               )}
               noOptionsText={t('userForm.noMatchingRegion')}

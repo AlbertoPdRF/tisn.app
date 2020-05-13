@@ -78,7 +78,7 @@ const Events = () => {
       getEvents(query)
         .then((data) => {
           if (data.errors) {
-            setError(t('events.error.formErrors'));
+            setError(t('errorsList.formErrors'));
             setValidationErrors(buildValidationErrorsObject(data.errors));
           } else {
             setEvents(data.events);
