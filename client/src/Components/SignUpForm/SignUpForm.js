@@ -14,6 +14,8 @@ import Button from '@material-ui/core/Button';
 
 import countries from 'country-region-data';
 
+import i18n from '../../i18n';
+
 import { postUser } from '../../logic/api';
 import { buildValidationErrorsObject } from '../../logic/utils';
 import { setUserSession } from '../../logic/auth';
@@ -63,6 +65,7 @@ const SignUpForm = () => {
       dateOfBirth,
       country: country.countryShortCode,
       region: region.shortCode,
+      preferredLocale: i18n.language,
     })
       .then((data) => {
         if (data.errors) {

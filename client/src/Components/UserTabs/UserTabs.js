@@ -8,6 +8,8 @@ import Paper from '@material-ui/core/Paper';
 import AppBar from '@material-ui/core/AppBar';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+import TextField from '@material-ui/core/TextField';
+import MenuItem from '@material-ui/core/MenuItem';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -17,6 +19,8 @@ import Button from '@material-ui/core/Button';
 import SwipeableViews from 'react-swipeable-views';
 import countries from 'country-region-data';
 import { useConfirm } from 'material-ui-confirm';
+
+import i18n from '../../i18n';
 
 import {
   getUser,
@@ -66,6 +70,7 @@ const UserTabs = ({ match }) => {
   const [country, setCountry] = useState(null);
   const [regions, setRegions] = useState([]);
   const [region, setRegion] = useState(null);
+  const [preferredLocale, setPreferredLocale] = useState('');
   const [avatar, setAvatar] = useState('');
   const [interests, setInterests] = useState([]);
   const [updatedFields, setUpdatedFields] = useState(null);
@@ -117,6 +122,7 @@ const UserTabs = ({ match }) => {
         c.regions.filter((region) => region.shortCode === user.region)[0]
       );
 
+      setPreferredLocale(user.preferredLocale);
       setAvatar(user.avatar);
 
       setLoading(false);
@@ -242,6 +248,13 @@ const UserTabs = ({ match }) => {
     }
   };
 
+  const handlePreferredLocaleChange = (preferredLocale) => {
+    setPreferredLocale(preferredLocale);
+    if (!updatedFields || !updatedFields.preferredLocale) {
+      setUpdatedFields({ ...updatedFields, preferredLocale: true });
+    }
+  };
+
   const handleUpload = (file) => {
     if (file) {
       setLoading(true);
@@ -281,6 +294,7 @@ const UserTabs = ({ match }) => {
       dateOfBirth,
       country: country.countryShortCode,
       region: region.shortCode,
+      preferredLocale,
       avatar,
       interests,
     })
@@ -292,6 +306,9 @@ const UserTabs = ({ match }) => {
         } else {
           if (currentUser._id === userId) {
             setCurrentUser(data.user);
+            if (data.user.preferredLocale !== i18n.language) {
+              i18n.changeLanguage(data.user.preferredLocale);
+            }
           }
           history.push(`/users/${userId}`);
         }
@@ -384,39 +401,85 @@ const UserTabs = ({ match }) => {
                     )}
                   </TabPanel>
                   <TabPanel value={value} index={2}>
-                    <ExpansionPanel className={style.formInput}>
-                      <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                        {t('userTabs.deleteAccount')}
-                      </ExpansionPanelSummary>
-                      <ExpansionPanelDetails className={style.justifyCenter}>
-                        <Button
+                    <Grid
+                      container
+                      direction="column"
+                      alignItems="center"
+                      spacing={2}
+                    >
+                      <Grid item>
+                        <TextField
+                          className={style.formInput}
+                          select
+                          label={t('userTabs.language')}
                           variant="outlined"
-                          color="secondary"
-                          onClick={() => {
-                            confirm({
-                              title: t('userTabs.confirm.title'),
-                              description: t('userTabs.confirm.description'),
-                              confirmationText: t(
-                                'userTabs.confirm.confirmationText'
-                              ),
-                              confirmationButtonProps: {
-                                variant: 'contained',
-                                color: 'secondary',
-                              },
-                              cancellationText: t(
-                                'userTabs.confirm.cancellationText'
-                              ),
-                              cancellationButtonProps: {
-                                variant: 'contained',
-                                color: 'primary',
-                              },
-                            }).then(() => handleDeleteClick());
-                          }}
+                          value={preferredLocale}
+                          onChange={(event) =>
+                            handlePreferredLocaleChange(event.target.value)
+                          }
+                          error={!!validationErrors.preferredLocale}
+                          helperText={
+                            validationErrors.preferredLocale &&
+                            t(`errorsList.${validationErrors.preferredLocale}`)
+                          }
                         >
-                          {t('userTabs.delete')}
-                        </Button>
-                      </ExpansionPanelDetails>
-                    </ExpansionPanel>
+                          {i18n.options.whitelist
+                            .filter((option) => option !== 'cimode')
+                            .sort(
+                              (a, b) =>
+                                -t(`userTabs.languages.${b}`).localeCompare(
+                                  t(`userTabs.languages.${a}`)
+                                )
+                            )
+                            .map((language) => (
+                              <MenuItem key={language} value={language}>
+                                {t(`userTabs.languages.${language}`)}
+                              </MenuItem>
+                            ))}
+                        </TextField>
+                      </Grid>
+                      <Grid item>
+                        <ExpansionPanel className={style.formInput}>
+                          <ExpansionPanelSummary
+                            expandIcon={<ExpandMoreIcon />}
+                          >
+                            {t('userTabs.deleteAccount')}
+                          </ExpansionPanelSummary>
+                          <ExpansionPanelDetails
+                            className={style.justifyCenter}
+                          >
+                            <Button
+                              variant="outlined"
+                              color="secondary"
+                              onClick={() => {
+                                confirm({
+                                  title: t('userTabs.confirm.title'),
+                                  description: t(
+                                    'userTabs.confirm.description'
+                                  ),
+                                  confirmationText: t(
+                                    'userTabs.confirm.confirmationText'
+                                  ),
+                                  confirmationButtonProps: {
+                                    variant: 'contained',
+                                    color: 'secondary',
+                                  },
+                                  cancellationText: t(
+                                    'userTabs.confirm.cancellationText'
+                                  ),
+                                  cancellationButtonProps: {
+                                    variant: 'contained',
+                                    color: 'primary',
+                                  },
+                                }).then(() => handleDeleteClick());
+                              }}
+                            >
+                              {t('userTabs.delete')}
+                            </Button>
+                          </ExpansionPanelDetails>
+                        </ExpansionPanel>
+                      </Grid>
+                    </Grid>
                   </TabPanel>
                 </SwipeableViews>
               )}

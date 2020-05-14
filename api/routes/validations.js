@@ -139,6 +139,8 @@ const buildValidator = (type, param, optional = false) => {
           return region;
         }
       );
+    case 'locale':
+      return escapedRequired.isIn(['en', 'es']).withMessage('is unknown');
     case 'id':
       return (optional ? escapedOptional : escapedRequired)
         .isMongoId()
@@ -258,6 +260,7 @@ const createValidation = (route) => {
         buildValidator('date', 'user.dateOfBirth'),
         buildValidator('country', 'user.country'),
         buildValidator('region', 'user.region'),
+        buildValidator('locale', 'user.preferredLocale'),
       ];
     case 'usersGetId':
     case 'usersDeleteId':
@@ -274,6 +277,7 @@ const createValidation = (route) => {
         buildValidator('date', 'user.dateOfBirth'),
         buildValidator('country', 'user.country'),
         buildValidator('region', 'user.region'),
+        buildValidator('locale', 'user.preferredLocale'),
         buildValidator('imageUrl', 'user.avatar', true),
         buildValidator('id', 'user.interests.*._id', true),
       ];

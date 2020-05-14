@@ -28,6 +28,8 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import Link from '@material-ui/core/Link';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 
+import i18n from '../../i18n';
+
 import { getUser, getNotifications } from '../../logic/api';
 import { classifyNotifications } from '../../logic/utils';
 import { logOut } from '../../logic/auth';
@@ -93,6 +95,11 @@ const NavigationBarAndDrawer = (props) => {
     if (user) {
       setLoading(true);
       setError(null);
+
+      if (user.preferredLocale !== i18n.language) {
+        i18n.changeLanguage(user.preferredLocale);
+      }
+
       getNotifications()
         .then((data) =>
           setNotifications(classifyNotifications(data.notifications))
