@@ -73,7 +73,7 @@ exports.post = (req, res, next) => {
 
     async.series([
       (callback) => {
-        emails.emailConfirmation(finalUser);
+        emails.emailConfirmation(req, finalUser);
         callback();
       },
       (callback) => {

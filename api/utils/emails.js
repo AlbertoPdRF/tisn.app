@@ -6,7 +6,7 @@ const sendgrid = require('@sendgrid/mail');
 
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 
-const emailConfirmation = (user) => {
+const emailConfirmation = (req, user) => {
   Notification.findOne(
     { user, type: 'confirmEmail' },
     {},
@@ -29,34 +29,47 @@ const emailConfirmation = (user) => {
   });
 
   token.save().then(() => {
+    req.i18n.changeLanguage(user.preferredLocale);
+
     const email = {
       to: user.email,
       from: { email: 'no-reply@tisn.app', name: 'Tisn' },
-      subject: 'Confirm your email address',
+      subject: req.t('emails.emailConfirmation.subject'),
       text: `
-          Welcome to Tisn, ${user.name}!
+          ${req.t('emails.emailConfirmation.welcome', { name: user.name })}
 
-          Please confirm your email address navigating to ${process.env.BASE_CLIENT_URL}/users/${user._id}/confirm-email?token=${token.token}
+          ${req.t('emails.emailConfirmation.confirm')} ${
+        process.env.BASE_CLIENT_URL
+      }/users/${user._id}/confirm-email?token=${token.token}
 
-          Best regards,
-          The Tisn team
+          ${req.t('emails.emailConfirmation.regards')},
+          ${req.t('emails.emailConfirmation.tisn')}
         `,
       html: `
-          <p>Welcome to Tisn, ${user.name}!</p>
           <p>
-            Please confirm your email address navigating to
-            <a href=${process.env.BASE_CLIENT_URL}/users/${user._id}/confirm-email?token=${token.token}>
-              ${process.env.BASE_CLIENT_URL}/users/${user._id}/confirm-email?token=${token.token}
+            ${req.t('emails.emailConfirmation.welcome', {
+              name: user.name,
+            })}
+          </p>
+          <p>
+            ${req.t('emails.emailConfirmation.confirm')} <a href=${
+        process.env.BASE_CLIENT_URL
+      }/users/${user._id}/confirm-email?token=${token.token}>
+              ${process.env.BASE_CLIENT_URL}/users/${
+        user._id
+      }/confirm-email?token=${token.token}
             </a>
           </p>
           <p>
-            Best regards,<br/>
-            The Tisn team
+            ${req.t('emails.emailConfirmation.regards')},<br/>
+            ${req.t('emails.emailConfirmation.tisn')}
           </p>
         `,
     };
 
-    sendgrid.send(email);
+    process.env.NODE_ENV === 'production'
+      ? sendgrid.send(email)
+      : console.log(email);
   });
 };
 

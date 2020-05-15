@@ -1,0 +1,11 @@
+{
+  "emails": {
+    "emailConfirmation": {
+      "subject": "Confirm your email address",
+      "welcome": "Welcome to Tisn, {{name}}!",
+      "confirm": "Please confirm your email navigating to",
+      "regards": "Best regards",
+      "tisn": "The Tisn team"
+    }
+  }
+}
