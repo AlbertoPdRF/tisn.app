@@ -2,8 +2,12 @@ import { format, parseISO, formatDistanceToNow } from 'date-fns';
 import { utcToZonedTime } from 'date-fns-tz';
 import { enUS, es } from 'date-fns/locale';
 
+import i18n from '../i18n';
+
+const locales = [enUS, es];
+
 const getLocale = () =>
-  localStorage.getItem('i18nextLng') === 'es' ? es : enUS;
+  locales.filter((locale) => locale.code.startsWith(i18n.language))[0];
 
 const formatUtcToTimeZone = (dateString, formatString) =>
   format(
