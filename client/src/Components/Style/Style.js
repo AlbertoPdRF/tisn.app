@@ -107,8 +107,8 @@ const Style = makeStyles((theme) => ({
     },
     border: 'solid',
     borderWidth: '1px',
-    borderRadius: '4px',
-    borderColor: 'rgba(0, 0, 0, 0.23)',
+    borderRadius: theme.shape.borderRadius,
+    borderColor: theme.palette.grey[300],
   },
   messagesCard: {
     display: 'flex',
@@ -138,8 +138,8 @@ const Style = makeStyles((theme) => ({
   messageReceived: {
     float: 'left',
     textAlign: 'left',
-    color: 'black',
-    backgroundColor: 'rgba(0, 0, 0, 0.14)',
+    color: 'rgba(0, 0, 0, 0.87)', // === theme.palette.text.primary of light theme
+    backgroundColor: theme.palette.grey[300],
   },
   preLine: {
     whiteSpace: 'pre-line',

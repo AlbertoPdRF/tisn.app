@@ -18,7 +18,10 @@ const WelcomeNavigationBar = () => {
   const style = Style();
 
   return (
-    <AppBar position="static">
+    <AppBar
+      position="static"
+      color={theme.palette.type === 'dark' ? 'inherit' : 'primary'}
+    >
       <Toolbar>
         <Link
           edge="start"
