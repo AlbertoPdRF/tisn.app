@@ -36,6 +36,10 @@ const Style = makeStyles((theme) => ({
   justifyCenter: {
     justifyContent: 'center',
   },
+  alignCenterVertically: {
+    display: 'flex',
+    alignItems: 'center',
+  },
   alignRight: {
     float: 'right',
     textAlign: 'right',
@@ -90,10 +94,6 @@ const Style = makeStyles((theme) => ({
   },
   buttons: {
     margin: theme.spacing(0.5),
-  },
-  buttonsStacked: {
-    display: 'inline-block',
-    width: '100px',
   },
   signUpButton: {
     color: theme.palette.primary.main,

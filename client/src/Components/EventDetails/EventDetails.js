@@ -4,13 +4,18 @@ import { useHistory, Link } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
-import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
-import Chip from '@material-ui/core/Chip';
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
 import ScheduleIcon from '@material-ui/icons/Schedule';
 import RoomIcon from '@material-ui/icons/Room';
-import AvatarGroup from '@material-ui/lab/AvatarGroup';
+import Chip from '@material-ui/core/Chip';
 import Avatar from '@material-ui/core/Avatar';
+import AvatarGroup from '@material-ui/lab/AvatarGroup';
+import CardActions from '@material-ui/core/CardActions';
+import Grid from '@material-ui/core/Grid';
+import ShareIcon from '@material-ui/icons/Share';
+import Button from '@material-ui/core/Button';
 
 import countries from 'country-region-data';
 
@@ -50,6 +55,7 @@ const EventDetails = (props) => {
   }, [event]);
 
   const decodedName = decodeText(event.name);
+  const decodedDescription = decodeText(event.description);
 
   return (
     <Card elevation={0}>
@@ -62,48 +68,27 @@ const EventDetails = (props) => {
         title={decodedName}
       />
       <CardContent>
-        {futureEvent && (
-          <div className={style.alignRight}>
-            {(!limitMet || userAttending) && (
-              <Button
-                variant={userAttending ? 'outlined' : 'contained'}
-                color={userAttending ? 'secondary' : 'primary'}
-                onClick={() => handleClick()}
-              >
-                {userAttending
-                  ? t('eventDetails.notAttend')
-                  : t('eventDetails.attend')}
-              </Button>
-            )}
-            <Typography gutterBottom className={style.preLine} variant="body1">
-              {attendants &&
-                t('eventDetails.spot', {
-                  count: event.attendantsLimit - attendants.length,
-                  max: event.attendantsLimit,
-                })}
-            </Typography>
-            {restrictedDisplay && (
-              <Button
-                variant="outlined"
-                color="primary"
-                onClick={() => history.push(`/events/${event._id}/edit`)}
-              >
-                {t('eventDetails.edit')}
-              </Button>
-            )}
-          </div>
-        )}
-        <Typography gutterBottom variant="h5" component="h3">
-          {decodedName}
-        </Typography>
+        <div className={style.alignCenterVertically}>
+          <Typography gutterBottom variant="h5" component="h3">
+            {decodedName}
+          </Typography>
+          <div className={style.grow} />
+          {restrictedDisplay && (
+            <IconButton
+              color="primary"
+              onClick={() => history.push(`/events/${event._id}/edit`)}
+            >
+              <EditIcon />
+            </IconButton>
+          )}
+        </div>
         <Typography
           gutterBottom
           className={style.preLine}
           variant="body1"
-          component="p"
           color="textSecondary"
         >
-          {decodeText(event.description)}
+          {decodedDescription}
         </Typography>
         <ScheduleIcon className={style.alignLeft} />
         <Typography gutterBottom variant="body1">
@@ -157,6 +142,55 @@ const EventDetails = (props) => {
           </Fragment>
         )}
       </CardContent>
+      <CardActions style={{ marginTop: '-24px' }}>
+        <Grid container justify="flex-end" alignItems="center">
+          {navigator.share && (
+            <Fragment>
+              <Grid item>
+                <IconButton
+                  color="primary"
+                  onClick={() =>
+                    navigator.share({
+                      url: window.location.href,
+                      title: decodedName,
+                      text: decodedName,
+                    })
+                  }
+                >
+                  <ShareIcon />
+                </IconButton>
+              </Grid>
+              <Grid item className={style.grow} />
+            </Fragment>
+          )}
+          {futureEvent && (
+            <Fragment>
+              <Grid item>
+                {(!limitMet || userAttending) && (
+                  <Button
+                    variant={userAttending ? 'outlined' : 'contained'}
+                    color={userAttending ? 'secondary' : 'primary'}
+                    onClick={() => handleClick()}
+                  >
+                    {userAttending
+                      ? t('eventDetails.notAttend')
+                      : t('eventDetails.attend')}
+                  </Button>
+                )}
+              </Grid>
+              <Grid item className={`${style.fullWidth} ${style.alignRight}`}>
+                <Typography className={style.preLine} variant="body1">
+                  {attendants &&
+                    t('eventDetails.spot', {
+                      count: event.attendantsLimit - attendants.length,
+                      max: event.attendantsLimit,
+                    })}
+                </Typography>
+              </Grid>
+            </Fragment>
+          )}
+        </Grid>
+      </CardActions>
     </Card>
   );
 };

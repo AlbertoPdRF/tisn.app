@@ -217,7 +217,7 @@ const User = ({ match }) => {
     }
   };
 
-  const friendshipButton = (friendship, alignRight = true) => {
+  const friendshipButton = (friendship) => {
     let color;
     if (friendship) {
       if (friendshipButtonHover) {
@@ -254,7 +254,6 @@ const User = ({ match }) => {
       <Button
         onMouseOver={() => setFriendshipButtonHover(true)}
         onMouseOut={() => setFriendshipButtonHover(false)}
-        className={alignRight && style.alignRight}
         color={color}
         variant={variant}
         onClick={() => handleFriendshipClick(friendship)}
@@ -304,6 +303,7 @@ const User = ({ match }) => {
                       friendshipButton={friendshipButton}
                       handleFriendshipClick={handleFriendshipClick}
                       restrictedDisplay={restrictedDisplay}
+                      loading={loading}
                     />
                   </TabPanel>
                   <TabPanel value={value} index={1}>

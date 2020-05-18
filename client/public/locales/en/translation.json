@@ -36,14 +36,13 @@
     "attend": "I will attend!"
   },
   "eventDetails": {
+    "relatedInterests": "Related interests:",
+    "attendants": "Attendants:",
+    "avatar": "{{name}}'s avatar",
     "notAttend": "I won't attend",
     "attend": "I will attend!",
     "spot": "{{count}} spot left\n(max.: {{max}})",
-    "spot_plural": "{{count}} spots left\n(max.: {{max}})",
-    "edit": "Edit",
-    "relatedInterests": "Related interests:",
-    "attendants": "Attendants:",
-    "avatar": "{{name}}'s avatar"
+    "spot_plural": "{{count}} spots left\n(max.: {{max}})"
   },
   "eventForm": {
     "cover": "Event cover",
@@ -218,14 +217,12 @@
   },
   "userDetails": {
     "avatar": "{{name}}'s avatar",
-    "accept": "Accept",
-    "reject": "Reject",
-    "chat": "Chat",
-    "edit": "Edit",
     "userJoined": "Joined {{timeDistance}} ago",
     "youJoined": "You joined {{timeDistance}} ago",
     "interests": "Interests:",
-    "manage": "Manage"
+    "shareText": "{{name}}'s profile",
+    "reject": "Reject",
+    "accept": "Accept"
   },
   "userEvents": {
     "title": "My events",

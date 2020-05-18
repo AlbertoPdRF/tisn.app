@@ -36,14 +36,13 @@
     "attend": "¡Asistiré!"
   },
   "eventDetails": {
+    "relatedInterests": "Intereses relacionados:",
+    "attendants": "Asistentes:",
+    "avatar": "Avatar de {{name}}",
     "notAttend": "No asistiré",
     "attend": "¡Asistiré!",
     "spot": "{{count}} plaza restante\n(máx.: {{max}})",
-    "spot_plural": "{{count}} plazas restantes\n(máx.: {{max}})",
-    "edit": "Editar",
-    "relatedInterests": "Intereses relacionados:",
-    "attendants": "Asistentes:",
-    "avatar": "Avatar de {{name}}"
+    "spot_plural": "{{count}} plazas restantes\n(máx.: {{max}})"
   },
   "eventForm": {
     "cover": "Portada del evento",
@@ -218,14 +217,12 @@
   },
   "userDetails": {
     "avatar": "Avatar de {{name}}",
-    "accept": "Aceptar",
-    "reject": "Rechazar",
-    "chat": "Chatear",
-    "edit": "Editar",
     "userJoined": "Se unió hace {{timeDistance}}",
     "youJoined": "Te uniste hace {{timeDistance}}",
     "interests": "Intereses:",
-    "manage": "Gestionar"
+    "shareText": "Perfil de {{name}}",
+    "reject": "Rechazar",
+    "accept": "Aceptar"
   },
   "userEvents": {
     "title": "Mis eventos",

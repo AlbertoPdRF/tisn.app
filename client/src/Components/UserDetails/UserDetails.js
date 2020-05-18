@@ -6,7 +6,13 @@ import CardContent from '@material-ui/core/CardContent';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
 import Chip from '@material-ui/core/Chip';
+import CardActions from '@material-ui/core/CardActions';
+import Grid from '@material-ui/core/Grid';
+import ShareIcon from '@material-ui/icons/Share';
+import ChatIcon from '@material-ui/icons/Chat';
 
 import countries from 'country-region-data';
 
@@ -22,6 +28,7 @@ const UserDetails = (props) => {
     friendshipButton,
     handleFriendshipClick,
     restrictedDisplay,
+    loading,
   } = props;
 
   const { t } = useTranslation();
@@ -53,65 +60,20 @@ const UserDetails = (props) => {
         >
           {user.name.charAt(0).toUpperCase()}
         </Avatar>
-        <div className={`${style.buttonsStacked} ${style.alignRight}`}>
-          {!userIsCurrentUser &&
-            (!currentUserFriendship ||
-            currentUserFriendship.receivant._id === user._id ||
-            currentUserFriendship.accepted ? (
-              friendshipButton(currentUserFriendship)
-            ) : (
-              <Fragment>
-                <Button
-                  className={style.alignRight}
-                  variant="contained"
-                  color="primary"
-                  onClick={() =>
-                    handleFriendshipClick(currentUserFriendship, true)
-                  }
-                >
-                  {t('userDetails.accept')}
-                </Button>
-                <Button
-                  className={style.alignRight}
-                  style={{ marginTop: '8px' }}
-                  variant="outlined"
-                  color="secondary"
-                  onClick={() => handleFriendshipClick(currentUserFriendship)}
-                >
-                  {t('userDetails.reject')}
-                </Button>
-              </Fragment>
-            ))}
-          {!userIsCurrentUser &&
-            currentUserFriendship &&
-            currentUserFriendship.accepted && (
-              <Button
-                className={style.alignRight}
-                style={{ marginTop: '8px' }}
-                variant="contained"
-                color="primary"
-                onClick={() =>
-                  history.push(`/chats/${currentUserFriendship._id}`)
-                }
-              >
-                {t('userDetails.chat')}
-              </Button>
-            )}
+        <div className={style.alignCenterVertically}>
+          <Typography variant="h5" component="h3">
+            {user.name}
+          </Typography>
+          <div className={style.grow} />
           {restrictedDisplay && (
-            <Button
-              className={style.alignRight}
-              style={{ marginTop: '8px' }}
-              variant="outlined"
+            <IconButton
               color="primary"
               onClick={() => history.push(`/users/${user._id}/edit`)}
             >
-              {t('userDetails.edit')}
-            </Button>
+              <EditIcon />
+            </IconButton>
           )}
         </div>
-        <Typography variant="h5" component="h3">
-          {user.name}
-        </Typography>
         <Typography variant="body1">
           {`${region.name}, ${t(`countriesList.${country.countryShortCode}`)}`}
         </Typography>
@@ -152,20 +114,88 @@ const UserDetails = (props) => {
               />
             ))}
             {userIsCurrentUser && (
-              <Chip
-                className={style.chip}
-                variant="outlined"
+              <IconButton
                 color="primary"
-                label={t('userDetails.manage')}
-                clickable
                 onClick={() =>
                   history.push(`/users/${user._id}/edit/interests`)
                 }
-              />
+              >
+                <EditIcon />
+              </IconButton>
             )}
           </Fragment>
         )}
       </CardContent>
+      <CardActions style={{ marginTop: '-24px' }}>
+        <Grid container justify="flex-end" alignItems="center">
+          {navigator.share && (
+            <Fragment>
+              <Grid item>
+                <IconButton
+                  color="primary"
+                  onClick={() =>
+                    navigator.share({
+                      url: window.location.href,
+                      title: t('userDetails.shareText', { name: user.name }),
+                      text: t('userDetails.shareText', { name: user.name }),
+                    })
+                  }
+                >
+                  <ShareIcon />
+                </IconButton>
+              </Grid>
+              <Grid item className={style.grow} />
+            </Fragment>
+          )}
+          {!userIsCurrentUser && (
+            <Fragment>
+              <Grid item>
+                {!currentUserFriendship ||
+                currentUserFriendship.receivant._id === user._id ||
+                currentUserFriendship.accepted ? (
+                  friendshipButton(currentUserFriendship)
+                ) : (
+                  <Fragment>
+                    <Button
+                      className={style.buttons}
+                      variant="outlined"
+                      color="secondary"
+                      onClick={() =>
+                        handleFriendshipClick(currentUserFriendship)
+                      }
+                    >
+                      {t('userDetails.reject')}
+                    </Button>
+                    <Button
+                      className={style.buttons}
+                      variant="contained"
+                      color="primary"
+                      onClick={() =>
+                        handleFriendshipClick(currentUserFriendship, true)
+                      }
+                    >
+                      {t('userDetails.accept')}
+                    </Button>
+                  </Fragment>
+                )}
+              </Grid>
+              {currentUserFriendship && currentUserFriendship.accepted && (
+                <Grid item>
+                  <IconButton
+                    color="primary"
+                    onClick={() =>
+                      history.push(`/chats/${currentUserFriendship._id}`)
+                    }
+                    disabled={loading}
+                  >
+                    <ChatIcon />
+                  </IconButton>
+                </Grid>
+              )}
+            </Fragment>
+          )}
+        </Grid>
+      </CardActions>
     </Card>
   );
 };
