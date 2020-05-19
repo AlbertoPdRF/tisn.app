@@ -14,6 +14,8 @@ import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import SendIcon from '@material-ui/icons/Send';
 
+import Autolinker from 'autolinker';
+
 import {
   getMessages,
   getFriendship,
@@ -247,9 +249,23 @@ const Chat = ({ match }) => {
                             : style.messageReceived
                         }`}
                         variant="body1"
-                      >
-                        {decodeText(message.content)}
-                      </Typography>
+                        style={{ wordWrap: 'break-word' }}
+                        dangerouslySetInnerHTML={{
+                          __html: Autolinker.link(decodeText(message.content), {
+                            sanitizeHtml: true,
+                            replaceFn: (match) => {
+                              const tag = match.buildTag();
+                              if (
+                                tag.innerHTML.startsWith(window.location.host)
+                              ) {
+                                tag.setAttrs({ target: '', rel: '' });
+                              }
+
+                              return tag;
+                            },
+                          }),
+                        }}
+                      />
                     </Grid>
                   ))}
               </Grid>

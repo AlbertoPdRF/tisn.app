@@ -134,12 +134,18 @@ const Style = makeStyles((theme) => ({
     textAlign: 'right',
     color: theme.palette.primary.contrastText,
     backgroundColor: theme.palette.primary.main,
+    '& a': {
+      color: theme.palette.primary.contrastText,
+    },
   },
   messageReceived: {
     float: 'left',
     textAlign: 'left',
     color: 'rgba(0, 0, 0, 0.87)', // === theme.palette.text.primary of light theme
     backgroundColor: theme.palette.grey[300],
+    '& a': {
+      color: 'rgba(0, 0, 0, 0.87)', // === theme.palette.text.primary of light theme
+    },
   },
   preLine: {
     whiteSpace: 'pre-line',
