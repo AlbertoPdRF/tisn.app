@@ -11,12 +11,13 @@ import EditIcon from '@material-ui/icons/Edit';
 import Chip from '@material-ui/core/Chip';
 import CardActions from '@material-ui/core/CardActions';
 import Grid from '@material-ui/core/Grid';
-import ShareIcon from '@material-ui/icons/Share';
 import ChatIcon from '@material-ui/icons/Chat';
 
 import countries from 'country-region-data';
 
 import { distanceToNow, formatDate } from '../../logic/date-time';
+
+import ShareMenu from '../ShareMenu/ShareMenu';
 
 import Style from '../Style/Style';
 
@@ -128,25 +129,14 @@ const UserDetails = (props) => {
       </CardContent>
       <CardActions style={{ marginTop: '-24px' }}>
         <Grid container justify="flex-end" alignItems="center">
-          {navigator.share && (
-            <Fragment>
-              <Grid item>
-                <IconButton
-                  color="primary"
-                  onClick={() =>
-                    navigator.share({
-                      url: window.location.href,
-                      title: t('userDetails.shareText', { name: user.name }),
-                      text: t('userDetails.shareText', { name: user.name }),
-                    })
-                  }
-                >
-                  <ShareIcon />
-                </IconButton>
-              </Grid>
-              <Grid item className={style.grow} />
-            </Fragment>
-          )}
+          <Grid item>
+            <ShareMenu
+              title={t('userDetails.shareText', { name: user.name })}
+              text={t('userDetails.shareText', { name: user.name })}
+              url={window.location.href}
+            />
+          </Grid>
+          <Grid item className={style.grow} />
           {!userIsCurrentUser && (
             <Fragment>
               <Grid item>

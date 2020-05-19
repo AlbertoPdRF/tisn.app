@@ -181,6 +181,10 @@
     "noNew": "You have no new notifications",
     "read": "Read"
   },
+  "shareMenu": {
+    "chats": "Share through chat",
+    "more": "More options..."
+  },
   "signUpForm": {
     "title": "Sign up",
     "name": "Name",

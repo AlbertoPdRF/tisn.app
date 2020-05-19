@@ -14,13 +14,14 @@ import Avatar from '@material-ui/core/Avatar';
 import AvatarGroup from '@material-ui/lab/AvatarGroup';
 import CardActions from '@material-ui/core/CardActions';
 import Grid from '@material-ui/core/Grid';
-import ShareIcon from '@material-ui/icons/Share';
 import Button from '@material-ui/core/Button';
 
 import countries from 'country-region-data';
 
 import { decodeText } from '../../logic/utils';
 import { formatDateTimeRange } from '../../logic/date-time';
+
+import ShareMenu from '../ShareMenu/ShareMenu';
 
 import Style from '../Style/Style';
 
@@ -144,25 +145,14 @@ const EventDetails = (props) => {
       </CardContent>
       <CardActions style={{ marginTop: '-24px' }}>
         <Grid container justify="flex-end" alignItems="center">
-          {navigator.share && (
-            <Fragment>
-              <Grid item>
-                <IconButton
-                  color="primary"
-                  onClick={() =>
-                    navigator.share({
-                      url: window.location.href,
-                      title: decodedName,
-                      text: decodedName,
-                    })
-                  }
-                >
-                  <ShareIcon />
-                </IconButton>
-              </Grid>
-              <Grid item className={style.grow} />
-            </Fragment>
-          )}
+          <Grid item>
+            <ShareMenu
+              title={decodedName}
+              text={decodedName}
+              url={window.location.href}
+            />
+          </Grid>
+          <Grid item className={style.grow} />
           {futureEvent && (
             <Fragment>
               <Grid item>

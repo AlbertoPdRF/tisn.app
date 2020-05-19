@@ -181,6 +181,10 @@
     "noNew": "No tienes notificaciones nuevas",
     "read": "Leídas"
   },
+  "shareMenu": {
+    "chats": "Compartir por chat",
+    "more": "Más opciones..."
+  },
   "signUpForm": {
     "title": "Registrarse",
     "name": "Nombre",
