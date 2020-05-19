@@ -12,7 +12,7 @@
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "country-region-data": "^1.6.0",
-    "date-fns": "^2.11.1",
+    "date-fns": "^2.14.0",
     "date-fns-tz": "^1.0.10",
     "i18next": "^19.4.4",
     "i18next-browser-languagedetector": "^4.1.1",
