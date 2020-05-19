@@ -49,6 +49,7 @@ const Chat = ({ match }) => {
   const [messages, setMessages] = useState(null);
   const [updateMessages, setUpdateMessages] = useState(false);
   const [updateNotifications, setUpdateNotifications] = useState(false);
+  const [checkSharedContent, setCheckSharedContent] = useState(true);
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(true);
   const [validationErrors, setValidationErrors] = useState({});
@@ -105,6 +106,28 @@ const Chat = ({ match }) => {
       cardContentRef.current.scrollTop = cardContentRef.current.scrollHeight;
     }
   }, [cardContentRef]);
+
+  const params = new URLSearchParams(window.location.search);
+  useEffect(() => {
+    if (checkSharedContent) {
+      let sharedContent;
+      if (params.has('text')) {
+        sharedContent = params.get('text');
+      } else if (params.has('title')) {
+        sharedContent = params.get('title');
+      }
+      if (params.has('url')) {
+        const url = params.get('url');
+        sharedContent = sharedContent ? `${sharedContent} ${url}` : url;
+      }
+
+      if (sharedContent) {
+        setContent(sharedContent);
+      }
+
+      setCheckSharedContent(false);
+    }
+  }, [checkSharedContent, params]);
 
   useEffect(() => {
     if (user && friendship && notifications) {
@@ -234,6 +257,11 @@ const Chat = ({ match }) => {
             <CardActions>
               <TextField
                 autoFocus
+                onFocus={(event) => {
+                  const value = event.target.value;
+                  event.target.value = '';
+                  event.target.value = value;
+                }}
                 multiline
                 rowsMax={3}
                 className={`${style.fullWidth} ${style.center}`}

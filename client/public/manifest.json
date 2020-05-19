@@ -31,5 +31,15 @@
   "start_url": ".",
   "display": "standalone",
   "theme_color": "#3f51b5",
-  "background_color": "#fafafa"
+  "background_color": "#fafafa",
+  "share_target": {
+    "action": "/chats",
+    "method": "GET",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
 }

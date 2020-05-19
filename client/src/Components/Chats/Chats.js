@@ -65,6 +65,8 @@ const Chats = () => {
     }
   }, [friendships]);
 
+  const params = new URLSearchParams(window.location.search);
+
   const friendshipCardHeader = (friendship) => {
     const friendshipUser =
       friendship.requestant._id === user._id
@@ -120,7 +122,7 @@ const Chats = () => {
                   <Card>
                     <CardActionArea
                       component={Link}
-                      to={`/chats/${friendship._id}`}
+                      to={`/chats/${friendship._id}?${params.toString()}`}
                     >
                       {friendshipCardHeader(friendship)}
                     </CardActionArea>
