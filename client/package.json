@@ -52,7 +52,7 @@
     "husky": ">=4",
     "lint-staged": ">=10",
     "netlify-cli": "^2.51.0",
-    "prettier": "2.0.4"
+    "prettier": "2.0.5"
   },
   "husky": {
     "hooks": {
