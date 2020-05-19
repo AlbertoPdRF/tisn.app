@@ -23,7 +23,7 @@
     "i18next-fs-backend": "^1.0.3",
     "i18next-http-middleware": "^1.2.0",
     "jsonwebtoken": "^8.5.1",
-    "mongoose": "^5.9.6",
+    "mongoose": "^5.9.15",
     "morgan": "~1.10.0",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0"
