@@ -62,7 +62,12 @@ const UserDetails = (props) => {
           {user.name.charAt(0).toUpperCase()}
         </Avatar>
         <div className={style.alignCenterVertically}>
-          <Typography variant="h5" component="h3">
+          <Typography
+            gutterBottom
+            className={`${style.minWidth} ${style.breakWord}`}
+            variant="h5"
+            component="h3"
+          >
             {user.name}
           </Typography>
           <div className={style.grow} />

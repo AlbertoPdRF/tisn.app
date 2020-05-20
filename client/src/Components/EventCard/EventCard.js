@@ -41,22 +41,34 @@ const EventCard = (props) => {
           title={decodedName}
         />
         <CardContent>
-          <AvatarGroup className={style.alignRight} max={2}>
-            {event.relatedInterests.map((interest) => (
-              <Avatar
-                key={interest._id}
-                src={interest.avatar}
-                alt={t(`interestsList.${interest.name}`)}
-                title={t(`interestsList.${interest.name}`)}
-              />
-            ))}
-          </AvatarGroup>
-          <Typography gutterBottom variant="h5" component="h3">
-            {decodedName.length < 20
-              ? decodedName
-              : `${decodedName.substring(0, 19)}...`}
-          </Typography>
-          <Typography variant="body1" color="textSecondary" component="p">
+          <div className={style.alignCenterVertically}>
+            <Typography
+              gutterBottom
+              className={`${style.minWidth} ${style.breakWord}`}
+              variant="h5"
+              component="h3"
+            >
+              {decodedName.length < 20
+                ? decodedName
+                : `${decodedName.substring(0, 19)}...`}
+            </Typography>
+            <div className={style.grow} />
+            <AvatarGroup max={3}>
+              {event.relatedInterests.map((interest) => (
+                <Avatar
+                  key={interest._id}
+                  src={interest.avatar}
+                  alt={t(`interestsList.${interest.name}`)}
+                  title={t(`interestsList.${interest.name}`)}
+                />
+              ))}
+            </AvatarGroup>
+          </div>
+          <Typography
+            className={style.breakWord}
+            variant="body1"
+            color="textSecondary"
+          >
             {decodedDescription.length < 140
               ? decodedDescription
               : `${decodedDescription.substring(0, 139)}...`}

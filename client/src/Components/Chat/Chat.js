@@ -14,8 +14,6 @@ import TextField from '@material-ui/core/TextField';
 import IconButton from '@material-ui/core/IconButton';
 import SendIcon from '@material-ui/icons/Send';
 
-import Autolinker from 'autolinker';
-
 import {
   getMessages,
   getFriendship,
@@ -25,7 +23,7 @@ import {
 } from '../../logic/api';
 import {
   buildValidationErrorsObject,
-  decodeText,
+  decodeAndLinkifyText,
   classifyNotifications,
 } from '../../logic/utils';
 
@@ -243,27 +241,16 @@ const Chat = ({ match }) => {
                   messages.map((message) => (
                     <Grid item key={message._id} className={style.fullWidth}>
                       <Typography
-                        className={`${style.preLine} ${style.message} ${
+                        className={`${style.preLine} ${style.breakWord} ${
+                          style.message
+                        } ${
                           message.user === user._id
                             ? style.messageSent
                             : style.messageReceived
                         }`}
                         variant="body1"
-                        style={{ wordWrap: 'break-word' }}
                         dangerouslySetInnerHTML={{
-                          __html: Autolinker.link(decodeText(message.content), {
-                            sanitizeHtml: true,
-                            replaceFn: (match) => {
-                              const tag = match.buildTag();
-                              if (
-                                tag.innerHTML.startsWith(window.location.host)
-                              ) {
-                                tag.setAttrs({ target: '', rel: '' });
-                              }
-
-                              return tag;
-                            },
-                          }),
+                          __html: decodeAndLinkifyText(message.content),
                         }}
                       />
                     </Grid>

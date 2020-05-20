@@ -12,7 +12,7 @@ import CardActions from '@material-ui/core/CardActions';
 import Button from '@material-ui/core/Button';
 
 import { distanceToNow } from '../../logic/date-time';
-import { decodeText } from '../../logic/utils';
+import { decodeAndLinkifyText } from '../../logic/utils';
 
 import CommentForm from '../CommentForm/CommentForm';
 
@@ -58,9 +58,13 @@ const CommentCard = (props) => {
           />
         </CardActionArea>
         <CardContent className={style.commentCardContent}>
-          <Typography className={style.preLine} variant="body1">
-            {decodeText(comment.content)}
-          </Typography>
+          <Typography
+            className={`${style.preLine} ${style.breakWord}`}
+            variant="body1"
+            dangerouslySetInnerHTML={{
+              __html: decodeAndLinkifyText(comment.content),
+            }}
+          />
         </CardContent>
       </Fragment>
     );

@@ -1,3 +1,5 @@
+import Autolinker from 'autolinker';
+
 export const buildValidationErrorsObject = (errors) => {
   const errorsObject = {};
   errors.forEach((error) => {
@@ -60,6 +62,20 @@ export const buildMessageNotificationsObject = (messageNotifications) => {
 export const decodeText = (text) =>
   new DOMParser().parseFromString(text, 'text/html').documentElement
     .textContent;
+
+export const decodeAndLinkifyText = (text) =>
+  Autolinker.link(decodeText(text), {
+    sanitizeHtml: true,
+    replaceFn: (match) => {
+      const tag = match.buildTag();
+      tag.setAttr('style', 'color: inherit');
+      if (tag.innerHTML.startsWith(window.location.host)) {
+        tag.setAttrs({ target: '', rel: '' });
+      }
+
+      return tag;
+    },
+  });
 
 export const classifyFriendships = (friendships, currentUser) => {
   const pending = [];

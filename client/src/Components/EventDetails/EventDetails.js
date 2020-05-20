@@ -18,7 +18,7 @@ import Button from '@material-ui/core/Button';
 
 import countries from 'country-region-data';
 
-import { decodeText } from '../../logic/utils';
+import { decodeText, decodeAndLinkifyText } from '../../logic/utils';
 import { formatDateTimeRange } from '../../logic/date-time';
 
 import ShareMenu from '../ShareMenu/ShareMenu';
@@ -56,7 +56,6 @@ const EventDetails = (props) => {
   }, [event]);
 
   const decodedName = decodeText(event.name);
-  const decodedDescription = decodeText(event.description);
 
   return (
     <Card elevation={0}>
@@ -70,7 +69,12 @@ const EventDetails = (props) => {
       />
       <CardContent>
         <div className={style.alignCenterVertically}>
-          <Typography gutterBottom variant="h5" component="h3">
+          <Typography
+            gutterBottom
+            className={`${style.minWidth} ${style.breakWord}`}
+            variant="h5"
+            component="h3"
+          >
             {decodedName}
           </Typography>
           <div className={style.grow} />
@@ -85,12 +89,13 @@ const EventDetails = (props) => {
         </div>
         <Typography
           gutterBottom
-          className={style.preLine}
+          className={`${style.preLine} ${style.breakWord}`}
           variant="body1"
           color="textSecondary"
-        >
-          {decodedDescription}
-        </Typography>
+          dangerouslySetInnerHTML={{
+            __html: decodeAndLinkifyText(event.description),
+          }}
+        />
         <ScheduleIcon className={style.alignLeft} />
         <Typography gutterBottom variant="body1">
           {formatDateTimeRange(event.startDate, event.endDate)}
