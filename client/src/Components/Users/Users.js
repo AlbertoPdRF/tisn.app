@@ -9,8 +9,11 @@ import countries from 'country-region-data';
 import { getUsers, getInterests } from '../../logic/api';
 import { buildValidationErrorsObject } from '../../logic/utils';
 
+import { useUser } from '../UserProvider/UserProvider';
+
 import UserSearchForm from '../UserSearchForm/UserSearchForm';
 import UserCard from '../UserCard/UserCard';
+import SearchFabAndDialog from '../SearchFabAndDialog/SearchFabAndDialog';
 import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 
 import Style from '../Style/Style';
@@ -18,19 +21,44 @@ import Style from '../Style/Style';
 const Users = () => {
   const { t } = useTranslation();
   const style = Style();
+  const currentUser = useUser();
 
   const [users, setUsers] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [name, setName] = useState('');
   const [country, setCountry] = useState(null);
   const [regions, setRegions] = useState([]);
   const [region, setRegion] = useState(null);
   const [allInterests, setAllInterests] = useState(null);
   const [interests, setInterests] = useState([]);
+  const [includeCurrentUser, setIncludeCurrentUser] = useState(false);
   const [query, setQuery] = useState('');
-  const [updateUsers, setUpdateUsers] = useState(true);
+  const [updateUsers, setUpdateUsers] = useState(false);
   const [loading, setLoading] = useState(true);
   const [validationErrors, setValidationErrors] = useState({});
   const [error, setError] = useState(null);
+
+  useEffect(() => {
+    if (currentUser) {
+      const c = countries.filter(
+        (country) => country.countryShortCode === currentUser.country
+      )[0];
+      const r = c.regions.filter(
+        (region) => region.shortCode === currentUser.region
+      )[0];
+      setCountry(c);
+      setRegions(c.regions);
+      setRegion(r);
+
+      const params = new URLSearchParams({
+        country: c.countryShortCode,
+        region: r.shortCode,
+      });
+
+      setQuery(`?${params.toString()}`);
+      setUpdateUsers(true);
+    }
+  }, [currentUser]);
 
   useEffect(() => {
     if (updateUsers) {
@@ -43,7 +71,11 @@ const Users = () => {
             setError(t('errorsList.formErrors'));
             setValidationErrors(buildValidationErrorsObject(data.errors));
           } else {
-            setUsers(data.users);
+            setUsers(
+              data.users.filter(
+                (user) => includeCurrentUser || user._id !== currentUser._id
+              )
+            );
           }
         })
         .catch((error) => setError(error))
@@ -52,7 +84,7 @@ const Users = () => {
           setLoading(false);
         });
     }
-  }, [updateUsers, query, t]);
+  }, [currentUser, includeCurrentUser, updateUsers, query, t]);
 
   useEffect(() => {
     setError(null);
@@ -60,6 +92,8 @@ const Users = () => {
       .then((data) => setAllInterests(data.interests))
       .catch((error) => setError(error));
   }, []);
+
+  const handleDialogToggle = () => setDialogOpen(!dialogOpen);
 
   const handleNameChange = (name) => setName(name);
 
@@ -82,6 +116,10 @@ const Users = () => {
 
   const handleInterestsChange = (interests) => setInterests(interests);
 
+  const handleIncludeCurrentUserChange = (includeCurrentUser) => {
+    setIncludeCurrentUser(includeCurrentUser);
+  };
+
   const handleSearchClick = () => {
     const params = new URLSearchParams();
     if (name) {
@@ -102,6 +140,8 @@ const Users = () => {
 
     setQuery(`?${params.toString()}`);
     setUpdateUsers(true);
+    handleDialogToggle();
+    window.scrollTo(0, 0);
   };
 
   return (
@@ -111,24 +151,6 @@ const Users = () => {
         <Grid container justify="center" spacing={2}>
           <Grid item className={`${style.fullWidth} ${style.center}`}>
             <Typography variant="h2">{t('users.title')}</Typography>
-          </Grid>
-          <Grid item className={`${style.fullWidth} ${style.center}`}>
-            <UserSearchForm
-              name={name}
-              handleNameChange={handleNameChange}
-              countries={countries}
-              country={country}
-              handleCountryChange={handleCountryChange}
-              regions={regions}
-              region={region}
-              handleRegionChange={handleRegionChange}
-              allInterests={allInterests}
-              interests={interests}
-              handleInterestsChange={handleInterestsChange}
-              handleSearchClick={handleSearchClick}
-              validationErrors={validationErrors}
-              loading={loading}
-            />
           </Grid>
           {users && users.length > 0
             ? users.map((user) => (
@@ -143,7 +165,32 @@ const Users = () => {
               )}
         </Grid>
       </div>
-      {error && <ErrorSnackbar error={error} />}
+      <SearchFabAndDialog
+        dialogOpen={dialogOpen}
+        handleDialogToggle={handleDialogToggle}
+      >
+        <UserSearchForm
+          name={name}
+          handleNameChange={handleNameChange}
+          countries={countries}
+          country={country}
+          handleCountryChange={handleCountryChange}
+          regions={regions}
+          region={region}
+          handleRegionChange={handleRegionChange}
+          allInterests={allInterests}
+          interests={interests}
+          handleInterestsChange={handleInterestsChange}
+          includeCurrentUser={includeCurrentUser}
+          handleIncludeCurrentUserChange={handleIncludeCurrentUserChange}
+          handleSearchClick={handleSearchClick}
+          validationErrors={validationErrors}
+          loading={loading}
+        />
+      </SearchFabAndDialog>
+      {error && (
+        <ErrorSnackbar error={error} className={style.snackbarAboveFab} />
+      )}
     </Fragment>
   );
 };

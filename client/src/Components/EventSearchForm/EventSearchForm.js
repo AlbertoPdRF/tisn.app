@@ -2,6 +2,7 @@ import React from 'react';
 import { useTranslation } from 'react-i18next';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from '@material-ui/core/Button';
@@ -36,6 +37,9 @@ const EventSearchForm = (props) => {
   return (
     <Box p={1}>
       <Grid container direction="column" alignItems="center" spacing={2}>
+        <Grid item>
+          <Typography variant="h3">{t('eventSearchForm.title')}</Typography>
+        </Grid>
         <Grid item>
           <TextField
             className={style.formInput}

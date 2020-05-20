@@ -150,6 +150,14 @@ const Style = makeStyles((theme) => ({
   breakWord: {
     wordWrap: 'break-word',
   },
+  fab: {
+    position: 'fixed',
+    bottom: theme.spacing(2),
+    right: theme.spacing(2),
+  },
+  snackbarAboveFab: {
+    marginBottom: '80px',
+  },
 }));
 
 export default Style;

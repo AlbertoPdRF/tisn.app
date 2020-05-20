@@ -53,7 +53,7 @@ const EventCard = (props) => {
                 : `${decodedName.substring(0, 19)}...`}
             </Typography>
             <div className={style.grow} />
-            <AvatarGroup max={3}>
+            <AvatarGroup max={3} style={{ zIndex: 0 }}>
               {event.relatedInterests.map((interest) => (
                 <Avatar
                   key={interest._id}

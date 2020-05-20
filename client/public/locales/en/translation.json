@@ -59,9 +59,10 @@
   },
   "events": {
     "title": "Events",
-    "noEvents": "There are no events matching this filter"
+    "noEvents": "There are no events matching your search parameters"
   },
   "eventSearchForm": {
+    "title": "Search",
     "fromDate": "From date",
     "country": "Country",
     "noMatchingCountry": "No matching country",
@@ -181,6 +182,9 @@
     "noNew": "You have no new notifications",
     "read": "Read"
   },
+  "searchFabAndDialog": {
+    "search": "Search"
+  },
   "shareMenu": {
     "chats": "Share through chat",
     "more": "More options..."
@@ -254,14 +258,16 @@
   },
   "users": {
     "title": "Users",
-    "noUsers": "There are no users matching this filter"
+    "noUsers": "There are no users matching your search parameters"
   },
   "userSearchForm": {
+    "title": "Search",
     "name": "Name",
     "country": "Country",
     "noMatchingCountry": "No matching country",
     "region": "Region",
     "noMatchingRegion": "No matching region",
+    "includeCurrentUser": "Include me in the results",
     "search": "Search"
   },
   "userTabs": {

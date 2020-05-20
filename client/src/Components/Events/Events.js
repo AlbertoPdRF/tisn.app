@@ -14,6 +14,7 @@ import { useUser } from '../UserProvider/UserProvider';
 
 import EventSearchForm from '../EventSearchForm/EventSearchForm';
 import EventCard from '../EventCard/EventCard';
+import SearchFabAndDialog from '../SearchFabAndDialog/SearchFabAndDialog';
 import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 
 import Style from '../Style/Style';
@@ -24,6 +25,7 @@ const Events = () => {
   const user = useUser();
 
   const [events, setEvents] = useState(null);
+  const [dialogOpen, setDialogOpen] = useState(false);
   const [fromDate, setFromDate] = useState('');
   const [country, setCountry] = useState(null);
   const [regions, setRegions] = useState([]);
@@ -107,6 +109,8 @@ const Events = () => {
     }
   }, [interestParam, allInterests]);
 
+  const handleDialogToggle = () => setDialogOpen(!dialogOpen);
+
   const handleFromDateChange = (fromDate) => setFromDate(fromDate);
 
   const handleCountryChange = (country) => {
@@ -155,6 +159,8 @@ const Events = () => {
 
     setQuery(`?${params.toString()}`);
     setUpdateEvents(true);
+    handleDialogToggle();
+    window.scrollTo(0, 0);
   };
 
   return (
@@ -164,26 +170,6 @@ const Events = () => {
         <Grid container justify="center" spacing={2}>
           <Grid item className={`${style.fullWidth} ${style.center}`}>
             <Typography variant="h2">{t('events.title')}</Typography>
-          </Grid>
-          <Grid item className={`${style.fullWidth} ${style.center}`}>
-            <EventSearchForm
-              fromDate={fromDate}
-              handleFromDateChange={handleFromDateChange}
-              countries={countries}
-              country={country}
-              handleCountryChange={handleCountryChange}
-              regions={regions}
-              region={region}
-              handleRegionChange={handleRegionChange}
-              name={name}
-              handleNameChange={handleNameChange}
-              allInterests={allInterests}
-              relatedInterests={relatedInterests}
-              handleRelatedInterestsChange={handleRelatedInterestsChange}
-              handleSearchClick={handleSearchClick}
-              validationErrors={validationErrors}
-              loading={loading}
-            />
           </Grid>
           {events && events.length > 0
             ? events.map((event) => (
@@ -200,7 +186,32 @@ const Events = () => {
               )}
         </Grid>
       </div>
-      {error && <ErrorSnackbar error={error} />}
+      <SearchFabAndDialog
+        dialogOpen={dialogOpen}
+        handleDialogToggle={handleDialogToggle}
+      >
+        <EventSearchForm
+          fromDate={fromDate}
+          handleFromDateChange={handleFromDateChange}
+          countries={countries}
+          country={country}
+          handleCountryChange={handleCountryChange}
+          regions={regions}
+          region={region}
+          handleRegionChange={handleRegionChange}
+          name={name}
+          handleNameChange={handleNameChange}
+          allInterests={allInterests}
+          relatedInterests={relatedInterests}
+          handleRelatedInterestsChange={handleRelatedInterestsChange}
+          handleSearchClick={handleSearchClick}
+          validationErrors={validationErrors}
+          loading={loading}
+        />
+      </SearchFabAndDialog>
+      {error && (
+        <ErrorSnackbar error={error} className={style.snackbarAboveFab} />
+      )}
     </Fragment>
   );
 };

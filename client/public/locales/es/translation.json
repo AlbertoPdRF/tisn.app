@@ -59,9 +59,10 @@
   },
   "events": {
     "title": "Eventos",
-    "noEvents": "No hay eventos que coincidan con este filtro"
+    "noEvents": "No hay eventos que coincidan con tus parámetros de búsqueda"
   },
   "eventSearchForm": {
+    "title": "Buscar",
     "fromDate": "Desde la fecha",
     "country": "País",
     "noMatchingCountry": "Ningún país coincide",
@@ -181,6 +182,9 @@
     "noNew": "No tienes notificaciones nuevas",
     "read": "Leídas"
   },
+  "searchFabAndDialog": {
+    "search": "Buscar"
+  },
   "shareMenu": {
     "chats": "Compartir por chat",
     "more": "Más opciones..."
@@ -254,14 +258,16 @@
   },
   "users": {
     "title": "Usuarios",
-    "noUsers": "No hay usuarios que coincidan con este filtro"
+    "noUsers": "No hay usuarios que coincidan con tus parámetros de búsqueda"
   },
   "userSearchForm": {
+    "title": "Buscar",
     "name": "Nombre",
     "country": "País",
     "noMatchingCountry": "Ningún país coincide",
     "region": "Región",
     "noMatchingRegion": "Ninguna región coincide",
+    "includeCurrentUser": "Incluirme en los resultados",
     "search": "Buscar"
   },
   "userTabs": {

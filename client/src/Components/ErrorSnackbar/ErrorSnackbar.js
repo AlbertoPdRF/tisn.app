@@ -5,7 +5,7 @@ import Portal from '@material-ui/core/Portal';
 import ClosableSnackbar from '../ClosableSnackbar/ClosableSnackbar';
 
 const ErrorSnackbar = (props) => {
-  const { error } = props;
+  const { error, ...other } = props;
 
   const { t } = useTranslation();
 
@@ -19,6 +19,7 @@ const ErrorSnackbar = (props) => {
           vertical: 'bottom',
           horizontal: 'right',
         }}
+        {...other}
       />
     </Portal>
   );
