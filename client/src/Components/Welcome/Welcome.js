@@ -7,10 +7,8 @@ import CardHeader from '@material-ui/core/CardHeader';
 import CategoryIcon from '@material-ui/icons/Category';
 import DateRangeIcon from '@material-ui/icons/DateRange';
 import PeopleIcon from '@material-ui/icons/People';
-import Link from '@material-ui/core/Link';
-import InstagramIcon from '@material-ui/icons/Instagram';
-import TwitterIcon from '@material-ui/icons/Twitter';
-import FacebookIcon from '@material-ui/icons/Facebook';
+
+import Footer from '../Footer/Footer';
 
 import Style from '../Style/Style';
 
@@ -31,14 +29,14 @@ const Welcome = () => {
             {t('welcome.slogan')}
           </Typography>
         </Grid>
-        <Grid item className={style.center} style={{ marginTop: '16px' }}>
+        <Grid item className={style.center}>
           <Typography gutterBottom variant="body1">
             {t('welcome.overview')}
           </Typography>
         </Grid>
         <Grid item>
           <Grid container justify="center" spacing={1}>
-            <Grid item md={4} sm={6} xs={12}>
+            <Grid item sm={6} xs={12}>
               <Card>
                 <CardHeader
                   avatar={<CategoryIcon />}
@@ -47,17 +45,16 @@ const Welcome = () => {
                 />
               </Card>
             </Grid>
-            <Grid item md={4} sm={6} xs={12}>
+            <Grid item sm={6} xs={12}>
               <Card>
                 <CardHeader
                   avatar={<DateRangeIcon />}
                   title={t('welcome.overviewEventsTitle')}
                   titleTypographyProps={{ variant: 'h6', component: 'h3' }}
-                  subheader={t('welcome.overviewEventsSubheader')}
                 />
               </Card>
             </Grid>
-            <Grid item md={4} sm={6} xs={12}>
+            <Grid item sm={6} xs={12}>
               <Card>
                 <CardHeader
                   avatar={<PeopleIcon />}
@@ -70,35 +67,7 @@ const Welcome = () => {
         </Grid>
         <Grid item className={style.grow} />
         <Grid item>
-          <Grid container justify="center" spacing={2}>
-            <Grid item>
-              <Link
-                href="https://www.instagram.com/tisn.app/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <InstagramIcon />
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link
-                href="https://twitter.com/tisn_app/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <TwitterIcon />
-              </Link>
-            </Grid>
-            <Grid item>
-              <Link
-                href="https://www.facebook.com/tisnapp/"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <FacebookIcon />
-              </Link>
-            </Grid>
-          </Grid>
+          <Footer />
         </Grid>
       </Grid>
     </div>

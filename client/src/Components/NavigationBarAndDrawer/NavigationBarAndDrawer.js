@@ -44,6 +44,7 @@ import {
 } from '../NotificationsProvider/NotificationsProvider';
 import { useToggleTheme } from '../ThemeProvider/ThemeProvider';
 
+import Footer from '../Footer/Footer';
 import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 
 import Style from '../Style/Style';
@@ -127,126 +128,149 @@ const NavigationBarAndDrawer = (props) => {
 
   const drawer = user && (
     <Fragment>
-      <List>
-        <ListItem
-          button
-          onClick={() => {
-            history.push(`/users/${user._id}`);
-            handleDrawerToggle();
-          }}
-        >
-          <ListItemAvatar>
-            <Avatar
-              src={user.avatar}
-              alt={t('navigationBarAndDrawer.avatar', { name: user.name })}
-            >
-              {user.name.charAt(0).toUpperCase()}
-            </Avatar>
-          </ListItemAvatar>
-          <ListItemText primary={user.name} />
-        </ListItem>
-        <Divider />
-        <ListItem
-          button
-          onClick={() => {
-            history.push('/');
-            handleDrawerToggle();
-          }}
-        >
-          <ListItemIcon>
-            <HomeIcon />
-          </ListItemIcon>
-          <ListItemText primary={t('navigationBarAndDrawer.home')} />
-        </ListItem>
-        <Divider />
-        <ListItem
-          button
-          onClick={() => {
-            history.push('/events');
-            handleDrawerToggle();
-          }}
-        >
-          <ListItemIcon>
-            <DateRangeIcon />
-          </ListItemIcon>
-          <ListItemText primary={t('navigationBarAndDrawer.events')} />
-        </ListItem>
-        <ListItem
-          button
-          onClick={() => {
-            history.push('/events/mine');
-            handleDrawerToggle();
-          }}
-        >
-          <ListItemIcon>
-            <EventIcon />
-          </ListItemIcon>
-          <ListItemText primary={t('navigationBarAndDrawer.myEvents')} />
-        </ListItem>
-        <ListItem
-          button
-          onClick={() => {
-            history.push('/events/new');
-            handleDrawerToggle();
-          }}
-        >
-          <ListItemIcon>
-            <AddIcon />
-          </ListItemIcon>
-          <ListItemText primary={t('navigationBarAndDrawer.createEvent')} />
-        </ListItem>
-        <Divider />
-        <ListItem
-          button
-          onClick={() => {
-            history.push('/users');
-            handleDrawerToggle();
-          }}
-        >
-          <ListItemIcon>
-            <PeopleIcon />
-          </ListItemIcon>
-          <ListItemText primary={t('navigationBarAndDrawer.users')} />
-        </ListItem>
-        <ListItem
-          button
-          onClick={() => {
-            history.push(`/users/${user._id}`);
-            handleDrawerToggle();
-          }}
-        >
-          <ListItemIcon>
-            <PersonIcon />
-          </ListItemIcon>
-          <ListItemText primary={t('navigationBarAndDrawer.myProfile')} />
-        </ListItem>
-        <Divider />
-        <ListItem
-          button
-          onClick={() => {
-            history.push('/interests');
-            handleDrawerToggle();
-          }}
-        >
-          <ListItemIcon>
-            <CategoryIcon />
-          </ListItemIcon>
-          <ListItemText primary={t('navigationBarAndDrawer.interests')} />
-        </ListItem>
-        <Divider />
-        <ListItem
-          button
-          onClick={() => {
-            setLogUserOut(true);
-            handleDrawerToggle();
-          }}
-        >
-          <ListItemIcon>
-            <ExitToAppIcon />
-          </ListItemIcon>
-          <ListItemText primary={t('navigationBarAndDrawer.logOut')} />
-        </ListItem>
-      </List>
+      <div
+        style={{
+          overflowY: 'auto',
+          overflowX: 'hidden',
+          height: 'calc(100vh - 55px)',
+        }}
+      >
+        <List>
+          <ListItem
+            button
+            onClick={() => {
+              history.push(`/users/${user._id}`);
+              handleDrawerToggle();
+            }}
+          >
+            <ListItemAvatar>
+              <Avatar
+                src={user.avatar}
+                alt={t('navigationBarAndDrawer.avatar', { name: user.name })}
+              >
+                {user.name.charAt(0).toUpperCase()}
+              </Avatar>
+            </ListItemAvatar>
+            <ListItemText primary={user.name} />
+          </ListItem>
+          <Divider />
+          <ListItem
+            button
+            onClick={() => {
+              history.push('/');
+              handleDrawerToggle();
+            }}
+          >
+            <ListItemIcon>
+              <HomeIcon color="primary" />
+            </ListItemIcon>
+            <ListItemText primary={t('navigationBarAndDrawer.home')} />
+          </ListItem>
+          <Divider />
+          <ListItem
+            button
+            onClick={() => {
+              history.push('/events');
+              handleDrawerToggle();
+            }}
+          >
+            <ListItemIcon>
+              <DateRangeIcon color="primary" />
+            </ListItemIcon>
+            <ListItemText primary={t('navigationBarAndDrawer.events')} />
+          </ListItem>
+          <ListItem
+            button
+            onClick={() => {
+              history.push('/events/mine');
+              handleDrawerToggle();
+            }}
+          >
+            <ListItemIcon>
+              <EventIcon color="primary" />
+            </ListItemIcon>
+            <ListItemText primary={t('navigationBarAndDrawer.myEvents')} />
+          </ListItem>
+          <ListItem
+            button
+            onClick={() => {
+              history.push('/events/new');
+              handleDrawerToggle();
+            }}
+          >
+            <ListItemIcon>
+              <AddIcon color="primary" />
+            </ListItemIcon>
+            <ListItemText primary={t('navigationBarAndDrawer.createEvent')} />
+          </ListItem>
+          <Divider />
+          <ListItem
+            button
+            onClick={() => {
+              history.push('/users');
+              handleDrawerToggle();
+            }}
+          >
+            <ListItemIcon>
+              <PeopleIcon color="primary" />
+            </ListItemIcon>
+            <ListItemText primary={t('navigationBarAndDrawer.users')} />
+          </ListItem>
+          <ListItem
+            button
+            onClick={() => {
+              history.push(`/users/${user._id}`);
+              handleDrawerToggle();
+            }}
+          >
+            <ListItemIcon>
+              <PersonIcon color="primary" />
+            </ListItemIcon>
+            <ListItemText primary={t('navigationBarAndDrawer.myProfile')} />
+          </ListItem>
+          <Divider />
+          <ListItem
+            button
+            onClick={() => {
+              history.push('/interests');
+              handleDrawerToggle();
+            }}
+          >
+            <ListItemIcon>
+              <CategoryIcon color="primary" />
+            </ListItemIcon>
+            <ListItemText primary={t('navigationBarAndDrawer.interests')} />
+          </ListItem>
+          <Divider />
+          <ListItem
+            button
+            onClick={() => {
+              setLogUserOut(true);
+              handleDrawerToggle();
+            }}
+          >
+            <ListItemIcon>
+              <ExitToAppIcon color="primary" />
+            </ListItemIcon>
+            <ListItemText primary={t('navigationBarAndDrawer.logOut')} />
+          </ListItem>
+        </List>
+      </div>
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          width: '100%',
+          overflow: 'hidden',
+        }}
+      >
+        <List>
+          <Divider />
+          <ListItem>
+            <Footer />
+          </ListItem>
+        </List>
+      </div>
     </Fragment>
   );
 
