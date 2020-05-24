@@ -236,7 +236,7 @@ const Event = ({ match }) => {
         <div className={style.root}>
           <Grid container direction="column" alignItems="center" spacing={2}>
             <Grid item>
-              <Typography variant="h2">Event</Typography>
+              <Typography variant="h2">{t('event.title')}</Typography>
             </Grid>
             <Grid item className={style.fullWidth}>
               <Paper>

@@ -30,6 +30,7 @@
     "home": "Take me home"
   },
   "event": {
+    "title": "Event",
     "details": "Details",
     "comments": "Comments",
     "onlyAttendants": "Only attendants can read and post comments",

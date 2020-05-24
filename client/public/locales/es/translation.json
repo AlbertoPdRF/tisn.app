@@ -30,6 +30,7 @@
     "home": "Llévame al inicio"
   },
   "event": {
+    "title": "Evento",
     "details": "Detalles",
     "comments": "Comentarios",
     "onlyAttendants": "Solo los asistentes pueden leer y publicar comentarios",
