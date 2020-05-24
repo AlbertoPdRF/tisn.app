@@ -25,6 +25,7 @@ const InterestsSelect = (props) => {
       className={style.formInput}
       multiple
       disableClearable
+      disableCloseOnSelect
       filterSelectedOptions
       options={allInterests
         .sort(

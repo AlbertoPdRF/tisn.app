@@ -11,7 +11,7 @@ import Button from '@material-ui/core/Button';
 import Style from '../Style/Style';
 
 const InterestCard = (props) => {
-  const { interest, userInterested, handleClick } = props;
+  const { interest, userInterested, handleClick, loading } = props;
 
   const { t } = useTranslation();
   const style = Style();
@@ -39,6 +39,7 @@ const InterestCard = (props) => {
           variant="text"
           color={userInterested ? 'secondary' : 'primary'}
           onClick={() => handleClick(interest, userInterested)}
+          disabled={loading}
         >
           {userInterested ? t('interestsCard.remove') : t('interestsCard.add')}
         </Button>

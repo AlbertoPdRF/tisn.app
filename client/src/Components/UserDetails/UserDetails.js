@@ -98,7 +98,7 @@ const UserDetails = (props) => {
             </Typography>
           </Fragment>
         )}
-        {(userIsCurrentUser || user.interests.length > 0) && (
+        {user.interests.length > 0 && (
           <Fragment>
             <Typography variant="h6" component="h4">
               {t('userDetails.interests')}
@@ -119,16 +119,6 @@ const UserDetails = (props) => {
                 onClick={() => history.push(`/events?interest=${interest._id}`)}
               />
             ))}
-            {userIsCurrentUser && (
-              <IconButton
-                color="primary"
-                onClick={() =>
-                  history.push(`/users/${user._id}/edit/interests`)
-                }
-              >
-                <EditIcon />
-              </IconButton>
-            )}
           </Fragment>
         )}
       </CardContent>

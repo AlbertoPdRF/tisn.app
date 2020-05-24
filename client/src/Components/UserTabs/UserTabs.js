@@ -79,13 +79,6 @@ const UserTabs = ({ match }) => {
   const [validationErrors, setValidationErrors] = useState({});
   const [error, setError] = useState(null);
 
-  const interestsTab = match.path.endsWith('/interests');
-  useEffect(() => {
-    if (interestsTab) {
-      setValue(1);
-    }
-  }, [interestsTab]);
-
   const userId = match.params.userId;
   useEffect(() => {
     if (userId && currentUser) {

@@ -157,6 +157,7 @@ const Interests = () => {
                                     userInterest._id === interest._id
                                 )}
                                 handleClick={handleClick}
+                                loading={loading}
                               />
                             </Grid>
                           ))}
