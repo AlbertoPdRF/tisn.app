@@ -1,7 +1,13 @@
 import React from 'react';
 import { Switch, Redirect } from 'react-router-dom';
 
+import { isLoggedIn } from '../../logic/auth';
+
 import { PublicRoute, PrivateRoute, AdminRoute } from '../Routes/Routes';
+
+import Welcome from '../Welcome/Welcome';
+import LogInForm from '../LogInForm/LogInForm';
+import SignUpForm from '../SignUpForm/SignUpForm';
 
 import Home from '../Home/Home';
 import Events from '../Events/Events';
@@ -17,15 +23,15 @@ import Chat from '../Chat/Chat';
 import Notifications from '../Notifications/Notifications';
 import Email from '../Email/Email';
 
-import Welcome from '../Welcome/Welcome';
-import LogInForm from '../LogInForm/LogInForm';
-import SignUpForm from '../SignUpForm/SignUpForm';
-
 import AdminDashboard from '../AdminDashboard/AdminDashboard';
 
 const Navigation = () => {
   return (
     <Switch>
+      <PublicRoute exact path="/welcome" component={Welcome} />
+      <PublicRoute exact path="/log-in" component={LogInForm} />
+      <PublicRoute exact path="/sign-up" component={SignUpForm} />
+
       <PrivateRoute exact path="/" component={Home} />
       <PrivateRoute exact path="/events" component={Events} />
       <PrivateRoute exact path="/events/mine" component={UserEvents} />
@@ -60,13 +66,9 @@ const Navigation = () => {
         component={Email}
       />
 
-      <PublicRoute exact path="/welcome" component={Welcome} />
-      <PublicRoute exact path="/log-in" component={LogInForm} />
-      <PublicRoute exact path="/sign-up" component={SignUpForm} />
-
       <AdminRoute exact path="/admin" component={AdminDashboard} />
 
-      <Redirect to="/" />
+      <Redirect to={isLoggedIn() ? '/' : '/welcome'} />
     </Switch>
   );
 };

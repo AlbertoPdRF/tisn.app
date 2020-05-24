@@ -325,7 +325,8 @@
     "must be at least 2": "debe ser al menos 2",
     "is unknown": "es desconocido",
     "must have at least 1": "debe tener al menos 1",
-    "wrongEmailAndOrPassword": "Correo electrónico y/o contraseña incorrectos"
+    "wrongEmailAndOrPassword": "Correo electrónico y/o contraseña incorrectos",
+    "logIn": "Necesitas entrar antes de continuar"
   },
 
   "countriesList": {

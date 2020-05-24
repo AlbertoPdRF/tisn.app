@@ -25,7 +25,7 @@ export const isLoggedIn = () => {
 };
 
 export const getPayloadFromToken = () =>
-  JSON.parse(atob(accessToken().split('.')[1]));
+  !!accessToken() && JSON.parse(atob(accessToken().split('.')[1]));
 
 export const isAdmin = () => !!getPayloadFromToken().admin;
 

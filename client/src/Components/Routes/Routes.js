@@ -6,55 +6,57 @@ import { isLoggedIn, isAdmin } from '../../logic/auth';
 import WelcomeNavigationBar from '../WelcomeNavigationBar/WelcomeNavigationBar';
 import NavigationBarAndDrawer from '../NavigationBarAndDrawer/NavigationBarAndDrawer';
 
-export const PublicRoute = ({ component: Component, ...rest }) => {
-  return (
-    <Route
-      {...rest}
-      render={(props) =>
-        !isLoggedIn() ? (
-          <Fragment>
-            <WelcomeNavigationBar />
-            <Component {...props} />
-          </Fragment>
-        ) : (
-          <Redirect to={{ pathname: '/' }} />
-        )
-      }
-    />
-  );
-};
-
-export const PrivateRoute = ({ component: Component, ...rest }) => {
-  return (
-    <Route
-      {...rest}
-      render={(props) =>
-        isLoggedIn() ? (
-          <Fragment>
-            <NavigationBarAndDrawer />
-            <Component {...props} />
-          </Fragment>
-        ) : (
-          <Redirect
-            to={{ pathname: '/welcome', state: { from: props.location } }}
-          />
-        )
-      }
-    />
-  );
-};
-
-export const AdminRoute = ({ component: Component, ...rest }) => {
-  return (
-    <Route
-      {...rest}
-      render={(props) =>
-        isAdmin() ? (
+export const PublicRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={(props) =>
+      !isLoggedIn() ? (
+        <Fragment>
+          <WelcomeNavigationBar />
           <Component {...props} />
-        ) : (
-          <Redirect to={{ pathname: '/', state: { from: props.location } }} />
-        )
-      }
-    />
-  );
-};
+        </Fragment>
+      ) : (
+        <Redirect to={{ pathname: '/' }} />
+      )
+    }
+  />
+);
+
+export const PrivateRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={(props) =>
+      isLoggedIn() ? (
+        <Fragment>
+          <NavigationBarAndDrawer />
+          <Component {...props} />
+        </Fragment>
+      ) : (
+        <Redirect
+          to={{
+            pathname: props.location.pathname === '/' ? '/welcome' : '/log-in',
+            state: { from: props.location },
+          }}
+        />
+      )
+    }
+  />
+);
+
+export const AdminRoute = ({ component: Component, ...rest }) => (
+  <Route
+    {...rest}
+    render={(props) =>
+      isAdmin() ? (
+        <Component {...props} />
+      ) : (
+        <Redirect
+          to={{
+            pathname: isLoggedIn() ? '/' : '/log-in',
+            state: { from: props.location },
+          }}
+        />
+      )
+    }
+  />
+);

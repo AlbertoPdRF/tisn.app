@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -18,7 +18,9 @@ import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 
 import Style from '../Style/Style';
 
-const LogInForm = () => {
+const LogInForm = (props) => {
+  const { from } = props.location.state || { from: { pathname: '/' } };
+
   const { t } = useTranslation();
   const history = useHistory();
   const style = Style();
@@ -29,6 +31,12 @@ const LogInForm = () => {
   const [loading, setLoading] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
   const [error, setError] = useState('');
+
+  useEffect(() => {
+    if (props.location.state) {
+      setError(t('errorsList.logIn'));
+    }
+  }, [props, t]);
 
   const handleClick = () => {
     setLoading(true);
@@ -45,7 +53,7 @@ const LogInForm = () => {
           setLoading(false);
         } else {
           setUserSession(data.user);
-          history.push('/');
+          history.push(from);
         }
       })
       .catch((error) => {
