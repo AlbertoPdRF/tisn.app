@@ -98,9 +98,6 @@ const Style = makeStyles((theme) => ({
   buttons: {
     margin: theme.spacing(0.5),
   },
-  signUpButton: {
-    color: theme.palette.primary.main,
-  },
   image: {
     [theme.breakpoints.down('sm')]: {
       width: '75vw',

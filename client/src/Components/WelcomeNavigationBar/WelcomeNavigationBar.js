@@ -45,10 +45,13 @@ const WelcomeNavigationBar = () => {
         </Button>
         <Button
           edge="end"
-          className={`${style.buttons} ${style.signUpButton}`}
+          className={style.buttons}
           size={matches ? 'small' : 'medium'}
           variant="contained"
-          color="inherit"
+          color={theme.palette.type === 'dark' ? 'default' : 'inherit'}
+          style={{
+            color: theme.palette.type === 'light' && theme.palette.primary.main,
+          }}
           onClick={() => history.push('/sign-up')}
         >
           {t('welcomeNavigationBar.signUp')}
