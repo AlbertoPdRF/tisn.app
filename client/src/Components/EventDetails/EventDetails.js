@@ -34,6 +34,7 @@ const EventDetails = (props) => {
     handleClick,
     attendants,
     limitMet,
+    loading,
   } = props;
 
   const { t } = useTranslation();
@@ -166,6 +167,7 @@ const EventDetails = (props) => {
                     variant={userAttending ? 'outlined' : 'contained'}
                     color={userAttending ? 'secondary' : 'primary'}
                     onClick={() => handleClick()}
+                    disabled={loading}
                   >
                     {userAttending
                       ? t('eventDetails.notAttend')

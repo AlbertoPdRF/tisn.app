@@ -265,6 +265,7 @@ const Event = ({ match }) => {
                       handleClick={handleAttendantsClick}
                       attendants={attendants}
                       limitMet={limitMet}
+                      loading={loading}
                     />
                   </TabPanel>
                   <TabPanel value={value} index={1}>
@@ -294,20 +295,22 @@ const Event = ({ match }) => {
                           ))}
                       </Grid>
                     ) : (
-                      <div className={style.center}>
-                        <Typography gutterBottom variant="body1">
-                          {t('event.onlyAttendants')}
-                        </Typography>
-                        {futureEvent && !limitMet && (
-                          <Button
-                            variant="contained"
-                            color="primary"
-                            onClick={() => handleAttendantsClick()}
-                          >
-                            {t('event.attend')}
-                          </Button>
-                        )}
-                      </div>
+                      !loading && (
+                        <div className={style.center}>
+                          <Typography gutterBottom variant="body1">
+                            {t('event.onlyAttendants')}
+                          </Typography>
+                          {futureEvent && !limitMet && (
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              onClick={() => handleAttendantsClick()}
+                            >
+                              {t('event.attend')}
+                            </Button>
+                          )}
+                        </div>
+                      )
                     )}
                   </TabPanel>
                 </SwipeableViews>

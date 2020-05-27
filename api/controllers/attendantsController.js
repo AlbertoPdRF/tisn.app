@@ -24,6 +24,10 @@ exports.post = (req, res, next) => {
         ],
       });
     } else {
+      if (attendants.some((a) => a.user == attendant.user._id)) {
+        return res.sendStatus(400);
+      }
+
       const finalAttendant = new Attendant(attendant);
 
       return finalAttendant.save().then(() => {
