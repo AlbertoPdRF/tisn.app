@@ -51,6 +51,10 @@ const Style = makeStyles((theme) => ({
     float: 'left',
     textAlign: 'left',
   },
+  popoverGridItem: {
+    width: '300px',
+    padding: theme.spacing(1),
+  },
   drawerPaper: {
     width: '250px',
   },

@@ -134,6 +134,9 @@
     "logIn": "Entrar"
   },
   "navigationBarAndDrawer": {
+    "noMoreNewNotifications": "No tienes más notificaciones nuevas",
+    "noNewNotifications": "No tienes notificaciones nuevas",
+    "allNotifications": "Ver todas",
     "avatar": "Avatar de {{name}}",
     "home": "Inicio",
     "events": "Eventos",
@@ -144,8 +147,7 @@
     "interests": "Intereses",
     "logOut": "Salir"
   },
-  "notifications": {
-    "title": "Notificaciones",
+  "notificationCard": {
     "confirmEmail": {
       "title": "Confirma tu correo electrónico",
       "subheader": "Haz click aquí si necesitas que se te envíe el correo electrónico de confirmación de nuevo"
@@ -179,7 +181,10 @@
       "subheader": "Ve a tu perfil para ver todos tus amigos"
     },
     "deletedUser": "[Usuario eliminado]",
-    "deletedEvent": "[Evento eliminado]",
+    "deletedEvent": "[Evento eliminado]"
+  },
+  "notifications": {
+    "title": "Notificaciones",
     "noNew": "No tienes notificaciones nuevas",
     "read": "Leídas"
   },

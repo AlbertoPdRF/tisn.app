@@ -4,12 +4,16 @@ import { useHistory } from 'react-router-dom';
 import { useTheme } from '@material-ui/core/styles';
 import useScrollTrigger from '@material-ui/core/useScrollTrigger';
 import Slide from '@material-ui/core/Slide';
-import Divider from '@material-ui/core/Divider';
+import Popover from '@material-ui/core/Popover';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import Button from '@material-ui/core/Button';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
 import Avatar from '@material-ui/core/Avatar';
 import ListItemText from '@material-ui/core/ListItemText';
+import Divider from '@material-ui/core/Divider';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import HomeIcon from '@material-ui/icons/Home';
 import DateRangeIcon from '@material-ui/icons/DateRange';
@@ -44,6 +48,7 @@ import {
 } from '../NotificationsProvider/NotificationsProvider';
 import { useToggleTheme } from '../ThemeProvider/ThemeProvider';
 
+import NotificationCard from '../NotificationCard/NotificationCard';
 import Footer from '../Footer/Footer';
 import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 
@@ -75,6 +80,7 @@ const NavigationBarAndDrawer = (props) => {
   const setNotifications = useSetNotifications();
   const toggleTheme = useToggleTheme();
 
+  const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -123,6 +129,60 @@ const NavigationBarAndDrawer = (props) => {
       history.push('/welcome');
     }
   }, [logUserOut, setUser, history]);
+
+  const handlePopoverOpen = (event) => {
+    setPopoverAnchorEl(event.currentTarget);
+  };
+
+  const handlePopoverClose = () => {
+    setPopoverAnchorEl(null);
+  };
+
+  const popover = notifications && (
+    <Popover
+      open={!!popoverAnchorEl}
+      anchorEl={popoverAnchorEl}
+      onClose={() => handlePopoverClose()}
+      anchorOrigin={{
+        vertical: 'bottom',
+        horizontal: 'right',
+      }}
+      transformOrigin={{
+        vertical: 'top',
+        horizontal: 'right',
+      }}
+    >
+      <Grid container direction="column" alignItems="center" spacing={0}>
+        {notifications.regular.map((notification) => (
+          <Grid item key={notification._id} className={style.popoverGridItem}>
+            <NotificationCard
+              notification={notification}
+              handlePopoverClose={handlePopoverClose}
+            />
+          </Grid>
+        ))}
+        <Grid item className={`${style.popoverGridItem} ${style.center}`}>
+          <Typography gutterBottom variant="body1">
+            {t(
+              `navigationBarAndDrawer.no${
+                notifications.regular.length > 0 ? 'More' : ''
+              }NewNotifications`
+            )}
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              history.push('/notifications');
+              handlePopoverClose();
+            }}
+          >
+            {t('navigationBarAndDrawer.allNotifications')}
+          </Button>
+        </Grid>
+      </Grid>
+    </Popover>
+  );
 
   const handleDrawerToggle = () => setDrawerOpen(!drawerOpen);
 
@@ -312,7 +372,7 @@ const NavigationBarAndDrawer = (props) => {
             <IconButton
               edge="end"
               color="inherit"
-              onClick={() => history.push('/notifications')}
+              onClick={(event) => handlePopoverOpen(event)}
             >
               <Badge
                 badgeContent={notifications && notifications.regular.length}
@@ -321,6 +381,7 @@ const NavigationBarAndDrawer = (props) => {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
+            {popover}
           </Toolbar>
         </AppBar>
       </HideOnScroll>

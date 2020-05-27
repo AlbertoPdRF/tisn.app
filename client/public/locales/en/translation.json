@@ -134,6 +134,9 @@
     "logIn": "Log in"
   },
   "navigationBarAndDrawer": {
+    "noMoreNewNotifications": "You have no more new notifications",
+    "noNewNotifications": "You have no new notifications",
+    "allNotifications": "See all",
     "avatar": "{{name}}'s avatar",
     "home": "Home",
     "events": "Events",
@@ -144,8 +147,7 @@
     "interests": "Interests",
     "logOut": "Log out"
   },
-  "notifications": {
-    "title": "Notifications",
+  "notificationCard": {
     "confirmEmail": {
       "title": "Confirm your email",
       "subheader": "Click here if you need the confirmation email to be sent again"
@@ -179,7 +181,10 @@
       "subheader": "Go to your profile to see all your friends"
     },
     "deletedUser": "[Deleted user]",
-    "deletedEvent": "[Deleted event]",
+    "deletedEvent": "[Deleted event]"
+  },
+  "notifications": {
+    "title": "Notifications",
     "noNew": "You have no new notifications",
     "read": "Read"
   },
