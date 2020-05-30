@@ -51,6 +51,9 @@ const Style = makeStyles((theme) => ({
     float: 'left',
     textAlign: 'left',
   },
+  popover: {
+    marginTop: '8px',
+  },
   popoverGridItem: {
     width: '300px',
     padding: theme.spacing(1),

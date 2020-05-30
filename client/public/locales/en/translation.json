@@ -7,9 +7,6 @@
     "message": "Write a message..."
   },
   "chats": {
-    "avatar": "{{name}}'s avatar",
-    "lastMessage": "Last message {{timeDistance}} ago",
-    "noMessages": "Friends since {{timeDistance}} ago",
     "title": "Chats",
     "noFriendships": "You have no friends",
     "browseUsers": "Browse users!"
@@ -98,6 +95,11 @@
     "create": "Create",
     "next": "Next"
   },
+  "friendshipCard": {
+    "avatar": "{{name}}'s avatar",
+    "lastMessage": "Last message {{timeDistance}} ago",
+    "noMessages": "Friends since {{timeDistance}} ago"
+  },
   "friendships": {
     "pending": "Pending requests",
     "haveNoFriendships": "You have no friends",
@@ -134,6 +136,9 @@
     "logIn": "Log in"
   },
   "navigationBarAndDrawer": {
+    "noMoreNewMessages": "You have no more new messages",
+    "noNewMessages": "You have no new messages",
+    "allMessages": "See all",
     "noMoreNewNotifications": "You have no more new notifications",
     "noNewNotifications": "You have no new notifications",
     "allNotifications": "See all",

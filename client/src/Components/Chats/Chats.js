@@ -1,14 +1,9 @@
 import React, { useState, useEffect, Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useHistory, Link } from 'react-router-dom';
-import CardHeader from '@material-ui/core/CardHeader';
-import Badge from '@material-ui/core/Badge';
-import Avatar from '@material-ui/core/Avatar';
+import { useHistory } from 'react-router-dom';
 import LinearProgress from '@material-ui/core/LinearProgress';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import Card from '@material-ui/core/Card';
-import CardActionArea from '@material-ui/core/CardActionArea';
 import Button from '@material-ui/core/Button';
 
 import { getFriendships } from '../../logic/api';
@@ -17,11 +12,11 @@ import {
   buildMessageNotificationsObject,
   sortChats,
 } from '../../logic/utils';
-import { distanceToNow } from '../../logic/date-time';
 
 import { useUser } from '../UserProvider/UserProvider';
 import { useNotifications } from '../NotificationsProvider/NotificationsProvider';
 
+import FriendshipCard from '../FriendshipCard/FriendshipCard';
 import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 
 import Style from '../Style/Style';
@@ -34,7 +29,7 @@ const Chats = () => {
   const notifications = useNotifications();
 
   const [friendships, setFriendships] = useState(null);
-  const [messageNotifications, setMessageNotifications] = useState({});
+  const [messageNotifications, setMessageNotifications] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
@@ -67,47 +62,6 @@ const Chats = () => {
 
   const params = new URLSearchParams(window.location.search);
 
-  const friendshipCardHeader = (friendship) => {
-    const friendshipUser =
-      friendship.requestant._id === user._id
-        ? friendship.receivant
-        : friendship.requestant;
-
-    return (
-      <CardHeader
-        avatar={
-          <Badge
-            badgeContent={
-              messageNotifications[friendship._id] &&
-              messageNotifications[friendship._id].length
-            }
-            color="secondary"
-            overlap="circle"
-          >
-            <Avatar
-              src={friendshipUser.avatar}
-              alt={t('chats.avatar', { name: friendshipUser.name })}
-              style={{ margin: '4px' }}
-            >
-              {friendshipUser.name.charAt(0).toUpperCase()}
-            </Avatar>
-          </Badge>
-        }
-        title={friendshipUser.name}
-        subheader={
-          friendship.lastMessageAt
-            ? t('chats.lastMessage', {
-                timeDistance: distanceToNow(friendship.lastMessageAt),
-              })
-            : t('chats.noMessages', {
-                timeDistance: distanceToNow(friendship.acceptedAt),
-              })
-        }
-        subheaderTypographyProps={{ className: style.preLine }}
-      />
-    );
-  };
-
   return (
     <Fragment>
       {loading && <LinearProgress />}
@@ -116,17 +70,17 @@ const Chats = () => {
           <Grid item className={`${style.fullWidth} ${style.center}`}>
             <Typography variant="h2">{t('chats.title')}</Typography>
           </Grid>
-          {friendships && friendships.length > 0
+          {messageNotifications && friendships && friendships.length > 0
             ? friendships.map((friendship) => (
                 <Grid item key={friendship._id} md={4} sm={6} xs={12}>
-                  <Card>
-                    <CardActionArea
-                      component={Link}
-                      to={`/chats/${friendship._id}?${params.toString()}`}
-                    >
-                      {friendshipCardHeader(friendship)}
-                    </CardActionArea>
-                  </Card>
+                  <FriendshipCard
+                    user={user}
+                    friendship={friendship}
+                    params={params}
+                    messageNotifications={
+                      messageNotifications[`${friendship._id}`]
+                    }
+                  />
                 </Grid>
               ))
             : !loading && (

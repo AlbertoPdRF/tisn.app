@@ -38,7 +38,10 @@ import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import i18n from '../../i18n';
 
 import { getUser, getNotifications } from '../../logic/api';
-import { classifyNotifications } from '../../logic/utils';
+import {
+  classifyNotifications,
+  buildMessageNotificationsObject,
+} from '../../logic/utils';
 import { logOut } from '../../logic/auth';
 
 import { useUser, useSetUser } from '../UserProvider/UserProvider';
@@ -48,6 +51,7 @@ import {
 } from '../NotificationsProvider/NotificationsProvider';
 import { useToggleTheme } from '../ThemeProvider/ThemeProvider';
 
+import FriendshipCard from '../FriendshipCard/FriendshipCard';
 import NotificationCard from '../NotificationCard/NotificationCard';
 import Footer from '../Footer/Footer';
 import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
@@ -80,7 +84,9 @@ const NavigationBarAndDrawer = (props) => {
   const setNotifications = useSetNotifications();
   const toggleTheme = useToggleTheme();
 
+  const [openedPopoverId, setOpenedPopoverId] = useState(null);
   const [popoverAnchorEl, setPopoverAnchorEl] = useState(null);
+  const [messageNotifications, setMessageNotifications] = useState(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -123,6 +129,14 @@ const NavigationBarAndDrawer = (props) => {
   }, [user, setNotifications]);
 
   useEffect(() => {
+    if (notifications) {
+      setMessageNotifications(
+        buildMessageNotificationsObject(notifications.message)
+      );
+    }
+  }, [notifications]);
+
+  useEffect(() => {
     if (logUserOut) {
       setUser(null);
       logOut();
@@ -130,27 +144,100 @@ const NavigationBarAndDrawer = (props) => {
     }
   }, [logUserOut, setUser, history]);
 
-  const handlePopoverOpen = (event) => {
-    setPopoverAnchorEl(event.currentTarget);
+  const handlePopoverOpen = (event, popoverId) => {
+    setPopoverAnchorEl(event.target);
+    setOpenedPopoverId(popoverId);
   };
 
   const handlePopoverClose = () => {
+    setOpenedPopoverId(null);
     setPopoverAnchorEl(null);
   };
 
-  const popover = notifications && (
+  const messageNotificationsDisplayed = {};
+  const messagesPopoverId = 'messages-popover';
+  const messagesPopover = notifications && messageNotifications && (
     <Popover
-      open={!!popoverAnchorEl}
+      className={style.popover}
+      id={messagesPopoverId}
+      open={openedPopoverId === messagesPopoverId}
       anchorEl={popoverAnchorEl}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       onClose={() => handlePopoverClose()}
-      anchorOrigin={{
-        vertical: 'bottom',
-        horizontal: 'right',
-      }}
-      transformOrigin={{
-        vertical: 'top',
-        horizontal: 'right',
-      }}
+    >
+      <Grid container direction="column" alignItems="center" spacing={0}>
+        {notifications.message.map((notification) => {
+          let toReturn;
+          if (
+            messageNotificationsDisplayed[
+              `${notification.referencedFriendship._id}`
+            ]
+          ) {
+            toReturn = null;
+          } else {
+            messageNotificationsDisplayed[
+              `${notification.referencedFriendship._id}`
+            ] = true;
+            toReturn = (
+              <Grid
+                item
+                key={notification._id}
+                className={style.popoverGridItem}
+              >
+                <FriendshipCard
+                  user={user}
+                  friendship={
+                    messageNotifications[
+                      `${notification.referencedFriendship._id}`
+                    ][0].referencedFriendship
+                  }
+                  messageNotifications={
+                    messageNotifications[
+                      `${notification.referencedFriendship._id}`
+                    ]
+                  }
+                  handlePopoverClose={handlePopoverClose}
+                />
+              </Grid>
+            );
+          }
+
+          return toReturn;
+        })}
+        <Grid item className={`${style.popoverGridItem} ${style.center}`}>
+          <Typography gutterBottom variant="body1">
+            {t(
+              `navigationBarAndDrawer.no${
+                notifications.message.length > 0 ? 'More' : ''
+              }NewMessages`
+            )}
+          </Typography>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              history.push('/chats');
+              handlePopoverClose();
+            }}
+          >
+            {t('navigationBarAndDrawer.allMessages')}
+          </Button>
+        </Grid>
+      </Grid>
+    </Popover>
+  );
+
+  const notificationsPopoverId = 'notifications-popover';
+  const notificationsPopover = notifications && (
+    <Popover
+      className={style.popover}
+      id={notificationsPopoverId}
+      open={openedPopoverId === notificationsPopoverId}
+      anchorEl={popoverAnchorEl}
+      anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+      transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+      onClose={() => handlePopoverClose()}
     >
       <Grid container direction="column" alignItems="center" spacing={0}>
         {notifications.regular.map((notification) => (
@@ -360,7 +447,7 @@ const NavigationBarAndDrawer = (props) => {
             <IconButton
               edge="end"
               color="inherit"
-              onClick={() => history.push('/chats')}
+              onClick={(event) => handlePopoverOpen(event, messagesPopoverId)}
             >
               <Badge
                 badgeContent={notifications && notifications.message.length}
@@ -369,10 +456,13 @@ const NavigationBarAndDrawer = (props) => {
                 <ChatIcon />
               </Badge>
             </IconButton>
+            {messagesPopover}
             <IconButton
               edge="end"
               color="inherit"
-              onClick={(event) => handlePopoverOpen(event)}
+              onClick={(event) =>
+                handlePopoverOpen(event, notificationsPopoverId)
+              }
             >
               <Badge
                 badgeContent={notifications && notifications.regular.length}
@@ -381,7 +471,7 @@ const NavigationBarAndDrawer = (props) => {
                 <NotificationsIcon />
               </Badge>
             </IconButton>
-            {popover}
+            {notificationsPopover}
           </Toolbar>
         </AppBar>
       </HideOnScroll>
