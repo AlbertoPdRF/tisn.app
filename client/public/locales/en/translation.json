@@ -213,6 +213,13 @@
     "noMatchingRegion": "No matching region",
     "signUp": "Sign up"
   },
+  "uploadAvatarTextFieldAndDialog": {
+    "avatar": "Avatar",
+    "zoom": "Zoom",
+    "rotation": "Rotation",
+    "cancel": "Cancel",
+    "upload": "Upload"
+  },
   "user": {
     "myProfileTitle": "My profile",
     "profileTitle": "Profile",
@@ -257,8 +264,7 @@
     "created": "Created"
   },
   "userForm": {
-    "avatarAlt": "{{name}}'s avatar",
-    "avatar": "Avatar",
+    "avatar": "{{name}}'s avatar",
     "name": "Name",
     "email": "Email",
     "dateOfBirth": "Date of birth",

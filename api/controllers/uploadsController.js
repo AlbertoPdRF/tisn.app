@@ -11,14 +11,7 @@ cloudinary.config({
 exports.post = async (req, res, next) => {
   const file = req.files.file;
 
-  const extension = path.extname(file.name);
-  if (
-    extension !== '.jpg' &&
-    extension !== '.jpeg' &&
-    extension !== '.png' &&
-    extension !== '.gif' &&
-    extension !== '.svg'
-  ) {
+  if (!file.mimetype.match(/image.*/)) {
     return res.status(422).json({
       errors: [
         {
@@ -30,9 +23,8 @@ exports.post = async (req, res, next) => {
   }
 
   const md5CheckSum = file.md5;
-  const fileName = md5CheckSum + extension;
   const uploadsPath = path.join(__dirname, '../uploads');
-  const destination = path.join(uploadsPath, fileName);
+  const destination = path.join(uploadsPath, md5CheckSum);
   try {
     await file.mv(destination);
     const uploadedFile = await cloudinary.uploader.upload(destination);

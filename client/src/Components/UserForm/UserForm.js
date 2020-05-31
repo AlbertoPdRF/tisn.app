@@ -6,6 +6,8 @@ import Avatar from '@material-ui/core/Avatar';
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
+import UploadAvatarTextFieldAndDialog from '../UploadAvatarTextFieldAndDialog/UploadAvatarTextFieldAndDialog';
+
 import Style from '../Style/Style';
 
 const UserForm = (props) => {
@@ -36,28 +38,16 @@ const UserForm = (props) => {
         <Grid item>
           <Avatar
             src={avatar}
-            alt={t('userForm.avatarAlt', { name })}
+            alt={t('userForm.avatar', { name })}
             style={{ height: '200px', width: '200px', margin: 'auto' }}
           >
             {name.charAt(0).toUpperCase()}
           </Avatar>
         </Grid>
         <Grid item>
-          <TextField
-            className={style.formInput}
-            type="file"
-            accept="image/*"
-            label={t('userForm.avatar')}
-            variant="outlined"
-            onChange={(event) => handleUpload(event.target.files[0])}
-            InputLabelProps={{ shrink: true }}
-            error={!!validationErrors.fileType || !!validationErrors.avatar}
-            helperText={
-              (validationErrors.fileType &&
-                t(`errorsList.${validationErrors.fileType}`)) ||
-              (validationErrors.avatar &&
-                t(`errorsList.${validationErrors.avatar}`))
-            }
+          <UploadAvatarTextFieldAndDialog
+            handleUpload={handleUpload}
+            validationErrors={validationErrors}
           />
         </Grid>
         <Grid item>
