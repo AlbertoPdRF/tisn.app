@@ -1,0 +1,12 @@
+[
+  {
+    "relation": ["delegate_permission/common.handle_all_urls"],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.tisn.twa",
+      "sha256_cert_fingerprints": [
+        "93:BE:A8:2C:31:62:FB:F7:04:C0:00:4A:83:F7:02:20:01:33:F0:1B:E8:A3:17:03:FA:7C:C0:F6:5C:74:F3:92"
+      ]
+    }
+  }
+]

@@ -84,9 +84,9 @@ const buildValidator = (type, param, optional = false) => {
 
           if (param.includes('dateOfBirth')) {
             const dateForMinimumAge = new Date();
-            dateForMinimumAge.setFullYear(dateForMinimumAge.getFullYear() - 14);
+            dateForMinimumAge.setFullYear(dateForMinimumAge.getFullYear() - 13);
             if (date > dateForMinimumAge) {
-              throw new Error('you must be at least 14 years old');
+              throw new Error('you must be at least 13 years old');
             }
           } else if (param.includes('startDate') || param.includes('endDate')) {
             const now = new Date();
