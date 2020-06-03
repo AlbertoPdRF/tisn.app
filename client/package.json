@@ -9,7 +9,7 @@
     "@material-ui/icons": "^4.9.1",
     "@material-ui/lab": "^4.0.0-alpha.55",
     "@testing-library/jest-dom": "^5.9.0",
-    "@testing-library/react": "^10.0.5",
+    "@testing-library/react": "^10.0.6",
     "@testing-library/user-event": "^10.4.1",
     "autolinker": "^3.14.1",
     "country-region-data": "^1.6.0",
