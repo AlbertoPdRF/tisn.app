@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@sendgrid/mail": "^7.1.1",
-    "cloudinary": "^1.21.0",
+    "cloudinary": "^1.22.0",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
     "country-region-data": "^1.6.0",
