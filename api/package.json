@@ -1,7 +1,15 @@
 {
-  "name": "tisn-api",
+  "name": "api.tisn.app",
   "version": "1.0.0",
-  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tisn/tisn.app",
+    "directory": "api"
+  },
+  "bugs": {
+    "url": "https://github.com/tisn/tisn.app/issues"
+  },
+  "license": "AGPL-3.0-or-later",
   "scripts": {
     "start": "node ./bin/www",
     "start:dev": "nodemon ./bin/www"
