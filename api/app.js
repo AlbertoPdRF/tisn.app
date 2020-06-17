@@ -41,8 +41,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use('/api/uploads', express.static(path.join(__dirname, 'uploads')));
-app.use('/api/', require('./routes/index'));
+app.use('/', require('./routes/index'));
 
 app.use(function (req, res, next) {
   next(createError(404));

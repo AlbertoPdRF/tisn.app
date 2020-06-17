@@ -2,7 +2,7 @@ const permissions = (req, res, next) => {
   const { baseUrl, method, params, payload, body } = req;
 
   let id;
-  if (baseUrl.startsWith('/api/users')) {
+  if (baseUrl.startsWith('/users')) {
     if (baseUrl.endsWith('/friendships')) {
       if (method === 'GET') {
         id = payload._id;
@@ -24,7 +24,7 @@ const permissions = (req, res, next) => {
     } else {
       id = params.userId;
     }
-  } else if (baseUrl.startsWith('/api/events')) {
+  } else if (baseUrl.startsWith('/events')) {
     if (baseUrl.endsWith('/attendants')) {
       id = body.attendant.user._id;
     } else if (baseUrl.endsWith('/comments')) {
