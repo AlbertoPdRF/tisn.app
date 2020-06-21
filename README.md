@@ -24,7 +24,7 @@ The primary objective of Tisn is to try and address the problem of the apparent 
 
 1. Connects people according to their interests
 2. Encourages people to go outside and meet others while doing something that they all enjoy
-3. It's as simple as possible
+3. Is as simple as possible
 
 We try to do all of that while being completely transparent and respecting our users' privacy.
 
