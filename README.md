@@ -51,7 +51,7 @@ We recommend using [nvm](https://github.com/nvm-sh/nvm/) to install and manage N
 
 ### Back end (or API)
 
-Before starting, rename the `.env-template` file on the `api` folder to `.env` and fill it following these instructions:
+Before starting, copy the `.env-template` file on the `api` folder to a new `.env` file on the same folder (i.e. `cp api/.env-template api/.env`) and fill it following these instructions:
 
 - DB_URL: we recommend signing up on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas/) using the free tier
 - JWT_SECRET: can be any string
