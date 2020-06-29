@@ -30,7 +30,7 @@ We try to do all of that while being completely transparent and respecting our u
 
 ## Contributing
 
-We encourage you to contribute to tisn.app! We haven't stablished clear guidelines and processes yet, but please keep in mind [contribution best practices](https://opensource.guide/how-to-contribute/) if you want to get involved.
+We would love that you contribute to Tisn! We only ask you to please follow [our contributing guidelines](./CONTRIBUTING.md).
 
 ## Getting started
 
