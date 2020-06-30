@@ -5,13 +5,13 @@
   <strong>Meet people while doing what you enjoy!</strong>
 </div>
 
-## Table of Contents
+## Table of contents
 
 - [What is tisn.app?](#what-is-tisnapp)
 - [Contributing](#contributing)
 - [Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
-  - [Back end (or API)](#back-end-or-api)
+  - [Back end (or API, or server)](#back-end-or-api-or-server)
   - [Front end (or client)](#front-end-or-client)
   - [Important note](#important-note)
 - [License](#license)
@@ -49,17 +49,17 @@ We recommend [setting up an SSH key](https://help.github.com/en/github/authentic
 
 We recommend using [nvm](https://github.com/nvm-sh/nvm/) to install and manage Node versions.
 
-### Back end (or API)
+### Back end (or API, or server)
 
 Before starting, copy the `.env-template` file on the `api` folder to a new `.env` file on the same folder (i.e. `cp api/.env-template api/.env`) and fill it following these instructions:
 
-- DB_URL: we recommend signing up on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas/) using the free tier
-- JWT_SECRET: can be any string
-- CLOUDINARY_CLOUD_NAME: you can sign up on [Cloudinary](https://cloudinary.com/) using the free tier, however this key and the two below are only necessary if you want to upload files
-- CLOUDINARY_API_KEY: same as above
-- CLOUDINARY_API_SECRET: same as above
-- SENDGRID_API_KEY: you can sign up on [SendGrid](https://sendgrid.com/) using the free tier, however this key is only necessary if you want to send emails, which by default are logged to the console in development mode
-- BASE_CLIENT_URL: should be `http://localhost:3000` unless you change the port on which the client runs
+- `DB_URL`: we recommend signing up on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas/) using the free tier
+- `JWT_SECRET`: can be any string
+- `CLOUDINARY_CLOUD_NAME`: you can sign up on [Cloudinary](https://cloudinary.com/) using the free tier, however this key and the two below are only necessary if you want to upload files
+- `CLOUDINARY_API_KEY`: same as above
+- `CLOUDINARY_API_SECRET`: same as above
+- `SENDGRID_API_KEY`: you can sign up on [SendGrid](https://sendgrid.com/) using the free tier, however this key is only necessary if you want to send emails, which by default are logged to the console in development mode
+- `BASE_CLIENT_URL`: should be `http://localhost:3000` unless you change the port on which the client runs
 
 Once that's done, you can install all the dependencies and launch the back end executing the following commands from the repository's root folder:
 
