@@ -29,7 +29,7 @@
     "http-errors": "~1.8.0",
     "i18next": "^19.5.1",
     "i18next-fs-backend": "^1.0.7",
-    "i18next-http-middleware": "^3.0.1",
+    "i18next-http-middleware": "^3.0.2",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.9.21",
     "morgan": "~1.10.0",
