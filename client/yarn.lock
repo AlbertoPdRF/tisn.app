@@ -11950,10 +11950,10 @@ react-app-polyfill@^1.0.6:
     regenerator-runtime "^0.13.3"
     whatwg-fetch "^3.0.0"
 
-react-avatar-editor@^11.0.9:
-  version "11.0.9"
-  resolved "https://registry.yarnpkg.com/react-avatar-editor/-/react-avatar-editor-11.0.9.tgz#74d11f0ccb61dd2aca9c0c1d777d13cfd6ed5530"
-  integrity sha512-FGYdygcY1ca9PVScHCsm4H28ZLaBPxc/jz2cRhPFjmgMD7fwdYTE5AjBGDCr28jIlRNC1Vm4WERTKxSdDscFDA==
+react-avatar-editor@^11.0.10:
+  version "11.0.10"
+  resolved "https://registry.yarnpkg.com/react-avatar-editor/-/react-avatar-editor-11.0.10.tgz#27fe5de6465a2471d6507626535266b7b444f68c"
+  integrity sha512-Rd5aFuzjsF6cuQUsTXbvd16DVBDUPKNqW6thR+Wmxz7SzQbXI1TvphEC9kZkInnAbZaPwXwo9bpUnDW4jpjf8A==
   dependencies:
     prop-types "^15.5.8"
 
