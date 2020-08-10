@@ -18,7 +18,7 @@
     "@material-ui/lab": "^4.0.0-alpha.56",
     "@testing-library/jest-dom": "^5.11.2",
     "@testing-library/react": "^10.4.8",
-    "@testing-library/user-event": "^12.1.0",
+    "@testing-library/user-event": "^12.1.1",
     "autolinker": "^3.14.1",
     "country-region-data": "^1.6.0",
     "date-fns": "^2.15.0",
