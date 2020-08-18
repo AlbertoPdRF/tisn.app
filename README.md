@@ -46,14 +46,15 @@ We recommend [setting up an SSH key](https://help.github.com/en/github/authentic
 ### Prerequisites
 
 - [Node.js](https://nodejs.org/) version 12.x
-
-We recommend using [nvm](https://github.com/nvm-sh/nvm/) to install and manage Node versions.
+  - We recommend using [nvm](https://github.com/nvm-sh/nvm/) to install and manage Node versions
+- [MongoDB](https://www.mongodb.com/)
+  - Alternatively, you can use [MongoDB Atlas](https://www.mongodb.com/cloud/atlas/)
 
 ### Back end (or API, or server)
 
 Before starting, copy the `.env-template` file on the `api` folder to a new `.env` file on the same folder (i.e. `cp api/.env-template api/.env`) and fill it following these instructions:
 
-- `DB_URL`: we recommend signing up on [MongoDB Atlas](https://www.mongodb.com/cloud/atlas/) using the free tier
+- `DB_URL`: should be `mongodb://127.0.0.1:27017` unless you changed MongoDB's default port or are using MongoDB Atlas
 - `JWT_SECRET`: can be any string
 - `CLOUDINARY_CLOUD_NAME`: you can sign up on [Cloudinary](https://cloudinary.com/) using the free tier, however this key and the two below are only necessary if you want to upload files
 - `CLOUDINARY_API_KEY`: same as above
