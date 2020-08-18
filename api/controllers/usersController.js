@@ -257,7 +257,7 @@ exports.sendEmailConfirmationEmail = (req, res, next) => {
       return res.sendStatus(404);
     }
 
-    emails.emailConfirmation(foundUser);
+    emails.emailConfirmation(req, foundUser);
 
     res.json({ user: foundUser.toJson() });
   });
