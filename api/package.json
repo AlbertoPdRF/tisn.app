@@ -11,8 +11,8 @@
   },
   "license": "AGPL-3.0-or-later",
   "scripts": {
-    "start": "node ./bin/www",
-    "start:dev": "nodemon ./bin/www"
+    "start": "nodemon ./bin/www",
+    "start:prod": "node ./bin/www"
   },
   "dependencies": {
     "@sendgrid/mail": "^7.2.3",

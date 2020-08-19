@@ -67,10 +67,8 @@ Once that's done, you can install all the dependencies and launch the back end e
 ```bash
 cd api
 npm install
-npm run start:dev
+npm start
 ```
-
-The server can also be launched with the usual `npm start` command, but in that case it won't use [nodemon](https://nodemon.io/) to monitor for any changes in the code and automatically restart.
 
 Further details about the back end can be found [here](./api/README.md).
 
