@@ -23,7 +23,7 @@
     "country-region-data": "^1.6.0",
     "date-fns": "^2.15.0",
     "date-fns-tz": "^1.0.10",
-    "i18next": "^19.6.3",
+    "i18next": "^19.7.0",
     "i18next-browser-languagedetector": "^6.0.1",
     "i18next-xhr-backend": "^3.2.2",
     "material-ui-confirm": "^2.1.1",
