@@ -15,7 +15,7 @@
     "start:prod": "node ./bin/www"
   },
   "dependencies": {
-    "@sendgrid/mail": "^7.2.3",
+    "@sendgrid/mail": "^7.2.4",
     "cloudinary": "^1.22.0",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
