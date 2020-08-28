@@ -21,7 +21,7 @@
     "@testing-library/user-event": "^12.1.3",
     "autolinker": "^3.14.1",
     "country-region-data": "^1.6.0",
-    "date-fns": "^2.15.0",
+    "date-fns": "^2.16.0",
     "date-fns-tz": "^1.0.10",
     "i18next": "^19.7.0",
     "i18next-browser-languagedetector": "^6.0.1",
