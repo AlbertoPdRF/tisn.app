@@ -3,10 +3,10 @@ updates:
 - package-ecosystem: npm
   directory: "/api"
   schedule:
-    interval: daily
+    interval: weekly
   open-pull-requests-limit: 99
 - package-ecosystem: npm
   directory: "/client"
   schedule:
-    interval: daily
+    interval: weekly
   open-pull-requests-limit: 99
