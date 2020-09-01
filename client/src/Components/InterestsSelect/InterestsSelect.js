@@ -36,11 +36,11 @@ const InterestsSelect = (props) => {
         )
         .sort(
           (a, b) =>
-            -t(`categoriesList.${b.category.name}`).localeCompare(
-              t(`categoriesList.${a.category.name}`)
+            -t(`categoriesList.${b.category}`).localeCompare(
+              t(`categoriesList.${a.category}`)
             )
         )}
-      groupBy={(interest) => t(`categoriesList.${interest.category.name}`)}
+      groupBy={(interest) => t(`categoriesList.${interest.category}`)}
       getOptionLabel={(interest) => t(`interestsList.${interest.name}`)}
       renderInput={(params) => (
         <TextField

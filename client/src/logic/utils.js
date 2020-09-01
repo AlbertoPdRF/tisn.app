@@ -148,14 +148,14 @@ export const groupInterests = (interests) => {
   const groupedInterests = [];
 
   interests.forEach((interest) => {
-    if (!interestsGroups[interest.category.name]) {
-      interestsGroups[interest.category.name] = [];
+    if (!interestsGroups[interest.category]) {
+      interestsGroups[interest.category] = [];
       groupedInterests.push({
         category: interest.category,
-        interests: interestsGroups[interest.category.name],
+        interests: interestsGroups[interest.category],
       });
     }
-    interestsGroups[interest.category.name].push(interest);
+    interestsGroups[interest.category].push(interest);
   });
 
   return groupedInterests;
