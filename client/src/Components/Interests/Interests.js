@@ -130,14 +130,14 @@ const Interests = () => {
               interests
                 .sort(
                   (a, b) =>
-                    -t(`categoriesList.${b.category.name}`).localeCompare(
-                      t(`categoriesList.${a.category.name}`)
+                    -t(`categoriesList.${b.category}`).localeCompare(
+                      t(`categoriesList.${a.category}`)
                     )
                 )
                 .map((interestsGroup) => (
                   <ExpansionPanel key={interestsGroup.category._id}>
                     <ExpansionPanelSummary expandIcon={<ExpandMoreIcon />}>
-                      {t(`categoriesList.${interestsGroup.category.name}`)}
+                      {t(`categoriesList.${interestsGroup.category}`)}
                     </ExpansionPanelSummary>
                     <ExpansionPanelDetails>
                       <Grid container justify="center" spacing={2}>

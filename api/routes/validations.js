@@ -6,7 +6,6 @@ const Interest = require('../models/Interest');
 const Event = require('../models/Event');
 const Attendant = require('../models/Attendant');
 const Comment = require('../models/Comment');
-const Category = require('../models/Category');
 const Friendship = require('../models/Friendship');
 const Notification = require('../models/Notification');
 
@@ -175,9 +174,6 @@ const buildValidator = (type, param, optional = false) => {
               break;
             case 'comment.parentComment':
               model = Comment;
-              break;
-            case 'interest.category':
-              model = Category;
               break;
             case 'friendshipId':
             case 'message.friendship._id':
@@ -351,12 +347,6 @@ const createValidation = (route) => {
         buildValidator('id', 'comment.user._id'),
         buildValidator('text', 'comment.content'),
         buildValidator('id', 'comment.parentComment', true),
-      ];
-    case 'interestsPost':
-      return [
-        buildValidator('name', 'interest.name'),
-        buildValidator('imageUrl', 'interest.avatar'),
-        buildValidator('id', 'interest.category'),
       ];
     case 'friendshipsPost':
       return [

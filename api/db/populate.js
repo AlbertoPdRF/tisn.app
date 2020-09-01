@@ -10,7 +10,6 @@ if (!userArgs[0].startsWith('mongodb')) {
   return;
 }
 
-const Category = require('../models/Category');
 const Interest = require('../models/Interest');
 
 const async = require('async');
@@ -22,18 +21,15 @@ mongoose.Promise = global.Promise;
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-const categories = [];
+const categories = [
+  'Entertainment',
+  'Fitness and wellness',
+  'Hobbies and activities',
+  'Industry and business',
+  'Shopping and fashion',
+  'Sports',
+];
 const interests = [];
-
-const createCategory = (name, callback) => {
-  const category = new Category({ name });
-
-  category.save().then(() => {
-    console.log(`New category: ${category}`);
-    categories.push(category);
-    callback(null, category);
-  });
-};
 
 const createInterest = (name, avatar, category, callback) => {
   const interest = new Interest({ name, avatar, category });
@@ -45,12 +41,9 @@ const createInterest = (name, avatar, category, callback) => {
   });
 };
 
-const createCategoriesAndInterests = () => {
+const createInterests = () => {
   async.series(
     [
-      (seriesCallback) => {
-        createCategory('Entertainment', seriesCallback);
-      },
       (seriesCallback) => {
         createInterest(
           'Art',
@@ -189,9 +182,6 @@ const createCategoriesAndInterests = () => {
       },
 
       (seriesCallback) => {
-        createCategory('Fitness and wellness', seriesCallback);
-      },
-      (seriesCallback) => {
         createInterest(
           'Bodybuilding',
           'https://image.flaticon.com/icons/png/512/2307/2307905.png',
@@ -232,9 +222,6 @@ const createCategoriesAndInterests = () => {
         );
       },
 
-      (seriesCallback) => {
-        createCategory('Hobbies and activities', seriesCallback);
-      },
       (seriesCallback) => {
         createInterest(
           'Acting',
@@ -429,9 +416,6 @@ const createCategoriesAndInterests = () => {
       },
 
       (seriesCallback) => {
-        createCategory('Industry and business', seriesCallback);
-      },
-      (seriesCallback) => {
         createInterest(
           'Advertising',
           'https://image.flaticon.com/icons/svg/2787/2787828.svg',
@@ -617,9 +601,6 @@ const createCategoriesAndInterests = () => {
       },
 
       (seriesCallback) => {
-        createCategory('Shopping and fashion', seriesCallback);
-      },
-      (seriesCallback) => {
         createInterest(
           'Beauty salons',
           'https://image.flaticon.com/icons/svg/1940/1940922.svg',
@@ -756,9 +737,6 @@ const createCategoriesAndInterests = () => {
         );
       },
 
-      (seriesCallback) => {
-        createCategory('Sports', seriesCallback);
-      },
       (seriesCallback) => {
         createInterest(
           'American football',
@@ -972,4 +950,4 @@ const createCategoriesAndInterests = () => {
   );
 };
 
-createCategoriesAndInterests();
+createInterests();
