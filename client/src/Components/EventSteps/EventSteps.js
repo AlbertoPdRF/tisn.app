@@ -197,7 +197,7 @@ const EventSteps = ({ match }) => {
       validationErrors.attendantsLimit;
     const errorInSecondStep = validationErrors.relatedInterests;
 
-    setStepWithError({ '0': errorInFirstStep, '1': errorInSecondStep });
+    setStepWithError({ 0: errorInFirstStep, 1: errorInSecondStep });
 
     if (errorInFirstStep) {
       setActiveStep(0);
