@@ -3,7 +3,12 @@ import { Switch, Redirect } from 'react-router-dom';
 
 import { isLoggedIn } from '../../logic/auth';
 
-import { PublicRoute, PrivateRoute, AdminRoute } from '../Routes/Routes';
+import {
+  PublicRoute,
+  PrivateRoute,
+  AdminRoute,
+  AnyRoute,
+} from '../Routes/Routes';
 
 import Welcome from '../Welcome/Welcome';
 import LogInForm from '../LogInForm/LogInForm';
@@ -24,6 +29,8 @@ import Notifications from '../Notifications/Notifications';
 import Email from '../Email/Email';
 
 import AdminDashboard from '../AdminDashboard/AdminDashboard';
+
+import About from '../About/About';
 
 const Navigation = () => {
   return (
@@ -67,6 +74,8 @@ const Navigation = () => {
       />
 
       <AdminRoute exact path="/admin" component={AdminDashboard} />
+
+      <AnyRoute exact path="/about" component={About} />
 
       <Redirect to={isLoggedIn() ? '/' : '/welcome'} />
     </Switch>

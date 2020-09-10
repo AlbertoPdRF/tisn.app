@@ -22,6 +22,7 @@ import AddIcon from '@material-ui/icons/Add';
 import PeopleIcon from '@material-ui/icons/People';
 import PersonIcon from '@material-ui/icons/Person';
 import CategoryIcon from '@material-ui/icons/Category';
+import InfoIcon from '@material-ui/icons/Info';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -279,7 +280,7 @@ const NavigationBarAndDrawer = (props) => {
         style={{
           overflowY: 'auto',
           overflowX: 'hidden',
-          height: 'calc(100vh - 55px)',
+          height: 'calc(100vh - 152px)',
         }}
       >
         <List>
@@ -388,6 +389,30 @@ const NavigationBarAndDrawer = (props) => {
             </ListItemIcon>
             <ListItemText primary={t('navigationBarAndDrawer.interests')} />
           </ListItem>
+        </List>
+      </div>
+      <div
+        style={{
+          position: 'absolute',
+          bottom: 0,
+          width: '100%',
+          overflow: 'hidden',
+        }}
+      >
+        <List>
+          <Divider />
+          <ListItem
+            button
+            onClick={() => {
+              history.push('/about');
+              handleDrawerToggle();
+            }}
+          >
+            <ListItemIcon>
+              <InfoIcon color="primary" />
+            </ListItemIcon>
+            <ListItemText primary={t('navigationBarAndDrawer.about')} />
+          </ListItem>
           <Divider />
           <ListItem
             button
@@ -401,17 +426,6 @@ const NavigationBarAndDrawer = (props) => {
             </ListItemIcon>
             <ListItemText primary={t('navigationBarAndDrawer.logOut')} />
           </ListItem>
-        </List>
-      </div>
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          width: '100%',
-          overflow: 'hidden',
-        }}
-      >
-        <List>
           <Divider />
           <ListItem>
             <Footer />

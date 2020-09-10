@@ -1,4 +1,24 @@
 {
+  "about": {
+    "title": "Sobre Tisn",
+    "overview": "Tisn, que proviene de las siglas de \"La red social de los introvertidos\" en inglés (\"The introverts' social network\"), es un nuevo tipo de red social que nació con el objetivo primario de abordar la dificultad que existe para conocer a gente y hacer nuevos amigos en este mundo moderno. Para hacer eso, conectamos a gente de acuerdo con sus intereses y les animamos a salir y conocerse mientras hacen lo que les gusta",
+    "sections": "Nuestro modelo es sencillo:",
+    "interestsTitle": "Intereses",
+    "interestsParagraph": "Ofrecemos una variada lista de intereses que permite a nuestros usuarios seleccionar las cosas que realmente les gustan. En función de su selección, proporcionamos recomendaciones a los usuarios. Además, ¡damos la posibilidad de filtrar tanto eventos como usuarios por intereses!",
+    "interestsButton": "Ver intereses",
+    "eventsTitle": "Eventos",
+    "eventsParagraph": "Los eventos tienen una lista de intereses asociada y toda la información organizativa necesaria. También ofrecemos una sección de comentarios para que los usuarios puedan planificar y conocerse más fácilmente. ¡Los usuarios pueden asistir a eventos e incluso crear los suyos propios!",
+    "eventsButton": "Ver eventos",
+    "usersTitle": "Usuarios",
+    "usersParagraph": "Nos esforzamos por hacer que conocer gente sea lo más fácil posible, así que los usuarios pueden enviar solicitudes de amistad a cualquier otro usuario. Cuando se acepta una solicitud de amistad, ¡habrá un chat privado disponible para que ambos usuarios conecten!",
+    "usersButton": "Ver usuarios",
+    "openSourceTitle": "Código abierto",
+    "openSourceParagraph": "Tisn es un proyecto de software de código abierto porque somos completamente transparentes con respecto a lo que hacemos. ¿Quieres colaborar? ¡Únete a nosotros y ayúdanos a dar forma al futuro de Tisn!",
+    "openSourceButton": "Ir a nuestro repositorio",
+    "signUp": "¿Te has registrado ya? Si no, ¡ahora es el momento perfecto para hacerlo!",
+    "signUpButton": "Registrarse",
+    "keepInTouch": "¡Y asegúrate de mantenerte en contacto!"
+  },
   "adminDashboard": {
     "title": "Panel de administración"
   },
@@ -150,6 +170,7 @@
     "users": "Usuarios",
     "myProfile": "Mi perfil",
     "interests": "Intereses",
+    "about": "Sobre Tisn",
     "logOut": "Salir"
   },
   "notificationCard": {
@@ -315,7 +336,8 @@
     "overviewInterestsTitle": "Selecciona tus intereses",
     "overviewEventsTitle": "Busca eventos",
     "overviewEventsSubheader": "¡Y crea los tuyos propios!",
-    "overviewPeopleTitle": "¡Conoce gente!"
+    "overviewPeopleTitle": "¡Conoce gente!",
+    "knowMore": "Quiero saber más"
   },
   "welcomeNavigationBar": {
     "logIn": "Entrar",
