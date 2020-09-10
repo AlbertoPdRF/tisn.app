@@ -60,3 +60,17 @@ export const AdminRoute = ({ component: Component, ...rest }) => (
     }
   />
 );
+
+export const AnyRoute = ({ component: Component, ...rest }) => {
+  return (
+    <Route
+      {...rest}
+      render={(props) => (
+        <Fragment>
+          {isLoggedIn() ? <NavigationBarAndDrawer /> : <WelcomeNavigationBar />}
+          <Component {...props} />
+        </Fragment>
+      )}
+    />
+  );
+};
