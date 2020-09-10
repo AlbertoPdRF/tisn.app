@@ -1,4 +1,24 @@
 {
+  "about": {
+    "title": "About Tisn",
+    "overview": "Tisn, which comes from the initials of \"The introverts' social network\", is a new kind of social network that was born with the primary objective of addressing the difficulty that exists to meet people and make new friends on this modern world. In order to do that, we connect people according to their interests and encourage them to go outside and meet while doing what they enjoy",
+    "sections": "Our model is simple:",
+    "interestsTitle": "Interests",
+    "interestsParagraph": "We offer a varied list of interests that allows our users to select the things they really enjoy. Based on their selection, we provide the users with recommendations. Also, we give the chance to filter both events and users by interests!",
+    "interestsButton": "See interests",
+    "eventsTitle": "Events",
+    "eventsParagraph": "Events have an associated list of interests and all the organizational information needed. We also provide a comments section to make it easier for users to plan and get to know each other. Users can attend events and even create their own!",
+    "eventsButton": "See events",
+    "usersTitle": "Users",
+    "usersParagraph": "We strive to make meeting people as easy as possible, so users can send friendship requests to any other user. When a friendship request is accepted, a private chat will be available for both users to connect!",
+    "usersButton": "See users",
+    "openSourceTitle": "Open source",
+    "openSourceParagraph": "Tisn is an open source software project because we are fully transparent with regards to what we do. Do you want to collaborate? Join us and help us shape Tisn's future!",
+    "openSourceButton": "Go to our repository",
+    "signUp": "Have you signed up already? If not, now's the perfect time for it!",
+    "signUpButton": "Sign up",
+    "keepInTouch": "And make sure to keep in touch!"
+  },
   "adminDashboard": {
     "title": "Admin dashboard"
   },
@@ -150,6 +170,7 @@
     "users": "Users",
     "myProfile": "My profile",
     "interests": "Interests",
+    "about": "About Tisn",
     "logOut": "Log out"
   },
   "notificationCard": {
@@ -315,7 +336,8 @@
     "overviewInterestsTitle": "Select your interests",
     "overviewEventsTitle": "Browse events",
     "overviewEventsSubheader": "And create your own!",
-    "overviewPeopleTitle": "Meet people!"
+    "overviewPeopleTitle": "Meet people!",
+    "knowMore": "I want to know more"
   },
   "welcomeNavigationBar": {
     "logIn": "Log in",
