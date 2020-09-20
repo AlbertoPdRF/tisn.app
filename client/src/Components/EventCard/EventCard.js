@@ -34,7 +34,7 @@ const EventCard = (props) => {
           src={
             event.coverPhoto
               ? `${event.coverPhoto}`
-              : '../../../event-placeholder.jpg'
+              : '../../../event-placeholder.jpeg'
           }
           alt={decodedName}
           height="140"
