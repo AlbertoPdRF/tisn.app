@@ -63,7 +63,9 @@ const EventDetails = (props) => {
       <CardMedia
         component="img"
         src={
-          event.coverPhoto ? event.coverPhoto : '../../../event-placeholder.jpg'
+          event.coverPhoto
+            ? event.coverPhoto
+            : '../../../event-placeholder.jpeg'
         }
         alt={decodedName}
         title={decodedName}
