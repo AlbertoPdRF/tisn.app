@@ -8,7 +8,7 @@ export const setUserSession = (user) =>
 export const accessToken = () =>
   localStorage.getItem(localStorageKey('accessToken'));
 
-export const logIn = (user) => postUser(user, 'log-in');
+export const logIn = (user, path) => postUser(user, `log-in/${path}`);
 
 export const isLoggedIn = () => {
   if (!!accessToken()) {

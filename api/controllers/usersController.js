@@ -304,7 +304,29 @@ exports.logIn = (req, res, next) => {
         return res.json({ user: user.toAuthJson() });
       }
 
-      return status(404).info;
+      return res.json(info);
+    }
+  )(req, res, next);
+};
+
+exports.logInGoogle = (req, res, next) => {
+  req.body.access_token = req.body.user.accessToken;
+  return passport.authenticate(
+    'google-token',
+    { session: false },
+    (error, passportUser, info) => {
+      if (error) {
+        return next(error);
+      }
+
+      if (passportUser) {
+        const user = passportUser;
+        user.token = passportUser.generateJWT();
+
+        return res.json({ user: user.toAuthJson() });
+      }
+
+      return res.json(info);
     }
   )(req, res, next);
 };

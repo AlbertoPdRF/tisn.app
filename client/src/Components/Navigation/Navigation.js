@@ -11,7 +11,7 @@ import {
 } from '../Routes/Routes';
 
 import Welcome from '../Welcome/Welcome';
-import LogInForm from '../LogInForm/LogInForm';
+import LogIn from '../LogIn/LogIn';
 import SignUpForm from '../SignUpForm/SignUpForm';
 
 import Home from '../Home/Home';
@@ -36,7 +36,7 @@ const Navigation = () => {
   return (
     <Switch>
       <PublicRoute exact path="/welcome" component={Welcome} />
-      <PublicRoute exact path="/log-in" component={LogInForm} />
+      <PublicRoute exact path="/log-in" component={LogIn} />
       <PublicRoute exact path="/sign-up" component={SignUpForm} />
 
       <PrivateRoute exact path="/" component={Home} />

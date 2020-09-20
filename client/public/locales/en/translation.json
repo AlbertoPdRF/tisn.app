@@ -149,8 +149,12 @@
     "noMatchingInterest": "No matching interest",
     "askUs": "Ask us to add it!"
   },
-  "logInForm": {
+  "logIn": {
     "title": "Log in",
+    "email": "Email",
+    "other": "Use another method"
+  },
+  "logInForm": {
     "email": "Email",
     "password": "Password",
     "logIn": "Log in"
@@ -363,6 +367,7 @@
     "must be at least 2": "must be at least 2",
     "is unknown": "is unknown",
     "must have at least 1": "must have at least 1",
+    "noEmail": "No user exists with that email",
     "wrongEmailAndOrPassword": "Wrong email and/or password",
     "logIn": "You need to log in before continuing"
   },

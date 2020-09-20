@@ -81,6 +81,8 @@ router.post(
   usersController.logIn
 );
 
+router.post('/log-in/google', usersController.logInGoogle);
+
 const notificationsRouter = require('./notifications');
 
 router.use('/:userId/notifications', notificationsRouter);

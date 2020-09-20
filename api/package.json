@@ -34,6 +34,7 @@
     "mongoose": "^5.10.5",
     "morgan": "~1.10.0",
     "passport": "^0.4.1",
+    "passport-google-token": "^0.1.2",
     "passport-local": "^1.0.0"
   },
   "engines": {

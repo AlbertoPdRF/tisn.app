@@ -149,8 +149,12 @@
     "noMatchingInterest": "Ningún interés coincide",
     "askUs": "¡Pídenos que lo añadamos!"
   },
-  "logInForm": {
+  "logIn": {
     "title": "Entrar",
+    "email": "Correo electrónico",
+    "other": "Usar otro método"
+  },
+  "logInForm": {
     "email": "Correo electrónico",
     "password": "Contraseña",
     "logIn": "Entrar"
@@ -363,6 +367,7 @@
     "must be at least 2": "debe ser al menos 2",
     "is unknown": "es desconocido",
     "must have at least 1": "debe tener al menos 1",
+    "noEmail": "No existe ningún usuario con ese correo electrónico",
     "wrongEmailAndOrPassword": "Correo electrónico y/o contraseña incorrectos",
     "logIn": "Necesitas entrar antes de continuar"
   },
