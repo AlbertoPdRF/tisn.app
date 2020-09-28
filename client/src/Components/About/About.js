@@ -11,7 +11,7 @@ import { useUser } from '../UserProvider/UserProvider';
 
 import Footer from '../Footer/Footer';
 
-import Style from '../Style/Style';
+import Style from './styles';
 
 const About = () => {
   const { t } = useTranslation();
@@ -22,45 +22,52 @@ const About = () => {
   const user = useUser();
 
   const formatSection = (section, invertOrder) => {
-    const { title, paragraph, button } = section;
+    const { title, image, paragraph, button } = section;
 
     const getGridItem = (key, content) => {
       return (
-        <Grid item key={key} className={style.center} sm={6} xs={12}>
+        <Grid item key={key} sm={6} xs={12}>
           {content}
         </Grid>
       );
     };
 
     const titleGridItem = getGridItem(
-      title,
-      <Typography variant="h3" color="primary">
-        {title}
-      </Typography>
+      image,
+      <div className={style.imageWrapper}>
+        <img className={style.image} src={image} alt={title} />
+      </div>
     );
 
-    const contentGridItem = getGridItem(button.href, [
-      <Typography key={button.content} gutterBottom variant="body1">
-        {paragraph}
-      </Typography>,
-      <Button
-        key={button.href}
-        variant="contained"
-        color="primary"
-        {...Object.assign(
-          {},
-          button.href.startsWith('/')
-            ? { onClick: () => history.push(button.href) }
-            : {
-                href: button.href,
-                target: '_blank',
-                rel: 'noopener noreferrer',
-              }
-        )}
-      >
-        {button.content}
-      </Button>,
-    ]);
+    const contentGridItem = getGridItem(
+      button.href,
+      <>
+        <Typography variant="h4" color="#000000">
+          {title}
+        </Typography>
+        <Typography key={button.content} gutterBottom variant="body1">
+          {paragraph}
+        </Typography>
+        <Button
+          key={button.href}
+          variant="contained"
+          color="primary"
+          className={style.button}
+          {...Object.assign(
+            {},
+            button.href.startsWith('/')
+              ? { onClick: () => history.push(button.href) }
+              : {
+                  href: button.href,
+                  target: '_blank',
+                  rel: 'noopener noreferrer',
+                }
+          )}
+        >
+          {button.content}
+        </Button>
+      </>
+    );
 
     if (invertOrder && matches) {
       return [contentGridItem, titleGridItem];
@@ -73,6 +80,7 @@ const About = () => {
     {
       title: t('about.interestsTitle'),
       paragraph: t('about.interestsParagraph'),
+      image: require(`../../assets/images/interests.svg`),
       button: {
         href: '/interests',
         content: t('about.interestsButton'),
@@ -81,16 +89,19 @@ const About = () => {
     {
       title: t('about.eventsTitle'),
       paragraph: t('about.eventsParagraph'),
+      image: require(`../../assets/images/events.svg`),
       button: { href: '/events', content: t('about.eventsButton') },
     },
     {
       title: t('about.usersTitle'),
       paragraph: t('about.usersParagraph'),
+      image: require(`../../assets/images/users.svg`),
       button: { href: '/users', content: t('about.usersButton') },
     },
     {
       title: t('about.openSourceTitle'),
       paragraph: t('about.openSourceParagraph'),
+      image: require(`../../assets/images/openSource.svg`),
       button: {
         href: 'https://github.com/Tisn/tisn.app',
         content: t('about.openSourceButton'),
@@ -114,13 +125,14 @@ const About = () => {
           formatSection(section, index % 2 !== 0)
         )}
         {!user && (
-          <Grid item className={style.center} xs={12}>
+          <Grid item className={style.footer} xs={12}>
             <Typography gutterBottom variant="body1">
               {t('about.signUp')}
             </Typography>
             <Button
               variant="contained"
               color="primary"
+              className={style.button}
               onClick={() => history.push('/sign-up')}
             >
               {t('about.signUpButton')}
