@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory } from 'react-router-dom';
 import { useTheme } from '@material-ui/core/styles';
@@ -11,7 +11,7 @@ import { useUser } from '../UserProvider/UserProvider';
 
 import Footer from '../Footer/Footer';
 
-import Style from './styles';
+import Style from '../Style/Style';
 
 const About = () => {
   const { t } = useTranslation();
@@ -26,7 +26,7 @@ const About = () => {
 
     const getGridItem = (key, content) => {
       return (
-        <Grid item key={key} sm={6} xs={12}>
+        <Grid className={style.center} item key={key} sm={6} xs={12}>
           {content}
         </Grid>
       );
@@ -34,25 +34,23 @@ const About = () => {
 
     const titleGridItem = getGridItem(
       image,
-      <div className={style.imageWrapper}>
-        <img className={style.image} src={image} alt={title} />
+      <div>
+        <img style={{ width: '65%' }} src={image} alt={title} />
       </div>
     );
 
     const contentGridItem = getGridItem(
       button.href,
-      <>
-        <Typography variant="h4" color="#000000">
+      <Fragment>
+        <Typography variant="h4" gutterBottom>
           {title}
         </Typography>
-        <Typography key={button.content} gutterBottom variant="body1">
+        <Typography gutterBottom variant="body1">
           {paragraph}
         </Typography>
         <Button
-          key={button.href}
           variant="contained"
           color="primary"
-          className={style.button}
           {...Object.assign(
             {},
             button.href.startsWith('/')
@@ -66,7 +64,7 @@ const About = () => {
         >
           {button.content}
         </Button>
-      </>
+      </Fragment>
     );
 
     if (invertOrder && matches) {
@@ -116,23 +114,31 @@ const About = () => {
           <Typography gutterBottom variant="h2">
             {t('about.title')}
           </Typography>
-          <Typography variant="body1">{t('about.overview')}</Typography>
+          <Typography gutterBottom variant="body1">
+            {t('about.overview')}
+          </Typography>
         </Grid>
         <Grid item className={style.center} xs={12}>
-          <Typography variant="body1">{t('about.sections')}</Typography>
+          <Typography gutterBottom variant="body1">
+            {t('about.sections')}
+          </Typography>
         </Grid>
         {sections.map((section, index) =>
           formatSection(section, index % 2 !== 0)
         )}
         {!user && (
-          <Grid item className={style.footer} xs={12}>
+          <Grid
+            item
+            style={{ marginTop: '8px' }}
+            className={style.center}
+            xs={12}
+          >
             <Typography gutterBottom variant="body1">
               {t('about.signUp')}
             </Typography>
             <Button
               variant="contained"
               color="primary"
-              className={style.button}
               onClick={() => history.push('/sign-up')}
             >
               {t('about.signUpButton')}
