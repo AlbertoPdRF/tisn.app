@@ -8,8 +8,8 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 import { useUser } from '../UserProvider/UserProvider';
-import SvgImage from '../SvgImages/SvgImages';
 
+import SvgImage from '../SvgImage/SvgImage';
 import Footer from '../Footer/Footer';
 
 import Style from '../Style/Style';
@@ -25,20 +25,18 @@ const About = () => {
   const formatSection = (section, invertOrder) => {
     const { imageName, title, paragraph, button } = section;
 
-    const imageGridItem = (key, content) => {
-      return (
-        <Grid item key={key} className={style.center} sm={6} xs={12}>
-          {content}
-        </Grid>
-      );
-    };
+    const getGridItem = (key, content) => (
+      <Grid item key={key} className={style.center} sm={6} xs={12}>
+        {content}
+      </Grid>
+    );
 
-    const titleGridItem = imageGridItem(
+    const imageGridItem = getGridItem(
       imageName,
       <SvgImage name={imageName} style={{ width: '65%', height: '65%' }} />
     );
 
-    const contentGridItem = imageGridItem(
+    const contentGridItem = getGridItem(
       title,
       <Fragment>
         <Typography gutterBottom variant="h4" component="h3">
@@ -67,9 +65,9 @@ const About = () => {
     );
 
     if (invertOrder && matches) {
-      return [contentGridItem, titleGridItem];
+      return [contentGridItem, imageGridItem];
     } else {
-      return [titleGridItem, contentGridItem];
+      return [imageGridItem, contentGridItem];
     }
   };
 

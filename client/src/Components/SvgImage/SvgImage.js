@@ -11,7 +11,7 @@ import { ReactComponent as InterestsImageDark } from '../../assets/images/intere
 import { ReactComponent as OpenSourceImageDark } from '../../assets/images/openSource-dark.svg';
 import { ReactComponent as UsersImageDark } from '../../assets/images/users-dark.svg';
 
-const imageTypes = {
+const images = {
   light: {
     events: EventsImageLight,
     interests: InterestsImageLight,
@@ -28,11 +28,18 @@ const imageTypes = {
 
 const SvgImage = (props) => {
   const { name, ...rest } = props;
+
   const { t } = useTranslation();
   const theme = useTheme();
-  const Icon = imageTypes[theme.palette.type][name];
+
+  const Image = images[theme.palette.type][name];
+
   return (
-    <Icon alt={t(`svgIcon.${name}`)} title={t(`svgIcon.${name}`)} {...rest} />
+    <Image
+      alt={t(`svgImage.${name}`)}
+      title={t(`svgImage.${name}`)}
+      {...rest}
+    />
   );
 };
 
