@@ -8,6 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 import { useUser } from '../UserProvider/UserProvider';
+import SvgIcon from '../SvgIcons/SvgIcons';
 
 import Footer from '../Footer/Footer';
 
@@ -22,7 +23,7 @@ const About = () => {
   const user = useUser();
 
   const formatSection = (section, invertOrder) => {
-    const { title, image, paragraph, button } = section;
+    const { title, imageName, paragraph, button } = section;
 
     const getGridItem = (key, content) => {
       return (
@@ -33,16 +34,14 @@ const About = () => {
     };
 
     const titleGridItem = getGridItem(
-      image,
-      <div>
-        <img style={{ width: '65%' }} src={image} alt={title} />
-      </div>
+      imageName,
+      <SvgIcon name={imageName} style={{ width: '65%', height: '65%' }} />
     );
 
     const contentGridItem = getGridItem(
       button.href,
       <Fragment>
-        <Typography variant="h4" gutterBottom>
+        <Typography variant="h4" component="h3" gutterBottom>
           {title}
         </Typography>
         <Typography gutterBottom variant="body1">
@@ -78,7 +77,7 @@ const About = () => {
     {
       title: t('about.interestsTitle'),
       paragraph: t('about.interestsParagraph'),
-      image: require(`../../assets/images/interests.svg`),
+      imageName: 'interests',
       button: {
         href: '/interests',
         content: t('about.interestsButton'),
@@ -87,19 +86,19 @@ const About = () => {
     {
       title: t('about.eventsTitle'),
       paragraph: t('about.eventsParagraph'),
-      image: require(`../../assets/images/events.svg`),
+      imageName: 'events',
       button: { href: '/events', content: t('about.eventsButton') },
     },
     {
       title: t('about.usersTitle'),
       paragraph: t('about.usersParagraph'),
-      image: require(`../../assets/images/users.svg`),
+      imageName: 'users',
       button: { href: '/users', content: t('about.usersButton') },
     },
     {
       title: t('about.openSourceTitle'),
       paragraph: t('about.openSourceParagraph'),
-      image: require(`../../assets/images/openSource.svg`),
+      imageName: 'openSource',
       button: {
         href: 'https://github.com/Tisn/tisn.app',
         content: t('about.openSourceButton'),
