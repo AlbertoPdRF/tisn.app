@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 
 import { useUser } from '../UserProvider/UserProvider';
-import SvgIcon from '../SvgIcons/SvgIcons';
+import SvgImage from '../SvgImages/SvgImages';
 
 import Footer from '../Footer/Footer';
 
@@ -23,25 +23,25 @@ const About = () => {
   const user = useUser();
 
   const formatSection = (section, invertOrder) => {
-    const { title, imageName, paragraph, button } = section;
+    const { imageName, title, paragraph, button } = section;
 
-    const getGridItem = (key, content) => {
+    const imageGridItem = (key, content) => {
       return (
-        <Grid className={style.center} item key={key} sm={6} xs={12}>
+        <Grid item key={key} className={style.center} sm={6} xs={12}>
           {content}
         </Grid>
       );
     };
 
-    const titleGridItem = getGridItem(
+    const titleGridItem = imageGridItem(
       imageName,
-      <SvgIcon name={imageName} style={{ width: '65%', height: '65%' }} />
+      <SvgImage name={imageName} style={{ width: '65%', height: '65%' }} />
     );
 
-    const contentGridItem = getGridItem(
-      button.href,
+    const contentGridItem = imageGridItem(
+      title,
       <Fragment>
-        <Typography variant="h4" component="h3" gutterBottom>
+        <Typography gutterBottom variant="h4" component="h3">
           {title}
         </Typography>
         <Typography gutterBottom variant="body1">
