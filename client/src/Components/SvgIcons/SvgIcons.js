@@ -1,4 +1,5 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import { useTheme } from '@material-ui/core/styles';
 
 import { ReactComponent as EventsImageLight } from '../../assets/images/events_light.svg';
@@ -26,9 +27,12 @@ const iconTypes = {
 };
 
 const SvgIcon = ({ name, ...props }) => {
+  const { t } = useTranslation();
   const theme = useTheme();
   const Icon = iconTypes[theme.palette.type][name];
-  return <Icon {...props} />;
+  return (
+    <Icon alt={t(`svgIcon.${name}`)} title={t(`svgIcon.${name}`)} {...props} />
+  );
 };
 
 export default SvgIcon;

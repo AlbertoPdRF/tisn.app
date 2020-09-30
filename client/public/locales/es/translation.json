@@ -234,6 +234,12 @@
     "noMatchingRegion": "Ninguna región coincide",
     "signUp": "Registrarse"
   },
+  "svgIcon": {
+    "events": "Eventos",
+    "interests": "Intereses",
+    "openSource": "Código abierto",
+    "users": "Usuarios"
+  },
   "uploadAvatarTextFieldAndDialog": {
     "avatar": "Avatar",
     "zoom": "Zoom",
