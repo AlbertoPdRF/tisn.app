@@ -75,30 +75,30 @@ const About = () => {
 
   const sections = [
     {
+      imageName: 'interests',
       title: t('about.interestsTitle'),
       paragraph: t('about.interestsParagraph'),
-      imageName: 'interests',
       button: {
         href: '/interests',
         content: t('about.interestsButton'),
       },
     },
     {
+      imageName: 'events',
       title: t('about.eventsTitle'),
       paragraph: t('about.eventsParagraph'),
-      imageName: 'events',
       button: { href: '/events', content: t('about.eventsButton') },
     },
     {
+      imageName: 'users',
       title: t('about.usersTitle'),
       paragraph: t('about.usersParagraph'),
-      imageName: 'users',
       button: { href: '/users', content: t('about.usersButton') },
     },
     {
+      imageName: 'openSource',
       title: t('about.openSourceTitle'),
       paragraph: t('about.openSourceParagraph'),
-      imageName: 'openSource',
       button: {
         href: 'https://github.com/Tisn/tisn.app',
         content: t('about.openSourceButton'),
