@@ -43,8 +43,7 @@
     "husky": "^4.3.0",
     "lint-staged": "^10.4.0",
     "nodemon": "^2.0.4",
-    "prettier": "2.1.2",
-    "unique-names-generator": "^4.3.1"
+    "prettier": "2.1.2"
   },
   "husky": {
     "hooks": {
