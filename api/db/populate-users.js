@@ -16,7 +16,7 @@ const Interest = require("../models/Interest");
 const Token = require("../models/Token");
 const crypto = require("crypto");
 
-const async = require("async");
+const asynchronous = require("async");
 
 const mongoose = require("mongoose");
 const mongoDB = userArgs[0];
@@ -127,7 +127,7 @@ const generateUsersArray = async () => {
 };
 
 const createUsers = async () => {
-  async.series(await generateUsersArray(), (error, results) => {
+  asynchronous.series(await generateUsersArray(), (error, results) => {
     if (error) {
       console.log(`Final error: ${error}`);
     } else {
