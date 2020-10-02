@@ -65,9 +65,8 @@ const createUser = async (
   callback(null, user);
 };
 
-function randomDate(start, end) {
-  return new Date(+start + Math.random() * (end - start));
-}
+const randomDate = (startDate, endDate) =>
+  new Date(+startDate + Math.random() * (endDate - startDate));
 
 createTokenForUser = (user) => {
   return new Token({
