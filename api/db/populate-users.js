@@ -13,8 +13,6 @@ if (!userArgs[0].startsWith("mongodb")) {
 
 const User = require("../models/User");
 const Interest = require("../models/Interest");
-const Token = require("../models/Token");
-const crypto = require("crypto");
 
 const asynchronous = require("async");
 
@@ -57,8 +55,6 @@ const createUser = async (
   });
   user.setPassword("password");
   await user.save();
-  const token = createTokenForUser(user);
-  await token.save();
 
   console.log(`New User: ${user}`);
   users.push(user);
@@ -67,14 +63,6 @@ const createUser = async (
 
 const randomDate = (startDate, endDate) =>
   new Date(+startDate + Math.random() * (endDate - startDate));
-
-createTokenForUser = (user) => {
-  return new Token({
-    user,
-    type: "Email",
-    token: crypto.randomBytes(16).toString("hex"),
-  });
-};
 
 const generateUsersArray = async () => {
   let interests = await Interest.distinct("_id");
