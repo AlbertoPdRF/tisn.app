@@ -55,12 +55,12 @@ const createUser = async (
     interests,
     admin,
   });
-  user.setPassword("Password1");
+  user.setPassword("password");
   await user.save();
   const token = createTokenForUser(user);
   await token.save();
 
-  console.log(`User: ${user}`);
+  console.log(`New User: ${user}`);
   users.push(user);
   callback(null, user);
 };
