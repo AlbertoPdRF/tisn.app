@@ -83,7 +83,7 @@ const generateUsersArray = async () => {
     dictionaries: [names],
   };
 
-  let arr = [];
+  const usersArray = [];
   for (let i = 0; i < 100; i++) {
     const name = `${uniqueNamesGenerator(config)} ${uniqueNamesGenerator(
       config
@@ -106,7 +106,7 @@ const generateUsersArray = async () => {
       Math.floor(Math.random() * 10)
     );
 
-    arr.push((seriesCallback) => {
+    usersArray.push((seriesCallback) => {
       createUser(
         name,
         email,
@@ -123,7 +123,7 @@ const generateUsersArray = async () => {
     });
   }
 
-  return arr;
+  return usersArray;
 };
 
 const createUsers = async () => {
