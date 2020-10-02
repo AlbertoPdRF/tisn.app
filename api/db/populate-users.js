@@ -18,7 +18,12 @@ const asynchronous = require("async");
 
 const mongoose = require("mongoose");
 const mongoDB = userArgs[0];
-mongoose.connect(mongoDB, { useNewUrlParser: true, useUnifiedTopology: true });
+const numberOfRecords = userArgs[1] || 100;
+mongoose.connect(mongoDB, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  useCreateIndex: true,
+});
 mongoose.Promise = global.Promise;
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "MongoDB connection error:"));
@@ -61,50 +66,43 @@ const createUser = async (
   callback(null, user);
 };
 
-const randomDate = (startDate, endDate) =>
+const getRandomDate = (startDate, endDate) =>
   new Date(+startDate + Math.random() * (endDate - startDate));
 
 const generateUsersArray = async () => {
   let interests = await Interest.distinct("_id");
-  const config = {
-    dictionaries: [names],
-  };
 
+  const now = new Date();
   const usersArray = [];
-  for (let i = 0; i < 100; i++) {
-    const name = `${uniqueNamesGenerator(config)} ${uniqueNamesGenerator(
-      config
-    )}`;
-    const email = `${name.replace(
-      / /g,
-      "_"
-    )}@test-tisn-email.com`.toLowerCase();
+  for (let i = 0; i < numberOfRecords; i++) {
+    const name = uniqueNamesGenerator({
+      dictionaries: [names, names],
+      separator: ' '
+    })
+    const email = `${name.replace(/ /g, "_")}@tisn.app`.toLowerCase();
+    const emailConfirmed = true;
+    const emailConfirmedAt = getRandomDate(new Date(2020, 05, 05), now);
     const country = countries[Math.floor(Math.random() * countries.length)];
     const region =
       country.regions[Math.floor(Math.random() * country.regions.length)];
-    const enrolledDate = randomDate(new Date(2019, 01, 01), new Date());
-    const birthDate = randomDate(
-      new Date(1950, 01, 01),
-      new Date(2007, 01, 01)
-    );
-    interests = interests.sort(() => 0.5 - Math.random());
-    const selectedInterests = interests.slice(
-      0,
-      Math.floor(Math.random() * 10)
-    );
+    const birthDate = getRandomDate(new Date(1970, 01, 01), new Date().setFullYear(now.getFullYear() - 13));
+    const selectedInterests = interests
+      .sort(() => 0.5 - Math.random())
+      .slice(0, Math.floor(Math.random() * interests.length));
+    const admin = false;
 
     usersArray.push((seriesCallback) => {
       createUser(
         name,
         email,
-        true,
-        enrolledDate,
+        emailConfirmed,
+        emailConfirmedAt,
         birthDate,
         country.countryShortCode,
         region.shortCode || "N/A",
         locales[Math.floor(Math.random() * 2)],
         selectedInterests,
-        false,
+        admin,
         seriesCallback
       );
     });
