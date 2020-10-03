@@ -18,7 +18,6 @@ const asynchronous = require('async');
 
 const mongoose = require('mongoose');
 const mongoDB = userArgs[0];
-const numberOfRecords = userArgs[1] || 100;
 mongoose.connect(mongoDB, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -28,6 +27,7 @@ mongoose.Promise = global.Promise;
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
+const numberOfRecords = userArgs[1] || 100;
 const { uniqueNamesGenerator, names } = require('unique-names-generator');
 const countries = require('country-region-data');
 const locales = ['en', 'es'];
@@ -67,7 +67,7 @@ const createAdminUser = () => (seriesCallback) => {
       country: 'US',
       region: 'FL',
       preferredLocale: 'en',
-      dateOfBirth: new Date(),
+      dateOfBirth: new Date(2000, 01, 01),
       interests: [],
       admin: true,
     },
