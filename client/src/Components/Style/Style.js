@@ -162,6 +162,10 @@ const Style = makeStyles((theme) => ({
   snackbarAboveFab: {
     marginBottom: '80px',
   },
+  gridItem: {
+    textAlign: 'center',
+    marginTop: '8px !important',
+  },
 }));
 
 export default Style;

@@ -234,6 +234,12 @@
     "noMatchingRegion": "No matching region",
     "signUp": "Sign up"
   },
+  "svgImage": {
+    "events": "Events",
+    "interests": "Interests",
+    "openSource": "Open source",
+    "users": "Users"
+  },
   "uploadAvatarTextFieldAndDialog": {
     "avatar": "Avatar",
     "zoom": "Zoom",
