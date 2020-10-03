@@ -3,20 +3,20 @@
 // TODO: This will all be in the general js to abide by DRY principal
 const userArgs = process.argv.slice(2);
 
-if (!userArgs[0].startsWith("mongodb")) {
+if (!userArgs[0].startsWith('mongodb')) {
   console.log(
-    "Error: you need to specify a valid MongoDB URL as the first argument"
+    'Error: you need to specify a valid MongoDB URL as the first argument'
   );
 
   return;
-}
+};
 
-const User = require("../models/User");
-const Interest = require("../models/Interest");
+const User = require('../models/User');
+const Interest = require('../models/Interest');
 
-const asynchronous = require("async");
+const asynchronous = require('async');
 
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const mongoDB = userArgs[0];
 const numberOfRecords = userArgs[1] || 100;
 mongoose.connect(mongoDB, {
@@ -26,11 +26,11 @@ mongoose.connect(mongoDB, {
 });
 mongoose.Promise = global.Promise;
 const db = mongoose.connection;
-db.on("error", console.error.bind(console, "MongoDB connection error:"));
+db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-const { uniqueNamesGenerator, names } = require("unique-names-generator");
-const countries = require("country-region-data");
-const locales = ["en", "es"];
+const { uniqueNamesGenerator, names } = require('unique-names-generator');
+const countries = require('country-region-data');
+const locales = ['en', 'es'];
 const users = [];
 
 const createUser = async (userParams, callback) => {
@@ -46,7 +46,7 @@ const createUser = async (userParams, callback) => {
     interests: userParams.interests,
     admin: userParams.admin,
   });
-  user.setPassword("password");
+  user.setPassword('password');
   await user.save();
 
   console.log(`New User: ${user}`);
@@ -60,13 +60,13 @@ const getRandomDate = (startDate, endDate) =>
 const createAdminUser = () => (seriesCallback) => {
   createUser(
     {
-      name: "Admin",
+      name: 'Admin',
       email: `admin@tisn.app`,
       emailConfirmed: true,
       emailConfirmedAt: new Date(),
-      country: "US",
-      region: "FL",
-      preferredLocale: "en",
+      country: 'US',
+      region: 'FL',
+      preferredLocale: 'en',
       dateOfBirth: new Date(),
       interests: [],
       admin: true,
@@ -76,7 +76,7 @@ const createAdminUser = () => (seriesCallback) => {
 };
 
 const generateUsersArray = async () => {
-  let interestsList = await Interest.distinct("_id");
+  let interestsList = await Interest.distinct('_id');
 
   const now = new Date();
   const usersArray = [];
@@ -86,7 +86,7 @@ const generateUsersArray = async () => {
   for (let i = 0; i < numberOfRecords; i++) {
     const name = uniqueNamesGenerator({
       dictionaries: [names, names],
-      separator: " ",
+      separator: ' ',
     });
     const country = countries[Math.floor(Math.random() * countries.length)];
     const region =
@@ -94,11 +94,11 @@ const generateUsersArray = async () => {
 
     const userParams = {
       name,
-      email: `${name.replace(/ /g, "_")}@tisn.app`.toLowerCase(),
+      email: `${name.replace(/ /g, '_')}@tisn.app`.toLowerCase(),
       emailConfirmed: true,
       emailConfirmedAt: getRandomDate(new Date(2020, 05, 05), now),
       country: country.countryShortCode,
-      region: region.shortCode || "N/A",
+      region: region.shortCode || 'N/A',
       preferredLocale: locales[Math.floor(Math.random() * 2)],
       dateOfBirth: getRandomDate(
         new Date(1970, 01, 01),
@@ -113,7 +113,7 @@ const generateUsersArray = async () => {
     usersArray.push((seriesCallback) => {
       createUser(userParams, seriesCallback);
     });
-  }
+  };
 
   return usersArray;
 };
