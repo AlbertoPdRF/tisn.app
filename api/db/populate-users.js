@@ -33,30 +33,18 @@ const countries = require("country-region-data");
 const locales = ["en", "es"];
 const users = [];
 
-const createUser = async (
-  name,
-  email,
-  emailConfirmed,
-  emailConfirmedAt,
-  dateOfBirth,
-  country,
-  region,
-  preferredLocale,
-  interests,
-  admin,
-  callback
-) => {
+const createUser = async (userParams, callback) => {
   const user = new User({
-    name,
-    email,
-    emailConfirmed,
-    emailConfirmedAt,
-    dateOfBirth,
-    country,
-    region,
-    preferredLocale,
-    interests,
-    admin,
+    name: userParams.name,
+    email: userParams.email,
+    emailConfirmed: userParams.emailConfirmed,
+    emailConfirmedAt: userParams.emailConfirmedAt,
+    dateOfBirth: userParams.dateOfBirth,
+    country: userParams.country,
+    region: userParams.region,
+    preferredLocale: userParams.preferredLocale,
+    interests: userParams.interests,
+    admin: userParams.admin,
   });
   user.setPassword("password");
   await user.save();
@@ -69,42 +57,61 @@ const createUser = async (
 const getRandomDate = (startDate, endDate) =>
   new Date(+startDate + Math.random() * (endDate - startDate));
 
+const createAdminUser = () => (seriesCallback) => {
+  createUser(
+    {
+      name: "Admin",
+      email: `admin@tisn.app`,
+      emailConfirmed: true,
+      emailConfirmedAt: new Date(),
+      country: "US",
+      region: "FL",
+      preferredLocale: "en",
+      dateOfBirth: new Date(),
+      interests: [],
+      admin: true,
+    },
+    seriesCallback
+  );
+};
+
 const generateUsersArray = async () => {
-  let interests = await Interest.distinct("_id");
+  let interestsList = await Interest.distinct("_id");
 
   const now = new Date();
   const usersArray = [];
+
+  usersArray.push(createAdminUser());
+
   for (let i = 0; i < numberOfRecords; i++) {
     const name = uniqueNamesGenerator({
       dictionaries: [names, names],
-      separator: ' '
-    })
-    const email = `${name.replace(/ /g, "_")}@tisn.app`.toLowerCase();
-    const emailConfirmed = true;
-    const emailConfirmedAt = getRandomDate(new Date(2020, 05, 05), now);
+      separator: " ",
+    });
     const country = countries[Math.floor(Math.random() * countries.length)];
     const region =
       country.regions[Math.floor(Math.random() * country.regions.length)];
-    const birthDate = getRandomDate(new Date(1970, 01, 01), new Date().setFullYear(now.getFullYear() - 13));
-    const selectedInterests = interests
-      .sort(() => 0.5 - Math.random())
-      .slice(0, Math.floor(Math.random() * interests.length));
-    const admin = false;
+
+    const userParams = {
+      name,
+      email: `${name.replace(/ /g, "_")}@tisn.app`.toLowerCase(),
+      emailConfirmed: true,
+      emailConfirmedAt: getRandomDate(new Date(2020, 05, 05), now),
+      country: country.countryShortCode,
+      region: region.shortCode || "N/A",
+      preferredLocale: locales[Math.floor(Math.random() * 2)],
+      dateOfBirth: getRandomDate(
+        new Date(1970, 01, 01),
+        new Date().setFullYear(now.getFullYear() - 13)
+      ),
+      interests: interestsList
+        .sort(() => 0.5 - Math.random())
+        .slice(0, Math.floor(Math.random() * interestsList.length)),
+      admin: false,
+    };
 
     usersArray.push((seriesCallback) => {
-      createUser(
-        name,
-        email,
-        emailConfirmed,
-        emailConfirmedAt,
-        birthDate,
-        country.countryShortCode,
-        region.shortCode || "N/A",
-        locales[Math.floor(Math.random() * 2)],
-        selectedInterests,
-        admin,
-        seriesCallback
-      );
+      createUser(userParams, seriesCallback);
     });
   }
 
