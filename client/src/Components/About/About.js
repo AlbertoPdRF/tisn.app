@@ -27,7 +27,7 @@ const About = () => {
 
     const imageGridItem = (key, content) => {
       return (
-        <Grid item key={key} className={style.center} sm={6} xs={12}>
+        <Grid item key={key} className={style.gridItem} sm={6} xs={12}>
           {content}
         </Grid>
       );
@@ -126,12 +126,7 @@ const About = () => {
           formatSection(section, index % 2 !== 0)
         )}
         {!user && (
-          <Grid
-            item
-            style={{ marginTop: '8px' }}
-            className={style.center}
-            xs={12}
-          >
+          <Grid item className={style.gridItem} xs={12}>
             <Typography gutterBottom variant="body1">
               {t('about.signUp')}
             </Typography>
