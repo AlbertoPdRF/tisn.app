@@ -1,6 +1,5 @@
 #! /usr/bin/env node
 
-// TODO: This will all be in the general js to abide by DRY principal
 const userArgs = process.argv.slice(2);
 
 if (!userArgs[0].startsWith('mongodb')) {
@@ -9,7 +8,7 @@ if (!userArgs[0].startsWith('mongodb')) {
   );
 
   return;
-};
+}
 
 const User = require('../models/User');
 const Interest = require('../models/Interest');
@@ -113,7 +112,7 @@ const generateUsersArray = async () => {
     usersArray.push((seriesCallback) => {
       createUser(userParams, seriesCallback);
     });
-  };
+  }
 
   return usersArray;
 };
