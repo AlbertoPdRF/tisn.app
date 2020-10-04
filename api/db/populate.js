@@ -5,24 +5,40 @@ Options:
 1. Populate all db's
 2. Populate individual db's
 3. Talked about implementing log flags (verbose, pertinent)
+4. Number of record's flag
+  * Users
+  * Events
 */
 
 const minimist = require('minimist');
+const { connectMongoDb, closeMongoDb } = require('./db-connection');
+const { createUsers } = require('./populate-users');
+
 
 const userArgs = minimist(process.argv.slice(2), {
-  string: ['table'],
-  boolean: ['verbose'],
-  alias: [{v: 'verbose'}, {t: 'table'}]
+  string: ['table', 'number'],
+  boolean: ['verbose', 'admin'],
+  default: {number: '100'},
+  alias: [
+    {a: 'admin'},
+    {t: 'table'},
+    {v: 'verbose'},
+  ]
 });
 
-const populateAllTables = () => {
-  console.log('All tables will be populated');
+const populateAllTables = async () => {
+  console.log('Populating all tables');
+  connectMongoDb();
+  await createUsers(userArgs.v, userArgs.a, userArgs.number);
+  closeMongoDb();
 };
 
-const populateSpecifiedTable = () => {
+const populateSpecifiedTable = async () => {
   switch (userArgs.t.toLowerCase()) {
     case 'users':
-      console.log('Users table will be populated');
+      connectMongoDb();
+      await createUsers(userArgs.v, userArgs.a, userArgs.number);
+      closeMongoDb();
       break;
     case 'interests':
       console.log('Interests table will be populated');
