@@ -12,6 +12,7 @@ Options:
 
 const minimist = require('minimist');
 const { connectMongoDb, closeMongoDb } = require('./db-connection');
+const { createInterests } = require('./populate-interests');
 const { createUsers } = require('./populate-users');
 
 
@@ -29,6 +30,7 @@ const userArgs = minimist(process.argv.slice(2), {
 const populateAllTables = async () => {
   console.log('Populating all tables');
   connectMongoDb();
+  await createInterests(userArgs.v);
   await createUsers(userArgs.v, userArgs.a, userArgs.number);
   closeMongoDb();
 };
@@ -42,6 +44,9 @@ const populateSpecifiedTable = async () => {
       break;
     case 'interests':
       console.log('Interests table will be populated');
+      connectMongoDb();
+      await createInterests(userArgs.v);
+      closeMongoDb();
       break;
     default:
       console.log('Table or script does not exist');
