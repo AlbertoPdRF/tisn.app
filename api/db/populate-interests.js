@@ -692,7 +692,7 @@ const createInterests = async (verbose) => {
     categories[5]
   );
 
-  console.log(`Interests created: ${interests.length}`)
+  console.log(`Interests created: ${interests.length}`);
 };
 
 module.exports = {createInterests}
