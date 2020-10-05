@@ -43,7 +43,7 @@ const createAdminUser = () => () => {
   });
 };
 
-const createUsers = async (verbose, admin, numberOfRecords) => {
+const createUsers = async (verbose, admin, randomCountry, numberOfRecords) => {
   displayLogs = verbose;
   console.log('\x1b[0m', 'Populating users...');
   let interestsList = await Interest.distinct('_id');
@@ -57,9 +57,12 @@ const createUsers = async (verbose, admin, numberOfRecords) => {
       dictionaries: [names, names],
       separator: ' ',
     });
-    const country = countries[Math.floor(Math.random() * countries.length)];
-    const region =
-      country.regions[Math.floor(Math.random() * country.regions.length)];
+    const country = randomCountry
+      ? countries[Math.floor(Math.random() * countries.length)]
+      : { countryShortCode: 'ES' };
+    const region = randomCountry
+      ? country.regions[Math.floor(Math.random() * country.regions.length)]
+      : { shortCode: 'AN' };
 
     const userParams = {
       name,
@@ -86,7 +89,7 @@ const createUsers = async (verbose, admin, numberOfRecords) => {
     console.log(
       '\x1b[32m',
       `
-      Admin user created: 
+      Admin user created:
       \tName: Admin
       \tEmail: admin@tisn.app
     `
