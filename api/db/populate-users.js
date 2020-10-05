@@ -48,7 +48,7 @@ const createAdminUser = () => () => {
 
 const createUsers = async (verbose, admin, numberOfRecords) => {
   displayLogs = verbose;
-  console.log('Populating users...')
+  console.log('Populating users...');
   let interestsList = await Interest.distinct('_id');
   const now = new Date();
   const usersArray = [];
