@@ -15,16 +15,11 @@ const { connectMongoDb, closeMongoDb } = require('./db-connection');
 const { createInterests } = require('./populate-interests');
 const { createUsers } = require('./populate-users');
 
-
 const userArgs = minimist(process.argv.slice(2), {
-  string: ['table', 'number'],
+  string: ['collection', 'number'],
   boolean: ['verbose', 'admin'],
-  default: {number: '100'},
-  alias: [
-    {a: 'admin'},
-    {t: 'table'},
-    {v: 'verbose'},
-  ]
+  default: { number: '100' },
+  alias: [{ a: 'admin' }, { c: 'collection' }, { v: 'verbose' }],
 });
 
 const populateAllTables = async () => {
@@ -50,7 +45,7 @@ const populateSpecifiedTable = async () => {
     default:
       console.log('Table or script does not exist');
       break;
-  };
+  }
 };
 
 console.log(userArgs);
