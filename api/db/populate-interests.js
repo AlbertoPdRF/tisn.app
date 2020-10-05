@@ -21,6 +21,9 @@ const createInterest = async (name, avatar, category) => {
 const createInterests = async (verbose) => {
   console.log('Populating interests...');
   displayLogs = verbose;
+
+  if ((await Interest.countDocuments()) !== 0) await Interest.collection.drop();
+
   await createInterest(
     'Art',
     'https://image.flaticon.com/icons/svg/2811/2811172.svg',
@@ -123,7 +126,6 @@ const createInterests = async (verbose) => {
     categories[0]
   );
 
-
   await createInterest(
     'Bodybuilding',
     'https://image.flaticon.com/icons/png/512/2307/2307905.png',
@@ -153,7 +155,6 @@ const createInterests = async (verbose) => {
     'https://image.flaticon.com/icons/svg/2307/2307981.svg',
     categories[1]
   );
-
 
   await createInterest(
     'Acting',
@@ -299,7 +300,6 @@ const createInterests = async (verbose) => {
     categories[2]
   );
 
-
   await createInterest(
     'Advertising',
     'https://image.flaticon.com/icons/svg/2787/2787828.svg',
@@ -438,7 +438,6 @@ const createInterests = async (verbose) => {
     categories[3]
   );
 
-
   await createInterest(
     'Beauty salons',
     'https://image.flaticon.com/icons/svg/1940/1940922.svg',
@@ -540,7 +539,6 @@ const createInterests = async (verbose) => {
     'https://image.flaticon.com/icons/svg/522/522043.svg',
     categories[4]
   );
-
 
   await createInterest(
     'American football',
@@ -695,4 +693,4 @@ const createInterests = async (verbose) => {
   console.log(`Interests created: ${interests.length}`);
 };
 
-module.exports = {createInterests}
+module.exports = { createInterests };
