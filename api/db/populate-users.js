@@ -97,7 +97,7 @@ const generateUsersArray = async () => {
       emailConfirmed: true,
       emailConfirmedAt: getRandomDate(new Date(2020, 05, 05), now),
       country: country.countryShortCode,
-      region: region.shortCode || 'N/A',
+      region: region.shortCode || region.name,
       preferredLocale: locales[Math.floor(Math.random() * 2)],
       dateOfBirth: getRandomDate(
         new Date(1970, 01, 01),
