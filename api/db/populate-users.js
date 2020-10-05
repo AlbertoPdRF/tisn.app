@@ -29,26 +29,23 @@ const getRandomDate = (startDate, endDate) =>
   new Date(+startDate + Math.random() * (endDate - startDate));
 
 const createAdminUser = () => () => {
-  createUser(
-    {
-      name: 'Admin',
-      email: `admin@tisn.app`,
-      emailConfirmed: true,
-      emailConfirmedAt: new Date(),
-      country: 'US',
-      region: 'FL',
-      preferredLocale: 'en',
-      dateOfBirth: new Date(2000, 01, 01),
-      interests: [],
-      admin: true,
-    }
-  );
+  createUser({
+    name: 'Admin',
+    email: `admin@tisn.app`,
+    emailConfirmed: true,
+    emailConfirmedAt: new Date(),
+    country: 'US',
+    region: 'FL',
+    preferredLocale: 'en',
+    dateOfBirth: new Date(2000, 01, 01),
+    interests: [],
+    admin: true,
+  });
 };
-
 
 const createUsers = async (verbose, admin, numberOfRecords) => {
   displayLogs = verbose;
-  console.log('Populating users...');
+  console.log('\x1b[0m', 'Populating users...');
   let interestsList = await Interest.distinct('_id');
   const now = new Date();
   const usersArray = [];
@@ -82,13 +79,21 @@ const createUsers = async (verbose, admin, numberOfRecords) => {
       admin: false,
     };
 
-    usersArray.push(
-      await createUser(userParams)
-    );
+    usersArray.push(await createUser(userParams));
   }
 
-  console.log(`Users created: ${usersArray.length}`);
+  if (admin) {
+    console.log(
+      '\x1b[32m',
+      `
+      Admin user created: 
+      \tName: Admin
+      \tEmail: admin@tisn.app
+    `
+    );
+  }
+  console.log('\x1b[32m', `Users created: ${usersArray.length}`);
   return usersArray;
 };
 
-module.exports = {createUsers}
+module.exports = { createUsers };

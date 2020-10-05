@@ -19,7 +19,7 @@ const createInterest = async (name, avatar, category) => {
 };
 
 const createInterests = async (verbose) => {
-  console.log('Populating interests...');
+  console.log('\x1b[0m', 'Populating interests...');
   displayLogs = verbose;
 
   if ((await Interest.countDocuments()) !== 0) await Interest.collection.drop();
@@ -690,7 +690,7 @@ const createInterests = async (verbose) => {
     categories[5]
   );
 
-  console.log(`Interests created: ${interests.length}`);
+  console.log('\x1b[32m', `Interests created: ${interests.length}`);
 };
 
 module.exports = { createInterests };
