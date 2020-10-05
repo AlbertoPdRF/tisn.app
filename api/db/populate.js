@@ -43,7 +43,6 @@ const populateSpecifiedTable = async () => {
       closeMongoDb();
       break;
     case 'interests':
-      console.log('Interests table will be populated');
       connectMongoDb();
       await createInterests(userArgs.v);
       closeMongoDb();
