@@ -1,52 +1,46 @@
 #! /usr/bin/env node
 
-/*
-Options:
-1. Populate all db's
-2. Populate individual db's
-3. Talked about implementing log flags (verbose, pertinent)
-4. Number of record's flag
-  * Users
-  * Events
-*/
-
 const minimist = require('minimist');
 const { connectMongoDb, closeMongoDb } = require('./db-connection');
 const { createInterests } = require('./populate-interests');
 const { createUsers } = require('./populate-users');
 
 const userArgs = minimist(process.argv.slice(2), {
-  string: ['collection', 'number'],
-  boolean: ['verbose', 'admin', 'random-country'],
-  default: { number: '100' },
-  alias: { a: 'admin', c: 'collection', r: 'random-country', v: 'verbose' },
+  boolean: ['random-location', 'verbose'],
+  number: 'multiplier',
+  string: 'collection',
+  alias: {
+    c: 'collection',
+    m: 'multiplier',
+    r: 'random-location',
+    v: 'verbose',
+  },
+  default: { multiplier: 1 },
 });
 
-const populateAllTables = async () => {
-  console.log('Populating all tables');
+const populateCollections = async () => {
   connectMongoDb();
   await createInterests(userArgs.v);
-  await createUsers(userArgs.v, userArgs.a, userArgs.r, userArgs.number);
+  await createUsers(userArgs.m, userArgs.r, userArgs.v);
   closeMongoDb();
 };
 
-const populateSpecifiedTable = async () => {
+const populateCollection = async () => {
+  connectMongoDb();
   switch (userArgs.c.toLowerCase()) {
-    case 'users':
-      connectMongoDb();
-      await createUsers(userArgs.v, userArgs.a, userArgs.rc, userArgs.number);
-      closeMongoDb();
-      break;
     case 'interests':
-      connectMongoDb();
       await createInterests(userArgs.v);
-      closeMongoDb();
+      break;
+    case 'users':
+      await createUsers(userArgs.m, userArgs.r, userArgs.v);
       break;
     default:
-      console.log('Table or script does not exist');
+      console.log(
+        `Unknown collection '${userArgs.c}', possible options are: [interests, users]`
+      );
       break;
   }
+  closeMongoDb();
 };
 
-console.log(userArgs);
-userArgs.c ? populateSpecifiedTable() : populateAllTables();
+userArgs.c ? populateCollection() : populateCollections();

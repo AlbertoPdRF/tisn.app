@@ -24,7 +24,9 @@ const createUser = async (userParams) => {
   user.setPassword('password');
   await user.save();
 
-  if (displayLogs) console.log(`New User: ${user}`);
+  if (displayLogs) {
+    console.log('\n', '\x1b[0m', `New user created: ${user}`);
+  }
 };
 
 const getRandomDate = (startDate, endDate) =>
@@ -36,18 +38,29 @@ const createAdminUser = () => {
     email: `admin@tisn.app`,
     emailConfirmed: true,
     emailConfirmedAt: new Date(),
-    country: 'US',
-    region: 'FL',
+    country: 'ES',
+    region: 'M',
     preferredLocale: 'en',
     dateOfBirth: new Date(2000, 01, 01),
     interests: [],
     admin: true,
   });
+
+  console.log(
+    '\x1b[32m',
+    `
+    Admin user created:
+    \tName: Admin
+    \tEmail: admin@tisn.app
+    \tPassword: password
+  `
+  );
 };
 
-const createUsers = async (verbose, admin, randomCountry, numberOfRecords) => {
+const createUsers = async (multiplier, randomLocation, verbose) => {
+  console.log('\n', '\x1b[0m', 'Populating users collection...');
   displayLogs = verbose;
-  console.log('\x1b[0m', 'Populating users...');
+
   let interestsList = await Interest.distinct('_id');
   const now = new Date();
   const usersArray = [];
@@ -57,27 +70,30 @@ const createUsers = async (verbose, admin, randomCountry, numberOfRecords) => {
       type: 'confirm',
       name: 'value',
       message:
-        'The interests collection does not exist. Users created will not have any interests. Do you wish to continue?',
+        'The interests collection does not exist. Users created will not have any interests. Do you want to continue?',
       initial: true,
     });
-    if (!answer.value) return;
+    if (!answer.value) {
+      console.log('\x1b[33m', 'Aborted users collection population');
+      return;
+    }
   }
 
-  if (admin && !(await User.exists({ email: 'admin@tisn.app' }))) {
-    usersArray.push(createAdminUser());
+  if (!(await User.exists({ email: 'admin@tisn.app' }))) {
+    createAdminUser();
   }
 
-  for (let i = 0; i < numberOfRecords; i++) {
+  for (let i = 0; i < 100 * multiplier; i++) {
     const name = uniqueNamesGenerator({
       dictionaries: [names, names],
       separator: ' ',
     });
-    const country = randomCountry
+    const country = randomLocation
       ? countries[Math.floor(Math.random() * countries.length)]
       : { countryShortCode: 'ES' };
-    const region = randomCountry
+    const region = randomLocation
       ? country.regions[Math.floor(Math.random() * country.regions.length)]
-      : { shortCode: 'AN' };
+      : { shortCode: 'M' };
 
     const userParams = {
       name,
@@ -100,18 +116,7 @@ const createUsers = async (verbose, admin, randomCountry, numberOfRecords) => {
     usersArray.push(await createUser(userParams));
   }
 
-  if (admin) {
-    console.log(
-      '\x1b[32m',
-      `
-      Admin user created:
-      \tName: Admin
-      \tEmail: admin@tisn.app
-    `
-    );
-  }
-  console.log('\x1b[32m', `Users created: ${usersArray.length}`);
-  return usersArray;
+  console.log('\x1b[32m', `Created ${usersArray.length} regular users`);
 };
 
 module.exports = { createUsers };

@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 const mongoDB = process.env.DB_URL;
 
 const connectMongoDb = () => {
-  console.log('Mongo Db:', mongoDB);
+  console.log('MongoDB URL:', mongoDB);
   mongoose.connect(mongoDB, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
@@ -12,10 +12,10 @@ const connectMongoDb = () => {
   mongoose.Promise = global.Promise;
   const db = mongoose.connection;
   db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-}
+};
 
 const closeMongoDb = () => {
   mongoose.connection.close();
-}
+};
 
-module.exports = {connectMongoDb, closeMongoDb}
+module.exports = { connectMongoDb, closeMongoDb };
