@@ -19,24 +19,19 @@ const userArgs = minimist(process.argv.slice(2), {
   string: ['collection', 'number'],
   boolean: ['verbose', 'admin', 'random-country'],
   default: { number: '100' },
-  alias: [
-    { a: 'admin' },
-    { c: 'collection' },
-    { rc: 'random' },
-    { v: 'verbose' },
-  ],
+  alias: { a: 'admin', c: 'collection', r: 'random-country', v: 'verbose' },
 });
 
 const populateAllTables = async () => {
   console.log('Populating all tables');
   connectMongoDb();
   await createInterests(userArgs.v);
-  await createUsers(userArgs.v, userArgs.a, userArgs.rc, userArgs.number);
+  await createUsers(userArgs.v, userArgs.a, userArgs.r, userArgs.number);
   closeMongoDb();
 };
 
 const populateSpecifiedTable = async () => {
-  switch (userArgs.t.toLowerCase()) {
+  switch (userArgs.c.toLowerCase()) {
     case 'users':
       connectMongoDb();
       await createUsers(userArgs.v, userArgs.a, userArgs.rc, userArgs.number);
@@ -54,4 +49,4 @@ const populateSpecifiedTable = async () => {
 };
 
 console.log(userArgs);
-userArgs.t ? populateSpecifiedTable() : populateAllTables();
+userArgs.c ? populateSpecifiedTable() : populateAllTables();

@@ -1,3 +1,5 @@
+const prompts = require('prompts');
+
 const Interest = require('../models/Interest');
 
 const categories = [
@@ -22,7 +24,16 @@ const createInterests = async (verbose) => {
   console.log('\x1b[0m', 'Populating interests...');
   displayLogs = verbose;
 
-  if ((await Interest.countDocuments()) !== 0) await Interest.collection.drop();
+  if ((await Interest.countDocuments()) !== 0) {
+    const answer = await prompts({
+      type: 'confirm',
+      name: 'value',
+      message:
+        'The interests collection already contains some documents. It is recommended that you drop the existing collection before proceeding to avoid duplication. Would you like to drop the existing collection before proceeding?',
+      initial: true,
+    });
+    if (answer.value) await Interest.collection.drop();
+  }
 
   await createInterest(
     'Art',

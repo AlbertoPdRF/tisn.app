@@ -1,3 +1,5 @@
+const prompts = require('prompts');
+
 const User = require('../models/User');
 const Interest = require('../models/Interest');
 
@@ -28,7 +30,7 @@ const createUser = async (userParams) => {
 const getRandomDate = (startDate, endDate) =>
   new Date(+startDate + Math.random() * (endDate - startDate));
 
-const createAdminUser = () => () => {
+const createAdminUser = () => {
   createUser({
     name: 'Admin',
     email: `admin@tisn.app`,
@@ -50,7 +52,20 @@ const createUsers = async (verbose, admin, randomCountry, numberOfRecords) => {
   const now = new Date();
   const usersArray = [];
 
-  if (admin) usersArray.push(createAdminUser());
+  if (interestsList.length === 0) {
+    const answer = await prompts({
+      type: 'confirm',
+      name: 'value',
+      message:
+        'The interests collection does not exist. Users created will not have any interests. Do you wish to continue?',
+      initial: true,
+    });
+    if (!answer.value) return;
+  }
+
+  if (admin && !(await User.exists({ email: 'admin@tisn.app' }))) {
+    usersArray.push(createAdminUser());
+  }
 
   for (let i = 0; i < numberOfRecords; i++) {
     const name = uniqueNamesGenerator({
