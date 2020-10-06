@@ -54,12 +54,12 @@ We recommend [setting up an SSH key](https://help.github.com/en/github/authentic
 
 Before starting, copy the `.env-template` file on the `api` folder to a new `.env` file on the same folder (i.e. `cp api/.env-template api/.env`) and fill it following these instructions:
 
-- `DB_URL`: should be `mongodb://127.0.0.1:27017` unless you changed MongoDB's default port or are using MongoDB Atlas
+- `DB_URL`: should be `mongodb://127.0.0.1:27017/tisn` unless you changed MongoDB's default port, want to give another name to the database, or are using MongoDB Atlas
 - `JWT_SECRET`: can be any string
 - `CLOUDINARY_CLOUD_NAME`: you can sign up on [Cloudinary](https://cloudinary.com/) using the free tier, however this key and the two below are only necessary if you want to upload files
 - `CLOUDINARY_API_KEY`: same as above
 - `CLOUDINARY_API_SECRET`: same as above
-- `SENDGRID_API_KEY`: you can sign up on [SendGrid](https://sendgrid.com/) using the free tier, however this key is only necessary if you want to send emails, which by default are logged to the console in development mode
+- `SENDGRID_API_KEY`: you can sign up on [SendGrid](https://sendgrid.com/) using the free tier, however this key is only necessary if you want to send emails, which by default are logged to the console in development mode. The default value is set to `SG.` to avoid an unnecesary error message being logged to the console
 - `BASE_CLIENT_URL`: should be `http://localhost:3000` unless you change the port on which the client runs
 
 Once that's done, you can install all the dependencies, populate the database, and launch the back end executing the following commands from the repository's root folder:
