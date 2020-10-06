@@ -2,11 +2,9 @@ require('dotenv').config();
 
 const createError = require('http-errors');
 const express = require('express');
-const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const cors = require('cors');
-const mongoose = require('mongoose');
 const i18next = require('i18next');
 const i18nextMiddleware = require('i18next-http-middleware');
 const i18nextBackend = require('i18next-fs-backend');
@@ -23,15 +21,8 @@ const app = express();
 
 app.use(i18nextMiddleware.handle(i18next));
 
-const mongoDB = process.env.DB_URL;
-mongoose.connect(mongoDB, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-});
-mongoose.set('useFindAndModify', false);
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
+const { connectDb } = require('./db/connection');
+connectDb(process.env.DB_URL);
 
 require('./config/passport');
 

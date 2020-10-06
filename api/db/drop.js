@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 const minimist = require('minimist');
-const { connectMongoDb, closeMongoDb } = require('./db-connection');
+const { connectDb, closeDb } = require('./connection');
 
 const Interest = require('../models/Interest');
 const User = require('../models/User');
@@ -34,14 +34,14 @@ const dropUsers = async () => {
 };
 
 const dropCollections = async () => {
-  connectMongoDb();
+  connectDb();
   await dropInterests();
   await dropUsers();
-  closeMongoDb();
+  closeDb();
 };
 
 const dropCollection = async () => {
-  connectMongoDb();
+  connectDb();
   switch (userArgs.c.toLowerCase()) {
     case 'interests':
       await dropInterests();
@@ -55,7 +55,7 @@ const dropCollection = async () => {
       );
       break;
   }
-  closeMongoDb();
+  closeDb();
 };
 
 userArgs.c ? dropCollection() : dropCollections();

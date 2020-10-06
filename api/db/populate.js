@@ -1,7 +1,7 @@
 #! /usr/bin/env node
 
 const minimist = require('minimist');
-const { connectMongoDb, closeMongoDb } = require('./db-connection');
+const { connectDb, closeDb } = require('./connection');
 const { createInterests } = require('./populate-interests');
 const { createUsers } = require('./populate-users');
 
@@ -19,14 +19,14 @@ const userArgs = minimist(process.argv.slice(2), {
 });
 
 const populateCollections = async () => {
-  connectMongoDb();
+  connectDb();
   await createInterests(userArgs.v);
   await createUsers(userArgs.m, userArgs.r, userArgs.v);
-  closeMongoDb();
+  closeDb();
 };
 
 const populateCollection = async () => {
-  connectMongoDb();
+  connectDb();
   switch (userArgs.c.toLowerCase()) {
     case 'interests':
       await createInterests(userArgs.v);
@@ -40,7 +40,7 @@ const populateCollection = async () => {
       );
       break;
   }
-  closeMongoDb();
+  closeDb();
 };
 
 userArgs.c ? populateCollection() : populateCollections();
