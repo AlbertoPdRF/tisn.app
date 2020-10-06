@@ -41,7 +41,7 @@ const createAdminUser = () => {
     country: 'ES',
     region: 'M',
     preferredLocale: 'en',
-    dateOfBirth: new Date(2000, 01, 01),
+    dateOfBirth: new Date(2000, 0, 1),
     interests: [],
     admin: true,
   });
@@ -99,12 +99,12 @@ const createUsers = async (multiplier, randomLocation, verbose) => {
       name,
       email: `${name.replace(/ /g, '_')}@tisn.app`.toLowerCase(),
       emailConfirmed: true,
-      emailConfirmedAt: getRandomDate(new Date(2020, 05, 05), now),
+      emailConfirmedAt: getRandomDate(new Date(2020, 4, 5), now),
       country: country.countryShortCode,
       region: region.shortCode || region.name,
       preferredLocale: locales[Math.floor(Math.random() * 2)],
       dateOfBirth: getRandomDate(
-        new Date(1970, 01, 01),
+        new Date(1970, 0, 1),
         new Date().setFullYear(now.getFullYear() - 13)
       ),
       interests: interestsList
