@@ -5,6 +5,7 @@ const { connectDb, closeDb } = require('./connection');
 
 const Interest = require('../models/Interest');
 const User = require('../models/User');
+const Event = require('../models/Event');
 
 const userArgs = minimist(process.argv.slice(2), {
   string: 'collection',
@@ -33,10 +34,21 @@ const dropUsers = async () => {
   }
 };
 
+const dropEvents = async () => {
+  console.log('\n', '\x1b[0m', 'Dropping events collection...');
+  if ((await Event.countDocuments()) !== 0) {
+    await Event.collection.drop();
+    console.log('\x1b[31m', 'Dropped events collection');
+  } else {
+    console.log('\x1b[33m', 'events collection is already empty');
+  }
+};
+
 const dropCollections = async () => {
   connectDb();
   await dropInterests();
   await dropUsers();
+  await dropEvents();
   closeDb();
 };
 
@@ -49,9 +61,12 @@ const dropCollection = async () => {
     case 'users':
       await dropUsers();
       break;
+    case 'events':
+      await dropEvents();
+      break;
     default:
       console.log(
-        `Unknown collection '${userArgs.c}', possible options are: [interests, users]`
+        `Unknown collection '${userArgs.c}', possible options are: [interests, users, events]`
       );
       break;
   }

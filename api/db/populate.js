@@ -2,6 +2,7 @@
 
 const minimist = require('minimist');
 const { connectDb, closeDb } = require('./connection');
+const { createEvents } = require('./populate-events');
 const { createInterests } = require('./populate-interests');
 const { createUsers } = require('./populate-users');
 
@@ -22,6 +23,7 @@ const populateCollections = async () => {
   connectDb();
   await createInterests(userArgs.v);
   await createUsers(userArgs.m, userArgs.r, userArgs.v);
+  await createEvents();
   closeDb();
 };
 
@@ -34,9 +36,12 @@ const populateCollection = async () => {
     case 'users':
       await createUsers(userArgs.m, userArgs.r, userArgs.v);
       break;
+    case 'events':
+      await createEvents();
+      break;
     default:
       console.log(
-        `Unknown collection '${userArgs.c}', possible options are: [interests, users]`
+        `Unknown collection '${userArgs.c}', possible options are: [interests, users, events]`
       );
       break;
   }
