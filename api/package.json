@@ -13,7 +13,8 @@
   "scripts": {
     "start": "nodemon ./bin/www",
     "start:prod": "node ./bin/www",
-    "db:populate": "node ./db/populate.js"
+    "db:populate": "node ./db/populate.js",
+    "db:drop": "node ./db/drop.js"
   },
   "dependencies": {
     "@sendgrid/mail": "^7.2.6",
