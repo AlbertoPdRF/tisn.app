@@ -62,11 +62,12 @@ Before starting, copy the `.env-template` file on the `api` folder to a new `.en
 - `SENDGRID_API_KEY`: you can sign up on [SendGrid](https://sendgrid.com/) using the free tier, however this key is only necessary if you want to send emails, which by default are logged to the console in development mode
 - `BASE_CLIENT_URL`: should be `http://localhost:3000` unless you change the port on which the client runs
 
-Once that's done, you can install all the dependencies and launch the back end executing the following commands from the repository's root folder:
+Once that's done, you can install all the dependencies, populate the database, and launch the back end executing the following commands from the repository's root folder:
 
 ```bash
 cd api
 npm install
+npm run db:populate
 npm start
 ```
 

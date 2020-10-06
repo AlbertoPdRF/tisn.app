@@ -12,7 +12,9 @@
   "license": "AGPL-3.0-or-later",
   "scripts": {
     "start": "nodemon ./bin/www",
-    "start:prod": "node ./bin/www"
+    "start:prod": "node ./bin/www",
+    "db:populate": "node ./db/populate.js",
+    "db:drop": "node ./db/drop.js"
   },
   "dependencies": {
     "@sendgrid/mail": "^7.2.6",
@@ -42,8 +44,10 @@
   "devDependencies": {
     "husky": "^4.3.0",
     "lint-staged": "^10.4.0",
+    "minimist": "^1.2.5",
     "nodemon": "^2.0.4",
     "prettier": "2.1.2",
+    "prompts": "^2.3.2",
     "unique-names-generator": "^4.3.1"
   },
   "husky": {

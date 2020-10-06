@@ -1,38 +1,14 @@
-#! /usr/bin/env node
-
-const userArgs = process.argv.slice(2);
-
-if (!userArgs[0].startsWith('mongodb')) {
-  console.log(
-    'Error: you need to specify a valid MongoDB URL as the first argument'
-  );
-
-  return;
-}
+const prompts = require('prompts');
 
 const User = require('../models/User');
 const Interest = require('../models/Interest');
 
-const asynchronous = require('async');
-
-const mongoose = require('mongoose');
-const mongoDB = userArgs[0];
-mongoose.connect(mongoDB, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-  useCreateIndex: true,
-});
-mongoose.Promise = global.Promise;
-const db = mongoose.connection;
-db.on('error', console.error.bind(console, 'MongoDB connection error:'));
-
-const numberOfRecords = userArgs[1] || 100;
 const { uniqueNamesGenerator, names } = require('unique-names-generator');
 const countries = require('country-region-data');
 const locales = ['en', 'es'];
-const users = [];
+let displayLogs;
 
-const createUser = async (userParams, callback) => {
+const createUser = async (userParams) => {
   const user = new User({
     name: userParams.name,
     email: userParams.email,
@@ -48,48 +24,76 @@ const createUser = async (userParams, callback) => {
   user.setPassword('password');
   await user.save();
 
-  console.log(`New User: ${user}`);
-  users.push(user);
-  callback(null, user);
+  if (displayLogs) {
+    console.log('\n', '\x1b[0m', `New user created: ${user}`);
+  }
 };
 
 const getRandomDate = (startDate, endDate) =>
   new Date(+startDate + Math.random() * (endDate - startDate));
 
-const createAdminUser = () => (seriesCallback) => {
-  createUser(
-    {
-      name: 'Admin',
-      email: `admin@tisn.app`,
-      emailConfirmed: true,
-      emailConfirmedAt: new Date(),
-      country: 'US',
-      region: 'FL',
-      preferredLocale: 'en',
-      dateOfBirth: new Date(2000, 01, 01),
-      interests: [],
-      admin: true,
-    },
-    seriesCallback
+const createAdminUser = () => {
+  createUser({
+    name: 'Admin',
+    email: `admin@tisn.app`,
+    emailConfirmed: true,
+    emailConfirmedAt: new Date(),
+    country: 'ES',
+    region: 'M',
+    preferredLocale: 'en',
+    dateOfBirth: new Date(2000, 01, 01),
+    interests: [],
+    admin: true,
+  });
+
+  console.log(
+    '\x1b[32m',
+    `
+    Admin user created:
+    \tName: Admin
+    \tEmail: admin@tisn.app
+    \tPassword: password
+  `
   );
 };
 
-const generateUsersArray = async () => {
-  let interestsList = await Interest.distinct('_id');
+const createUsers = async (multiplier, randomLocation, verbose) => {
+  console.log('\n', '\x1b[0m', 'Populating users collection...');
+  displayLogs = verbose;
 
+  let interestsList = await Interest.distinct('_id');
   const now = new Date();
   const usersArray = [];
 
-  usersArray.push(createAdminUser());
+  if (interestsList.length === 0) {
+    const answer = await prompts({
+      type: 'confirm',
+      name: 'value',
+      message:
+        'The interests collection does not exist. Users created will not have any interests. Do you want to continue?',
+      initial: true,
+    });
+    if (!answer.value) {
+      console.log('\x1b[33m', 'Aborted users collection population');
+      return;
+    }
+  }
 
-  for (let i = 0; i < numberOfRecords; i++) {
+  if (!(await User.exists({ email: 'admin@tisn.app' }))) {
+    createAdminUser();
+  }
+
+  for (let i = 0; i < 100 * multiplier; i++) {
     const name = uniqueNamesGenerator({
       dictionaries: [names, names],
       separator: ' ',
     });
-    const country = countries[Math.floor(Math.random() * countries.length)];
-    const region =
-      country.regions[Math.floor(Math.random() * country.regions.length)];
+    const country = randomLocation
+      ? countries[Math.floor(Math.random() * countries.length)]
+      : { countryShortCode: 'ES' };
+    const region = randomLocation
+      ? country.regions[Math.floor(Math.random() * country.regions.length)]
+      : { shortCode: 'M' };
 
     const userParams = {
       name,
@@ -109,24 +113,10 @@ const generateUsersArray = async () => {
       admin: false,
     };
 
-    usersArray.push((seriesCallback) => {
-      createUser(userParams, seriesCallback);
-    });
+    usersArray.push(await createUser(userParams));
   }
 
-  return usersArray;
+  console.log('\x1b[32m', `Created ${usersArray.length} regular users`);
 };
 
-const createUsers = async () => {
-  asynchronous.series(await generateUsersArray(), (error, results) => {
-    if (error) {
-      console.log(`Final error: ${error}`);
-    } else {
-      console.log(`Final results: ${results}`);
-    }
-
-    mongoose.connection.close();
-  });
-};
-
-createUsers();
+module.exports = { createUsers };
