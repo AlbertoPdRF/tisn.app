@@ -2,41 +2,33 @@
 
 The back end is currently hosted on [Heroku](https://heroku.com/).
 
-The production database is currently hosted on [MongoDB Atlas](https://cloud.mongodb.com/). There's a script that can be used to populate the database with interests and users. To run the script and to populate all collections, use the command `npm run db:populate`.
+## Database
 
-## Advanced Options
+The applications uses [MongoDB](https://www.mongodb.com/) and [mongoose](https://mongoosejs.com/). The production database is currently hosted on [MongoDB Atlas](https://cloud.mongodb.com/).
 
-The following flags can be used when populating the database:
+### Populate collections
 
-- `-c` or `--collection`, specify the collection you wish to populate.
-- `-m` or `--multiplier`, multiply the default number of users generated.
-- `-r` or `--random-location`, randomizes the country and region each user is located.
-- `-v` or `--verbose`, logs each document generated.
+There's a script that can be used to populate all the collections with dummy data. Run it with the command `npm run db:populate`.
 
-Example:
+The following arguments can be passed to the script:
 
-`npm run db:populate -- -c users -m 5 --verbose`
+- `-c` or `--collection`, specify the collection you want to populate.
+- `-m` or `--multiplier`, multiply the default number of users generated (100).
+- `-r` or `--random-location`, randomizes the country and region each user is located in. By default, all users are located in Madrid, Spain.
+- `-v` or `--verbose`, logs each generated document to the console.
 
-This example will populate the users collection with 500 users and will log to the console each user created.
+When the users collection is first populated, an admin user with the following information is also generated:
 
-When the users collection is first populated it also generates an admin user with the following information:
+- Name: `Admin`
+- Email: `admin@tisn.app`
+- Password: `password`
 
-- Name: Admin
-- Email: admin@tisn.app
-- Password: password
+All generated users have `password` as their password.
 
-Each user's password generated from the script is `password`.
+### Drop collections
 
-**Note:** Default number of users generated is 100 and the default location each user is from is Madrid, Spain.
+There's also a script that can be used to drop all the collections. Run it with the command `npm run db:drop`.
 
-## Deleting Collections
+The following arguments can be passed to the script:
 
-To drop the database, run `npm run db:drop`. This will drop all collections in the database.
-
-The following flags can be used when deleting the database:
-
-- `-c` or `--collection`, specify the collection you wish to delete.
-
-Example:
-
-`npm run db:drop -- -c users`
+- `-c` or `--collection`, specify the collection you want to drop.

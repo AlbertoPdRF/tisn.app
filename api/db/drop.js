@@ -1,9 +1,10 @@
 #! /usr/bin/env node
 
 const minimist = require('minimist');
+const { connectMongoDb, closeMongoDb } = require('./db-connection');
+
 const Interest = require('../models/Interest');
 const User = require('../models/User');
-const { connectMongoDb, closeMongoDb } = require('./db-connection');
 
 const userArgs = minimist(process.argv.slice(2), {
   string: 'collection',
@@ -13,23 +14,33 @@ const userArgs = minimist(process.argv.slice(2), {
 });
 
 const dropInterests = async () => {
-  console.log('Dropping interests collection...');
-  if ((await Interest.countDocuments()) !== 0) await Interest.collection.drop();
+  console.log('\n', '\x1b[0m', 'Dropping interests collection...');
+  if ((await Interest.countDocuments()) !== 0) {
+    await Interest.collection.drop();
+    console.log('\x1b[31m', 'Dropped interests collection');
+  } else {
+    console.log('\x1b[33m', 'Interests collection is already empty');
+  }
 };
 
 const dropUsers = async () => {
-  console.log('Dropping users collection...');
-  if ((await User.countDocuments()) !== 0) await User.collection.drop();
+  console.log('\n', '\x1b[0m', 'Dropping users collection...');
+  if ((await User.countDocuments()) !== 0) {
+    await User.collection.drop();
+    console.log('\x1b[31m', 'Dropped users collection');
+  } else {
+    console.log('\x1b[33m', 'Users collection is already empty');
+  }
 };
 
-const deleteCollections = async () => {
+const dropCollections = async () => {
   connectMongoDb();
   await dropInterests();
   await dropUsers();
   closeMongoDb();
 };
 
-const deleteCollection = async () => {
+const dropCollection = async () => {
   connectMongoDb();
   switch (userArgs.c.toLowerCase()) {
     case 'interests':
@@ -47,4 +58,4 @@ const deleteCollection = async () => {
   closeMongoDb();
 };
 
-userArgs.c ? deleteCollection() : deleteCollections();
+userArgs.c ? dropCollection() : dropCollections();
