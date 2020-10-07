@@ -1,4 +1,4 @@
-const { createPrompt } = require('./helper-functions');
+const { createPrompt } = require('./utils');
 
 const Interest = require('../models/Interest');
 

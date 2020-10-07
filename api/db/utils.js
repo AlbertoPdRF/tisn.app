@@ -15,13 +15,13 @@ const createPrompt = async (message) => {
 const getRandomDate = (startDate, endDate) =>
   new Date(+startDate + Math.random() * (endDate - startDate));
 
-const getRandomCountry = (randomLocation) => 
-  randomLocation 
+const getCountry = (random) => 
+  random 
     ? countries[Math.floor(Math.random() * countries.length)]
     : { countryShortCode: 'ES' };
 
-const getRandomRegion = (randomLocation, country) => 
-  randomLocation
+const getRegion = (random, country) => 
+  random
     ? country.regions[Math.floor(Math.random() * country.regions.length)]
     : { shortCode: 'M' };
 
@@ -33,7 +33,7 @@ const getRandomInterests = (interests) =>
 module.exports = { 
   createPrompt,
   getRandomDate,
-  getRandomCountry,
-  getRandomRegion,
+  getCountry,
+  getRegion,
   getRandomInterests
 }

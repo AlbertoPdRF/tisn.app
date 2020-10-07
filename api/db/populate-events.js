@@ -1,16 +1,22 @@
 const txtgen = require('txtgen');
 const { 
+  uniqueNamesGenerator,
+  adjectives,
+  animals,
+  starWars,
+  colors
+} = require('unique-names-generator');
+const { 
   createPrompt,
   getRandomDate,
-  getRandomCountry,
-  getRandomRegion ,
+  getCountry,
+  getRegion ,
   getRandomInterests
-} = require('./helper-functions');
+} = require('./utils');
 
 const Interest = require('../models/Interest');
 const User = require('../models/User');
 const Event = require('../models/Event');
-const { uniqueNamesGenerator, adjectives, animals, starWars, colors } = require('unique-names-generator');
 
 const createEvent = async (eventParams) => {
   const event = new Event({
@@ -20,8 +26,8 @@ const createEvent = async (eventParams) => {
     endDate: eventParams.endDate,
     country: eventParams.country,
     region: eventParams.region,
-    createdBy: eventParams.user,
-    relatedInterests: eventParams.interests,
+    createdBy: eventParams.createdBy,
+    relatedInterests: eventParams.relatedInterests,
     coverPhoto: eventParams.coverPhoto,
     attendantsLimit: eventParams.attendantsLimit,
   });
@@ -60,20 +66,21 @@ const createEvents = async (multiplier, randomLocation, verbose) => {
   const now = new Date();
   const futureDate = new Date().setFullYear(now.getFullYear() + 5);
 
-  for (let i = 0; i < 500 * multiplier; i++) {
+  for (let i = 0; i < 50 * multiplier; i++) {
     const name = uniqueNamesGenerator({
       dictionaries: [adjectives, animals, colors, starWars],
       length: 3,
+      style: 'capital',
       separator: ' '
     });
 
-    const description = txtgen.paragraph();
+    const description = txtgen.article(Math.floor(Math.random() * 15));
 
     const startDate = getRandomDate(now, futureDate);
     const endDate = getRandomDate(startDate, futureDate);
 
-    const country = getRandomCountry(randomLocation);
-    const region = getRandomRegion(randomLocation, country);
+    const country = getCountry(randomLocation);
+    const region = getRegion(randomLocation, country);
 
     const eventParams = {
       name,
@@ -82,10 +89,10 @@ const createEvents = async (multiplier, randomLocation, verbose) => {
       endDate,
       country: country.countryShortCode,
       region: region.shortCode,
-      user: usersList[Math.floor(Math.random() * usersList.length)],
-      interests: getRandomInterests(interestsList),
+      createdBy: usersList[Math.floor(Math.random() * usersList.length)],
+      relatedInterests: getRandomInterests(interestsList),
       coverPhoto: "",
-      attendantsLimit: Math.floor(Math.random() * usersList.length -1) + 1
+      attendantsLimit: Math.floor(Math.random() * (usersList.length - 2)) + 2
     };
 
     eventsArray.push(await createEvent(eventParams));

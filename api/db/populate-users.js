@@ -1,9 +1,15 @@
-const { createPrompt, getRandomDate, getRandomCountry, getRandomRegion, getRandomInterests } = require('./helper-functions');
+const { 
+  createPrompt,
+  getRandomDate,
+  getCountry,
+  getRegion,
+  getRandomInterests
+} = require('./utils');
+const { uniqueNamesGenerator, names } = require('unique-names-generator');
 
 const User = require('../models/User');
 const Interest = require('../models/Interest');
 
-const { uniqueNamesGenerator, names } = require('unique-names-generator');
 const locales = ['en', 'es'];
 let displayLogs;
 
@@ -80,8 +86,8 @@ const createUsers = async (multiplier, randomLocation, verbose) => {
       dictionaries: [names, names],
       separator: ' ',
     });
-    const country = getRandomCountry(randomLocation);
-    const region = getRandomRegion(randomLocation, country);
+    const country = getCountry(randomLocation);
+    const region = getRegion(randomLocation, country);
 
     const userParams = {
       name,
