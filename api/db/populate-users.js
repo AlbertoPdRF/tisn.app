@@ -1,9 +1,9 @@
-const { 
+const {
   createPrompt,
   getRandomDate,
   getCountry,
   getRegion,
-  getRandomInterests
+  getRandomInterests,
 } = require('./utils');
 const { uniqueNamesGenerator, names } = require('unique-names-generator');
 
@@ -77,9 +77,7 @@ const createUsers = async (multiplier, randomLocation, verbose) => {
     }
   }
 
-  if (!(await User.exists({ email: 'admin@tisn.app' }))) {
-    createAdminUser();
-  }
+  if (!(await User.exists({ email: 'admin@tisn.app' }))) createAdminUser();
 
   for (let i = 0; i < 100 * multiplier; i++) {
     const name = uniqueNamesGenerator({

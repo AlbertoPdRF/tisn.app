@@ -10,6 +10,7 @@ const categories = [
   'Shopping and fashion',
   'Sports',
 ];
+
 const interests = [];
 let displayLogs;
 
@@ -31,7 +32,7 @@ const createInterests = async (verbose) => {
     const proceed = await createPrompt(
       'The interests collection already exists. If you continue, the existing collection will be dropped to avoid duplication. Please note that this can break your application. Do you want to continue?'
     );
-    
+
     if (proceed) {
       await Interest.collection.drop();
       console.log('\x1b[31m', 'Dropped old interests collection');

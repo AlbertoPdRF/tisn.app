@@ -79,8 +79,8 @@ const createEvents = async (multiplier, randomLocation, verbose) => {
 
     const startDate = getRandomDate(now, futureDate);
     const endDate = getRandomDate(
-      startDate,
-      new Date(startDate.getTime() + 60000)
+      new Date(startDate.getTime() + 60000),
+      new Date(startDate.getTime() + 86400000 * 2)
     );
 
     const country = getCountry(randomLocation);
