@@ -23,7 +23,7 @@ const populateCollections = async () => {
   connectDb();
   await createInterests(userArgs.v);
   await createUsers(userArgs.m, userArgs.r, userArgs.v);
-  await createEvents();
+  await createEvents(userArgs.m, userArgs.r, userArgs.v);
   closeDb();
 };
 
@@ -37,7 +37,7 @@ const populateCollection = async () => {
       await createUsers(userArgs.m, userArgs.r, userArgs.v);
       break;
     case 'events':
-      await createEvents();
+      await createEvents(userArgs.m, userArgs.r, userArgs.v);
       break;
     default:
       console.log(
