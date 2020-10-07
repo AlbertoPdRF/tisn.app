@@ -6,6 +6,7 @@ const { connectDb, closeDb } = require('./connection');
 const Interest = require('../models/Interest');
 const User = require('../models/User');
 const Event = require('../models/Event');
+const Attendant = require('../models/Attendant');
 
 const userArgs = minimist(process.argv.slice(2), {
   string: 'collection',
@@ -35,12 +36,19 @@ const dropUsers = async () => {
 };
 
 const dropEvents = async () => {
-  console.log('\n', '\x1b[0m', 'Dropping events collection...');
+  console.log('\n', '\x1b[0m', 'Dropping events and attendants collection...');
   if ((await Event.countDocuments()) !== 0) {
     await Event.collection.drop();
     console.log('\x1b[31m', 'Dropped events collection');
   } else {
     console.log('\x1b[33m', 'events collection is already empty');
+  }
+
+  if ((await Attendant.countDocuments()) !== 0) {
+    await Attendant.collection.drop();
+    console.log('\x1b[31m', 'Dropped attendants collection');
+  } else {
+    console.log('\x1b[33m', 'attendants collection is already empty');
   }
 };
 

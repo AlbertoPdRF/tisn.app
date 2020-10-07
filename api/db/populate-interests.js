@@ -1,4 +1,4 @@
-const prompts = require('prompts');
+const { createPrompt } = require('./helper-functions');
 
 const Interest = require('../models/Interest');
 
@@ -28,14 +28,11 @@ const createInterests = async (verbose) => {
   displayLogs = verbose;
 
   if ((await Interest.countDocuments()) !== 0) {
-    const answer = await prompts({
-      type: 'confirm',
-      name: 'value',
-      message:
-        'The interests collection already exists. If you continue, the existing collection will be dropped to avoid duplication. Please note that this can break your application. Do you want to continue?',
-      initial: true,
-    });
-    if (answer.value) {
+    const proceed = await createPrompt(
+      'The interests collection already exists. If you continue, the existing collection will be dropped to avoid duplication. Please note that this can break your application. Do you want to continue?'
+    );
+    
+    if (proceed) {
       await Interest.collection.drop();
       console.log('\x1b[31m', 'Dropped old interests collection');
     } else {

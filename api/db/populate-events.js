@@ -1,19 +1,16 @@
-const prompts = require('prompts');
+const txtgen = require('txtgen');
+const { 
+  createPrompt,
+  getRandomDate,
+  getRandomCountry,
+  getRandomRegion ,
+  getRandomInterests
+} = require('./helper-functions');
 
 const Interest = require('../models/Interest');
 const User = require('../models/User');
 const Event = require('../models/Event');
-
-const createPrompt = async (message) => {
-  let answer = await prompts({
-    type: 'confirm',
-    name: 'value',
-    message,
-    initial: true,
-  });
-
-  return answer.value;
-};
+const { uniqueNamesGenerator, adjectives, animals, starWars, colors } = require('unique-names-generator');
 
 const createEvent = async (eventParams) => {
   const event = new Event({
@@ -25,6 +22,7 @@ const createEvent = async (eventParams) => {
     region: eventParams.region,
     createdBy: eventParams.user,
     relatedInterests: eventParams.interests,
+    coverPhoto: eventParams.coverPhoto,
     attendantsLimit: eventParams.attendantsLimit,
   });
   await event.save();
@@ -36,7 +34,6 @@ const createEvent = async (eventParams) => {
 
 const createEvents = async (multiplier, randomLocation, verbose) => {
   console.log('\n', '\x1b[0m', 'Populating events collection...');
-  displayLogs = verbose;
 
   let usersList = await User.distinct('_id');
   if (usersList.length === 0) {
@@ -58,7 +55,43 @@ const createEvents = async (multiplier, randomLocation, verbose) => {
     }
   }
 
-  // createEvent();
+  displayLogs = verbose;
+  const eventsArray = [];
+  const now = new Date();
+  const futureDate = new Date().setFullYear(now.getFullYear() + 5);
+
+  for (let i = 0; i < 500 * multiplier; i++) {
+    const name = uniqueNamesGenerator({
+      dictionaries: [adjectives, animals, colors, starWars],
+      length: 3,
+      separator: ' '
+    });
+
+    const description = txtgen.paragraph();
+
+    const startDate = getRandomDate(now, futureDate);
+    const endDate = getRandomDate(startDate, futureDate);
+
+    const country = getRandomCountry(randomLocation);
+    const region = getRandomRegion(randomLocation, country);
+
+    const eventParams = {
+      name,
+      description,
+      startDate,
+      endDate,
+      country: country.countryShortCode,
+      region: region.shortCode,
+      user: usersList[Math.floor(Math.random() * usersList.length)],
+      interests: getRandomInterests(interestsList),
+      coverPhoto: "",
+      attendantsLimit: Math.floor(Math.random() * usersList.length)
+    };
+
+    eventsArray.push(await createEvent(eventParams));
+  }
+
+  console.log('\x1b[32m', `Created ${eventsArray.length} events`);
 };
 
 module.exports = { createEvents };

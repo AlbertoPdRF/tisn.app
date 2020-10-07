@@ -1,10 +1,9 @@
-const prompts = require('prompts');
+const { createPrompt, getRandomDate, getRandomCountry, getRandomRegion, getRandomInterests } = require('./helper-functions');
 
 const User = require('../models/User');
 const Interest = require('../models/Interest');
 
 const { uniqueNamesGenerator, names } = require('unique-names-generator');
-const countries = require('country-region-data');
 const locales = ['en', 'es'];
 let displayLogs;
 
@@ -28,9 +27,6 @@ const createUser = async (userParams) => {
     console.log('\n', '\x1b[0m', `New user created: ${user}`);
   }
 };
-
-const getRandomDate = (startDate, endDate) =>
-  new Date(+startDate + Math.random() * (endDate - startDate));
 
 const createAdminUser = () => {
   createUser({
@@ -66,14 +62,10 @@ const createUsers = async (multiplier, randomLocation, verbose) => {
   const usersArray = [];
 
   if (interestsList.length === 0) {
-    const answer = await prompts({
-      type: 'confirm',
-      name: 'value',
-      message:
-        'The interests collection does not exist. Users created will not have any interests. Do you want to continue?',
-      initial: true,
-    });
-    if (!answer.value) {
+    const proceed = await createPrompt(
+      'The interests collection does not exist. Users created will not have any interests. Do you want to continue?'
+    );
+    if (!proceed) {
       console.log('\x1b[33m', 'Aborted users collection population');
       return;
     }
@@ -88,12 +80,8 @@ const createUsers = async (multiplier, randomLocation, verbose) => {
       dictionaries: [names, names],
       separator: ' ',
     });
-    const country = randomLocation
-      ? countries[Math.floor(Math.random() * countries.length)]
-      : { countryShortCode: 'ES' };
-    const region = randomLocation
-      ? country.regions[Math.floor(Math.random() * country.regions.length)]
-      : { shortCode: 'M' };
+    const country = getRandomCountry(randomLocation);
+    const region = getRandomRegion(randomLocation, country);
 
     const userParams = {
       name,
@@ -107,9 +95,7 @@ const createUsers = async (multiplier, randomLocation, verbose) => {
         new Date(1970, 0, 1),
         new Date().setFullYear(now.getFullYear() - 13)
       ),
-      interests: interestsList
-        .sort(() => 0.5 - Math.random())
-        .slice(0, Math.floor(Math.random() * interestsList.length)),
+      interests: getRandomInterests(interestsList),
       admin: false,
     };
 
