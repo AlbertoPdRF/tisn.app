@@ -85,7 +85,7 @@ const createEvents = async (multiplier, randomLocation, verbose) => {
       user: usersList[Math.floor(Math.random() * usersList.length)],
       interests: getRandomInterests(interestsList),
       coverPhoto: "",
-      attendantsLimit: Math.floor(Math.random() * usersList.length) + 1
+      attendantsLimit: Math.floor(Math.random() * usersList.length -1) + 1
     };
 
     eventsArray.push(await createEvent(eventParams));
