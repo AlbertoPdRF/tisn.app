@@ -13,8 +13,8 @@ There's a script that can be used to populate all the collections with dummy dat
 The following arguments can be passed to the script:
 
 - `-c` or `--collection`, specify the collection you want to populate.
-- `-m` or `--multiplier`, multiply the default number of users generated (100).
-- `-r` or `--random-location`, randomizes the country and region each user is located in. By default, all users are located in Madrid, Spain.
+- `-m` or `--multiplier`, multiply the default number of users (100) and events (500) generated.
+- `-r` or `--random-location`, randomizes the country and region each user and event is located in. By default, all users and events are located in Madrid, Spain.
 - `-v` or `--verbose`, logs each generated document to the console.
 
 When the users collection is first populated, an admin user with the following information is also generated:
