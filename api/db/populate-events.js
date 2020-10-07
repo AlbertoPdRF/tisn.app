@@ -74,10 +74,13 @@ const createEvents = async (multiplier, randomLocation, verbose) => {
       separator: ' '
     });
 
-    const description = txtgen.article(Math.floor(Math.random() * 15));
+    const description = txtgen.article(Math.floor(Math.random() * 2) + 1);
 
     const startDate = getRandomDate(now, futureDate);
-    const endDate = getRandomDate(startDate, futureDate);
+    const endDate = getRandomDate(
+      startDate, 
+      new Date(startDate.getTime() + (86400000 * 2))
+    );
 
     const country = getCountry(randomLocation);
     const region = getRegion(randomLocation, country);
