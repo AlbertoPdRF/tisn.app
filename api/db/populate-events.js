@@ -1,17 +1,17 @@
 const txtgen = require('txtgen');
-const { 
+const {
   uniqueNamesGenerator,
   adjectives,
   animals,
   starWars,
-  colors
+  colors,
 } = require('unique-names-generator');
-const { 
+const {
   createPrompt,
   getRandomDate,
   getCountry,
-  getRegion ,
-  getRandomInterests
+  getRegion,
+  getRandomInterests,
 } = require('./utils');
 
 const Interest = require('../models/Interest');
@@ -63,6 +63,7 @@ const createEvents = async (multiplier, randomLocation, verbose) => {
 
   displayLogs = verbose;
   const eventsArray = [];
+
   const now = new Date();
   const futureDate = new Date().setFullYear(now.getFullYear() + 5);
 
@@ -71,15 +72,15 @@ const createEvents = async (multiplier, randomLocation, verbose) => {
       dictionaries: [adjectives, animals, colors, starWars],
       length: 3,
       style: 'capital',
-      separator: ' '
+      separator: ' ',
     });
 
     const description = txtgen.article(Math.floor(Math.random() * 2) + 1);
 
     const startDate = getRandomDate(now, futureDate);
     const endDate = getRandomDate(
-      startDate, 
-      new Date(startDate.getTime() + (86400000 * 2))
+      startDate,
+      new Date(startDate.getTime() + 86400000 * 2)
     );
 
     const country = getCountry(randomLocation);
@@ -94,8 +95,8 @@ const createEvents = async (multiplier, randomLocation, verbose) => {
       region: region.shortCode,
       createdBy: usersList[Math.floor(Math.random() * usersList.length)],
       relatedInterests: getRandomInterests(interestsList),
-      coverPhoto: "",
-      attendantsLimit: Math.floor(Math.random() * (usersList.length - 2)) + 2
+      coverPhoto: '',
+      attendantsLimit: Math.floor(Math.random() * (usersList.length - 2)) + 2,
     };
 
     eventsArray.push(await createEvent(eventParams));
