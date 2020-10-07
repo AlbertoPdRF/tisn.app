@@ -23,22 +23,14 @@ const userArgs = minimist(process.argv.slice(2), {
 
 const dropInterests = async () => {
   console.log('\n', '\x1b[0m', 'Dropping interests collection...');
-  if (await getInterestsCount() !== 0) {
+  if ((await getInterestsCount()) !== 0) {
     await Interest.collection.drop();
     console.log('\x1b[31m', 'Dropped interests collection');
   } else {
     console.log('\x1b[33m', 'Interests collection is already empty');
   }
 
-  if (await getEventsCount() !== 0) {
-    const drop = await createPrompt(
-      'The events collection is dependent on the interests collection. Drop events collection?'
-    );
-
-    if (drop) await dropEvents(drop);
-  }
-
-  if (await getUsersCount() !== 0) {
+  if ((await getUsersCount()) !== 0) {
     const drop = await createPrompt(
       'The users collection is dependent on the users collection. Drop users collection?'
     );
@@ -49,7 +41,7 @@ const dropInterests = async () => {
 
 const dropUsers = async (confirmed = false) => {
   console.log('\n', '\x1b[0m', 'Dropping users collection...');
-  if (confirmed || await getUsersCount() !== 0) {
+  if (confirmed || (await getUsersCount()) !== 0) {
     await User.collection.drop();
     console.log('\x1b[31m', 'Dropped users collection');
   } else {
@@ -57,10 +49,10 @@ const dropUsers = async (confirmed = false) => {
     return;
   }
 
-  if (await getEventsCount() !== 0) {
+  if ((await getEventsCount()) !== 0) {
     const drop = await createPrompt(
       'The events collection is dependent on the users collection. Drop events collection?'
-    )
+    );
 
     if (drop) await dropEvents(drop);
   }
@@ -68,7 +60,7 @@ const dropUsers = async (confirmed = false) => {
 
 const dropEvents = async (confirmed = false) => {
   console.log('\n', '\x1b[0m', 'Dropping events collection...');
-  if (confirmed || await getEventsCount() !== 0) {
+  if (confirmed || (await getEventsCount()) !== 0) {
     await Event.collection.drop();
     console.log('\x1b[31m', 'Dropped events collection');
   } else {
@@ -76,7 +68,7 @@ const dropEvents = async (confirmed = false) => {
     return;
   }
 
-  if (await getAttendantsCount() !== 0) {
+  if ((await getAttendantsCount()) !== 0) {
     const drop = await createPrompt(
       'The attendants collection is dependent on the events collection. Drop attendants collection?'
     );
@@ -87,13 +79,13 @@ const dropEvents = async (confirmed = false) => {
 
 const dropAttendants = async (confirmed = false) => {
   console.log('\n', '\x1b[0m', 'Dropping attendants collection...');
-  if (confirmed || await getAttendantsCount() !== 0) {
+  if (confirmed || (await getAttendantsCount()) !== 0) {
     await Attendant.collection.drop();
     console.log('\x1b[31m', 'Dropped attendants collection');
   } else {
     console.log('\x1b[33m', 'Attendants collection is already empty');
   }
-}
+};
 
 const dropCollections = async () => {
   connectDb();

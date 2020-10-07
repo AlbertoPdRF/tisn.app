@@ -13,14 +13,14 @@ const createPrompt = async (message) => {
 };
 
 const getRandomDate = (startDate, endDate) =>
-  new Date(+startDate + Math.random() * (endDate - startDate));
+  new Date(startDate.getTime() + Math.random() * (endDate - startDate));
 
-const getCountry = (random) => 
-  random 
+const getCountry = (random) =>
+  random
     ? countries[Math.floor(Math.random() * countries.length)]
     : { countryShortCode: 'ES' };
 
-const getRegion = (random, country) => 
+const getRegion = (random, country) =>
   random
     ? country.regions[Math.floor(Math.random() * country.regions.length)]
     : { shortCode: 'M' };
@@ -30,10 +30,10 @@ const getRandomInterests = (interests) =>
     .sort(() => 0.5 - Math.random())
     .slice(0, Math.floor(Math.random() * interests.length));
 
-module.exports = { 
+module.exports = {
   createPrompt,
   getRandomDate,
   getCountry,
   getRegion,
-  getRandomInterests
-}
+  getRandomInterests,
+};
