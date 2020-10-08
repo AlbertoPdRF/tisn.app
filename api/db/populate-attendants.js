@@ -45,9 +45,15 @@ const createAttendants = async (verbose) => {
   let attendantsList = await Attendant.find();
   const attendantsArray = [];
 
+<<<<<<< HEAD
   let proceed = true;
   if (attendantsList.length !== 0) {
     proceed = await createPrompt(
+=======
+  let affirmativeResponse = false;
+  if (attendantsList.length !== 0) {
+    affirmativeResponse = await createPrompt(
+>>>>>>> 1756d33... Resolved items discussed
       'Some events already contain attendees. Would you like to add attendees to events that already contain attendees?'
     );
   }
