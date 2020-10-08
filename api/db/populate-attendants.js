@@ -48,12 +48,13 @@ const createAttendants = async (verbose) => {
       .filter((attendee) => attendee.event.toString() == event._id.toString())
       .map((attendee) => attendee.user.toString());
 
-    const users = usersList.filter(
+    const potentialAttendees = usersList.filter(
       (user) => !attendees.includes(user.toString())
     );
 
     const availability = event.attendantsLimit - attendees.length;
-    const subset = getRandomSubset(users, availability);
+    const subset = getRandomSubset(potentialAttendees, availability - 1);
+    subset.unshift(event.createdBy.toString());
 
     for (const user of subset) {
       const attendantParams = { event, user };

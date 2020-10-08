@@ -67,7 +67,7 @@ const createEvents = async (multiplier, randomLocation, verbose) => {
   const now = new Date();
   const futureDate = new Date().setFullYear(now.getFullYear() + 5);
 
-  for (let i = 0; i < 50 * multiplier; i++) {
+  for (let i = 0; i < 500 * multiplier; i++) {
     const name = uniqueNamesGenerator({
       dictionaries: [adjectives, animals, colors, starWars],
       length: 3,
@@ -94,7 +94,7 @@ const createEvents = async (multiplier, randomLocation, verbose) => {
       country: country.countryShortCode,
       region: region.shortCode,
       createdBy: usersList[Math.floor(Math.random() * usersList.length)],
-      relatedInterests: getRandomSubset(interestsList, interestsList.length),
+      relatedInterests: getRandomSubset(interestsList, interestsList.length, 1),
       coverPhoto: '',
       attendantsLimit: Math.floor(Math.random() * (usersList.length - 2)) + 2,
     };
