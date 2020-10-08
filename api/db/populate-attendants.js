@@ -45,9 +45,9 @@ const createAttendants = async (verbose) => {
   let attendantsList = await Attendant.find();
   const attendantsArray = [];
 
-  let affirmativeResponse = false;
+  let proceed = false;
   if (attendantsList.length !== 0) {
-    affirmativeResponse = await createPrompt(
+    proceed = await createPrompt(
       'Some events already contain attendees. Would you like to add attendees to events that already contain attendees?'
     );
   }
@@ -57,8 +57,12 @@ const createAttendants = async (verbose) => {
       .filter((attendee) => attendee.event.toString() == event._id.toString())
       .map((attendee) => attendee.user.toString());
 
-    const availability = event.attendantsLimit - attendees.length;
-    if (!affirmativeResponse && event.attendantsLimit - 1 >= availability) {
+    const spotsLeft = event.attendantsLimit - attendees.length;
+    // const proceedByLimit =  ?
+    //   event.attendantsLimit >= spotsLeft :
+    //   event.attendantsLimit - 1 >= spotsLeft;
+    const proceedByLimit = event.attendantsLimit - 1 >= spotsLeft;
+    if (proceedByLimit || (!proceed && proceedByLimit)) {
       continue;
     }
 
@@ -66,7 +70,7 @@ const createAttendants = async (verbose) => {
       (user) => !attendees.includes(user.toString())
     );
 
-    const subset = getRandomSubset(potentialAttendees, availability - 1);
+    const subset = getRandomSubset(potentialAttendees, spotsLeft - 1);
     subset.unshift(event.createdBy.toString());
 
     for (const user of subset) {
