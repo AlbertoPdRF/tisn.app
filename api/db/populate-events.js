@@ -11,7 +11,7 @@ const {
   getRandomDate,
   getCountry,
   getRegion,
-  getRandomInterests,
+  getRandomSubset,
 } = require('./utils');
 
 const Interest = require('../models/Interest');
@@ -94,7 +94,7 @@ const createEvents = async (multiplier, randomLocation, verbose) => {
       country: country.countryShortCode,
       region: region.shortCode,
       createdBy: usersList[Math.floor(Math.random() * usersList.length)],
-      relatedInterests: getRandomInterests(interestsList),
+      relatedInterests: getRandomSubset(interestsList, interestsList.length),
       coverPhoto: '',
       attendantsLimit: Math.floor(Math.random() * (usersList.length - 2)) + 2,
     };

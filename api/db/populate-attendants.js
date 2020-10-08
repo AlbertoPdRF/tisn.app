@@ -1,3 +1,5 @@
+const { getRandomSubset } = require('./utils');
+
 const User = require('../models/User');
 const Event = require('../models/Event');
 const Attendant = require('../models/Attendant');
@@ -6,8 +8,8 @@ let displayLogs;
 
 const createAttendant = async (attendantParams) => {
   const attendant = new Attendant({
-    user: attendantParams.user,
     event: attendantParams.event,
+    user: attendantParams.user,
   });
   await attendant.save();
 
@@ -37,13 +39,29 @@ const createAttendants = async (verbose) => {
     return;
   }
 
+  displayLogs = verbose;
   let attendantsList = await Attendant.find();
+  const attendantsArray = [];
 
-  // For each event, get a random number of users <= attendants limit
-  // Attendants limit - attendees
-  eventsList.forEach((event) => {
-    console.log('Event');
-  });
+  for (const event of eventsList) {
+    const attendees = attendantsList
+      .filter((attendee) => attendee.event.toString() == event._id.toString())
+      .map((attendee) => attendee.user.toString());
+
+    const users = usersList.filter(
+      (user) => !attendees.includes(user.toString())
+    );
+
+    const availability = event.attendantsLimit - attendees.length;
+    const subset = getRandomSubset(users, availability);
+
+    for (const user of subset) {
+      const attendantParams = { event, user };
+      attendantsArray.push(await createAttendant(attendantParams));
+    }
+  }
+
+  console.log('\x1b[32m', `Created ${attendantsArray.length} attendants`);
 };
 
 module.exports = { createAttendants };

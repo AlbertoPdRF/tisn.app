@@ -25,15 +25,15 @@ const getRegion = (random, country) =>
     ? country.regions[Math.floor(Math.random() * country.regions.length)]
     : { shortCode: 'M' };
 
-const getRandomInterests = (interests) =>
-  interests
+const getRandomSubset = (list, maxSize) =>
+  list
     .sort(() => 0.5 - Math.random())
-    .slice(0, Math.floor(Math.random() * interests.length));
+    .slice(0, Math.floor(Math.random() * maxSize));
 
 module.exports = {
   createPrompt,
   getRandomDate,
   getCountry,
   getRegion,
-  getRandomInterests,
+  getRandomSubset,
 };
