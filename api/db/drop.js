@@ -59,12 +59,12 @@ const dropUsers = async (confirmed = false) => {
     if (drop) await dropEvents(drop);
   }
 
-  if ((await getAttendantsCount()) !== 0) {
+  if ((await getFriendshipCount()) !== 0) {
     const drop = await createPrompt(
-      'The attendants collection is dependent on the users collection. Drop attendants collection?'
+      'The friendships collection is dependent on the users collection. Drop friendships collection?'
     );
 
-    if (drop) await dropAttendants(drop);
+    if (drop) await dropFriendships(drop);
   }
 };
 
@@ -109,6 +109,7 @@ const dropFriendships = async (confirmed = false) => {
 
 const dropCollections = async () => {
   connectDb();
+  await dropFriendships();
   await dropAttendants();
   await dropEvents();
   await dropUsers();
@@ -131,9 +132,12 @@ const dropCollection = async () => {
     case 'attendants':
       await dropAttendants();
       break;
+    case 'friendships':
+      await dropFriendships();
+      break;
     default:
       console.log(
-        `Unknown collection '${userArgs.c}', possible options are: [interests, users, events, attendants]`
+        `Unknown collection '${userArgs.c}', possible options are: [interests, users, events, attendants, friendships]`
       );
       break;
   }
