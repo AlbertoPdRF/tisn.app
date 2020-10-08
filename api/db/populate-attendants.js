@@ -1,4 +1,4 @@
-const { getRandomSubset } = require('./utils');
+const { getRandomSubset, createPrompt } = require('./utils');
 
 const User = require('../models/User');
 const Event = require('../models/Event');
@@ -30,7 +30,9 @@ const createAttendants = async (verbose) => {
     return;
   }
 
-  let eventsList = await Event.find();
+  let eventsList = await Event.find({
+    startDate: { $gte: new Date() },
+  });
   if (eventsList.length === 0) {
     console.log(
       '\x1b[33m',
@@ -43,16 +45,27 @@ const createAttendants = async (verbose) => {
   let attendantsList = await Attendant.find();
   const attendantsArray = [];
 
+  let affirmativeResponse = false;
+  if (attendantsList.length !== 0) {
+    affirmativeResponse = await createPrompt(
+      'Some events already contain attendees. Would you like to add attendees to events that already contain attendees?'
+    );
+  }
+
   for (const event of eventsList) {
     const attendees = attendantsList
       .filter((attendee) => attendee.event.toString() == event._id.toString())
       .map((attendee) => attendee.user.toString());
 
+    const availability = event.attendantsLimit - attendees.length;
+    if (!affirmativeResponse && event.attendantsLimit - 1 >= availability) {
+      continue;
+    }
+
     const potentialAttendees = usersList.filter(
       (user) => !attendees.includes(user.toString())
     );
 
-    const availability = event.attendantsLimit - attendees.length;
     const subset = getRandomSubset(potentialAttendees, availability - 1);
     subset.unshift(event.createdBy.toString());
 
