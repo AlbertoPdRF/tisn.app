@@ -1,12 +1,10 @@
 const exec = require('child_process').exec;
-
-// Retrieve database connection parameters
-const getDbUrl = () => {
-  require('dotenv').config();
-  return process.env.DB_URL;
-};
+const database = require('./connection');
 
 const createBackup = () => {
+  // Retrieve database URL
+  const dbUrl = database.getDbUrl();
+
   // Prepare database archive filename
   currentDate = new Date();
 
@@ -22,7 +20,7 @@ const createBackup = () => {
   // Prepare mongodump command
   let dumpCmd =
     "mongodump --uri '" +
-    getDbUrl() +
+    dbUrl +
     "' --archive=dump/" +
     databaseDumpFilename +
     ' --gzip';
