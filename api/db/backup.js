@@ -36,6 +36,15 @@ const createBackup = () => {
       console.log(
         'Successfully created database dump at dump/' + databaseDumpFilename
       );
+
+      let sendMail = require('../utils/emails').emailDatabaseBackup(
+        databaseDumpFilename
+      );
+
+      if (!sendMail) {
+        console.log('Email sending failed...');
+      }
+
       return 1;
     }
   });
