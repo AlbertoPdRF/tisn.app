@@ -27,3 +27,6 @@ yarn-debug.log*
 yarn-error.log*
 
 !.keep
+
+#dumps
+/db/dumps/*
