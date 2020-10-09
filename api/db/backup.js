@@ -21,9 +21,9 @@ let databaseDumpFilename =
 console.log(databaseDumpFilename);
 // Prepare mongodump command
 let dumpCmd =
-  'mongodump --uri ' +
+  "mongodump --uri '" +
   getDbUrl() +
-  ' --archive=' +
+  "' --archive=" +
   databaseDumpFilename +
   ' --gzip';
 
