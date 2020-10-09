@@ -8,14 +8,9 @@ const createBackup = () => {
   // Prepare database archive filename
   currentDate = new Date();
 
-  const dumpFilename =
-    'tisn_db_dump_' +
-    currentDate.getFullYear() +
-    '_' +
-    (currentDate.getMonth() + 1) +
-    '_' +
-    currentDate.getDate() +
-    '.gz';
+  const dumpFilename = `${currentDate.getFullYear()}${
+    currentDate.getMonth() + 1
+  }${currentDate.getDate()}.gz`;
 
   // Prepare mongodump command
   const dumpCmd =
