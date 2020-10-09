@@ -40,12 +40,6 @@ const createBackup = () => {
       let sendMail = require('../utils/emails').emailDatabaseBackup(
         databaseDumpFilename
       );
-
-      if (!sendMail) {
-        console.log('Email sending failed...');
-      }
-
-      return 1;
     }
   });
 };
