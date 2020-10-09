@@ -18,7 +18,6 @@ let databaseDumpFilename =
   currentDate.getDate() +
   '.gz';
 
-console.log(databaseDumpFilename);
 // Prepare mongodump command
 let dumpCmd =
   "mongodump --uri '" +
