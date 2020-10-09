@@ -27,7 +27,7 @@ const populateCollections = async () => {
   await createUsers(userArgs.m, userArgs.r, userArgs.v);
   await createEvents(userArgs.m, userArgs.r, userArgs.v);
   await createAttendants(userArgs.v);
-  await createFriendships();
+  await createFriendships(userArgs.v);
   closeDb();
 };
 
