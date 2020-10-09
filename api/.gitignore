@@ -11,6 +11,9 @@
 # production
 /build
 
+# dumps
+/db/dumps/*
+
 # uploads
 /uploads/*
 
@@ -26,7 +29,4 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-!.keep
-
-#dumps
-/db/dumps/*
+!.gitkeep

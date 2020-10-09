@@ -1,9 +1,9 @@
 const CronJob = require('cron').CronJob;
-const DatabaseBackup = require('../db/backup.js');
+const { createBackup } = require('../db/backup.js');
 
-// Configure cron job to run every day at 12:00am
-let job = new CronJob('00 00 00 * * *', function () {
-  DatabaseBackup.createBackup();
+// Daily at 00:00
+const dbBackup = new CronJob('0 0 0 * * *', () => {
+  createBackup();
 });
 
-job.start();
+if (process.env.NODE_ENV === 'production') dbBackup.start();

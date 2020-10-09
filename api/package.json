@@ -29,7 +29,6 @@
     "express-fileupload": "^1.2.0",
     "express-jwt": "^6.0.0",
     "express-validator": "^6.6.1",
-    "fs": "0.0.1-security",
     "http-errors": "~1.8.0",
     "i18next": "^19.8.1",
     "i18next-fs-backend": "^1.0.7",

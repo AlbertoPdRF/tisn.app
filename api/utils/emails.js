@@ -1,5 +1,6 @@
 const Notification = require('../models/Notification');
 const Token = require('../models/Token');
+
 const crypto = require('crypto');
 const sendgrid = require('@sendgrid/mail');
 const fs = require('fs').promises;
@@ -8,54 +9,26 @@ const path = require('path');
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 
 const dbBackup = async (filename) => {
-  try {
-    // Initialize admin email
-    const adminEmail = 'admin@tisn.app';
+  const destination = path.join(__dirname, `../db/dumps/${filename}`);
 
-    // Ensure that the email address is set
-    if (adminEmail == undefined || adminEmail == '') {
-      return 0;
-    }
+  const attachment = await fs.readFile(destination, { encoding: 'base64' });
 
-    const attachment = await fs.readFile(
-      path.join(__dirname, `../db/dumps/${filename}`),
-      { encoding: 'base64' }
-    );
+  const email = {
+    to: 'admin@tisn.app',
+    from: { email: 'no-reply@tisn.app', name: 'Tisn' },
+    subject: 'Database backup',
+    text: `Find attached today's database backup: "${filename}".`,
+    attachments: [
+      {
+        content: attachment,
+        filename,
+        type: 'application/gzip',
+        disposition: 'attachment',
+      },
+    ],
+  };
 
-    // Create message
-    const message = {
-      to: adminEmail,
-      from: { email: 'no-reply@tisn.app', name: 'Tisn' },
-      subject: 'Database Backup',
-      text: `Attached is the database dump ' + ${filename}.`,
-      attachments: [
-        {
-          content: attachment,
-          filename: filename,
-          type: 'application/gzip',
-          disposition: 'attachment',
-        },
-      ],
-    };
-
-    if (process.env.NODE_ENV === 'production') {
-      sendgrid
-        .send(message)
-        .then(() => {
-          console.log('Email sent successfully ...');
-        })
-        .catch((error) => {
-          console.log('Email not sent successfully ...');
-          console.error(error);
-          return 0;
-        });
-    }
-
-    return 1;
-  } catch (e) {
-    console.log(e);
-    return 0;
-  }
+  sendgrid.send(email).then(() => fs.unlink(destination, () => {}));
 };
 
 const emailConfirmation = (req, user) => {
