@@ -47,4 +47,6 @@ app.use(function (err, req, res, next) {
   return;
 });
 
+global.CronJob = require('./utils/cron.js');
+
 module.exports = app;
