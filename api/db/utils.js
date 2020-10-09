@@ -28,7 +28,7 @@ const getRegion = (random, country) =>
 const getRandomSubset = (list, maxSize, minSize = 0) =>
   list
     .sort(() => 0.5 - Math.random())
-    .slice(minSize, Math.floor(Math.random() * maxSize));
+    .slice(minSize, maxSize === 1 ? 1 : Math.floor(Math.random() * maxSize));
 
 module.exports = {
   createPrompt,
