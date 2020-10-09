@@ -65,13 +65,18 @@ const createAttendants = async (verbose) => {
     );
 
     const eventCreator = event.createdBy.toString();
+    potentialAttendees = potentialAttendees.filter(
+      (user) => user !== eventCreator
+    );
+
     const creatorIncluded = attendees.includes(eventCreator);
     const subset = getRandomSubset(
       potentialAttendees,
       creatorIncluded ? spotsLeft : spotsLeft - 1
     );
-    if (!creatorIncluded && !subset.includes(eventCreator)) {
-      subset.unshift(event.createdBy.toString());
+
+    if (!creatorIncluded) {
+      subset.unshift(eventCreator);
     }
 
     for (const user of subset) {
