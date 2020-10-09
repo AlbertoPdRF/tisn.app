@@ -3,7 +3,7 @@ const {
   getRandomDate,
   getCountry,
   getRegion,
-  getRandomInterests,
+  getRandomSubset,
 } = require('./utils');
 const { uniqueNamesGenerator, names } = require('unique-names-generator');
 
@@ -99,7 +99,7 @@ const createUsers = async (multiplier, randomLocation, verbose) => {
         new Date(1970, 0, 1),
         new Date().setFullYear(now.getFullYear() - 13)
       ),
-      interests: getRandomInterests(interestsList),
+      interests: getRandomSubset(interestsList, interestsList.length),
       admin: false,
     };
 
