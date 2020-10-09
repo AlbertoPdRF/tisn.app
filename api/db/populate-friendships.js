@@ -42,11 +42,8 @@ const createFriendships = async (verbose) => {
         friendship.requestant.toString() === user.toString() ||
         friendship.receivant.toString() === user.toString()
     );
-    console.log('Contains friends', containFriends);
-    if (!proceed && containFriends) {
-      console.log('Did not proceed');
-      continue;
-    }
+    if (!proceed && containFriends) continue;
+
     // split current user from all others
     const tmpList = usersList.filter((userValue) => userValue != user);
     // create subset userList from remaining usersList
