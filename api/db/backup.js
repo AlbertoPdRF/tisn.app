@@ -23,7 +23,7 @@ console.log(databaseDumpFilename);
 let dumpCmd =
   "mongodump --uri '" +
   getDbUrl() +
-  "' --archive=" +
+  "' --archive=dump/" +
   databaseDumpFilename +
   ' --gzip';
 
@@ -34,7 +34,7 @@ exec(dumpCmd, (error, stdout, stderr) => {
     return 0;
   } else {
     console.log(
-      'Successfully created database dump at db/' + databaseDumpFilename
+      'Successfully created database dump at dump/' + databaseDumpFilename
     );
     return 1;
   }
