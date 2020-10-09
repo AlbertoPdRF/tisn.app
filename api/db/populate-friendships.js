@@ -1,4 +1,4 @@
-const { getRandomSubset, getRandomDate } = require('./utils');
+const { getRandomSubset, getRandomDate, createPrompt } = require('./utils');
 
 const User = require('../models/User');
 const Friendship = require('../models/Friendship');
@@ -29,7 +29,24 @@ const createFriendships = async (verbose) => {
   const friendshipsArray = await Friendship.find();
   let recordCount = friendshipsArray.length;
 
+  let proceed = true;
+  if (recordCount > 0) {
+    proceed = await createPrompt(
+      'Some users already have friends. Would you like to add friends to users that already contain friends?'
+    );
+  }
+
   for (const user of usersList) {
+    const containFriends = friendshipsArray.some(
+      (friendship) =>
+        friendship.requestant.toString() === user.toString() ||
+        friendship.receivant.toString() === user.toString()
+    );
+    console.log('Contains friends', containFriends);
+    if (!proceed && containFriends) {
+      console.log('Did not proceed');
+      continue;
+    }
     // split current user from all others
     const tmpList = usersList.filter((userValue) => userValue != user);
     // create subset userList from remaining usersList
