@@ -60,13 +60,13 @@ const createAttendants = async (verbose) => {
     const spotsLeft = event.attendantsLimit - attendees.length;
     if (spotsLeft <= 0 || !proceed) continue;
 
-    const potentialAttendees = usersList.filter(
-      (user) => !attendees.includes(user.toString())
-    );
-
     const eventCreator = event.createdBy.toString();
-    potentialAttendees = potentialAttendees.filter(
-      (user) => user !== eventCreator
+    const potentialAttendees = usersList.filter(
+      (user) =>
+        !(
+          attendees.includes(user.toString()) ||
+          user.toString() === eventCreator
+        )
     );
 
     const creatorIncluded = attendees.includes(eventCreator);
