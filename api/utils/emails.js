@@ -29,7 +29,7 @@ const emailDatabaseBackup = (filename) => {
     // Create message
     let message = {
       to: adminEmail,
-      from: { email: 'jackeblagare@gmail.com', name: 'Tisn' },
+      from: { email: 'no-reply@tisn.app', name: 'Tisn' },
       subject: 'TISN APP - Database Backup',
       text: 'Attached is the database dump ' + filename + '.',
       attachments: [
