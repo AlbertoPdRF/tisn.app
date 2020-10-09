@@ -13,13 +13,8 @@ const emailDatabaseBackup = (filename) => {
       .readFileSync(path.resolve(__dirname, `../dump/${filename}`))
       .toString('base64');
 
-    // Retrieve email address of the admin
-    const getAdminEmail = () => {
-      require('dotenv').config();
-      return process.env.ADMIN_EMAIL;
-    };
-
-    let adminEmail = getAdminEmail();
+    // Initialize admin email
+    let adminEmail = 'admin@tisn.app';
 
     // Ensure that the email address is set
     if (adminEmail == undefined || adminEmail == '') {
