@@ -58,7 +58,7 @@ const createAttendants = async (verbose) => {
       .map((attendee) => attendee.user.toString());
 
     const spotsLeft = event.attendantsLimit - attendees.length;
-    const proceedByLimit = event.attendantsLimit - 1 >= spotsLeft;
+    const proceedByLimit = attendees.length > 0;
     if (spotsLeft <= 0 || (!proceed && proceedByLimit)) {
       console.log('Skipped for this event');
       continue;
