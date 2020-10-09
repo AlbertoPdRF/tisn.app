@@ -64,12 +64,15 @@ const createAttendants = async (verbose) => {
       (user) => !attendees.includes(user.toString())
     );
 
-    const creatoreIncluded = attendees.includes(event.createdBy.toString());
+    const eventCreator = event.createdBy.toString();
+    const creatorIncluded = attendees.includes(eventCreator);
     const subset = getRandomSubset(
       potentialAttendees,
-      creatoreIncluded ? spotsLeft : spotsLeft - 1
+      creatorIncluded ? spotsLeft : spotsLeft - 1
     );
-    if (!creatoreIncluded) subset.unshift(event.createdBy.toString());
+    if (!creatorIncluded && !subset.includes(eventCreator)) {
+      subset.unshift(event.createdBy.toString());
+    }
 
     for (const user of subset) {
       const attendantParams = { event, user };
