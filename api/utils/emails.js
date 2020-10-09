@@ -10,7 +10,7 @@ sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 const emailDatabaseBackup = (filename) => {
   try {
     let attachment = fs
-      .readFileSync(path.resolve(__dirname, `../dump/${filename}`))
+      .readFileSync(path.resolve(__dirname, `../db/dumps/${filename}`))
       .toString('base64');
 
     // Initialize admin email
