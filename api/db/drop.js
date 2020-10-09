@@ -14,7 +14,7 @@ const getInterestsCount = async () => await Interest.countDocuments();
 const getUsersCount = async () => await User.countDocuments();
 const getEventsCount = async () => await Event.countDocuments();
 const getAttendantsCount = async () => await Attendant.countDocuments();
-const getFriendshipCount = async () => await Friendship.countDocuments();
+const getFriendshipsCount = async () => await Friendship.countDocuments();
 
 const userArgs = minimist(process.argv.slice(2), {
   string: 'collection',
@@ -59,7 +59,7 @@ const dropUsers = async (confirmed = false) => {
     if (drop) await dropEvents(drop);
   }
 
-  if ((await getFriendshipCount()) !== 0) {
+  if ((await getFriendshipsCount()) !== 0) {
     const drop = await createPrompt(
       'The friendships collection is dependent on the users collection. Drop friendships collection?'
     );

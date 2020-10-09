@@ -1,6 +1,7 @@
+const { getRandomSubset, getRandomDate } = require('./utils');
+
 const User = require('../models/User');
 const Friendship = require('../models/Friendship');
-const { getRandomSubset } = require('./utils');
 
 let displayLogs;
 
@@ -17,37 +18,54 @@ const createFriendship = async (friendshipParams) => {
   if (displayLogs) {
     console.log('\n', '\x1b[0m', `New friendship created: ${friendship}`);
   }
+  return friendship;
 };
 
 const createFriendships = async (verbose) => {
-  console.log('\n', '\x1b[0m', 'Populating users collection...');
+  console.log('\n', '\x1b[0m', 'Populating friendships collection...');
   displayLogs = verbose;
 
   let usersList = await User.distinct('_id');
-  const friendshipsArray = [];
+  const friendshipsArray = await Friendship.find();
+  let recordCount = friendshipsArray.length;
 
   for (const user of usersList) {
     // split current user from all others
     const tmpList = usersList.filter((userValue) => userValue != user);
     // create subset userList from remaining usersList
     const usersSubset = getRandomSubset(tmpList, tmpList.length);
-    // create friendship between current user and each subset user (if it doesn't exist)
-    // (optional) set active flag random (5%)
 
     for (const receivant of usersSubset) {
-      // check if friendship exists
+      const alreadFriends = friendshipsArray.filter((friendship) => {
+        return (
+          (friendship.requestant.toString() === user.toString() &&
+            friendship.receivant.toString() === receivant.toString()) ||
+          (friendship.requestant.toString() === receivant.toString() &&
+            friendship.receivant.toString() === user.toString())
+        );
+      });
+      if (alreadFriends.length > 0) continue;
+
+      const now = new Date();
+      const acceptedAt = getRandomDate(
+        new Date(2020, 4, 4),
+        new Date(now.getTime() - 60000)
+      );
       const friendshipParams = {
         requestant: user,
         receivant,
-        accepted: true,
-        acceptedAt: new Date(), // TODO: change dates
-        lastMessageAt: new Date(), // TODO: change dates
+        accepted: Math.random() > 0.1 ? true : false,
+        acceptedAt,
+        lastMessageAt: getRandomDate(acceptedAt, now),
       };
 
-      // friendshipsArray.push(await createFriendship(friendshipParams));
+      friendshipsArray.push(await createFriendship(friendshipParams));
     }
   }
-  console.log('\x1b[32m', `Created ${friendshipsArray.length} friendships`);
+  console.log(
+    '\x1b[32m',
+    `Created ${friendshipsArray.length - recordCount} friendships`
+  );
 };
 
 module.exports = { createFriendships };
