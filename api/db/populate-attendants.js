@@ -54,11 +54,15 @@ const createAttendants = async (verbose) => {
 
   for (const event of eventsList) {
     const attendees = attendantsList
-      .filter((attendee) => attendee.event.toString() == event._id.toString())
+      .filter((attendee) => attendee.event.toString() === event._id.toString())
       .map((attendee) => attendee.user.toString());
 
     const spotsLeft = event.attendantsLimit - attendees.length;
-    if (spotsLeft <= 0 || !proceed) continue;
+    const proceedByLimit = event.attendantsLimit - 1 >= spotsLeft;
+    if (spotsLeft <= 0 || (!proceed && proceedByLimit)) {
+      console.log('Skipped for this event');
+      continue;
+    }
 
     const eventCreator = event.createdBy.toString();
     const potentialAttendees = usersList.filter(
