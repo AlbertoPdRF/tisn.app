@@ -17,7 +17,7 @@ const createBackup = () => {
   const dumpPath = path.join(__dirname, 'dumps');
 
   // Prepare mongodump command
-  const dumpCmd = `mongodump --uri '${dbUrl}' --archive='${dumpPath}/${dumpFilename}' --gzip`;
+  const dumpCmd = `mongodump --uri '${dbUrl}' --archive='${dumpPath}/${dumpFilename}.' --gzip`;
 
   // Execute mongodump command
   exec(dumpCmd, (error, stdout, stderr) => {
@@ -25,8 +25,9 @@ const createBackup = () => {
       console.log(error);
       return 0;
     } else {
-      console.log('Successfully created database dump at dump/' + dumpFilename);
-
+      console.log(
+        `Successfully created database dump at ${dumpPath}/${dumpFilename}`
+      );
       const sendMail = require('../utils/emails').dbBackup(dumpFilename);
     }
   });
