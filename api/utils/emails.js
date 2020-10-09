@@ -10,24 +10,24 @@ sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 const dbBackup = async (filename) => {
   try {
     // Initialize admin email
-    //let adminEmail = 'admin@tisn.app';
-    let adminEmail = 'jackeblagare@gmail.com';
+    const adminEmail = 'admin@tisn.app';
+
     // Ensure that the email address is set
     if (adminEmail == undefined || adminEmail == '') {
       return 0;
     }
 
     const attachment = await fs.readFile(
-      path.resolve(__dirname, `../db/dumps/${filename}`),
+      path.join(__dirname, `../db/dumps/${filename}`),
       { encoding: 'base64' }
     );
 
     // Create message
-    let message = {
+    const message = {
       to: adminEmail,
-      from: { email: 'jackeblagare@gmail.com', name: 'Tisn' },
-      subject: 'TISN APP - Database Backup',
-      text: 'Attached is the database dump ' + filename + '.',
+      from: { email: 'no-reply@tisn.app', name: 'Tisn' },
+      subject: 'Database Backup',
+      text: `Attached is the database dump ' + ${filename}.`,
       attachments: [
         {
           content: attachment,
