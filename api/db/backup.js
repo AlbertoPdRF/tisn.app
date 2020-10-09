@@ -28,9 +28,7 @@ const createBackup = () => {
     } else {
       console.log('Successfully created database dump at dump/' + dumpFilename);
 
-      const sendMail = require('../utils/emails').emailDatabaseBackup(
-        dumpFilename
-      );
+      const sendMail = require('../utils/emails').dbBackup(dumpFilename);
     }
   });
 };
