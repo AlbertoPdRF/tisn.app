@@ -2,29 +2,30 @@ const Notification = require('../models/Notification');
 const Token = require('../models/Token');
 const crypto = require('crypto');
 const sendgrid = require('@sendgrid/mail');
-const fs = require('fs');
+const fs = require('fs').promises;
 const path = require('path');
 
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 
-const dbBackup = (filename) => {
+const dbBackup = async (filename) => {
   try {
-    let attachment = fs
-      .readFileSync(path.resolve(__dirname, `../db/dumps/${filename}`))
-      .toString('base64');
-
     // Initialize admin email
-    let adminEmail = 'admin@tisn.app';
-
+    //let adminEmail = 'admin@tisn.app';
+    let adminEmail = 'jackeblagare@gmail.com';
     // Ensure that the email address is set
     if (adminEmail == undefined || adminEmail == '') {
       return 0;
     }
 
+    const attachment = await fs.readFile(
+      path.resolve(__dirname, `../db/dumps/${filename}`),
+      { encoding: 'base64' }
+    );
+
     // Create message
     let message = {
       to: adminEmail,
-      from: { email: 'no-reply@tisn.app', name: 'Tisn' },
+      from: { email: 'jackeblagare@gmail.com', name: 'Tisn' },
       subject: 'TISN APP - Database Backup',
       text: 'Attached is the database dump ' + filename + '.',
       attachments: [
@@ -36,8 +37,6 @@ const dbBackup = (filename) => {
         },
       ],
     };
-
-    console.log('Now sending email...');
 
     if (process.env.NODE_ENV === 'production') {
       sendgrid
@@ -128,7 +127,7 @@ const emailConfirmation = (req, user) => {
 
 const emails = {
   emailConfirmation,
-  emailDatabaseBackup,
+  dbBackup,
 };
 
 module.exports = emails;
