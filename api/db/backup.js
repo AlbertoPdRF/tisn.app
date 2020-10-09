@@ -8,7 +8,7 @@ const createBackup = () => {
   // Prepare database archive filename
   currentDate = new Date();
 
-  const databaseDumpFilename =
+  const dumpFilename =
     'tisn_db_dump_' +
     currentDate.getFullYear() +
     '_' +
@@ -22,7 +22,7 @@ const createBackup = () => {
     "mongodump --uri '" +
     dbUrl +
     "' --archive=dump/" +
-    databaseDumpFilename +
+    dumpFilename +
     ' --gzip';
 
   // Execute mongodump command
@@ -31,12 +31,10 @@ const createBackup = () => {
       console.log(error);
       return 0;
     } else {
-      console.log(
-        'Successfully created database dump at dump/' + databaseDumpFilename
-      );
+      console.log('Successfully created database dump at dump/' + dumpFilename);
 
       const sendMail = require('../utils/emails').emailDatabaseBackup(
-        databaseDumpFilename
+        dumpFilename
       );
     }
   });
