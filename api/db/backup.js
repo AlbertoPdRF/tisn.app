@@ -10,11 +10,11 @@ const getDbUrl = () => {
 currentDate = new Date();
 
 let databaseDumpFilename =
-  'tisn-db-dump-' +
+  'tisn_db_dump_' +
   currentDate.getFullYear() +
-  '-' +
+  '_' +
   (currentDate.getMonth() + 1) +
-  '-' +
+  '_' +
   currentDate.getDate() +
   '.gz';
 
