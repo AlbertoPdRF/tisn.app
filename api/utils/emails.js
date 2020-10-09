@@ -7,7 +7,7 @@ const path = require('path');
 
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
 
-const emailDatabaseBackup = (filename) => {
+const dbBackup = (filename) => {
   try {
     let attachment = fs
       .readFileSync(path.resolve(__dirname, `../db/dumps/${filename}`))
