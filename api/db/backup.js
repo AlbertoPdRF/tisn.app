@@ -14,10 +14,9 @@ const createBackup = () => {
     currentDate.getMonth() + 1
   }${currentDate.getDate()}.gz`;
 
-  const dumpPath = path.resolve(__dirname, 'dumps');
+  const dumpPath = path.join(__dirname, 'dumps');
 
   // Prepare mongodump command
-
   const dumpCmd = `mongodump --uri '${dbUrl}' --archive='${dumpPath}/${dumpFilename}' --gzip`;
 
   // Execute mongodump command
