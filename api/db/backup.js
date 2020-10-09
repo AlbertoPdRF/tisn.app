@@ -1,5 +1,6 @@
 const exec = require('child_process').exec;
 const database = require('./connection');
+const path = require('path');
 
 const createBackup = () => {
   // Retrieve database URL
@@ -8,17 +9,16 @@ const createBackup = () => {
   // Prepare database archive filename
   currentDate = new Date();
 
+  // Construct filename and path for the database dump
   const dumpFilename = `${currentDate.getFullYear()}${
     currentDate.getMonth() + 1
   }${currentDate.getDate()}.gz`;
 
+  const dumpPath = path.resolve(__dirname, 'dumps');
+
   // Prepare mongodump command
-  const dumpCmd =
-    "mongodump --uri '" +
-    dbUrl +
-    "' --archive=dump/" +
-    dumpFilename +
-    ' --gzip';
+
+  const dumpCmd = `mongodump --uri '${dbUrl}' --archive='${dumpPath}/${dumpFilename}' --gzip`;
 
   // Execute mongodump command
   exec(dumpCmd, (error, stdout, stderr) => {
