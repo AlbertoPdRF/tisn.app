@@ -77,6 +77,14 @@ const dropEvents = async (confirmed = false) => {
 
     if (drop) await dropAttendants(drop);
   }
+
+  if ((await getCommentsCount()) !== 0) {
+    const drop = await createPrompt(
+      'The comments collection is dependent on the events collection. Drop comments collection?'
+    );
+
+    if (drop) await dropComments(drop);
+  }
 };
 
 const dropAttendants = async (confirmed = false) => {
@@ -89,9 +97,9 @@ const dropAttendants = async (confirmed = false) => {
   }
 };
 
-const dropComments = async () => {
+const dropComments = async (confirmed = false) => {
   console.log('\n', '\x1b[0m', 'Dropping comments collection...');
-  if ((await getCommentsCount()) !== 0) {
+  if (confirmed || (await getCommentsCount()) !== 0) {
     await Comment.collection.drop();
     console.log('\x1b[31m', 'Dropped comments collection');
   } else {
