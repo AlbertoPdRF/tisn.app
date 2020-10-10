@@ -8,11 +8,13 @@ const Interest = require('../models/Interest');
 const User = require('../models/User');
 const Event = require('../models/Event');
 const Attendant = require('../models/Attendant');
+const Comment = require('../models/Comment');
 
 const getInterestsCount = async () => await Interest.countDocuments();
 const getUsersCount = async () => await User.countDocuments();
 const getEventsCount = async () => await Event.countDocuments();
 const getAttendantsCount = async () => await Attendant.countDocuments();
+const getCommentsCount = async () => await Comment.countDocuments();
 
 const userArgs = minimist(process.argv.slice(2), {
   string: 'collection',
@@ -87,8 +89,19 @@ const dropAttendants = async (confirmed = false) => {
   }
 };
 
+const dropComments = async () => {
+  console.log('\n', '\x1b[0m', 'Dropping comments collection...');
+  if ((await getCommentsCount()) !== 0) {
+    await Comment.collection.drop();
+    console.log('\x1b[31m', 'Dropped comments collection');
+  } else {
+    console.log('\x1b[33m', 'Comments collection is already empty');
+  }
+};
+
 const dropCollections = async () => {
   connectDb();
+  await dropComments();
   await dropAttendants();
   await dropEvents();
   await dropUsers();
@@ -111,9 +124,12 @@ const dropCollection = async () => {
     case 'attendants':
       await dropAttendants();
       break;
+    case 'comments':
+      await dropComments();
+      break;
     default:
       console.log(
-        `Unknown collection '${userArgs.c}', possible options are: [interests, users, events, attendants]`
+        `Unknown collection '${userArgs.c}', possible options are: [interests, users, events, attendants, comments]`
       );
       break;
   }
