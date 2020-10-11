@@ -11,13 +11,11 @@ const createBackup = () => {
     now.getMonth() + 1
   }${now.getDate()}.gz`;
 
-  const dumpCmd = `mongodump --uri="${getDbUrl()}" --gzip --archive="${dumpsPath}/${dumpFilename}"`;
+  const dumpCmd = `mongodump --uri='${getDbUrl()}' --gzip --archive='${dumpsPath}/${dumpFilename}'`;
 
   exec(dumpCmd, (error, stdout, stderr) => {
     if (!error) require('../utils/emails').dbBackup(dumpFilename);
   });
-
-  return;
 };
 
 module.exports = { createBackup };
