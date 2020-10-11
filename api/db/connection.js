@@ -20,4 +20,4 @@ const closeDb = () => {
   mongoose.connection.close();
 };
 
-module.exports = { connectDb, closeDb };
+module.exports = { getDbUrl, connectDb, closeDb };
