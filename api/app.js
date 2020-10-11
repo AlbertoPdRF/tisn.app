@@ -26,7 +26,20 @@ connectDb(process.env.DB_URL);
 
 require('./config/passport');
 
-app.use(cors());
+// Configure CORS for a single origin
+const corsOptions = {
+  origin: function (origin, callback) {
+    // If origin is the same as the value in BASE_CLIENT_URL, allow access
+    if (origin === process.env.BASE_CLIENT_URL) {
+      callback(null, true)
+    }
+    else {
+      callback(createError(403))
+    }
+  }
+}
+
+app.use(cors(corsOptions));
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
