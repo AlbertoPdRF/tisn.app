@@ -24,13 +24,8 @@ const formatUtcToTimeZone = (dateString, formatString) =>
 export const formatInputDate = (dateString) =>
   formatUtcToTimeZone(dateString, 'yyyy-MM-dd');
 
-export const formatDate = (dateString) => formatUtcToTimeZone(dateString, 'P');
-
-//ignoring the timezone
-export const formatDateOnlyToString = (dateString, dateFormat) => {
-  const dateArray = dateString.substr(0, 10).split('-');
-  return dateArray[1] + '/' + dateArray[2] + '/' + dateArray[0];
-};
+export const formatDate = (dateString) =>
+  formatUtcToTimeZone(dateString.split('T')[0], 'P');
 
 export const formatInputDateTime = (dateString) =>
   formatUtcToTimeZone(dateString, "yyyy-MM-dd'T'HH:mm");

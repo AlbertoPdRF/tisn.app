@@ -15,7 +15,7 @@ import ChatIcon from '@material-ui/icons/Chat';
 
 import countries from 'country-region-data';
 
-import { distanceToNow, formatDateOnlyToString } from '../../logic/date-time';
+import { distanceToNow, formatDate } from '../../logic/date-time';
 
 import ShareMenu from '../ShareMenu/ShareMenu';
 
@@ -91,7 +91,7 @@ const UserDetails = (props) => {
         {restrictedDisplay && (
           <Fragment>
             <Typography variant="body1">
-              {formatDateOnlyToString(user.dateOfBirth, 'MM/dd/yyyy')}
+              {formatDate(user.dateOfBirth)}
             </Typography>
             <Typography gutterBottom variant="body1">
               {user.email}
