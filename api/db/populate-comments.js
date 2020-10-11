@@ -1,3 +1,5 @@
+const txtgen = require('txtgen');
+
 const User = require('../models/User');
 const Event = require('../models/Event');
 const Attendant = require('../models/Attendant');
@@ -48,7 +50,7 @@ const createComments = async (verbose) => {
   displayLogs = verbose;
 
   const eventsList = await Event.distinct('_id');
-  const attendantsList = await Attendant.distinct('user');
+  const attendantsList = await Attendant.find();
   const eventsCount = eventsList.length;
   const attendantsCount = attendantsList.length;
 
@@ -56,6 +58,35 @@ const createComments = async (verbose) => {
 
   const commentsArray = [];
   for (const event of eventsList) {
+    // Find attendants for event
+    const eventAttendants = attendantsList.filter(
+      (attendant) => attendant.event.toString() === event.toString()
+    );
+    const eventComments = await Comment.find({ event });
+
+    // Number of comments to generate
+    const commentCount = Math.floor(Math.random() * 20);
+    for (let i = 0; i <= commentCount; i++) {
+      const user =
+        eventAttendants[Math.floor(Math.random() * eventAttendants.length)]
+          .user;
+      const content = txtgen.paragraph(Math.ceil(Math.random() * 3));
+      const parentComment =
+        Math.random() <= 0.2
+          ? eventComments[Math.floor(Math.random() * eventComments.length)]
+          : null;
+
+      const commentParams = {
+        event,
+        user,
+        content,
+        parentComment,
+      };
+
+      const comment = await createComment(commentParams);
+      eventComments.push(comment);
+      commentsArray.push(comment);
+    }
   }
 
   console.log('\x1b[32m', `Created ${commentsArray.length} comments`);
