@@ -36,6 +36,7 @@ const createEvent = async (eventParams) => {
   if (displayLogs) {
     console.log('\n', '\x1b[0m', `New event created: ${event}`);
   }
+  return event;
 };
 
 const createEvents = async (multiplier, randomLocation, verbose) => {

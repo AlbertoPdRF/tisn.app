@@ -8,11 +8,13 @@ const Interest = require('../models/Interest');
 const User = require('../models/User');
 const Event = require('../models/Event');
 const Attendant = require('../models/Attendant');
+const Friendship = require('../models/Friendship');
 
 const getInterestsCount = async () => await Interest.countDocuments();
 const getUsersCount = async () => await User.countDocuments();
 const getEventsCount = async () => await Event.countDocuments();
 const getAttendantsCount = async () => await Attendant.countDocuments();
+const getFriendshipsCount = async () => await Friendship.countDocuments();
 
 const userArgs = minimist(process.argv.slice(2), {
   string: 'collection',
@@ -56,6 +58,14 @@ const dropUsers = async (confirmed = false) => {
 
     if (drop) await dropEvents(drop);
   }
+
+  if ((await getFriendshipsCount()) !== 0) {
+    const drop = await createPrompt(
+      'The friendships collection is dependent on the users collection. Drop friendships collection?'
+    );
+
+    if (drop) await dropFriendships(drop);
+  }
 };
 
 const dropEvents = async (confirmed = false) => {
@@ -87,8 +97,19 @@ const dropAttendants = async (confirmed = false) => {
   }
 };
 
+const dropFriendships = async (confirmed = false) => {
+  console.log('\n', '\x1b[0m', 'Dropping friendships collection...');
+  if (confirmed || (await getFriendshipsCount()) !== 0) {
+    await Friendship.collection.drop();
+    console.log('\x1b[31m', 'Dropped friendships collection');
+  } else {
+    console.log('\x1b[33m', 'Friendships collection is already empty');
+  }
+};
+
 const dropCollections = async () => {
   connectDb();
+  await dropFriendships();
   await dropAttendants();
   await dropEvents();
   await dropUsers();
@@ -111,9 +132,12 @@ const dropCollection = async () => {
     case 'attendants':
       await dropAttendants();
       break;
+    case 'friendships':
+      await dropFriendships();
+      break;
     default:
       console.log(
-        `Unknown collection '${userArgs.c}', possible options are: [interests, users, events, attendants]`
+        `Unknown collection '${userArgs.c}', possible options are: [interests, users, events, attendants, friendships]`
       );
       break;
   }

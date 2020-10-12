@@ -4,6 +4,7 @@ const minimist = require('minimist');
 const { connectDb, closeDb } = require('./connection');
 const { createAttendants } = require('./populate-attendants');
 const { createEvents } = require('./populate-events');
+const { createFriendships } = require('./populate-friendships');
 const { createInterests } = require('./populate-interests');
 const { createUsers } = require('./populate-users');
 
@@ -26,6 +27,7 @@ const populateCollections = async () => {
   await createUsers(userArgs.m, userArgs.r, userArgs.v);
   await createEvents(userArgs.m, userArgs.r, userArgs.v);
   await createAttendants(userArgs.v);
+  await createFriendships(userArgs.v);
   closeDb();
 };
 
@@ -43,6 +45,8 @@ const populateCollection = async () => {
       break;
     case 'attendants':
       await createAttendants(userArgs.v);
+    case 'friendships':
+      await createFriendships(userArgs.v);
       break;
     default:
       console.log(

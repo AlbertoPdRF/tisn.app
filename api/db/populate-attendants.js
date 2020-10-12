@@ -16,6 +16,7 @@ const createAttendant = async (attendantParams) => {
   if (displayLogs) {
     console.log('\n', '\x1b[0m', `New attendant created: ${attendant}`);
   }
+  return attendant;
 };
 
 const createAttendants = async (verbose) => {
