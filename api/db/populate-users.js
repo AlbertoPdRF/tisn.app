@@ -32,6 +32,7 @@ const createUser = async (userParams) => {
   if (displayLogs) {
     console.log('\n', '\x1b[0m', `New user created: ${user}`);
   }
+  return user;
 };
 
 const createAdminUser = () => {

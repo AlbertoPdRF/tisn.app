@@ -5,6 +5,7 @@ const { connectDb, closeDb } = require('./connection');
 const { createAttendants } = require('./populate-attendants');
 const { createComments } = require('./populate-comments');
 const { createEvents } = require('./populate-events');
+const { createFriendships } = require('./populate-friendships');
 const { createInterests } = require('./populate-interests');
 const { createUsers } = require('./populate-users');
 
@@ -28,6 +29,8 @@ const populateCollections = async () => {
   await createEvents(userArgs.m, userArgs.r, userArgs.v);
   await createAttendants(userArgs.v);
   await createComments(userArgs.v);
+  await createFriendships(userArgs.v);
+  await createComments(userArgs.v);
   closeDb();
 };
 
@@ -45,13 +48,15 @@ const populateCollection = async () => {
       break;
     case 'attendants':
       await createAttendants(userArgs.v);
+    case 'friendships':
+      await createFriendships(userArgs.v);
       break;
     case 'comments':
       await createComments(userArgs.v);
       break;
     default:
       console.log(
-        `Unknown collection '${userArgs.c}', possible options are: [interests, users, events, attendants, comments]`
+        `Unknown collection '${userArgs.c}', possible options are: [interests, users, events, attendants, friendships, comments]`
       );
       break;
   }

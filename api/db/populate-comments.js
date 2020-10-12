@@ -1,6 +1,5 @@
 const txtgen = require('txtgen');
 
-const User = require('../models/User');
 const Event = require('../models/Event');
 const Attendant = require('../models/Attendant');
 const Comment = require('../models/Comment');
