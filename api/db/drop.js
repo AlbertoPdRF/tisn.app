@@ -10,6 +10,7 @@ const Event = require('../models/Event');
 const Attendant = require('../models/Attendant');
 const Comment = require('../models/Comment');
 const Friendship = require('../models/Friendship');
+const Message = require('../models/Message');
 
 const getInterestsCount = async () => await Interest.countDocuments();
 const getUsersCount = async () => await User.countDocuments();
@@ -17,6 +18,7 @@ const getEventsCount = async () => await Event.countDocuments();
 const getAttendantsCount = async () => await Attendant.countDocuments();
 const getCommentsCount = async () => await Comment.countDocuments();
 const getFriendshipsCount = async () => await Friendship.countDocuments();
+const getMessagesCount = async () => await Message.countDocuments();
 
 const userArgs = minimist(process.argv.slice(2), {
   string: 'collection',
@@ -127,10 +129,21 @@ const dropFriendships = async (confirmed = false) => {
   }
 };
 
+const dropMessages = async () => {
+  console.log('\n', '\x1b[0m', 'Dropping messages collection...');
+  if ((await getMessagesCount()) !== 0) {
+    await Message.collection.drop();
+    console.log('\x1b[31m', 'Dropped messages collection');
+  } else {
+    console.log('\x1b[31m', 'Messages collection is already empty');
+  }
+};
+
 const dropCollections = async () => {
   connectDb();
-  await dropComments();
+  await dropMessages();
   await dropFriendships();
+  await dropComments();
   await dropAttendants();
   await dropEvents();
   await dropUsers();
@@ -159,9 +172,12 @@ const dropCollection = async () => {
     case 'friendships':
       await dropFriendships();
       break;
+    case 'messages':
+      await dropMessages();
+      break;
     default:
       console.log(
-        `Unknown collection '${userArgs.c}', possible options are: [interests, users, events, attendants, comments, friendships]`
+        `Unknown collection '${userArgs.c}', possible options are: [interests, users, events, attendants, comments, friendships, messages]`
       );
       break;
   }
