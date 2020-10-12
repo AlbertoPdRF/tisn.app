@@ -11,7 +11,6 @@ const createFriendship = async (friendshipParams) => {
     receivant: friendshipParams.receivant,
     accepted: friendshipParams.accepted,
     acceptedAt: friendshipParams.acceptedAt,
-    lastMessageAt: friendshipParams.lastMessageAt,
   });
   await friendship.save();
 
@@ -37,12 +36,12 @@ const createFriendships = async (verbose) => {
   }
 
   for (const user of usersList) {
-    const containFriends = friendshipsArray.some(
+    const alreadyHasFriends = friendshipsArray.some(
       (friendship) =>
         friendship.requestant.toString() === user.toString() ||
         friendship.receivant.toString() === user.toString()
     );
-    if (!proceed && containFriends) continue;
+    if (!proceed && alreadyHasFriends) continue;
 
     // split current user from all others
     const tmpList = usersList.filter((userValue) => userValue !== user);
@@ -50,26 +49,22 @@ const createFriendships = async (verbose) => {
     const usersSubset = getRandomSubset(tmpList, tmpList.length + 1);
 
     for (const receivant of usersSubset) {
-      const alreadyFriends = friendshipsArray.some(
+      const alreadyAreFriends = friendshipsArray.some(
         (friendship) =>
           (friendship.requestant.toString() === user.toString() &&
             friendship.receivant.toString() === receivant.toString()) ||
           (friendship.requestant.toString() === receivant.toString() &&
             friendship.receivant.toString() === user.toString())
       );
-      if (alreadyFriends) continue;
+      if (alreadyAreFriends) continue;
 
       const now = new Date();
-      const acceptedAt = getRandomDate(
-        new Date(2020, 4, 4),
-        new Date(now.getTime() - 60000)
-      );
+      const acceptedAt = getRandomDate(new Date(2020, 4, 5), now);
       const friendshipParams = {
         requestant: user,
         receivant,
         accepted: Math.random() > 0.2,
         acceptedAt,
-        lastMessageAt: getRandomDate(acceptedAt, now),
       };
 
       friendshipsArray.push(await createFriendship(friendshipParams));
