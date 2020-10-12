@@ -27,10 +27,10 @@ const createFriendships = async (verbose) => {
 
   let usersList = await User.distinct('_id');
   const friendshipsArray = await Friendship.find();
-  const documentCount = friendshipsArray.length;
+  const documentsCount = friendshipsArray.length;
 
   let proceed = true;
-  if (documentCount > 0) {
+  if (documentsCount > 0) {
     proceed = await createPrompt(
       'Some users already have friends. Would you like to add friends to users that already have friends?'
     );
@@ -77,7 +77,7 @@ const createFriendships = async (verbose) => {
   }
   console.log(
     '\x1b[32m',
-    `Created ${friendshipsArray.length - documentCount} friendships`
+    `Created ${friendshipsArray.length - documentsCount} friendships`
   );
 };
 
