@@ -64,8 +64,8 @@ const createComments = async (verbose) => {
     const eventComments = await Comment.find({ event });
 
     // Number of comments to generate
-    const commentCount = Math.floor(Math.random() * 20);
-    for (let i = 0; i <= commentCount; i++) {
+    const commentsCount = Math.floor(Math.random() * 20);
+    for (let i = 0; i <= commentsCount; i++) {
       const user =
         eventAttendants[Math.floor(Math.random() * eventAttendants.length)]
           .user;

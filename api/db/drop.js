@@ -153,15 +153,15 @@ const dropCollection = async () => {
     case 'attendants':
       await dropAttendants();
       break;
-    case 'friendships':
-      await dropFriendships();
-      break;
     case 'comments':
       await dropComments();
       break;
+    case 'friendships':
+      await dropFriendships();
+      break;
     default:
       console.log(
-        `Unknown collection '${userArgs.c}', possible options are: [interests, users, events, attendants, friendships, comments]`
+        `Unknown collection '${userArgs.c}', possible options are: [interests, users, events, attendants, comments, friendships]`
       );
       break;
   }

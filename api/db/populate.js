@@ -48,15 +48,16 @@ const populateCollection = async () => {
       break;
     case 'attendants':
       await createAttendants(userArgs.v);
-    case 'friendships':
-      await createFriendships(userArgs.v);
       break;
     case 'comments':
       await createComments(userArgs.v);
       break;
+    case 'friendships':
+      await createFriendships(userArgs.v);
+      break;
     default:
       console.log(
-        `Unknown collection '${userArgs.c}', possible options are: [interests, users, events, attendants, friendships, comments]`
+        `Unknown collection '${userArgs.c}', possible options are: [interests, users, events, attendants, comments, friendships]`
       );
       break;
   }
