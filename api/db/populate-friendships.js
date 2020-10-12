@@ -28,21 +28,7 @@ const createFriendships = async (verbose) => {
   const friendshipsArray = await Friendship.find();
   const documentsCount = friendshipsArray.length;
 
-  let proceed = true;
-  if (documentsCount > 0) {
-    proceed = await createPrompt(
-      'Some users already have friends. Would you like to add friends to users that already have friends?'
-    );
-  }
-
   for (const user of usersList) {
-    const alreadyHasFriends = friendshipsArray.some(
-      (friendship) =>
-        friendship.requestant.toString() === user.toString() ||
-        friendship.receivant.toString() === user.toString()
-    );
-    if (!proceed && alreadyHasFriends) continue;
-
     // split current user from all others
     const tmpList = usersList.filter((userValue) => userValue !== user);
     // create subset userList from remaining usersList
