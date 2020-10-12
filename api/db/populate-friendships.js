@@ -27,12 +27,12 @@ const createFriendships = async (verbose) => {
 
   let usersList = await User.distinct('_id');
   const friendshipsArray = await Friendship.find();
-  let recordCount = friendshipsArray.length;
+  const documentCount = friendshipsArray.length;
 
   let proceed = true;
-  if (recordCount > 0) {
+  if (documentCount > 0) {
     proceed = await createPrompt(
-      'Some users already have friends. Would you like to add friends to users that already contain friends?'
+      'Some users already have friends. Would you like to add friends to users that already have friends?'
     );
   }
 
@@ -45,20 +45,19 @@ const createFriendships = async (verbose) => {
     if (!proceed && containFriends) continue;
 
     // split current user from all others
-    const tmpList = usersList.filter((userValue) => userValue != user);
+    const tmpList = usersList.filter((userValue) => userValue !== user);
     // create subset userList from remaining usersList
-    const usersSubset = getRandomSubset(tmpList, tmpList.length);
+    const usersSubset = getRandomSubset(tmpList, tmpList.length + 1);
 
     for (const receivant of usersSubset) {
-      const alreadFriends = friendshipsArray.filter((friendship) => {
-        return (
+      const alreadyFriends = friendshipsArray.some(
+        (friendship) =>
           (friendship.requestant.toString() === user.toString() &&
             friendship.receivant.toString() === receivant.toString()) ||
           (friendship.requestant.toString() === receivant.toString() &&
             friendship.receivant.toString() === user.toString())
-        );
-      });
-      if (alreadFriends.length > 0) continue;
+      );
+      if (alreadyFriends) continue;
 
       const now = new Date();
       const acceptedAt = getRandomDate(
@@ -68,7 +67,7 @@ const createFriendships = async (verbose) => {
       const friendshipParams = {
         requestant: user,
         receivant,
-        accepted: Math.random() > 0.1 ? true : false,
+        accepted: Math.random() > 0.2,
         acceptedAt,
         lastMessageAt: getRandomDate(acceptedAt, now),
       };
@@ -78,7 +77,7 @@ const createFriendships = async (verbose) => {
   }
   console.log(
     '\x1b[32m',
-    `Created ${friendshipsArray.length - recordCount} friendships`
+    `Created ${friendshipsArray.length - documentCount} friendships`
   );
 };
 
