@@ -8,8 +8,8 @@ const Interest = require('../models/Interest');
 const User = require('../models/User');
 const Event = require('../models/Event');
 const Attendant = require('../models/Attendant');
-const Friendship = require('../models/Friendship');
 const Comment = require('../models/Comment');
+const Friendship = require('../models/Friendship');
 
 const getInterestsCount = async () => await Interest.countDocuments();
 const getUsersCount = async () => await User.countDocuments();
