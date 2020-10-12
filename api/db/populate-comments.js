@@ -41,8 +41,10 @@ const createComment = async (commentParams) => {
     event: commentParams.event,
     user: commentParams.user,
     content: commentParams.content,
-    parentComment: commentParams.parentComment,
   });
+  if (commentParams.parentComment) {
+    comment.parentComment = commentParams.parentComment;
+  }
   await comment.save();
 
   if (displayLogs) {
