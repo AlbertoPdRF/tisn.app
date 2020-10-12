@@ -18,6 +18,8 @@ const Interest = require('../models/Interest');
 const User = require('../models/User');
 const Event = require('../models/Event');
 
+let displayLogs;
+
 const createEvent = async (eventParams) => {
   const event = new Event({
     name: eventParams.name,
