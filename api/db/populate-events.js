@@ -12,6 +12,7 @@ const {
   getCountry,
   getRegion,
   getRandomSubset,
+  getArticle,
 } = require('./utils');
 
 const Interest = require('../models/Interest');
@@ -78,7 +79,7 @@ const createEvents = async (multiplier, randomLocation, verbose) => {
       separator: ' ',
     });
 
-    const description = txtgen.article(Math.ceil(Math.random() * 3));
+    const description = getArticle();
 
     const startDate = getRandomDate(now, futureDate);
     const endDate = getRandomDate(

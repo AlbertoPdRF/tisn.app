@@ -1,6 +1,7 @@
+const { getArticle } = require('./utils');
+
 const Friendship = require('../models/Friendship');
 const Message = require('../models/Message');
-const User = require('../models/User');
 
 let displayLogs;
 
@@ -22,24 +23,33 @@ const createMessages = async (verbose) => {
   console.log('\n', '\x1b[0m', 'Populating messages collection...');
   displayLogs = verbose;
 
-  const usersArray = await User.find();
   const friendshipsArray = await Friendship.find();
+  const messagesArray = [];
 
-  // For each friendship, generate 0 to 9 messages
-  // Switching user between requestant and receivant and updating the lastMessageAt
   for (const friendship of friendshipsArray) {
     const messagesCount = Math.floor(Math.random() * 10);
 
     for (let i = 0; i < messagesCount; i++) {
       const user =
         Math.random() < 0.5 ? friendship.requestant : friendship.receivant;
+      const content = getArticle();
 
       const messageParams = {
         friendship,
         user,
+        content,
       };
+
+      messagesArray.push(await createMessage(messageParams));
+    }
+
+    if (messagesCount > 0) {
+      friendship.lastMessageAt = new Date();
+      await friendship.save();
     }
   }
+
+  console.log('\x1b[32m', `Created ${messagesArray.length} messages`);
 };
 
 module.exports = { createMessages };

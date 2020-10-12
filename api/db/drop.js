@@ -127,11 +127,19 @@ const dropFriendships = async (confirmed = false) => {
   } else {
     console.log('\x1b[33m', 'Friendships collection is already empty');
   }
+
+  if ((await getMessagesCount()) !== 0) {
+    const drop = await createPrompt(
+      'The messages collection is dependent on the friendships collection. Drop messages collection?'
+    );
+
+    if (drop) await dropMessages(drop);
+  }
 };
 
-const dropMessages = async () => {
+const dropMessages = async (confirmed = false) => {
   console.log('\n', '\x1b[0m', 'Dropping messages collection...');
-  if ((await getMessagesCount()) !== 0) {
+  if (confirmed || (await getMessagesCount()) !== 0) {
     await Message.collection.drop();
     console.log('\x1b[31m', 'Dropped messages collection');
   } else {
