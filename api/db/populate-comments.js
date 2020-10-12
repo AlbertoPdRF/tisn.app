@@ -29,6 +29,13 @@ const prerequisites = (eventsCount, attendantsCount) => {
   return true;
 };
 
+const getParentComment = (comments) => {
+  const parentComments = comments.filter(
+    (comment) => comment.parentComment === null
+  );
+  return parentComments[Math.floor(Math.random() * parentComments.length)];
+};
+
 const createComment = async (commentParams) => {
   const comment = new Comment({
     event: commentParams.event,
@@ -71,9 +78,7 @@ const createComments = async (verbose) => {
           .user;
       const content = txtgen.paragraph(Math.ceil(Math.random() * 3));
       const parentComment =
-        Math.random() <= 0.2
-          ? eventComments[Math.floor(Math.random() * eventComments.length)]
-          : null;
+        Math.random() <= 0.2 ? getParentComment(eventComments) : null;
 
       const commentParams = {
         event,

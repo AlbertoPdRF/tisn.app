@@ -30,7 +30,6 @@ const populateCollections = async () => {
   await createAttendants(userArgs.v);
   await createComments(userArgs.v);
   await createFriendships(userArgs.v);
-  await createComments(userArgs.v);
   closeDb();
 };
 
