@@ -26,7 +26,20 @@ const createMessages = async (verbose) => {
   const friendshipsArray = await Friendship.find();
 
   // For each friendship, generate 0 to 9 messages
-  // Switching user between requestant and receivant
+  // Switching user between requestant and receivant and updating the lastMessageAt
+  for (const friendship of friendshipsArray) {
+    const messagesCount = Math.floor(Math.random() * 10);
+
+    for (let i = 0; i < messagesCount; i++) {
+      const user =
+        Math.random() < 0.5 ? friendship.requestant : friendship.receivant;
+
+      const messageParams = {
+        friendship,
+        user,
+      };
+    }
+  }
 };
 
 module.exports = { createMessages };
