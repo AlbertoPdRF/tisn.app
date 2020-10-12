@@ -15,8 +15,8 @@ const getInterestsCount = async () => await Interest.countDocuments();
 const getUsersCount = async () => await User.countDocuments();
 const getEventsCount = async () => await Event.countDocuments();
 const getAttendantsCount = async () => await Attendant.countDocuments();
-const getFriendshipsCount = async () => await Friendship.countDocuments();
 const getCommentsCount = async () => await Comment.countDocuments();
+const getFriendshipsCount = async () => await Friendship.countDocuments();
 
 const userArgs = minimist(process.argv.slice(2), {
   string: 'collection',
@@ -107,16 +107,6 @@ const dropAttendants = async (confirmed = false) => {
   }
 };
 
-const dropFriendships = async (confirmed = false) => {
-  console.log('\n', '\x1b[0m', 'Dropping friendships collection...');
-  if (confirmed || (await getFriendshipsCount()) !== 0) {
-    await Friendship.collection.drop();
-    console.log('\x1b[31m', 'Dropped friendships collection');
-  } else {
-    console.log('\x1b[33m', 'Friendships collection is already empty');
-  }
-};
-
 const dropComments = async (confirmed = false) => {
   console.log('\n', '\x1b[0m', 'Dropping comments collection...');
   if (confirmed || (await getCommentsCount()) !== 0) {
@@ -124,6 +114,16 @@ const dropComments = async (confirmed = false) => {
     console.log('\x1b[31m', 'Dropped comments collection');
   } else {
     console.log('\x1b[33m', 'Comments collection is already empty');
+  }
+};
+
+const dropFriendships = async (confirmed = false) => {
+  console.log('\n', '\x1b[0m', 'Dropping friendships collection...');
+  if (confirmed || (await getFriendshipsCount()) !== 0) {
+    await Friendship.collection.drop();
+    console.log('\x1b[31m', 'Dropped friendships collection');
+  } else {
+    console.log('\x1b[33m', 'Friendships collection is already empty');
   }
 };
 

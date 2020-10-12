@@ -76,7 +76,7 @@ const createEvents = async (multiplier, randomLocation, verbose) => {
       separator: ' ',
     });
 
-    const description = txtgen.article(Math.ceil(Math.random() * 2));
+    const description = txtgen.article(Math.ceil(Math.random() * 3));
 
     const startDate = getRandomDate(now, futureDate);
     const endDate = getRandomDate(

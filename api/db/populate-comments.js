@@ -1,8 +1,8 @@
 const txtgen = require('txtgen');
 
 const Event = require('../models/Event');
-const Attendant = require('../models/Attendant');
 const Comment = require('../models/Comment');
+const Attendant = require('../models/Attendant');
 
 let displayLogs;
 
