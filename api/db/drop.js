@@ -8,12 +8,14 @@ const Interest = require('../models/Interest');
 const User = require('../models/User');
 const Event = require('../models/Event');
 const Attendant = require('../models/Attendant');
+const Comment = require('../models/Comment');
 const Friendship = require('../models/Friendship');
 
 const getInterestsCount = async () => await Interest.countDocuments();
 const getUsersCount = async () => await User.countDocuments();
 const getEventsCount = async () => await Event.countDocuments();
 const getAttendantsCount = async () => await Attendant.countDocuments();
+const getCommentsCount = async () => await Comment.countDocuments();
 const getFriendshipsCount = async () => await Friendship.countDocuments();
 
 const userArgs = minimist(process.argv.slice(2), {
@@ -85,6 +87,14 @@ const dropEvents = async (confirmed = false) => {
 
     if (drop) await dropAttendants(drop);
   }
+
+  if ((await getCommentsCount()) !== 0) {
+    const drop = await createPrompt(
+      'The comments collection is dependent on the events collection. Drop comments collection?'
+    );
+
+    if (drop) await dropComments(drop);
+  }
 };
 
 const dropAttendants = async (confirmed = false) => {
@@ -94,6 +104,16 @@ const dropAttendants = async (confirmed = false) => {
     console.log('\x1b[31m', 'Dropped attendants collection');
   } else {
     console.log('\x1b[33m', 'Attendants collection is already empty');
+  }
+};
+
+const dropComments = async (confirmed = false) => {
+  console.log('\n', '\x1b[0m', 'Dropping comments collection...');
+  if (confirmed || (await getCommentsCount()) !== 0) {
+    await Comment.collection.drop();
+    console.log('\x1b[31m', 'Dropped comments collection');
+  } else {
+    console.log('\x1b[33m', 'Comments collection is already empty');
   }
 };
 
@@ -109,6 +129,7 @@ const dropFriendships = async (confirmed = false) => {
 
 const dropCollections = async () => {
   connectDb();
+  await dropComments();
   await dropFriendships();
   await dropAttendants();
   await dropEvents();
@@ -132,12 +153,15 @@ const dropCollection = async () => {
     case 'attendants':
       await dropAttendants();
       break;
+    case 'comments':
+      await dropComments();
+      break;
     case 'friendships':
       await dropFriendships();
       break;
     default:
       console.log(
-        `Unknown collection '${userArgs.c}', possible options are: [interests, users, events, attendants, friendships]`
+        `Unknown collection '${userArgs.c}', possible options are: [interests, users, events, attendants, comments, friendships]`
       );
       break;
   }
