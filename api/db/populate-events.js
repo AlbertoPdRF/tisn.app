@@ -18,6 +18,8 @@ const Interest = require('../models/Interest');
 const User = require('../models/User');
 const Event = require('../models/Event');
 
+let displayLogs;
+
 const createEvent = async (eventParams) => {
   const event = new Event({
     name: eventParams.name,
@@ -36,6 +38,7 @@ const createEvent = async (eventParams) => {
   if (displayLogs) {
     console.log('\n', '\x1b[0m', `New event created: ${event}`);
   }
+  return event;
 };
 
 const createEvents = async (multiplier, randomLocation, verbose) => {
@@ -67,7 +70,7 @@ const createEvents = async (multiplier, randomLocation, verbose) => {
   const now = new Date();
   const futureDate = new Date().setFullYear(now.getFullYear() + 5);
 
-  for (let i = 0; i < 500 * multiplier; i++) {
+  for (let i = 0; i < 50 * multiplier; i++) {
     const name = uniqueNamesGenerator({
       dictionaries: [adjectives, animals, colors, starWars],
       length: 3,
@@ -75,7 +78,7 @@ const createEvents = async (multiplier, randomLocation, verbose) => {
       separator: ' ',
     });
 
-    const description = txtgen.article(Math.floor(Math.random() * 2) + 1);
+    const description = txtgen.article(Math.ceil(Math.random() * 3));
 
     const startDate = getRandomDate(now, futureDate);
     const endDate = getRandomDate(
