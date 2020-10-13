@@ -1,4 +1,4 @@
-const { getArticle } = require('./utils');
+const { getParagraph } = require('./utils');
 
 const Friendship = require('../models/Friendship');
 const Message = require('../models/Message');
@@ -11,7 +11,7 @@ const createMessage = async (messageParams) => {
     user: messageParams.user,
     content: messageParams.content,
   });
-  message.save();
+  await message.save();
 
   if (displayLogs) {
     console.log('\n', '\x1b[0m', `New message created: ${message}`);
@@ -27,12 +27,12 @@ const createMessages = async (verbose) => {
   const messagesArray = [];
 
   for (const friendship of friendshipsArray) {
-    const messagesCount = Math.floor(Math.random() * 10);
+    const messagesCount = Math.floor(Math.random() * 25);
 
     for (let i = 0; i < messagesCount; i++) {
       const user =
         Math.random() < 0.5 ? friendship.requestant : friendship.receivant;
-      const content = getArticle();
+      const content = getParagraph();
 
       const messageParams = {
         friendship,

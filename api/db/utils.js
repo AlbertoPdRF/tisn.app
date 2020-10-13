@@ -31,8 +31,8 @@ const getRandomSubset = (list, maxSize, minSize = 0) =>
     .sort(() => 0.5 - Math.random())
     .slice(minSize, maxSize === 1 ? 1 : Math.floor(Math.random() * maxSize));
 
-const getArticle = (paragraphs = 3) =>
-  txtgen.article(Math.ceil(Math.random() * paragraphs));
+const getParagraph = (sentences = 3) =>
+  txtgen.paragraph(Math.ceil(Math.random() * sentences));
 
 module.exports = {
   createPrompt,
@@ -40,5 +40,5 @@ module.exports = {
   getCountry,
   getRegion,
   getRandomSubset,
-  getArticle,
+  getParagraph,
 };

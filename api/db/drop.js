@@ -141,9 +141,9 @@ const dropMessages = async (confirmed = false) => {
   console.log('\n', '\x1b[0m', 'Dropping messages collection...');
   if (confirmed || (await getMessagesCount()) !== 0) {
     await Message.collection.drop();
-    console.log('\x1b[31m', 'Dropped messages collection');
+    console.log('\x1b[33m', 'Dropped messages collection');
   } else {
-    console.log('\x1b[31m', 'Messages collection is already empty');
+    console.log('\x1b[33m', 'Messages collection is already empty');
   }
 };
 
