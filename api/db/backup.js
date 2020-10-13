@@ -2,7 +2,6 @@ const exec = require('child_process').exec;
 const path = require('path');
 const mongodbUri = require('mongodb-uri');
 const { getDbUrl } = require('./connection');
-const { parse } = require('path');
 
 const createBackup = () => {
   // Remove database (and options) from URI to allow full database dumps
