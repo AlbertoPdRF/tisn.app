@@ -1,4 +1,4 @@
-const txtgen = require('txtgen');
+const { getParagraph } = require('./utils');
 
 const Event = require('../models/Event');
 const Attendant = require('../models/Attendant');
@@ -78,7 +78,7 @@ const createComments = async (verbose) => {
       const user =
         eventAttendants[Math.floor(Math.random() * eventAttendants.length)]
           .user;
-      const content = txtgen.paragraph(Math.ceil(Math.random() * 3));
+      const content = getParagraph();
       const parentComment =
         Math.random() <= 0.5 ? getParentComment(eventComments) : null;
 

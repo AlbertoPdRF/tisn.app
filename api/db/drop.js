@@ -10,6 +10,7 @@ const Event = require('../models/Event');
 const Attendant = require('../models/Attendant');
 const Comment = require('../models/Comment');
 const Friendship = require('../models/Friendship');
+const Message = require('../models/Message');
 
 const getInterestsCount = async () => await Interest.countDocuments();
 const getUsersCount = async () => await User.countDocuments();
@@ -17,6 +18,7 @@ const getEventsCount = async () => await Event.countDocuments();
 const getAttendantsCount = async () => await Attendant.countDocuments();
 const getCommentsCount = async () => await Comment.countDocuments();
 const getFriendshipsCount = async () => await Friendship.countDocuments();
+const getMessagesCount = async () => await Message.countDocuments();
 
 const userArgs = minimist(process.argv.slice(2), {
   string: 'collection',
@@ -125,12 +127,31 @@ const dropFriendships = async (confirmed = false) => {
   } else {
     console.log('\x1b[33m', 'Friendships collection is already empty');
   }
+
+  if ((await getMessagesCount()) !== 0) {
+    const drop = await createPrompt(
+      'The messages collection is dependent on the friendships collection. Drop messages collection?'
+    );
+
+    if (drop) await dropMessages(drop);
+  }
+};
+
+const dropMessages = async (confirmed = false) => {
+  console.log('\n', '\x1b[0m', 'Dropping messages collection...');
+  if (confirmed || (await getMessagesCount()) !== 0) {
+    await Message.collection.drop();
+    console.log('\x1b[31m', 'Dropped messages collection');
+  } else {
+    console.log('\x1b[33m', 'Messages collection is already empty');
+  }
 };
 
 const dropCollections = async () => {
   connectDb();
-  await dropComments();
+  await dropMessages();
   await dropFriendships();
+  await dropComments();
   await dropAttendants();
   await dropEvents();
   await dropUsers();
@@ -159,9 +180,12 @@ const dropCollection = async () => {
     case 'friendships':
       await dropFriendships();
       break;
+    case 'messages':
+      await dropMessages();
+      break;
     default:
       console.log(
-        `Unknown collection '${userArgs.c}', possible options are: [interests, users, events, attendants, comments, friendships]`
+        `Unknown collection '${userArgs.c}', possible options are: [interests, users, events, attendants, comments, friendships, messages]`
       );
       break;
   }

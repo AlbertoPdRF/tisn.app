@@ -80,7 +80,7 @@ const createUsers = async (multiplier, randomLocation, verbose) => {
 
   if (!(await User.exists({ email: 'admin@tisn.app' }))) createAdminUser();
 
-  for (let i = 0; i < 100 * multiplier; i++) {
+  for (let i = 0; i < 10 * multiplier; i++) {
     const name = uniqueNamesGenerator({
       dictionaries: [names, names],
       separator: ' ',

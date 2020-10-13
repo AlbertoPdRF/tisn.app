@@ -18,6 +18,8 @@ const Interest = require('../models/Interest');
 const User = require('../models/User');
 const Event = require('../models/Event');
 
+let displayLogs;
+
 const createEvent = async (eventParams) => {
   const event = new Event({
     name: eventParams.name,
@@ -68,7 +70,7 @@ const createEvents = async (multiplier, randomLocation, verbose) => {
   const now = new Date();
   const futureDate = new Date().setFullYear(now.getFullYear() + 5);
 
-  for (let i = 0; i < 500 * multiplier; i++) {
+  for (let i = 0; i < 50 * multiplier; i++) {
     const name = uniqueNamesGenerator({
       dictionaries: [adjectives, animals, colors, starWars],
       length: 3,
