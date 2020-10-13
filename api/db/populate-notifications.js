@@ -42,50 +42,45 @@ const getNewAttendant = (user) => {
 const getNewComment = (user) => {
   const event = getEvent(user);
   if (!event) return;
-  const comments = commentsList.filter((comment) => {
-    return (
+  const comments = commentsList.filter(
+    (comment) =>
       comment.event.toString() === event._id.toString() &&
       comment.user.toString() !== user._id.toString()
-    );
-  });
+  );
   return comments[Math.floor(Math.random() * comments.length)];
 };
 
 const getNewFriendRequest = (user) => {
-  const friendships = friendshipsList.filter((friendship) => {
-    return (
+  const friendships = friendshipsList.filter(
+    (friendship) =>
       !friendship.accepted &&
       friendship.receivant.toString() === user._id.toString()
-    );
-  });
+  );
   return friendships[Math.floor(Math.random() * friendships.length)];
 };
 
 const getAcceptedFriendRequest = (user) => {
-  const friendships = friendshipsList.filter((friendship) => {
-    return (
+  const friendships = friendshipsList.filter(
+    (friendship) =>
       friendship.accepted &&
       friendship.requestant.toString() === user._id.toString()
-    );
-  });
+  );
   return friendships[Math.floor(Math.random() * friendships.length)];
 };
 
 const getNewMessage = (user) => {
-  const friendships = friendshipsList.filter((friendship) => {
-    return (
+  const friendships = friendshipsList.filter(
+    (friendship) =>
       friendship.requestant.toString() === user._id.toString() ||
       friendship.receivant.toString() === user._id.toString()
-    );
-  });
+  );
   const friendship =
     friendships[Math.floor(Math.random() * friendships.length)];
-  const messages = messagesList.filter((message) => {
-    return (
+  const messages = messagesList.filter(
+    (message) =>
       message.friendship.toString() === friendship._id.toString() &&
       message.user.toString() !== user._id.toString()
-    );
-  });
+  );
   return messages[Math.floor(Math.random() * messages.length)];
 };
 
