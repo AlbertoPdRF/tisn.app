@@ -5,8 +5,6 @@
   <strong>Meet people while doing what you enjoy!</strong>
 </div>
 
-<br/>
-
 ## Table of contents
 
 - [What is tisn.app?](#what-is-tisnapp)
