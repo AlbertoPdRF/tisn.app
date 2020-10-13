@@ -1,10 +1,11 @@
 const User = require('../models/User');
+const Event = require('../models/Event');
 const Attendant = require('../models/Attendant');
+const Comment = require('../models/Comment');
 const Friendship = require('../models/Friendship');
 const Message = require('../models/Message');
-const Notifification = require('../models/Notification');
+const Notification = require('../models/Notification');
 
-let displayLogs;
 const types = [
   'newAttendant',
   'newComment',
@@ -12,6 +13,45 @@ const types = [
   'acceptedFriendshipRequest',
   'newMessage',
 ];
+
+let displayLogs;
+let eventsList;
+let attendantsList;
+let commentsList;
+let friendshipsList;
+let messagesList;
+
+const getEvent = (user) => {
+  const events = eventsList.filter(
+    (event) => event.createdBy.toString() === user._id.toString()
+  );
+  return events[Math.floor(Math.random() * events.length)];
+};
+
+const getNewAttendant = (user) => {
+  const event = getEvent(user);
+  if (!event) return;
+  const attendees = attendantsList.filter(
+    (attendee) =>
+      attendee.event.toString() === event._id.toString() &&
+      attendee.user.toString() !== user._id.toString()
+  );
+  return attendees[Math.floor(Math.random() * attendees.length)];
+};
+
+const getNewComment = (user) => {
+  const event = getEvent(user);
+  if (!event) return;
+  const comments = commentsList.filter((comment) => {
+    return (
+      comment.event.toString() === event._id.toString() &&
+      comment.user.toString() !== user._id.toString()
+    );
+  });
+  return comments[Math.floor(Math.random() * comments.length)];
+};
+
+const getNewMessage = (user) => {};
 
 const createNotification = async (notificationParams) => {
   const notification = new Notification({
@@ -23,11 +63,40 @@ const createNotification = async (notificationParams) => {
     read: notificationParams.read,
     readAt: notificationParams.readAt,
   });
-  notification.save();
+
+  switch (notification.type) {
+    // case types[0]:
+    //   const attendee = getNewAttendant(notification.user);
+    //   if (!attendee) return;
+    //   notification.referencedUser = attendee.user;
+    //   notification.referencedEvent = attendee.event;
+    //   break;
+    // case types[1]:
+    //   const comment = getNewComment(notification.user);
+    //   if (!comment) return;
+    //   notification.referencedUser = comment.user;
+    //   notification.referencedEvent = comment.event;
+    //   break;
+    // case types[2]:
+    //   // new friend request
+    //   break;
+    // case types[3]:
+    //   // accepted friend request
+    //   break;
+    case types[4]:
+      // new message
+      const message = getNewMessage(user);
+      break;
+    default:
+      return;
+  }
+
+  await notification.save();
 
   if (displayLogs) {
     console.log('\n', '\x1b[0m', `New notification created: ${notification}`);
   }
+  console.log('Notification:', notification);
   return notification;
 };
 
@@ -35,20 +104,28 @@ const createNotifications = async (verbose) => {
   console.log('\n', '\x1b[0m', 'Populating notifications collection...');
   displayLogs = verbose;
 
+  const notificationsArray = [];
   const usersList = await User.find();
-  const attendantsList = await Attendant.find();
-  const friendshipsList = await Friendship.find();
-  const messagesList = await Message.find();
+  eventsList = await Event.find();
+  attendantsList = await Attendant.find();
+  commentsList = await Comment.find();
+  friendshipsList = await Friendship.find();
+  messagesList = await Message.find();
 
   for (const user of usersList) {
     const notificationsCount = Math.floor(Math.random() * 5);
 
     for (let i = 0; i < notificationsCount; i++) {
       const type = types[Math.floor(Math.random() * types.length)];
+      const read = Math.random() > 0.5;
+
       const notificationParams = {
         user,
         type,
+        read,
       };
+
+      notificationsArray.push(await createNotification(notificationParams));
     }
   }
 
@@ -61,6 +138,7 @@ const createNotifications = async (verbose) => {
   //   acceptedFriendshipRequest => referencedFriendship,
   //   newMessage => referencedFriendship (= requestant)
   // ]
+  console.log('\x1b[32m', `Created ${notificationsArray.length} notifications`);
 };
 
 module.exports = { createNotifications };
