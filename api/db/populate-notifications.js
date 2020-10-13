@@ -51,41 +51,81 @@ const getNewComment = (user) => {
   return comments[Math.floor(Math.random() * comments.length)];
 };
 
-const getNewMessage = (user) => {};
+const getNewFriendRequest = (user) => {
+  const friendships = friendshipsList.filter((friendship) => {
+    return (
+      !friendship.accepted &&
+      friendship.receivant.toString() === user._id.toString()
+    );
+  });
+  return friendships[Math.floor(Math.random() * friendships.length)];
+};
+
+const getAcceptedFriendRequest = (user) => {
+  const friendships = friendshipsList.filter((friendship) => {
+    return (
+      friendship.accepted &&
+      friendship.requestant.toString() === user._id.toString()
+    );
+  });
+  return friendships[Math.floor(Math.random() * friendships.length)];
+};
+
+const getNewMessage = (user) => {
+  const friendships = friendshipsList.filter((friendship) => {
+    return (
+      friendship.requestant.toString() === user._id.toString() ||
+      friendship.receivant.toString() === user._id.toString()
+    );
+  });
+  const friendship =
+    friendships[Math.floor(Math.random() * friendships.length)];
+  const messages = messagesList.filter((message) => {
+    return (
+      message.friendship.toString() === friendship._id.toString() &&
+      message.user.toString() !== user._id.toString()
+    );
+  });
+  return messages[Math.floor(Math.random() * messages.length)];
+};
 
 const createNotification = async (notificationParams) => {
   const notification = new Notification({
     user: notificationParams.user,
     type: notificationParams.type,
-    referencedUser: notificationParams.referencedUser,
-    referencedEvent: notificationParams.referencedEvent,
-    referencedFriendship: notificationParams.referencedFriendship,
     read: notificationParams.read,
-    readAt: notificationParams.readAt,
   });
 
   switch (notification.type) {
-    // case types[0]:
-    //   const attendee = getNewAttendant(notification.user);
-    //   if (!attendee) return;
-    //   notification.referencedUser = attendee.user;
-    //   notification.referencedEvent = attendee.event;
-    //   break;
-    // case types[1]:
-    //   const comment = getNewComment(notification.user);
-    //   if (!comment) return;
-    //   notification.referencedUser = comment.user;
-    //   notification.referencedEvent = comment.event;
-    //   break;
-    // case types[2]:
-    //   // new friend request
-    //   break;
-    // case types[3]:
-    //   // accepted friend request
-    //   break;
+    case types[0]:
+      const attendee = getNewAttendant(notification.user);
+      if (!attendee) return;
+      notification.referencedUser = attendee.user;
+      notification.referencedEvent = attendee.event;
+      break;
+    case types[1]:
+      const comment = getNewComment(notification.user);
+      if (!comment) return;
+      notification.referencedUser = comment.user;
+      notification.referencedEvent = comment.event;
+      break;
+    case types[2]:
+      const friendRequest = getNewFriendRequest(notification.user);
+      if (!friendRequest) return;
+      notification.referencedUser = friendRequest.requestant;
+      notification.referencedFriendship = friendRequest;
+      break;
+    case types[3]:
+      const acceptedFriendRequest = getAcceptedFriendRequest(notification.user);
+      if (!acceptedFriendRequest) return;
+      notification.referencedUser = acceptedFriendRequest.receivant;
+      notification.referencedFriendship = acceptedFriendRequest;
+      break;
     case types[4]:
-      // new message
-      const message = getNewMessage(user);
+      const message = getNewMessage(notification.user);
+      if (!message) return;
+      notification.referencedUser = message.user;
+      notification.referencedFriendship = message.friendship;
       break;
     default:
       return;
@@ -96,7 +136,6 @@ const createNotification = async (notificationParams) => {
   if (displayLogs) {
     console.log('\n', '\x1b[0m', `New notification created: ${notification}`);
   }
-  console.log('Notification:', notification);
   return notification;
 };
 
@@ -129,15 +168,6 @@ const createNotifications = async (verbose) => {
     }
   }
 
-  // For each user
-  // create between 0 and 4 notifications
-  // types: [
-  //   newAttendant => referencedUser,
-  //   newComment => referencedUser,
-  //   newFriendshipRequest => referencedFriendship,
-  //   acceptedFriendshipRequest => referencedFriendship,
-  //   newMessage => referencedFriendship (= requestant)
-  // ]
   console.log('\x1b[32m', `Created ${notificationsArray.length} notifications`);
 };
 
