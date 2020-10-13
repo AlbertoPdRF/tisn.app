@@ -8,22 +8,6 @@ import Popover from '@material-ui/core/Popover';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
-import ListItemAvatar from '@material-ui/core/ListItemAvatar';
-import Avatar from '@material-ui/core/Avatar';
-import ListItemText from '@material-ui/core/ListItemText';
-import Divider from '@material-ui/core/Divider';
-import ListItemIcon from '@material-ui/core/ListItemIcon';
-import HomeIcon from '@material-ui/icons/Home';
-import DateRangeIcon from '@material-ui/icons/DateRange';
-import EventIcon from '@material-ui/icons/Event';
-import AddIcon from '@material-ui/icons/Add';
-import PeopleIcon from '@material-ui/icons/People';
-import PersonIcon from '@material-ui/icons/Person';
-import CategoryIcon from '@material-ui/icons/Category';
-import InfoIcon from '@material-ui/icons/Info';
-import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -54,8 +38,8 @@ import { useToggleTheme } from '../ThemeProvider/ThemeProvider';
 
 import FriendshipCard from '../FriendshipCard/FriendshipCard';
 import NotificationCard from '../NotificationCard/NotificationCard';
-import Footer from '../Footer/Footer';
 import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
+import NavigationDrawer from '../NavigationDrawer/NavigationDrawer';
 
 import Style from '../Style/Style';
 
@@ -172,7 +156,7 @@ const NavigationBarAndDrawer = (props) => {
           let toReturn;
           if (
             messageNotificationsDisplayed[
-              `${notification.referencedFriendship._id}`
+            `${notification.referencedFriendship._id}`
             ]
           ) {
             toReturn = null;
@@ -195,7 +179,7 @@ const NavigationBarAndDrawer = (props) => {
                   }
                   messageNotifications={
                     messageNotifications[
-                      `${notification.referencedFriendship._id}`
+                    `${notification.referencedFriendship._id}`
                     ]
                   }
                   handlePopoverClose={handlePopoverClose}
@@ -209,8 +193,7 @@ const NavigationBarAndDrawer = (props) => {
         <Grid item className={`${style.popoverGridItem} ${style.center}`}>
           <Typography gutterBottom variant="body1">
             {t(
-              `navigationBarAndDrawer.no${
-                notifications.message.length > 0 ? 'More' : ''
+              `navigationBarAndDrawer.no${notifications.message.length > 0 ? 'More' : ''
               }NewMessages`
             )}
           </Typography>
@@ -252,8 +235,7 @@ const NavigationBarAndDrawer = (props) => {
         <Grid item className={`${style.popoverGridItem} ${style.center}`}>
           <Typography gutterBottom variant="body1">
             {t(
-              `navigationBarAndDrawer.no${
-                notifications.regular.length > 0 ? 'More' : ''
+              `navigationBarAndDrawer.no${notifications.regular.length > 0 ? 'More' : ''
               }NewNotifications`
             )}
           </Typography>
@@ -275,164 +257,7 @@ const NavigationBarAndDrawer = (props) => {
   const handleDrawerToggle = () => setDrawerOpen(!drawerOpen);
 
   const drawer = user && (
-    <Fragment>
-      <div
-        style={{
-          overflowY: 'auto',
-          overflowX: 'hidden',
-          height: 'calc(100vh - 152px)',
-        }}
-      >
-        <List>
-          <ListItem
-            button
-            onClick={() => {
-              history.push(`/users/${user._id}`);
-              handleDrawerToggle();
-            }}
-          >
-            <ListItemAvatar>
-              <Avatar
-                src={user.avatar}
-                alt={t('navigationBarAndDrawer.avatar', { name: user.name })}
-              >
-                {user.name.charAt(0).toUpperCase()}
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText primary={user.name} />
-          </ListItem>
-          <Divider />
-          <ListItem
-            button
-            onClick={() => {
-              history.push('/');
-              handleDrawerToggle();
-            }}
-          >
-            <ListItemIcon>
-              <HomeIcon color="primary" />
-            </ListItemIcon>
-            <ListItemText primary={t('navigationBarAndDrawer.home')} />
-          </ListItem>
-          <Divider />
-          <ListItem
-            button
-            onClick={() => {
-              history.push('/events');
-              handleDrawerToggle();
-            }}
-          >
-            <ListItemIcon>
-              <DateRangeIcon color="primary" />
-            </ListItemIcon>
-            <ListItemText primary={t('navigationBarAndDrawer.events')} />
-          </ListItem>
-          <ListItem
-            button
-            onClick={() => {
-              history.push('/events/mine');
-              handleDrawerToggle();
-            }}
-          >
-            <ListItemIcon>
-              <EventIcon color="primary" />
-            </ListItemIcon>
-            <ListItemText primary={t('navigationBarAndDrawer.myEvents')} />
-          </ListItem>
-          <ListItem
-            button
-            onClick={() => {
-              history.push('/events/new');
-              handleDrawerToggle();
-            }}
-          >
-            <ListItemIcon>
-              <AddIcon color="primary" />
-            </ListItemIcon>
-            <ListItemText primary={t('navigationBarAndDrawer.createEvent')} />
-          </ListItem>
-          <Divider />
-          <ListItem
-            button
-            onClick={() => {
-              history.push('/users');
-              handleDrawerToggle();
-            }}
-          >
-            <ListItemIcon>
-              <PeopleIcon color="primary" />
-            </ListItemIcon>
-            <ListItemText primary={t('navigationBarAndDrawer.users')} />
-          </ListItem>
-          <ListItem
-            button
-            onClick={() => {
-              history.push(`/users/${user._id}`);
-              handleDrawerToggle();
-            }}
-          >
-            <ListItemIcon>
-              <PersonIcon color="primary" />
-            </ListItemIcon>
-            <ListItemText primary={t('navigationBarAndDrawer.myProfile')} />
-          </ListItem>
-          <Divider />
-          <ListItem
-            button
-            onClick={() => {
-              history.push('/interests');
-              handleDrawerToggle();
-            }}
-          >
-            <ListItemIcon>
-              <CategoryIcon color="primary" />
-            </ListItemIcon>
-            <ListItemText primary={t('navigationBarAndDrawer.interests')} />
-          </ListItem>
-        </List>
-      </div>
-      <div
-        style={{
-          position: 'absolute',
-          bottom: 0,
-          width: '100%',
-          overflow: 'hidden',
-        }}
-      >
-        <List>
-          <Divider />
-          <ListItem
-            button
-            onClick={() => {
-              history.push('/about');
-              handleDrawerToggle();
-            }}
-          >
-            <ListItemIcon>
-              <InfoIcon color="primary" />
-            </ListItemIcon>
-            <ListItemText primary={t('navigationBarAndDrawer.about')} />
-          </ListItem>
-          <Divider />
-          <ListItem
-            button
-            onClick={() => {
-              setLogUserOut(true);
-              handleDrawerToggle();
-            }}
-          >
-            <ListItemIcon>
-              <ExitToAppIcon color="primary" />
-            </ListItemIcon>
-            <ListItemText primary={t('navigationBarAndDrawer.logOut')} />
-          </ListItem>
-          <Divider />
-          <ListItem>
-            <Footer />
-          </ListItem>
-        </List>
-      </div>
-    </Fragment>
+    <NavigationDrawer clickHandler={handleDrawerToggle} logOutHandler={() => setLogUserOut(true)} />
   );
 
   return (
@@ -455,8 +280,8 @@ const NavigationBarAndDrawer = (props) => {
               {theme.palette.type === 'dark' ? (
                 <Brightness7Icon />
               ) : (
-                <Brightness4Icon />
-              )}
+                  <Brightness4Icon />
+                )}
             </IconButton>
             <IconButton
               edge="end"
