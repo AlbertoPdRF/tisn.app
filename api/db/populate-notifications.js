@@ -1,3 +1,5 @@
+const { createPrompt } = require('./utils');
+
 const User = require('../models/User');
 const Interest = require('../models/Interest');
 const Event = require('../models/Event');
@@ -47,6 +49,20 @@ const createNotification = async (notificationParams) => {
 const createNotifications = async (verbose) => {
   console.log('\n', '\x1b[0m', 'Populating notifications collection...');
   displayLogs = verbose;
+
+  if ((await Notification.countDocuments()) !== 0) {
+    const proceed = await createPrompt(
+      'The notifications collection already exists. If you continue, the existing collection will be dropped to avoid duplication. Do you want to continue?'
+    );
+
+    if (proceed) {
+      await Notification.collection.drop();
+      console.log('\x1b[31m', 'Dropped old notifications collection');
+    } else {
+      console.log('\x1b[33m', 'Aborted notifications collection population');
+      return;
+    }
+  }
 
   const notificationsArray = [];
   const usersList = await User.find();
