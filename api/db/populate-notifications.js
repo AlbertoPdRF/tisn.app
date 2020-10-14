@@ -1,4 +1,5 @@
 const User = require('../models/User');
+const Interest = require('../models/Interest');
 const Event = require('../models/Event');
 const Attendant = require('../models/Attendant');
 const Comment = require('../models/Comment');
@@ -7,6 +8,10 @@ const Message = require('../models/Message');
 const Notification = require('../models/Notification');
 
 const types = [
+  'confirmEmail',
+  'createEvent',
+  'uploadAvatar',
+  'selectInterests',
   'newAttendant',
   'newComment',
   'newFriendshipRequest',
@@ -14,116 +19,21 @@ const types = [
   'newMessage',
 ];
 
-let displayLogs;
-let eventsList;
-let attendantsList;
-let commentsList;
-let friendshipsList;
-let messagesList;
-
-const getEvent = (user) => {
-  const events = eventsList.filter(
-    (event) => event.createdBy.toString() === user._id.toString()
-  );
-  return events[Math.floor(Math.random() * events.length)];
-};
-
-const getNewAttendant = (user) => {
-  const event = getEvent(user);
-  if (!event) return;
-  const attendees = attendantsList.filter(
-    (attendee) =>
-      attendee.event.toString() === event._id.toString() &&
-      attendee.user.toString() !== user._id.toString()
-  );
-  return attendees[Math.floor(Math.random() * attendees.length)];
-};
-
-const getNewComment = (user) => {
-  const event = getEvent(user);
-  if (!event) return;
-  const comments = commentsList.filter(
-    (comment) =>
-      comment.event.toString() === event._id.toString() &&
-      comment.user.toString() !== user._id.toString()
-  );
-  return comments[Math.floor(Math.random() * comments.length)];
-};
-
-const getNewFriendRequest = (user) => {
-  const friendships = friendshipsList.filter(
-    (friendship) =>
-      !friendship.accepted &&
-      friendship.receivant.toString() === user._id.toString()
-  );
-  return friendships[Math.floor(Math.random() * friendships.length)];
-};
-
-const getAcceptedFriendRequest = (user) => {
-  const friendships = friendshipsList.filter(
-    (friendship) =>
-      friendship.accepted &&
-      friendship.requestant.toString() === user._id.toString()
-  );
-  return friendships[Math.floor(Math.random() * friendships.length)];
-};
-
-const getNewMessage = (user) => {
-  const friendships = friendshipsList.filter(
-    (friendship) =>
-      friendship.requestant.toString() === user._id.toString() ||
-      friendship.receivant.toString() === user._id.toString()
-  );
-  const friendship =
-    friendships[Math.floor(Math.random() * friendships.length)];
-  const messages = messagesList.filter(
-    (message) =>
-      message.friendship.toString() === friendship._id.toString() &&
-      message.user.toString() !== user._id.toString()
-  );
-  return messages[Math.floor(Math.random() * messages.length)];
-};
-
 const createNotification = async (notificationParams) => {
   const notification = new Notification({
     user: notificationParams.user,
     type: notificationParams.type,
     read: notificationParams.read,
   });
-
-  switch (notification.type) {
-    case types[0]:
-      const attendee = getNewAttendant(notification.user);
-      if (!attendee) return;
-      notification.referencedUser = attendee.user;
-      notification.referencedEvent = attendee.event;
-      break;
-    case types[1]:
-      const comment = getNewComment(notification.user);
-      if (!comment) return;
-      notification.referencedUser = comment.user;
-      notification.referencedEvent = comment.event;
-      break;
-    case types[2]:
-      const friendRequest = getNewFriendRequest(notification.user);
-      if (!friendRequest) return;
-      notification.referencedUser = friendRequest.requestant;
-      notification.referencedFriendship = friendRequest;
-      break;
-    case types[3]:
-      const acceptedFriendRequest = getAcceptedFriendRequest(notification.user);
-      if (!acceptedFriendRequest) return;
-      notification.referencedUser = acceptedFriendRequest.receivant;
-      notification.referencedFriendship = acceptedFriendRequest;
-      break;
-    case types[4]:
-      const message = getNewMessage(notification.user);
-      if (!message) return;
-      notification.referencedUser = message.user;
-      notification.referencedFriendship = message.friendship;
-      break;
-    default:
-      return;
+  if (notification.read) notification.readAt = new Date();
+  if (notificationParams.referencedUser) {
+    notification.referencedUser = notificationParams.referencedUser;
+  }
+  if (notificationParams.referencedEvent) {
+    notification.referencedEvent = notificationParams.referencedEvent;
+  }
+  if (notificationParams.referencedFriendship) {
+    notification.referencedFriendship = notificationParams.referencedFriendship;
   }
 
   await notification.save();
@@ -140,26 +50,153 @@ const createNotifications = async (verbose) => {
 
   const notificationsArray = [];
   const usersList = await User.find();
-  eventsList = await Event.find();
-  attendantsList = await Attendant.find();
-  commentsList = await Comment.find();
-  friendshipsList = await Friendship.find();
-  messagesList = await Message.find();
+  const eventsList = await Event.find();
+  const attendantsList = await Attendant.find();
+  const commentsList = await Comment.find();
+  const friendshipsList = await Friendship.find();
+  const messagesList = await Message.find();
 
+  // For each user
   for (const user of usersList) {
-    const notificationsCount = Math.floor(Math.random() * 5);
+    let read = user.emailConfirmed;
+    // Email confirmation notification
+    notificationsArray.push(
+      await createNotification({
+        user,
+        type: types[0],
+        read,
+      })
+    );
+    // Create event notification
+    read = eventsList.some(
+      (event) => event.createdBy.toString === user._id.toString()
+    );
+    notificationsArray.push(
+      await createNotification({
+        user,
+        type: types[1],
+        read,
+      })
+    );
+    // Create upload avatar notification
+    read = user.avatar ? true : false;
+    notificationsArray.push(
+      await createNotification({
+        user,
+        type: types[2],
+        read,
+      })
+    );
+    // Selected interests notification
+    const interests = await Interest.find({ user });
+    read = interests.length > 0;
+    notificationsArray.push(
+      await createNotification({
+        user,
+        type: types[3],
+        read,
+      })
+    );
 
-    for (let i = 0; i < notificationsCount; i++) {
-      const type = types[Math.floor(Math.random() * types.length)];
-      const read = Math.random() > 0.5;
+    // Create attendee and comment notifications
+    const usersEvents = eventsList.filter(
+      (event) => event.createdBy.toString() === user._id.toString()
+    );
+    for (const event of usersEvents) {
+      const attendees = attendantsList.filter(
+        (attendee) =>
+          attendee.event.toString() === event._id.toString() &&
+          attendee.user.toString() !== user._id.toString()
+      );
+      for (const attendee of attendees) {
+        read = Math.random() > 0.5;
+        const notificationParams = {
+          user,
+          type: types[4],
+          read,
+          referencedUser: attendee.user,
+          referencedEvent: event,
+        };
+        notificationsArray.push(await createNotification(notificationParams));
+      }
 
+      const comments = commentsList.filter(
+        (comment) =>
+          comment.event.toString() === event._id.toString() &&
+          comment.user.toString() !== user._id.toString()
+      );
+      for (const comment of comments) {
+        read = Math.random() > 0.5;
+        const notificationParams = {
+          user,
+          type: types[5],
+          read,
+          referencedUser: comment.user,
+          referencedEvent: comment.event,
+        };
+        notificationsArray.push(await createNotification(notificationParams));
+      }
+    }
+
+    // New friendship request notification
+    const friendRequests = friendshipsList.filter(
+      (friendship) =>
+        !friendship.accepted &&
+        friendship.receivant.toString() === user._id.toString()
+    );
+    for (const friendRequest of friendRequests) {
+      read = Math.random() > 0.5;
       const notificationParams = {
         user,
-        type,
+        type: types[6],
         read,
+        referencedUser: friendRequest.requestant,
+        referencedFriendship: friendRequest,
       };
-
       notificationsArray.push(await createNotification(notificationParams));
+    }
+
+    // Accepted friendship request notifications
+    const acceptedFriendships = friendshipsList.filter(
+      (friendship) =>
+        friendship.accepted &&
+        friendship.requestant.toString() === user._id.toString()
+    );
+    for (const acceptedFriendship of acceptedFriendships) {
+      read = Math.random() > 0.5;
+      const notificationParams = {
+        user,
+        type: types[7],
+        read,
+        referencedUser: acceptedFriendship.receivant,
+        referencedFriendship: acceptedFriendship,
+      };
+      notificationsArray.push(await createNotification(notificationParams));
+    }
+
+    // New message notifications
+    const userfriendships = friendshipsList.filter(
+      (friendship) =>
+        friendship.requestant.toString() === user._id.toString() ||
+        friendship.receivant.toString() === user._id.toString()
+    );
+    for (const userfriendship of userfriendships) {
+      const messages = messagesList.filter(
+        (message) =>
+          message.friendship.toString() === userfriendship._id.toString() &&
+          message.user.toString() !== user._id.toString()
+      );
+      for (const message of messages) {
+        read = Math.random() > 0.9;
+        const notificationParams = {
+          user,
+          type: types[8],
+          read,
+          referencedUser: message.user,
+          referencedFriendship: message.friendship,
+        };
+        notificationsArray.push(await createNotification(notificationParams));
+      }
     }
   }
 
