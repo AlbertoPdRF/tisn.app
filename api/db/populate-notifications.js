@@ -22,21 +22,8 @@ const types = [
 ];
 
 const createNotification = async (notificationParams) => {
-  const notification = new Notification({
-    user: notificationParams.user,
-    type: notificationParams.type,
-    read: notificationParams.read,
-  });
+  const notification = new Notification(notificationParams);
   if (notification.read) notification.readAt = new Date();
-  if (notificationParams.referencedUser) {
-    notification.referencedUser = notificationParams.referencedUser;
-  }
-  if (notificationParams.referencedEvent) {
-    notification.referencedEvent = notificationParams.referencedEvent;
-  }
-  if (notificationParams.referencedFriendship) {
-    notification.referencedFriendship = notificationParams.referencedFriendship;
-  }
 
   await notification.save();
 
@@ -75,7 +62,7 @@ const createNotifications = async (verbose) => {
   // For each user
   for (const user of usersList) {
     let read = user.emailConfirmed;
-    // Email confirmation notification
+    // Confirm email notification
     notificationsArray.push(
       await createNotification({
         user,
@@ -84,9 +71,10 @@ const createNotifications = async (verbose) => {
       })
     );
     // Create event notification
-    read = eventsList.some(
-      (event) => event.createdBy.toString === user._id.toString()
+    const userEvents = eventsList.filter(
+      (event) => event.createdBy.toString() === user._id.toString()
     );
+    read = userEvents.length > 0;
     notificationsArray.push(
       await createNotification({
         user,
@@ -94,7 +82,7 @@ const createNotifications = async (verbose) => {
         read,
       })
     );
-    // Create upload avatar notification
+    // Upload avatar notification
     read = user.avatar ? true : false;
     notificationsArray.push(
       await createNotification({
@@ -103,9 +91,8 @@ const createNotifications = async (verbose) => {
         read,
       })
     );
-    // Selected interests notification
-    const interests = await Interest.find({ user });
-    read = interests.length > 0;
+    // Select interests notification
+    read = user.interests.length > 0;
     notificationsArray.push(
       await createNotification({
         user,
@@ -114,11 +101,8 @@ const createNotifications = async (verbose) => {
       })
     );
 
-    // Create attendee and comment notifications
-    const usersEvents = eventsList.filter(
-      (event) => event.createdBy.toString() === user._id.toString()
-    );
-    for (const event of usersEvents) {
+    // New attendee and new comment notifications
+    for (const event of userEvents) {
       const attendees = attendantsList.filter(
         (attendee) =>
           attendee.event.toString() === event._id.toString() &&
@@ -134,33 +118,34 @@ const createNotifications = async (verbose) => {
           referencedEvent: event,
         };
         notificationsArray.push(await createNotification(notificationParams));
-      }
 
-      const comments = commentsList.filter(
-        (comment) =>
-          comment.event.toString() === event._id.toString() &&
-          comment.user.toString() !== user._id.toString()
-      );
-      for (const comment of comments) {
-        read = Math.random() > 0.5;
-        const notificationParams = {
-          user,
-          type: types[5],
-          read,
-          referencedUser: comment.user,
-          referencedEvent: comment.event,
-        };
-        notificationsArray.push(await createNotification(notificationParams));
+        const comments = commentsList.filter(
+          (comment) =>
+            comment.event.toString() === event._id.toString() &&
+            comment.user.toString() !== user._id.toString()
+        );
+        for (const comment of comments) {
+          if (attendee.user.toString() === comment.user.toString()) continue;
+          read = Math.random() > 0.5;
+          const notificationParams = {
+            user: attendee.user,
+            type: types[5],
+            read,
+            referencedUser: comment.user,
+            referencedEvent: comment.event,
+          };
+          notificationsArray.push(await createNotification(notificationParams));
+        }
       }
     }
 
-    // New friendship request notification
-    const friendRequests = friendshipsList.filter(
+    // New friendship request notifications
+    const friendshipRequests = friendshipsList.filter(
       (friendship) =>
         !friendship.accepted &&
         friendship.receivant.toString() === user._id.toString()
     );
-    for (const friendRequest of friendRequests) {
+    for (const friendRequest of friendshipRequests) {
       read = Math.random() > 0.5;
       const notificationParams = {
         user,
@@ -173,12 +158,12 @@ const createNotifications = async (verbose) => {
     }
 
     // Accepted friendship request notifications
-    const acceptedFriendships = friendshipsList.filter(
+    const acceptedFriendshipRequests = friendshipsList.filter(
       (friendship) =>
         friendship.accepted &&
         friendship.requestant.toString() === user._id.toString()
     );
-    for (const acceptedFriendship of acceptedFriendships) {
+    for (const acceptedFriendship of acceptedFriendshipRequests) {
       read = Math.random() > 0.5;
       const notificationParams = {
         user,
@@ -191,12 +176,12 @@ const createNotifications = async (verbose) => {
     }
 
     // New message notifications
-    const userfriendships = friendshipsList.filter(
+    const userFriendships = friendshipsList.filter(
       (friendship) =>
         friendship.requestant.toString() === user._id.toString() ||
         friendship.receivant.toString() === user._id.toString()
     );
-    for (const userfriendship of userfriendships) {
+    for (const userfriendship of userFriendships) {
       const messages = messagesList.filter(
         (message) =>
           message.friendship.toString() === userfriendship._id.toString() &&

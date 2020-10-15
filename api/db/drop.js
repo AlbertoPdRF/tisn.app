@@ -163,14 +163,14 @@ const dropNotifications = async (confirmed = false) => {
     await Notification.collection.drop();
     console.log('\x1b[31m', 'Dropped notifications collection');
   } else {
-    console.log('\x1b[31m', 'Notifications collection is already empty');
+    console.log('\x1b[33m', 'Notifications collection is already empty');
   }
 };
 
 const dropCollections = async () => {
   connectDb();
-  await dropMessages();
   await dropNotifications();
+  await dropMessages();
   await dropFriendships();
   await dropComments();
   await dropAttendants();
