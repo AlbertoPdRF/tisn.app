@@ -17,22 +17,12 @@ const {
 const Interest = require('../models/Interest');
 const User = require('../models/User');
 const Event = require('../models/Event');
+const Notification = require('../models/Notification');
 
 let displayLogs;
 
 const createEvent = async (eventParams) => {
-  const event = new Event({
-    name: eventParams.name,
-    description: eventParams.description,
-    startDate: eventParams.startDate,
-    endDate: eventParams.endDate,
-    country: eventParams.country,
-    region: eventParams.region,
-    createdBy: eventParams.createdBy,
-    relatedInterests: eventParams.relatedInterests,
-    coverPhoto: eventParams.coverPhoto,
-    attendantsLimit: eventParams.attendantsLimit,
-  });
+  const event = new Event(eventParams);
   await event.save();
 
   if (displayLogs) {
@@ -103,6 +93,16 @@ const createEvents = async (multiplier, randomLocation, verbose) => {
     };
 
     eventsArray.push(await createEvent(eventParams));
+  }
+
+  const uniqueEventCreators = [
+    ...new Set(eventsArray.map((event) => event.createdBy)),
+  ];
+  for (const creator of uniqueEventCreators) {
+    await Notification.findOneAndUpdate(
+      { user: creator, type: 'createEvent' },
+      { read: true }
+    );
   }
 
   console.log('\x1b[32m', `Created ${eventsArray.length} events`);

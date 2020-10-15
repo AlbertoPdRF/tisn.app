@@ -27,9 +27,9 @@ const createNotification = async (notificationParams) => {
 
   await notification.save();
 
-  if (displayLogs) {
-    console.log('\n', '\x1b[0m', `New notification created: ${notification}`);
-  }
+  // if (displayLogs) {
+  //   console.log('\n', '\x1b[0m', `New notification created: ${notification}`);
+  // }
   return notification;
 };
 
@@ -204,4 +204,4 @@ const createNotifications = async (verbose) => {
   console.log('\x1b[32m', `Created ${notificationsArray.length} notifications`);
 };
 
-module.exports = { createNotifications };
+module.exports = { createNotification, createNotifications };

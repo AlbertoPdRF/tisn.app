@@ -6,6 +6,7 @@ const {
   getRandomSubset,
 } = require('./utils');
 const { uniqueNamesGenerator, names } = require('unique-names-generator');
+const { createNotification } = require('./populate-notifications');
 
 const User = require('../models/User');
 const Interest = require('../models/Interest');
@@ -14,24 +15,39 @@ const locales = ['en', 'es'];
 let displayLogs;
 
 const createUser = async (userParams) => {
-  const user = new User({
-    name: userParams.name,
-    email: userParams.email,
-    emailConfirmed: userParams.emailConfirmed,
-    emailConfirmedAt: userParams.emailConfirmedAt,
-    dateOfBirth: userParams.dateOfBirth,
-    country: userParams.country,
-    region: userParams.region,
-    preferredLocale: userParams.preferredLocale,
-    interests: userParams.interests,
-    admin: userParams.admin,
-  });
+  const user = new User(userParams);
   user.setPassword('password');
   await user.save();
 
   if (displayLogs) {
     console.log('\n', '\x1b[0m', `New user created: ${user}`);
   }
+
+  // Confirm email notification
+  await createNotification({
+    user,
+    type: 'confirmEmail',
+    read: user.emailConfirmed,
+  });
+  // Create event notification
+  await createNotification({
+    user,
+    type: 'createEvent',
+    read: false,
+  });
+  // Upload avatar notification
+  await createNotification({
+    user,
+    type: 'uploadAvatar',
+    read: user.avatar ? true : false,
+  });
+  // Select interests notification
+  await createNotification({
+    user,
+    type: 'selectInterests',
+    read: user.interests.length > 0,
+  });
+
   return user;
 };
 
