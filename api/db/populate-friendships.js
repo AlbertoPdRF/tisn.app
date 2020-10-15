@@ -1,4 +1,5 @@
-const { getRandomSubset, getRandomDate, createPrompt } = require('./utils');
+const { getRandomSubset, getRandomDate } = require('./utils');
+const { createNotification } = require('./populate-notifications');
 
 const User = require('../models/User');
 const Friendship = require('../models/Friendship');
@@ -6,13 +7,26 @@ const Friendship = require('../models/Friendship');
 let displayLogs;
 
 const createFriendship = async (friendshipParams) => {
-  const friendship = new Friendship({
-    requestant: friendshipParams.requestant,
-    receivant: friendshipParams.receivant,
-    accepted: friendshipParams.accepted,
-    acceptedAt: friendshipParams.acceptedAt,
-  });
+  const friendship = new Friendship(friendshipParams);
   await friendship.save();
+
+  // New friendship request notifications
+  await createNotification({
+    user: friendship.receivant,
+    type: 'newFriendshipRequest',
+    read: friendship.accepted,
+    referencedUser: friendship.requestant,
+    referencedFriendship: friendship,
+  });
+  if (friendship.accepted) {
+    await createNotification({
+      user: friendship.requestant,
+      type: 'acceptedFriendshipRequest',
+      read: Math.random() > 0.3,
+      referencedUser: friendship.receivant,
+      referencedFriendship: friendship,
+    });
+  }
 
   if (displayLogs) {
     console.log('\n', '\x1b[0m', `New friendship created: ${friendship}`);

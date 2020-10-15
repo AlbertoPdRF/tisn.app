@@ -3,6 +3,7 @@ const { getParagraph } = require('./utils');
 const Event = require('../models/Event');
 const Attendant = require('../models/Attendant');
 const Comment = require('../models/Comment');
+const { createNotification } = require('./populate-notifications');
 
 let displayLogs;
 
@@ -37,11 +38,7 @@ const getParentComment = (comments) => {
 };
 
 const createComment = async (commentParams) => {
-  const comment = new Comment({
-    event: commentParams.event,
-    user: commentParams.user,
-    content: commentParams.content,
-  });
+  const comment = new Comment(commentParams);
   if (commentParams.parentComment) {
     comment.parentComment = commentParams.parentComment;
   }
@@ -92,6 +89,17 @@ const createComments = async (verbose) => {
       const comment = await createComment(commentParams);
       eventComments.push(comment);
       commentsArray.push(comment);
+
+      for (const attendee of eventAttendants) {
+        if (attendee.user.toString() === comment.user.toString()) continue;
+        await createNotification({
+          user: attendee.user,
+          type: 'newComment',
+          read: true,
+          referencedUser: comment.user,
+          referencedEvent: comment.event,
+        });
+      }
     }
   }
 

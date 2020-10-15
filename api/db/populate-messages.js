@@ -1,4 +1,5 @@
 const { getParagraph } = require('./utils');
+const { createNotification } = require('./populate-notifications');
 
 const Friendship = require('../models/Friendship');
 const Message = require('../models/Message');
@@ -12,6 +13,18 @@ const createMessage = async (messageParams) => {
     content: messageParams.content,
   });
   await message.save();
+
+  const user =
+    message.friendship.receivant.toString() === message.user.toString()
+      ? message.friendship.receivant
+      : message.friendship.requestant;
+  await createNotification({
+    user,
+    type: 'newMessage',
+    read: false,
+    referencedUser: message.user,
+    referencedFriendship: message.friendship,
+  });
 
   if (displayLogs) {
     console.log('\n', '\x1b[0m', `New message created: ${message}`);
