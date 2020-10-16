@@ -8,7 +8,6 @@ const { createEvents } = require('./populate-events');
 const { createFriendships } = require('./populate-friendships');
 const { createInterests } = require('./populate-interests');
 const { createMessages } = require('./populate-messages');
-const { createNotifications } = require('./populate-notifications');
 const { createUsers } = require('./populate-users');
 
 const userArgs = minimist(process.argv.slice(2), {
@@ -33,7 +32,6 @@ const populateCollections = async () => {
   await createComments(userArgs.v);
   await createFriendships(userArgs.v);
   await createMessages(userArgs.v);
-  await createNotifications(userArgs.v);
   closeDb();
 };
 
@@ -60,9 +58,6 @@ const populateCollection = async () => {
       break;
     case 'messages':
       await createMessages(userArgs.v);
-      break;
-    case 'notifications':
-      await createNotifications(userArgs.v);
       break;
     default:
       console.log(

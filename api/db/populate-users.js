@@ -6,7 +6,10 @@ const {
   getRandomSubset,
 } = require('./utils');
 const { uniqueNamesGenerator, names } = require('unique-names-generator');
-const { createNotification } = require('./populate-notifications');
+const {
+  createNotification,
+  notificationTypes,
+} = require('./populate-notifications');
 
 const User = require('../models/User');
 const Interest = require('../models/Interest');
@@ -26,25 +29,25 @@ const createUser = async (userParams) => {
   // Confirm email notification
   await createNotification({
     user,
-    type: 'confirmEmail',
+    type: notificationTypes[0],
     read: user.emailConfirmed,
   });
   // Create event notification
   await createNotification({
     user,
-    type: 'createEvent',
+    type: notificationTypes[1],
     read: false,
   });
   // Upload avatar notification
   await createNotification({
     user,
-    type: 'uploadAvatar',
+    type: notificationTypes[2],
     read: user.avatar ? true : false,
   });
   // Select interests notification
   await createNotification({
     user,
-    type: 'selectInterests',
+    type: notificationTypes[3],
     read: user.interests.length > 0,
   });
 

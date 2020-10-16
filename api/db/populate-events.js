@@ -13,6 +13,7 @@ const {
   getRegion,
   getRandomSubset,
 } = require('./utils');
+const { notificationTypes } = require('./populate-notifications');
 
 const Interest = require('../models/Interest');
 const User = require('../models/User');
@@ -100,7 +101,7 @@ const createEvents = async (multiplier, randomLocation, verbose) => {
   ];
   for (const creator of uniqueEventCreators) {
     await Notification.findOneAndUpdate(
-      { user: creator, type: 'createEvent' },
+      { user: creator, type: notificationTypes[1] },
       { read: true }
     );
   }

@@ -1,5 +1,8 @@
 const { getRandomSubset, createPrompt } = require('./utils');
-const { createNotification } = require('./populate-notifications');
+const {
+  createNotification,
+  notificationTypes,
+} = require('./populate-notifications');
 
 const User = require('../models/User');
 const Event = require('../models/Event');
@@ -14,7 +17,7 @@ const createAttendant = async (attendantParams) => {
   // New attendee notification
   await createNotification({
     user: attendantParams.event.createdBy,
-    type: 'newAttendant',
+    type: notificationTypes[4],
     read: false,
     referencedUser: attendant.user,
     referencedEvent: attendant.event,

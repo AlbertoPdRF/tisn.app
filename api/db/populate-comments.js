@@ -3,7 +3,10 @@ const { getParagraph } = require('./utils');
 const Event = require('../models/Event');
 const Attendant = require('../models/Attendant');
 const Comment = require('../models/Comment');
-const { createNotification } = require('./populate-notifications');
+const {
+  createNotification,
+  notificationTypes,
+} = require('./populate-notifications');
 
 let displayLogs;
 
@@ -94,7 +97,7 @@ const createComments = async (verbose) => {
         if (attendee.user.toString() === comment.user.toString()) continue;
         await createNotification({
           user: attendee.user,
-          type: 'newComment',
+          type: notificationTypes[5],
           read: true,
           referencedUser: comment.user,
           referencedEvent: comment.event,

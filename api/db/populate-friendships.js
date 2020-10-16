@@ -1,5 +1,8 @@
 const { getRandomSubset, getRandomDate } = require('./utils');
-const { createNotification } = require('./populate-notifications');
+const {
+  createNotification,
+  notificationTypes,
+} = require('./populate-notifications');
 
 const User = require('../models/User');
 const Friendship = require('../models/Friendship');
@@ -13,7 +16,7 @@ const createFriendship = async (friendshipParams) => {
   // New friendship request notifications
   await createNotification({
     user: friendship.receivant,
-    type: 'newFriendshipRequest',
+    type: notificationTypes[6],
     read: friendship.accepted,
     referencedUser: friendship.requestant,
     referencedFriendship: friendship,
@@ -21,7 +24,7 @@ const createFriendship = async (friendshipParams) => {
   if (friendship.accepted) {
     await createNotification({
       user: friendship.requestant,
-      type: 'acceptedFriendshipRequest',
+      type: notificationTypes[7],
       read: Math.random() > 0.3,
       referencedUser: friendship.receivant,
       referencedFriendship: friendship,
