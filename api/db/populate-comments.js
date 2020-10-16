@@ -82,8 +82,8 @@ const createComments = async (verbose) => {
         event,
         user,
         content,
-        parentComment,
       };
+      if (parentComment) commentParams.parentComment = parentComment;
 
       const comment = await createComment(commentParams);
       eventComments.push(comment);

@@ -142,7 +142,7 @@ const createUsers = async (multiplier, randomLocation, verbose) => {
 
   console.log(
     '\x1b[32m',
-    `Created ${usersArray.length} regular users (and ${notificationsCount} related notifications)`
+    `Created ${usersArray.length} users (and ${notificationsCount} related notifications)`
   );
 };
 
