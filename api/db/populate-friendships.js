@@ -85,11 +85,9 @@ const createFriendships = async (verbose) => {
   }
   console.log(
     '\x1b[32m',
-    `Created ${friendshipsArray.length - documentsCount} friendships`
-  );
-  console.log(
-    '\x1b[32m',
-    `Created ${notificationsCount} friendship notifications`
+    `Created ${
+      friendshipsArray.length - documentsCount
+    } friendships (and ${notificationsCount} related notifications)`
   );
 };
 

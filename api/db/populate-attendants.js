@@ -103,10 +103,9 @@ const createAttendants = async (verbose) => {
     }
   }
 
-  console.log('\x1b[32m', `Created ${attendantsArray.length} attendants`);
   console.log(
     '\x1b[32m',
-    `Created ${notificationsCount} attendant notifications`
+    `Created ${attendantsArray.length} attendants (and ${notificationsCount} related notifications)`
   );
 };
 

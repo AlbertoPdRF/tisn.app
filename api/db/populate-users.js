@@ -140,10 +140,9 @@ const createUsers = async (multiplier, randomLocation, verbose) => {
     usersArray.push(await createUser(userParams));
   }
 
-  console.log('\x1b[32m', `Created ${usersArray.length} regular users`);
   console.log(
     '\x1b[32m',
-    `Created ${notificationsCount} notifications related to creation of a new user`
+    `Created ${usersArray.length} regular users (and ${notificationsCount} related notifications)`
   );
 };
 

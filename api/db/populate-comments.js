@@ -35,10 +35,7 @@ const prerequisites = (eventsCount, attendantsCount) => {
 };
 
 const getParentComment = (comments) => {
-  const parentComments = comments.filter(
-    (comment) =>
-      comment.parentComment === undefined || comment.parentComment === null
-  );
+  const parentComments = comments.filter((comment) => !comment.parentComment);
   return parentComments[Math.floor(Math.random() * parentComments.length)];
 };
 
@@ -109,10 +106,9 @@ const createComments = async (verbose) => {
     }
   }
 
-  console.log('\x1b[32m', `Created ${commentsArray.length} comments`);
   console.log(
     '\x1b[32m',
-    `Created ${notificationsCount} comment notifications`
+    `Created ${commentsArray.length} comments (and ${notificationsCount} related notifications)`
   );
 };
 
