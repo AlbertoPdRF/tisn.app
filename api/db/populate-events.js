@@ -99,9 +99,9 @@ const createEvents = async (multiplier, randomLocation, verbose) => {
   const uniqueEventCreators = [
     ...new Set(eventsArray.map((event) => event.createdBy)),
   ];
-  for (const creator of uniqueEventCreators) {
+  for (const eventCreator of uniqueEventCreators) {
     await Notification.findOneAndUpdate(
-      { user: creator, type: notificationTypes[1] },
+      { user: eventCreator, type: notificationTypes[1] },
       { read: true }
     );
   }

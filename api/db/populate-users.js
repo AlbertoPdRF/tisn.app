@@ -16,6 +16,7 @@ const Interest = require('../models/Interest');
 
 const locales = ['en', 'es'];
 let displayLogs;
+let notificationsCount = 0;
 
 const createUser = async (userParams) => {
   const user = new User(userParams);
@@ -62,6 +63,7 @@ const createUser = async (userParams) => {
     },
     displayLogs
   );
+  notificationsCount += 4;
 
   return user;
 };
@@ -139,6 +141,10 @@ const createUsers = async (multiplier, randomLocation, verbose) => {
   }
 
   console.log('\x1b[32m', `Created ${usersArray.length} regular users`);
+  console.log(
+    '\x1b[32m',
+    `Created ${notificationsCount} notifications related to creation of a new user`
+  );
 };
 
 module.exports = { createUsers };

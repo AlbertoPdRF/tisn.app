@@ -61,7 +61,7 @@ const populateCollection = async () => {
       break;
     default:
       console.log(
-        `Unknown collection '${userArgs.c}', possible options are: [interests, users, events, attendants, comments, friendships, messages, notifications]`
+        `Unknown collection '${userArgs.c}', possible options are: [interests, users, events, attendants, comments, friendships, messages]`
       );
       break;
   }

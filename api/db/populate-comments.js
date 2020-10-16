@@ -1,14 +1,15 @@
 const { getParagraph } = require('./utils');
-
-const Event = require('../models/Event');
-const Attendant = require('../models/Attendant');
-const Comment = require('../models/Comment');
 const {
   createNotification,
   notificationTypes,
 } = require('./populate-notifications');
 
+const Event = require('../models/Event');
+const Attendant = require('../models/Attendant');
+const Comment = require('../models/Comment');
+
 let displayLogs;
+let notificationsCount = 0;
 
 const prerequisites = (eventsCount, attendantsCount) => {
   if (eventsCount === 0 && attendantsCount === 0) {
@@ -42,9 +43,6 @@ const getParentComment = (comments) => {
 
 const createComment = async (commentParams) => {
   const comment = new Comment(commentParams);
-  if (commentParams.parentComment) {
-    comment.parentComment = commentParams.parentComment;
-  }
   await comment.save();
 
   if (displayLogs) {
@@ -99,17 +97,22 @@ const createComments = async (verbose) => {
           {
             user: attendee.user,
             type: notificationTypes[5],
-            read: true,
+            read: false,
             referencedUser: comment.user,
             referencedEvent: comment.event,
           },
           displayLogs
         );
+        notificationsCount++;
       }
     }
   }
 
   console.log('\x1b[32m', `Created ${commentsArray.length} comments`);
+  console.log(
+    '\x1b[32m',
+    `Created ${notificationsCount} comment notifications`
+  );
 };
 
 module.exports = { createComments };

@@ -8,13 +8,10 @@ const Friendship = require('../models/Friendship');
 const Message = require('../models/Message');
 
 let displayLogs;
+let notificationsCount = 0;
 
 const createMessage = async (messageParams) => {
-  const message = new Message({
-    friendship: messageParams.friendship,
-    user: messageParams.user,
-    content: messageParams.content,
-  });
+  const message = new Message(messageParams);
   await message.save();
 
   const user =
@@ -31,6 +28,7 @@ const createMessage = async (messageParams) => {
     },
     displayLogs
   );
+  notificationsCount++;
 
   if (displayLogs) {
     console.log('\n', '\x1b[0m', `New message created: ${message}`);
@@ -69,6 +67,10 @@ const createMessages = async (verbose) => {
   }
 
   console.log('\x1b[32m', `Created ${messagesArray.length} messages`);
+  console.log(
+    '\x1b[32m',
+    `Created ${notificationsCount} message notifications`
+  );
 };
 
 module.exports = { createMessages };

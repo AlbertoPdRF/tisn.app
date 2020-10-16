@@ -8,6 +8,7 @@ const User = require('../models/User');
 const Friendship = require('../models/Friendship');
 
 let displayLogs;
+let notificationsCount = 0;
 
 const createFriendship = async (friendshipParams) => {
   const friendship = new Friendship(friendshipParams);
@@ -24,6 +25,8 @@ const createFriendship = async (friendshipParams) => {
     },
     displayLogs
   );
+  notificationsCount++;
+  // Accepted friendship request notifications
   if (friendship.accepted) {
     await createNotification(
       {
@@ -35,6 +38,7 @@ const createFriendship = async (friendshipParams) => {
       },
       displayLogs
     );
+    notificationsCount++;
   }
 
   if (displayLogs) {
@@ -82,6 +86,10 @@ const createFriendships = async (verbose) => {
   console.log(
     '\x1b[32m',
     `Created ${friendshipsArray.length - documentsCount} friendships`
+  );
+  console.log(
+    '\x1b[32m',
+    `Created ${notificationsCount} friendship notifications`
   );
 };
 

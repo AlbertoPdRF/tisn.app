@@ -15,7 +15,6 @@ const notificationTypes = [
 const createNotification = async (notificationParams, verbose = false) => {
   const notification = new Notification(notificationParams);
   if (notification.read) notification.readAt = new Date();
-
   await notification.save();
 
   if (verbose) {
@@ -24,4 +23,4 @@ const createNotification = async (notificationParams, verbose = false) => {
   return notification;
 };
 
-module.exports = { createNotification, notificationTypes };
+module.exports = { notificationTypes, createNotification };
