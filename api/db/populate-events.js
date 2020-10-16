@@ -3,7 +3,6 @@ const {
   uniqueNamesGenerator,
   adjectives,
   animals,
-  starWars,
   colors,
 } = require('unique-names-generator');
 const {
@@ -63,8 +62,7 @@ const createEvents = async (multiplier, randomLocation, verbose) => {
 
   for (let i = 0; i < 50 * multiplier; i++) {
     const name = uniqueNamesGenerator({
-      dictionaries: [adjectives, animals, colors, starWars],
-      length: 3,
+      dictionaries: [adjectives, colors, animals],
       style: 'capital',
       separator: ' ',
     });

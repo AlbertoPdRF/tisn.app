@@ -36,7 +36,8 @@ const prerequisites = (eventsCount, attendantsCount) => {
 
 const getParentComment = (comments) => {
   const parentComments = comments.filter(
-    (comment) => comment.parentComment === undefined
+    (comment) =>
+      comment.parentComment === undefined || comment.parentComment === null
   );
   return parentComments[Math.floor(Math.random() * parentComments.length)];
 };
