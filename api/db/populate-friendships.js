@@ -14,21 +14,27 @@ const createFriendship = async (friendshipParams) => {
   await friendship.save();
 
   // New friendship request notifications
-  await createNotification({
-    user: friendship.receivant,
-    type: notificationTypes[6],
-    read: friendship.accepted,
-    referencedUser: friendship.requestant,
-    referencedFriendship: friendship,
-  });
-  if (friendship.accepted) {
-    await createNotification({
-      user: friendship.requestant,
-      type: notificationTypes[7],
-      read: Math.random() > 0.3,
-      referencedUser: friendship.receivant,
+  await createNotification(
+    {
+      user: friendship.receivant,
+      type: notificationTypes[6],
+      read: friendship.accepted,
+      referencedUser: friendship.requestant,
       referencedFriendship: friendship,
-    });
+    },
+    displayLogs
+  );
+  if (friendship.accepted) {
+    await createNotification(
+      {
+        user: friendship.requestant,
+        type: notificationTypes[7],
+        read: Math.random() > 0.3,
+        referencedUser: friendship.receivant,
+        referencedFriendship: friendship,
+      },
+      displayLogs
+    );
   }
 
   if (displayLogs) {

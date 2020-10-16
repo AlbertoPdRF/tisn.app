@@ -21,13 +21,16 @@ const createMessage = async (messageParams) => {
     message.friendship.receivant.toString() === message.user.toString()
       ? message.friendship.receivant
       : message.friendship.requestant;
-  await createNotification({
-    user,
-    type: notificationTypes[8],
-    read: false,
-    referencedUser: message.user,
-    referencedFriendship: message.friendship,
-  });
+  await createNotification(
+    {
+      user,
+      type: notificationTypes[8],
+      read: false,
+      referencedUser: message.user,
+      referencedFriendship: message.friendship,
+    },
+    displayLogs
+  );
 
   if (displayLogs) {
     console.log('\n', '\x1b[0m', `New message created: ${message}`);

@@ -27,29 +27,41 @@ const createUser = async (userParams) => {
   }
 
   // Confirm email notification
-  await createNotification({
-    user,
-    type: notificationTypes[0],
-    read: user.emailConfirmed,
-  });
+  await createNotification(
+    {
+      user,
+      type: notificationTypes[0],
+      read: user.emailConfirmed,
+    },
+    displayLogs
+  );
   // Create event notification
-  await createNotification({
-    user,
-    type: notificationTypes[1],
-    read: false,
-  });
+  await createNotification(
+    {
+      user,
+      type: notificationTypes[1],
+      read: false,
+    },
+    displayLogs
+  );
   // Upload avatar notification
-  await createNotification({
-    user,
-    type: notificationTypes[2],
-    read: user.avatar ? true : false,
-  });
+  await createNotification(
+    {
+      user,
+      type: notificationTypes[2],
+      read: user.avatar ? true : false,
+    },
+    displayLogs
+  );
   // Select interests notification
-  await createNotification({
-    user,
-    type: notificationTypes[3],
-    read: user.interests.length > 0,
-  });
+  await createNotification(
+    {
+      user,
+      type: notificationTypes[3],
+      read: user.interests.length > 0,
+    },
+    displayLogs
+  );
 
   return user;
 };

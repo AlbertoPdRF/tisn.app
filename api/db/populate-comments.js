@@ -95,13 +95,16 @@ const createComments = async (verbose) => {
 
       for (const attendee of eventAttendants) {
         if (attendee.user.toString() === comment.user.toString()) continue;
-        await createNotification({
-          user: attendee.user,
-          type: notificationTypes[5],
-          read: true,
-          referencedUser: comment.user,
-          referencedEvent: comment.event,
-        });
+        await createNotification(
+          {
+            user: attendee.user,
+            type: notificationTypes[5],
+            read: true,
+            referencedUser: comment.user,
+            referencedEvent: comment.event,
+          },
+          displayLogs
+        );
       }
     }
   }

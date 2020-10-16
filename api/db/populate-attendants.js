@@ -15,13 +15,16 @@ const createAttendant = async (attendantParams) => {
   await attendant.save();
 
   // New attendee notification
-  await createNotification({
-    user: attendantParams.event.createdBy,
-    type: notificationTypes[4],
-    read: false,
-    referencedUser: attendant.user,
-    referencedEvent: attendant.event,
-  });
+  await createNotification(
+    {
+      user: attendantParams.event.createdBy,
+      type: notificationTypes[4],
+      read: false,
+      referencedUser: attendant.user,
+      referencedEvent: attendant.event,
+    },
+    displayLogs
+  );
 
   if (displayLogs) {
     console.log('\n', '\x1b[0m', `New attendant created: ${attendant}`);
