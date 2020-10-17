@@ -1,4 +1,6 @@
 import React, { Fragment } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import Divider from '@material-ui/core/Divider';
@@ -16,8 +18,6 @@ import CategoryIcon from '@material-ui/icons/Category';
 import InfoIcon from '@material-ui/icons/Info';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 
-import { useHistory } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { useUser } from '../UserProvider/UserProvider';
 import Footer from '../Footer/Footer';
 
@@ -142,7 +142,7 @@ const NavigationDrawer = (props) => {
                     {secondaryMenuItems.map(item => {
                         const Icon = item.icon;
                         return (
-                            <Fragment >
+                            <Fragment key={item.name} >
                                 <Divider />
                                 <ListItem
                                     button
