@@ -4,7 +4,7 @@ import { Route, Redirect } from 'react-router-dom';
 import { isLoggedIn, isAdmin } from '../../logic/auth';
 
 import WelcomeNavigationBar from '../WelcomeNavigationBar/WelcomeNavigationBar';
-import NavigationBarAndDrawer from '../NavigationBarAndDrawer/NavigationBarAndDrawer';
+import Navigation from '../Navigation/Navigation';
 
 export const PublicRoute = ({ component: Component, ...rest }) => (
   <Route
@@ -28,7 +28,7 @@ export const PrivateRoute = ({ component: Component, ...rest }) => (
     render={(props) =>
       isLoggedIn() ? (
         <Fragment>
-          <NavigationBarAndDrawer />
+          <Navigation />
           <Component {...props} />
         </Fragment>
       ) : (
@@ -67,7 +67,7 @@ export const AnyRoute = ({ component: Component, ...rest }) => {
       {...rest}
       render={(props) => (
         <Fragment>
-          {isLoggedIn() ? <NavigationBarAndDrawer /> : <WelcomeNavigationBar />}
+          {isLoggedIn() ? <Navigation /> : <WelcomeNavigationBar />}
           <Component {...props} />
         </Fragment>
       )}

@@ -9,7 +9,7 @@ import { UserProvider } from '../UserProvider/UserProvider';
 import { NotificationsProvider } from '../NotificationsProvider/NotificationsProvider';
 import { ThemeProvider } from '../ThemeProvider/ThemeProvider';
 
-import Navigation from '../Navigation/Navigation';
+import Router from '../Router/Router';
 
 const App = () => (
   <BrowserRouter>
@@ -19,7 +19,7 @@ const App = () => (
           <ConfirmProvider>
             <Suspense fallback={<LinearProgress />}>
               <CssBaseline />
-              <Navigation />
+              <Router />
             </Suspense>
           </ConfirmProvider>
         </ThemeProvider>
