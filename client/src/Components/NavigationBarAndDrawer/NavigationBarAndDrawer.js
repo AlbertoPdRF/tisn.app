@@ -88,11 +88,13 @@ const NavigationBarAndDrawer = (props) => {
     }
   }, [logUserOut, setUser, history]);
 
-
   const handleDrawerToggle = () => setDrawerOpen(!drawerOpen);
 
   const drawer = user && (
-    <NavigationDrawer clickHandler={handleDrawerToggle} logOutHandler={() => setLogUserOut(true)} />
+    <NavigationDrawer
+      clickHandler={handleDrawerToggle}
+      logOutHandler={() => setLogUserOut(true)}
+    />
   );
 
   return (
