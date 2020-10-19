@@ -18,19 +18,17 @@ const createMessage = async (messageParams) => {
     message.friendship.receivant.toString() === message.user.toString()
       ? message.friendship.requestant
       : message.friendship.receivant;
-  if (!message.friendship.accepted) {
-    await createNotification(
-      {
-        user,
-        type: notificationTypes[8],
-        read: false,
-        referencedUser: message.user,
-        referencedFriendship: message.friendship,
-      },
-      displayLogs
-    );
-    notificationsCount++;
-  }
+  await createNotification(
+    {
+      user,
+      type: notificationTypes[8],
+      read: false,
+      referencedUser: message.user,
+      referencedFriendship: message.friendship,
+    },
+    displayLogs
+  );
+  notificationsCount++;
 
   if (displayLogs) {
     console.log('\n', '\x1b[0m', `New message created: ${message}`);
@@ -46,6 +44,7 @@ const createMessages = async (verbose) => {
   const messagesArray = [];
 
   for (const friendship of friendshipsArray) {
+    if (!friendship.accepted) continue;
     const messagesCount = Math.floor(Math.random() * 25);
 
     for (let i = 0; i < messagesCount; i++) {

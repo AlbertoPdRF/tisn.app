@@ -68,8 +68,8 @@ const createUser = async (userParams) => {
   return user;
 };
 
-const createAdminUser = () => {
-  createUser({
+const createAdminUser = async () => {
+  await createUser({
     name: 'Admin',
     email: `admin@tisn.app`,
     emailConfirmed: true,
@@ -111,7 +111,9 @@ const createUsers = async (multiplier, randomLocation, verbose) => {
     }
   }
 
-  if (!(await User.exists({ email: 'admin@tisn.app' }))) createAdminUser();
+  if (!(await User.exists({ email: 'admin@tisn.app' }))) {
+    usersArray.push(await createAdminUser());
+  }
 
   for (let i = 0; i < 10 * multiplier; i++) {
     const name = uniqueNamesGenerator({
