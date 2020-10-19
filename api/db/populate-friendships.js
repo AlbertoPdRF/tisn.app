@@ -1,18 +1,45 @@
-const { getRandomSubset, getRandomDate, createPrompt } = require('./utils');
+const { getRandomSubset, getRandomDate } = require('./utils');
+const {
+  createNotification,
+  notificationTypes,
+} = require('./populate-notifications');
 
 const User = require('../models/User');
 const Friendship = require('../models/Friendship');
 
 let displayLogs;
+let notificationsCount = 0;
 
 const createFriendship = async (friendshipParams) => {
-  const friendship = new Friendship({
-    requestant: friendshipParams.requestant,
-    receivant: friendshipParams.receivant,
-    accepted: friendshipParams.accepted,
-    acceptedAt: friendshipParams.acceptedAt,
-  });
+  const friendship = new Friendship(friendshipParams);
   await friendship.save();
+
+  // New friendship request notifications
+  await createNotification(
+    {
+      user: friendship.receivant,
+      type: notificationTypes[6],
+      read: friendship.accepted,
+      referencedUser: friendship.requestant,
+      referencedFriendship: friendship,
+    },
+    displayLogs
+  );
+  notificationsCount++;
+  // Accepted friendship request notifications
+  if (friendship.accepted) {
+    await createNotification(
+      {
+        user: friendship.requestant,
+        type: notificationTypes[7],
+        read: Math.random() > 0.3,
+        referencedUser: friendship.receivant,
+        referencedFriendship: friendship,
+      },
+      displayLogs
+    );
+    notificationsCount++;
+  }
 
   if (displayLogs) {
     console.log('\n', '\x1b[0m', `New friendship created: ${friendship}`);
@@ -58,7 +85,9 @@ const createFriendships = async (verbose) => {
   }
   console.log(
     '\x1b[32m',
-    `Created ${friendshipsArray.length - documentsCount} friendships`
+    `Created ${
+      friendshipsArray.length - documentsCount
+    } friendships (and ${notificationsCount} related notifications)`
   );
 };
 

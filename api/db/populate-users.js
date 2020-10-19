@@ -6,37 +6,70 @@ const {
   getRandomSubset,
 } = require('./utils');
 const { uniqueNamesGenerator, names } = require('unique-names-generator');
+const {
+  createNotification,
+  notificationTypes,
+} = require('./populate-notifications');
 
 const User = require('../models/User');
 const Interest = require('../models/Interest');
 
 const locales = ['en', 'es'];
 let displayLogs;
+let notificationsCount = 0;
 
 const createUser = async (userParams) => {
-  const user = new User({
-    name: userParams.name,
-    email: userParams.email,
-    emailConfirmed: userParams.emailConfirmed,
-    emailConfirmedAt: userParams.emailConfirmedAt,
-    dateOfBirth: userParams.dateOfBirth,
-    country: userParams.country,
-    region: userParams.region,
-    preferredLocale: userParams.preferredLocale,
-    interests: userParams.interests,
-    admin: userParams.admin,
-  });
+  const user = new User(userParams);
   user.setPassword('password');
   await user.save();
 
   if (displayLogs) {
     console.log('\n', '\x1b[0m', `New user created: ${user}`);
   }
+
+  // Confirm email notification
+  await createNotification(
+    {
+      user,
+      type: notificationTypes[0],
+      read: user.emailConfirmed,
+    },
+    displayLogs
+  );
+  // Create event notification
+  await createNotification(
+    {
+      user,
+      type: notificationTypes[1],
+      read: false,
+    },
+    displayLogs
+  );
+  // Upload avatar notification
+  await createNotification(
+    {
+      user,
+      type: notificationTypes[2],
+      read: user.avatar ? true : false,
+    },
+    displayLogs
+  );
+  // Select interests notification
+  await createNotification(
+    {
+      user,
+      type: notificationTypes[3],
+      read: user.interests.length > 0,
+    },
+    displayLogs
+  );
+  notificationsCount += 4;
+
   return user;
 };
 
-const createAdminUser = () => {
-  createUser({
+const createAdminUser = async () => {
+  await createUser({
     name: 'Admin',
     email: `admin@tisn.app`,
     emailConfirmed: true,
@@ -44,7 +77,7 @@ const createAdminUser = () => {
     country: 'ES',
     region: 'M',
     preferredLocale: 'en',
-    dateOfBirth: new Date(2000, 0, 1),
+    dateOfBirth: new Date(2000, 0, 1, 0, 0, 0, 0),
     interests: [],
     admin: true,
   });
@@ -78,7 +111,9 @@ const createUsers = async (multiplier, randomLocation, verbose) => {
     }
   }
 
-  if (!(await User.exists({ email: 'admin@tisn.app' }))) createAdminUser();
+  if (!(await User.exists({ email: 'admin@tisn.app' }))) {
+    usersArray.push(await createAdminUser());
+  }
 
   for (let i = 0; i < 10 * multiplier; i++) {
     const name = uniqueNamesGenerator({
@@ -99,7 +134,7 @@ const createUsers = async (multiplier, randomLocation, verbose) => {
       dateOfBirth: getRandomDate(
         new Date(1970, 0, 1),
         new Date().setFullYear(now.getFullYear() - 13)
-      ),
+      ).setUTCHours(0, 0, 0, 0),
       interests: getRandomSubset(interestsList, interestsList.length),
       admin: false,
     };
@@ -107,7 +142,10 @@ const createUsers = async (multiplier, randomLocation, verbose) => {
     usersArray.push(await createUser(userParams));
   }
 
-  console.log('\x1b[32m', `Created ${usersArray.length} regular users`);
+  console.log(
+    '\x1b[32m',
+    `Created ${usersArray.length} users (and ${notificationsCount} related notifications)`
+  );
 };
 
 module.exports = { createUsers };

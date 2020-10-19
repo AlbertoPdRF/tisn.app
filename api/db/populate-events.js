@@ -3,7 +3,6 @@ const {
   uniqueNamesGenerator,
   adjectives,
   animals,
-  starWars,
   colors,
 } = require('unique-names-generator');
 const {
@@ -13,26 +12,17 @@ const {
   getRegion,
   getRandomSubset,
 } = require('./utils');
+const { notificationTypes } = require('./populate-notifications');
 
 const Interest = require('../models/Interest');
 const User = require('../models/User');
 const Event = require('../models/Event');
+const Notification = require('../models/Notification');
 
 let displayLogs;
 
 const createEvent = async (eventParams) => {
-  const event = new Event({
-    name: eventParams.name,
-    description: eventParams.description,
-    startDate: eventParams.startDate,
-    endDate: eventParams.endDate,
-    country: eventParams.country,
-    region: eventParams.region,
-    createdBy: eventParams.createdBy,
-    relatedInterests: eventParams.relatedInterests,
-    coverPhoto: eventParams.coverPhoto,
-    attendantsLimit: eventParams.attendantsLimit,
-  });
+  const event = new Event(eventParams);
   await event.save();
 
   if (displayLogs) {
@@ -72,8 +62,7 @@ const createEvents = async (multiplier, randomLocation, verbose) => {
 
   for (let i = 0; i < 50 * multiplier; i++) {
     const name = uniqueNamesGenerator({
-      dictionaries: [adjectives, animals, colors, starWars],
-      length: 3,
+      dictionaries: [adjectives, colors, animals],
       style: 'capital',
       separator: ' ',
     });
@@ -103,6 +92,16 @@ const createEvents = async (multiplier, randomLocation, verbose) => {
     };
 
     eventsArray.push(await createEvent(eventParams));
+  }
+
+  const uniqueEventCreators = [
+    ...new Set(eventsArray.map((event) => event.createdBy)),
+  ];
+  for (const eventCreator of uniqueEventCreators) {
+    await Notification.findOneAndUpdate(
+      { user: eventCreator, type: notificationTypes[1] },
+      { read: true }
+    );
   }
 
   console.log('\x1b[32m', `Created ${eventsArray.length} events`);

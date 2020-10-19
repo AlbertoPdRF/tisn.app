@@ -11,6 +11,7 @@ const Attendant = require('../models/Attendant');
 const Comment = require('../models/Comment');
 const Friendship = require('../models/Friendship');
 const Message = require('../models/Message');
+const Notification = require('../models/Notification');
 
 const getInterestsCount = async () => await Interest.countDocuments();
 const getUsersCount = async () => await User.countDocuments();
@@ -19,6 +20,7 @@ const getAttendantsCount = async () => await Attendant.countDocuments();
 const getCommentsCount = async () => await Comment.countDocuments();
 const getFriendshipsCount = async () => await Friendship.countDocuments();
 const getMessagesCount = async () => await Message.countDocuments();
+const getNotificationsCount = async () => await Notification.countDocuments();
 
 const userArgs = minimist(process.argv.slice(2), {
   string: 'collection',
@@ -69,6 +71,14 @@ const dropUsers = async (confirmed = false) => {
     );
 
     if (drop) await dropFriendships(drop);
+  }
+
+  if ((await getNotificationsCount()) !== 0) {
+    const drop = await createPrompt(
+      'The notifications collection is dependent on the users collection. Drop notifications collection?'
+    );
+
+    if (drop) await dropNotifications(drop);
   }
 };
 
@@ -147,8 +157,19 @@ const dropMessages = async (confirmed = false) => {
   }
 };
 
+const dropNotifications = async (confirmed = false) => {
+  console.log('\n', '\x1b[0m', 'Dropping notifications collection');
+  if (confirmed || (await getNotificationsCount()) !== 0) {
+    await Notification.collection.drop();
+    console.log('\x1b[31m', 'Dropped notifications collection');
+  } else {
+    console.log('\x1b[33m', 'Notifications collection is already empty');
+  }
+};
+
 const dropCollections = async () => {
   connectDb();
+  await dropNotifications();
   await dropMessages();
   await dropFriendships();
   await dropComments();
@@ -183,9 +204,12 @@ const dropCollection = async () => {
     case 'messages':
       await dropMessages();
       break;
+    case 'notifications':
+      await dropNotifications();
+      break;
     default:
       console.log(
-        `Unknown collection '${userArgs.c}', possible options are: [interests, users, events, attendants, comments, friendships, messages]`
+        `Unknown collection '${userArgs.c}', possible options are: [interests, users, events, attendants, comments, friendships, messages, notifications]`
       );
       break;
   }

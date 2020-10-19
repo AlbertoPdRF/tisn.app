@@ -1,17 +1,34 @@
 const { getRandomSubset, createPrompt } = require('./utils');
+const {
+  createNotification,
+  notificationTypes,
+} = require('./populate-notifications');
 
 const User = require('../models/User');
 const Event = require('../models/Event');
 const Attendant = require('../models/Attendant');
 
 let displayLogs;
+let notificationsCount = 0;
 
 const createAttendant = async (attendantParams) => {
-  const attendant = new Attendant({
-    event: attendantParams.event,
-    user: attendantParams.user,
-  });
+  const attendant = new Attendant(attendantParams);
   await attendant.save();
+
+  // New attendee notification
+  if (attendant.user.toString() !== attendant.event.createdBy.toString()) {
+    await createNotification(
+      {
+        user: attendant.event.createdBy,
+        type: notificationTypes[4],
+        read: false,
+        referencedUser: attendant.user,
+        referencedEvent: attendant.event,
+      },
+      displayLogs
+    );
+    notificationsCount++;
+  }
 
   if (displayLogs) {
     console.log('\n', '\x1b[0m', `New attendant created: ${attendant}`);
@@ -86,7 +103,10 @@ const createAttendants = async (verbose) => {
     }
   }
 
-  console.log('\x1b[32m', `Created ${attendantsArray.length} attendants`);
+  console.log(
+    '\x1b[32m',
+    `Created ${attendantsArray.length} attendants (and ${notificationsCount} related notifications)`
+  );
 };
 
 module.exports = { createAttendants };

@@ -1,17 +1,34 @@
 const { getParagraph } = require('./utils');
+const {
+  createNotification,
+  notificationTypes,
+} = require('./populate-notifications');
 
 const Friendship = require('../models/Friendship');
 const Message = require('../models/Message');
 
 let displayLogs;
+let notificationsCount = 0;
 
 const createMessage = async (messageParams) => {
-  const message = new Message({
-    friendship: messageParams.friendship,
-    user: messageParams.user,
-    content: messageParams.content,
-  });
+  const message = new Message(messageParams);
   await message.save();
+
+  const user =
+    message.friendship.receivant.toString() === message.user.toString()
+      ? message.friendship.requestant
+      : message.friendship.receivant;
+  await createNotification(
+    {
+      user,
+      type: notificationTypes[8],
+      read: false,
+      referencedUser: message.user,
+      referencedFriendship: message.friendship,
+    },
+    displayLogs
+  );
+  notificationsCount++;
 
   if (displayLogs) {
     console.log('\n', '\x1b[0m', `New message created: ${message}`);
@@ -27,6 +44,7 @@ const createMessages = async (verbose) => {
   const messagesArray = [];
 
   for (const friendship of friendshipsArray) {
+    if (!friendship.accepted) continue;
     const messagesCount = Math.floor(Math.random() * 25);
 
     for (let i = 0; i < messagesCount; i++) {
@@ -49,7 +67,10 @@ const createMessages = async (verbose) => {
     }
   }
 
-  console.log('\x1b[32m', `Created ${messagesArray.length} messages`);
+  console.log(
+    '\x1b[32m',
+    `Created ${messagesArray.length} messages (and ${notificationsCount} related notifications)`
+  );
 };
 
 module.exports = { createMessages };

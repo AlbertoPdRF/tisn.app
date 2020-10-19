@@ -1,10 +1,15 @@
 const { getParagraph } = require('./utils');
+const {
+  createNotification,
+  notificationTypes,
+} = require('./populate-notifications');
 
 const Event = require('../models/Event');
 const Attendant = require('../models/Attendant');
 const Comment = require('../models/Comment');
 
 let displayLogs;
+let notificationsCount = 0;
 
 const prerequisites = (eventsCount, attendantsCount) => {
   if (eventsCount === 0 && attendantsCount === 0) {
@@ -30,21 +35,12 @@ const prerequisites = (eventsCount, attendantsCount) => {
 };
 
 const getParentComment = (comments) => {
-  const parentComments = comments.filter(
-    (comment) => comment.parentComment === undefined
-  );
+  const parentComments = comments.filter((comment) => !comment.parentComment);
   return parentComments[Math.floor(Math.random() * parentComments.length)];
 };
 
 const createComment = async (commentParams) => {
-  const comment = new Comment({
-    event: commentParams.event,
-    user: commentParams.user,
-    content: commentParams.content,
-  });
-  if (commentParams.parentComment) {
-    comment.parentComment = commentParams.parentComment;
-  }
+  const comment = new Comment(commentParams);
   await comment.save();
 
   if (displayLogs) {
@@ -86,16 +82,34 @@ const createComments = async (verbose) => {
         event,
         user,
         content,
-        parentComment,
       };
+      if (parentComment) commentParams.parentComment = parentComment;
 
       const comment = await createComment(commentParams);
       eventComments.push(comment);
       commentsArray.push(comment);
+
+      for (const attendee of eventAttendants) {
+        if (attendee.user.toString() === comment.user.toString()) continue;
+        await createNotification(
+          {
+            user: attendee.user,
+            type: notificationTypes[5],
+            read: false,
+            referencedUser: comment.user,
+            referencedEvent: comment.event,
+          },
+          displayLogs
+        );
+        notificationsCount++;
+      }
     }
   }
 
-  console.log('\x1b[32m', `Created ${commentsArray.length} comments`);
+  console.log(
+    '\x1b[32m',
+    `Created ${commentsArray.length} comments (and ${notificationsCount} related notifications)`
+  );
 };
 
 module.exports = { createComments };
