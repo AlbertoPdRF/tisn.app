@@ -77,7 +77,7 @@ const createAdminUser = async () => {
     country: 'ES',
     region: 'M',
     preferredLocale: 'en',
-    dateOfBirth: new Date(2000, 0, 1),
+    dateOfBirth: new Date(2000, 0, 1, 0, 0, 0, 0),
     interests: [],
     admin: true,
   });
