@@ -134,7 +134,7 @@ const createUsers = async (multiplier, randomLocation, verbose) => {
       dateOfBirth: getRandomDate(
         new Date(1970, 0, 1),
         new Date().setFullYear(now.getFullYear() - 13)
-      ),
+      ).setUTCHours(0, 0, 0, 0),
       interests: getRandomSubset(interestsList, interestsList.length),
       admin: false,
     };
