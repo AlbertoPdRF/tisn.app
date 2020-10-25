@@ -7,7 +7,7 @@ const { createPrompt } = require('./utils');
 const Interest = require('../models/Interest');
 const User = require('../models/User');
 const Event = require('../models/Event');
-const Attendant = require('../models/Attendant');
+const Attendee = require('../models/Attendee');
 const Comment = require('../models/Comment');
 const Friendship = require('../models/Friendship');
 const Message = require('../models/Message');
@@ -16,7 +16,7 @@ const Notification = require('../models/Notification');
 const getInterestsCount = async () => await Interest.countDocuments();
 const getUsersCount = async () => await User.countDocuments();
 const getEventsCount = async () => await Event.countDocuments();
-const getAttendantsCount = async () => await Attendant.countDocuments();
+const getAttendeesCount = async () => await Attendee.countDocuments();
 const getCommentsCount = async () => await Comment.countDocuments();
 const getFriendshipsCount = async () => await Friendship.countDocuments();
 const getMessagesCount = async () => await Message.countDocuments();
@@ -92,12 +92,12 @@ const dropEvents = async (confirmed = false) => {
     return;
   }
 
-  if ((await getAttendantsCount()) !== 0) {
+  if ((await getAttendeesCount()) !== 0) {
     const drop = await createPrompt(
-      'The attendants collection is dependent on the events collection. Drop attendants collection?'
+      'The attendees collection is dependent on the events collection. Drop attendees collection?'
     );
 
-    if (drop) await dropAttendants(drop);
+    if (drop) await dropAttendees(drop);
   }
 
   if ((await getCommentsCount()) !== 0) {
@@ -109,13 +109,13 @@ const dropEvents = async (confirmed = false) => {
   }
 };
 
-const dropAttendants = async (confirmed = false) => {
-  console.log('\n', '\x1b[0m', 'Dropping attendants collection...');
-  if (confirmed || (await getAttendantsCount()) !== 0) {
-    await Attendant.collection.drop();
-    console.log('\x1b[31m', 'Dropped attendants collection');
+const dropAttendees = async (confirmed = false) => {
+  console.log('\n', '\x1b[0m', 'Dropping attendees collection...');
+  if (confirmed || (await getAttendeesCount()) !== 0) {
+    await Attendee.collection.drop();
+    console.log('\x1b[31m', 'Dropped attendees collection');
   } else {
-    console.log('\x1b[33m', 'Attendants collection is already empty');
+    console.log('\x1b[33m', 'Attendees collection is already empty');
   }
 };
 
@@ -173,7 +173,7 @@ const dropCollections = async () => {
   await dropMessages();
   await dropFriendships();
   await dropComments();
-  await dropAttendants();
+  await dropAttendees();
   await dropEvents();
   await dropUsers();
   await dropInterests();
@@ -192,8 +192,8 @@ const dropCollection = async () => {
     case 'events':
       await dropEvents();
       break;
-    case 'attendants':
-      await dropAttendants();
+    case 'attendees':
+      await dropAttendees();
       break;
     case 'comments':
       await dropComments();
@@ -209,7 +209,7 @@ const dropCollection = async () => {
       break;
     default:
       console.log(
-        `Unknown collection '${userArgs.c}', possible options are: [interests, users, events, attendants, comments, friendships, messages, notifications]`
+        `Unknown collection '${userArgs.c}', possible options are: [interests, users, events, attendees, comments, friendships, messages, notifications]`
       );
       break;
   }

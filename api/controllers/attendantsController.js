@@ -1,58 +1,58 @@
-const Attendant = require('../models/Attendant');
+const Attendee = require('../models/Attendee');
 const Notification = require('../models/Notification');
 
 exports.get = (req, res, next) => {
-  return Attendant.find({ event: req.params.eventId })
+  return Attendee.find({ event: req.params.eventId })
     .populate('user', 'name avatar')
-    .then((attendants) => res.json({ attendants }));
+    .then((attendees) => res.json({ attendees }));
 };
 
 exports.post = (req, res, next) => {
   const {
-    body: { attendant },
+    body: { attendee },
   } = req;
 
-  Attendant.find({ event: attendant.event._id }).then((attendants) => {
-    if (attendants.length >= attendant.event.attendantsLimit) {
+  Attendee.find({ event: attendee.event._id }).then((attendees) => {
+    if (attendees.length >= attendee.event.attendeesLimit) {
       return res.status(400).json({
         errors: [
           {
-            param: 'Attendants limit',
-            value: attendant.event.attendantsLimit,
+            param: 'Attendees limit',
+            value: attendee.event.attendeesLimit,
             msg: 'has been met',
           },
         ],
       });
     } else {
-      if (attendants.some((a) => a.user == attendant.user._id)) {
+      if (attendees.some((a) => a.user == attendee.user._id)) {
         return res.sendStatus(400);
       }
 
-      const finalAttendant = new Attendant(attendant);
+      const finalAttendee = new Attendee(attendee);
 
-      return finalAttendant.save().then(() => {
+      return finalAttendee.save().then(() => {
         const notification = new Notification({
-          user: attendant.event.createdBy,
-          type: 'newAttendant',
-          referencedUser: attendant.user._id,
-          referencedEvent: attendant.event._id,
+          user: attendee.event.createdBy,
+          type: 'newAttendee',
+          referencedUser: attendee.user._id,
+          referencedEvent: attendee.event._id,
         });
         notification.save();
 
-        res.json({ attendant: finalAttendant });
+        res.json({ attendee: finalAttendee });
       });
     }
   });
 };
 
 exports.deleteId = (req, res, next) => {
-  return Attendant.findByIdAndRemove(req.params.attendantId).then(
-    (attendant) => {
-      if (!attendant) {
+  return Attendee.findByIdAndRemove(req.params.attendeeId).then(
+    (attendee) => {
+      if (!attendee) {
         return res.sendStatus(404);
       }
 
-      res.json({ attendant });
+      res.json({ attendee });
     }
   );
 };

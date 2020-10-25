@@ -30,7 +30,7 @@ export const classifyNotifications = (notifications) => {
     } else {
       if (
         notification.read ||
-        ((notification.type === 'newAttendant' ||
+        ((notification.type === 'newAttendee' ||
           notification.type === 'newComment') &&
           !notification.referencedEvent)
       ) {

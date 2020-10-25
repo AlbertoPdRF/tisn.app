@@ -88,7 +88,7 @@ const createEvents = async (multiplier, randomLocation, verbose) => {
       createdBy: usersList[Math.floor(Math.random() * usersList.length)],
       relatedInterests: getRandomSubset(interestsList, interestsList.length, 1),
       coverPhoto: '',
-      attendantsLimit: Math.floor(Math.random() * (usersList.length - 1)) + 2,
+      attendeesLimit: Math.floor(Math.random() * (usersList.length - 1)) + 2,
     };
 
     eventsArray.push(await createEvent(eventParams));

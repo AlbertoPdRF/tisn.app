@@ -13,9 +13,9 @@ import SwipeableViews from 'react-swipeable-views';
 
 import {
   getEvent,
-  getAttendants,
-  postAttendant,
-  deleteAttendant,
+  getAttendees,
+  postAttendee,
+  deleteAttendee,
   getComments,
   postComment,
   putNotification,
@@ -50,8 +50,8 @@ const Event = ({ match }) => {
 
   const [value, setValue] = useState(0);
   const [event, setEvent] = useState(null);
-  const [attendants, setAttendants] = useState(null);
-  const [updateAttendants, setUpdateAttendants] = useState(true);
+  const [attendees, setAttendees] = useState(null);
+  const [updateAttendees, setUpdateAttendees] = useState(true);
   const [comments, setComments] = useState(null);
   const [updateComments, setUpdateComments] = useState(true);
   const [updateNotifications, setUpdateNotifications] = useState(false);
@@ -77,17 +77,17 @@ const Event = ({ match }) => {
   }, [id]);
 
   useEffect(() => {
-    if (updateAttendants) {
+    if (updateAttendees) {
       setError(null);
-      getAttendants(id)
-        .then((data) => setAttendants(data.attendants))
+      getAttendees(id)
+        .then((data) => setAttendees(data.attendees))
         .catch((error) => setError(error))
         .finally(() => {
-          setUpdateAttendants(false);
+          setUpdateAttendees(false);
           setLoading(false);
         });
     }
-  }, [id, updateAttendants]);
+  }, [id, updateAttendees]);
 
   useEffect(() => {
     if (updateComments) {
@@ -105,9 +105,9 @@ const Event = ({ match }) => {
     if (user && id && notifications) {
       setError(null);
 
-      const attendantNotifications = notifications.regular.filter(
+      const attendeeNotifications = notifications.regular.filter(
         (notification) =>
-          notification.type === 'newAttendant' &&
+          notification.type === 'newAttendee' &&
           notification.referencedEvent._id === id
       );
       const commentNotifications = notifications.regular.filter(
@@ -135,8 +135,8 @@ const Event = ({ match }) => {
         });
       };
 
-      if (value === 0 && attendantNotifications.length > 0) {
-        markNotificationsAsRead(attendantNotifications);
+      if (value === 0 && attendeeNotifications.length > 0) {
+        markNotificationsAsRead(attendeeNotifications);
       }
       if (value === 1 && commentNotifications.length > 0) {
         markNotificationsAsRead(commentNotifications);
@@ -155,26 +155,26 @@ const Event = ({ match }) => {
     }
   }, [updateNotifications, setNotifications]);
 
-  const handleAttendantsClick = () => {
+  const handleAttendeesClick = () => {
     setLoading(true);
     setError(null);
     if (userAttending) {
-      const attendant = attendants.filter(
-        (attendant) => attendant.user._id === user._id
+      const attendee = attendees.filter(
+        (attendee) => attendee.user._id === user._id
       )[0];
 
-      deleteAttendant(id, attendant._id, attendant)
-        .then(() => setUpdateAttendants(true))
+      deleteAttendee(id, attendee._id, attendee)
+        .then(() => setUpdateAttendees(true))
         .catch((error) => {
           setError(error);
           setLoading(false);
         });
     } else {
-      postAttendant(id, {
+      postAttendee(id, {
         event,
         user,
       })
-        .then(() => setUpdateAttendants(true))
+        .then(() => setUpdateAttendees(true))
         .catch((error) => {
           setError(error);
           setLoading(false);
@@ -223,11 +223,11 @@ const Event = ({ match }) => {
 
   const userAttending =
     user &&
-    attendants &&
-    attendants.some((attendant) => attendant.user._id === user._id);
+    attendees &&
+    attendees.some((attendee) => attendee.user._id === user._id);
 
   const limitMet =
-    event && attendants && attendants.length >= event.attendantsLimit;
+    event && attendees && attendees.length >= event.attendeesLimit;
 
   return (
     <Fragment>
@@ -262,8 +262,8 @@ const Event = ({ match }) => {
                       restrictedDisplay={restrictedDisplay}
                       futureEvent={futureEvent}
                       userAttending={userAttending}
-                      handleClick={handleAttendantsClick}
-                      attendants={attendants}
+                      handleClick={handleAttendeesClick}
+                      attendees={attendees}
                       limitMet={limitMet}
                       loading={loading}
                     />
@@ -295,23 +295,23 @@ const Event = ({ match }) => {
                           ))}
                       </Grid>
                     ) : (
-                      !loading && (
-                        <div className={style.center}>
-                          <Typography gutterBottom variant="body1">
-                            {t('event.onlyAttendants')}
-                          </Typography>
-                          {futureEvent && !limitMet && (
-                            <Button
-                              variant="contained"
-                              color="primary"
-                              onClick={() => handleAttendantsClick()}
-                            >
-                              {t('event.attend')}
-                            </Button>
-                          )}
-                        </div>
-                      )
-                    )}
+                        !loading && (
+                          <div className={style.center}>
+                            <Typography gutterBottom variant="body1">
+                              {t('event.onlyAttendees')}
+                            </Typography>
+                            {futureEvent && !limitMet && (
+                              <Button
+                                variant="contained"
+                                color="primary"
+                                onClick={() => handleAttendeesClick()}
+                              >
+                                {t('event.attend')}
+                              </Button>
+                            )}
+                          </div>
+                        )
+                      )}
                   </TabPanel>
                 </SwipeableViews>
               </Paper>

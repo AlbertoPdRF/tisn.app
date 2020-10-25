@@ -1,5 +1,5 @@
 const Comment = require('../models/Comment');
-const Attendant = require('../models/Attendant');
+const Attendee = require('../models/Attendee');
 const Notification = require('../models/Notification');
 
 exports.get = (req, res, next) => {
@@ -13,14 +13,14 @@ exports.post = (req, res, next) => {
     body: { comment },
   } = req;
 
-  Attendant.find({ event: comment.event._id }).then((attendants) => {
+  Attendee.find({ event: comment.event._id }).then((attendees) => {
     const finalComment = new Comment(comment);
 
     return finalComment.save().then(() => {
-      attendants.forEach((attendant) => {
-        if (attendant.user != comment.user._id) {
+      attendees.forEach((attendee) => {
+        if (attendee.user != comment.user._id) {
           const notification = new Notification({
-            user: attendant.user,
+            user: attendee.user,
             type: 'newComment',
             referencedUser: comment.user._id,
             referencedEvent: comment.event._id,

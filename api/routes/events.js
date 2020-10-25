@@ -47,9 +47,9 @@ router.delete(
   eventsController.deleteId
 );
 
-const attendantsRouter = require('./attendants');
+const attendeesRouter = require('./attendees');
 
-router.use('/:eventId/attendants', attendantsRouter);
+router.use('/:eventId/attendees', attendeesRouter);
 
 const commentsRouter = require('./comments');
 

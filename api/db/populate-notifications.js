@@ -5,7 +5,7 @@ const notificationTypes = [
   'createEvent',
   'uploadAvatar',
   'selectInterests',
-  'newAttendant',
+  'newAttendee',
   'newComment',
   'newFriendshipRequest',
   'acceptedFriendshipRequest',

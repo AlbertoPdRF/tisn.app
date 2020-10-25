@@ -50,12 +50,12 @@
     "title": "Evento",
     "details": "Detalles",
     "comments": "Comentarios",
-    "onlyAttendants": "Solo los asistentes pueden leer y publicar comentarios",
+    "onlyAttendees": "Solo los asistentes pueden leer y publicar comentarios",
     "attend": "¡Asistiré!"
   },
   "eventDetails": {
     "relatedInterests": "Intereses relacionados:",
-    "attendants": "Asistentes:",
+    "attendees": "Asistentes:",
     "avatar": "Avatar de {{name}}",
     "notAttend": "No asistiré",
     "attend": "¡Asistiré!",
@@ -73,7 +73,7 @@
     "noMatchingCountry": "Ningún país coincide",
     "region": "Región",
     "noMatchingRegion": "Ninguna región coincide",
-    "attendantsLimit": "Límite de asistentes"
+    "attendeesLimit": "Límite de asistentes"
   },
   "events": {
     "title": "Eventos",
@@ -190,7 +190,7 @@
       "title": "¡Selecciona tus intereses!",
       "subheader": "Recibirás recomendaciones de eventos según tus intereses"
     },
-    "newAttendant": {
+    "newAttendee": {
       "title": "{{userName}} asistirá a tu evento {{eventName}}",
       "subheader": "Ve a la página del evento para ver todos los asistentes"
     },
@@ -349,7 +349,6 @@
     "logIn": "Entrar",
     "signUp": "Registrarse"
   },
-
   "errorsList": {
     "generic": "Algo ha ido mal",
     "formErrors": "El formulario contiene errores",
@@ -372,7 +371,6 @@
     "wrongEmailAndOrPassword": "Correo electrónico y/o contraseña incorrectos",
     "logIn": "Necesitas entrar antes de continuar"
   },
-
   "countriesList": {
     "AD": "Andorra",
     "AE": "Emiratos Árabes Unidos",
@@ -623,7 +621,6 @@
     "ZM": "Zambia",
     "ZW": "Zimbabue"
   },
-
   "categoriesList": {
     "Entertainment": "Entretenimiento",
     "Fitness and wellness": "Fitness y bienestar",
@@ -632,7 +629,6 @@
     "Shopping and fashion": "Compras y moda",
     "Sports": "Deportes"
   },
-
   "interestsList": {
     "Art": "Arte",
     "Ballet": "Ballet",
@@ -651,13 +647,11 @@
     "Reading": "Lectura",
     "Series": "Series",
     "Theatre": "Teatro",
-
     "Bodybuilding": "Culturismo",
     "Fitness": "Fitness",
     "Meditation": "Meditación",
     "Weightlifting": "Levantamiento de pesas",
     "Yoga": "Yoga",
-
     "Acting": "Interpretación",
     "Automobiles": "Automóviles",
     "Charity": "Caridad",
@@ -682,7 +676,6 @@
     "Vacations": "Vacaciones",
     "Volunteering": "Voluntariado",
     "Writing": "Escritura",
-
     "Advertising": "Publicidad",
     "Agriculture": "Agricultura",
     "Architecture": "Arquitectura",
@@ -706,7 +699,6 @@
     "Science": "Ciencia",
     "Social media": "Redes sociales",
     "Software": "Software",
-
     "Beauty salons": "Salones de belleza",
     "Boutiques": "Boutiques",
     "Clothing": "Ropa",
@@ -724,7 +716,6 @@
     "Sunglasses": "Gafas de sol",
     "Tattoos": "Tatuajes",
     "Toys": "Juguetes",
-
     "American football": "Fútbol americano",
     "Baseball": "Béisbol",
     "Basketball": "Baloncesto",

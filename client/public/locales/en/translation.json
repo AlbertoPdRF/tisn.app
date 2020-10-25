@@ -50,12 +50,12 @@
     "title": "Event",
     "details": "Details",
     "comments": "Comments",
-    "onlyAttendants": "Only attendants can read and post comments",
+    "onlyAttendees": "Only attendees can read and post comments",
     "attend": "I will attend!"
   },
   "eventDetails": {
     "relatedInterests": "Related interests:",
-    "attendants": "Attendants:",
+    "attendees": "Attendees:",
     "avatar": "{{name}}'s avatar",
     "notAttend": "I won't attend",
     "attend": "I will attend!",
@@ -73,7 +73,7 @@
     "noMatchingCountry": "No matching country",
     "region": "Region",
     "noMatchingRegion": "No matching region",
-    "attendantsLimit": "Attendants limit"
+    "attendeesLimit": "Attendees limit"
   },
   "events": {
     "title": "Events",
@@ -190,9 +190,9 @@
       "title": "Select your interests!",
       "subheader": "You will get event recommendations according to your interests"
     },
-    "newAttendant": {
+    "newAttendee": {
       "title": "{{userName}} will attend to your event {{eventName}}",
-      "subheader": "Go to the event page to see all attendants"
+      "subheader": "Go to the event page to see all attendees"
     },
     "newComment": {
       "title": "New comment from {{userName}} in the event {{eventName}}",
@@ -349,7 +349,6 @@
     "logIn": "Log in",
     "signUp": "Sign up"
   },
-
   "errorsList": {
     "generic": "Something went wrong",
     "formErrors": "The form contains errors",
@@ -372,7 +371,6 @@
     "wrongEmailAndOrPassword": "Wrong email and/or password",
     "logIn": "You need to log in before continuing"
   },
-
   "countriesList": {
     "AD": "Andorra",
     "AE": "United Arab Emirates",
@@ -623,7 +621,6 @@
     "ZM": "Zambia",
     "ZW": "Zimbabwe"
   },
-
   "categoriesList": {
     "Entertainment": "Entertainment",
     "Fitness and wellness": "Fitness and wellness",
@@ -632,7 +629,6 @@
     "Shopping and fashion": "Shopping and fashion",
     "Sports": "Sports"
   },
-
   "interestsList": {
     "Art": "Art",
     "Ballet": "Ballet",
@@ -651,13 +647,11 @@
     "Reading": "Reading",
     "Series": "Series",
     "Theatre": "Theatre",
-
     "Bodybuilding": "Bodybuilding",
     "Fitness": "Fitness",
     "Meditation": "Meditation",
     "Weightlifting": "Weightlifting",
     "Yoga": "Yoga",
-
     "Acting": "Acting",
     "Automobiles": "Automobiles",
     "Charity": "Charity",
@@ -682,7 +676,6 @@
     "Vacations": "Vacations",
     "Volunteering": "Volunteering",
     "Writing": "Writing",
-
     "Advertising": "Advertising",
     "Agriculture": "Agriculture",
     "Architecture": "Architecture",
@@ -706,7 +699,6 @@
     "Science": "Science",
     "Social media": "Social media",
     "Software": "Software",
-
     "Beauty salons": "Beauty salons",
     "Boutiques": "Boutiques",
     "Clothing": "Clothing",
@@ -724,7 +716,6 @@
     "Sunglasses": "Sunglasses",
     "Tattoos": "Tattoos",
     "Toys": "Toys",
-
     "American football": "American football",
     "Baseball": "Baseball",
     "Basketball": "Basketball",

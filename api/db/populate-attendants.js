@@ -6,24 +6,24 @@ const {
 
 const User = require('../models/User');
 const Event = require('../models/Event');
-const Attendant = require('../models/Attendant');
+const Attendee = require('../models/Attendee');
 
 let displayLogs;
 let notificationsCount = 0;
 
-const createAttendant = async (attendantParams) => {
-  const attendant = new Attendant(attendantParams);
-  await attendant.save();
+const createAttendee = async (attendeeParams) => {
+  const attendee = new Attendee(attendeeParams);
+  await attendee.save();
 
   // New attendee notification
-  if (attendant.user.toString() !== attendant.event.createdBy.toString()) {
+  if (attendee.user.toString() !== attendee.event.createdBy.toString()) {
     await createNotification(
       {
-        user: attendant.event.createdBy,
+        user: attendee.event.createdBy,
         type: notificationTypes[4],
         read: false,
-        referencedUser: attendant.user,
-        referencedEvent: attendant.event,
+        referencedUser: attendee.user,
+        referencedEvent: attendee.event,
       },
       displayLogs
     );
@@ -31,19 +31,19 @@ const createAttendant = async (attendantParams) => {
   }
 
   if (displayLogs) {
-    console.log('\n', '\x1b[0m', `New attendant created: ${attendant}`);
+    console.log('\n', '\x1b[0m', `New attendee created: ${attendee}`);
   }
-  return attendant;
+  return attendee;
 };
 
-const createAttendants = async (verbose) => {
-  console.log('\n', '\x1b[0m', 'Populating attendants collection...');
+const createAttendees = async (verbose) => {
+  console.log('\n', '\x1b[0m', 'Populating attendees collection...');
 
   let usersList = await User.distinct('_id');
   if (usersList.length === 0) {
     console.log(
       '\x1b[33m',
-      'The users collection does not exist. Aborted attendants collection population.'
+      'The users collection does not exist. Aborted attendees collection population.'
     );
     return;
   }
@@ -54,28 +54,28 @@ const createAttendants = async (verbose) => {
   if (eventsList.length === 0) {
     console.log(
       '\x1b[33m',
-      'The events collection does not exist. Aborted attendants collection population.'
+      'The events collection does not exist. Aborted attendees collection population.'
     );
     return;
   }
 
   displayLogs = verbose;
-  let attendantsList = await Attendant.find();
-  const attendantsArray = [];
+  let attendeesList = await Attendee.find();
+  const attendeesArray = [];
 
   let proceed = true;
-  if (attendantsList.length !== 0) {
+  if (attendeesList.length !== 0) {
     proceed = await createPrompt(
       'Some events already contain attendees. Would you like to add attendees to events that already contain attendees?'
     );
   }
 
   for (const event of eventsList) {
-    const attendees = attendantsList
+    const attendees = attendeesList
       .filter((attendee) => attendee.event.toString() === event._id.toString())
       .map((attendee) => attendee.user.toString());
 
-    const spotsLeft = event.attendantsLimit - attendees.length;
+    const spotsLeft = event.attendeesLimit - attendees.length;
     if (spotsLeft <= 0 || (!proceed && attendees.length > 0)) continue;
 
     const eventCreator = event.createdBy.toString();
@@ -98,15 +98,15 @@ const createAttendants = async (verbose) => {
     }
 
     for (const user of subset) {
-      const attendantParams = { event, user };
-      attendantsArray.push(await createAttendant(attendantParams));
+      const attendeeParams = { event, user };
+      attendeesArray.push(await createAttendee(attendeeParams));
     }
   }
 
   console.log(
     '\x1b[32m',
-    `Created ${attendantsArray.length} attendants (and ${notificationsCount} related notifications)`
+    `Created ${attendeesArray.length} attendees (and ${notificationsCount} related notifications)`
   );
 };
 
-module.exports = { createAttendants };
+module.exports = { createAttendees };

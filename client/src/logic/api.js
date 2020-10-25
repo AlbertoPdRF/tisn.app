@@ -53,20 +53,20 @@ export const deleteEvent = (eventId, event) =>
     body: JSON.stringify({ event }),
   });
 
-export const getAttendants = (eventId) =>
-  fetchApi(`/events/${eventId}/attendants`, { method: 'GET' });
+export const getAttendees = (eventId) =>
+  fetchApi(`/events/${eventId}/attendees`, { method: 'GET' });
 
-export const postAttendant = (eventId, attendant) => {
-  return fetchApi(`/events/${eventId}/attendants`, {
+export const postAttendee = (eventId, attendee) => {
+  return fetchApi(`/events/${eventId}/attendees`, {
     method: 'POST',
-    body: JSON.stringify({ attendant }),
+    body: JSON.stringify({ attendee }),
   });
 };
 
-export const deleteAttendant = (eventId, attendantId, attendant) => {
-  return fetchApi(`/events/${eventId}/attendants/${attendantId}`, {
+export const deleteAttendee = (eventId, attendeeId, attendee) => {
+  return fetchApi(`/events/${eventId}/attendees/${attendeeId}`, {
     method: 'DELETE',
-    body: JSON.stringify({ attendant }),
+    body: JSON.stringify({ attendee }),
   });
 };
 

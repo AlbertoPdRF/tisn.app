@@ -5,17 +5,17 @@ const {
 } = require('./populate-notifications');
 
 const Event = require('../models/Event');
-const Attendant = require('../models/Attendant');
+const Attendee = require('../models/Attendee');
 const Comment = require('../models/Comment');
 
 let displayLogs;
 let notificationsCount = 0;
 
-const prerequisites = (eventsCount, attendantsCount) => {
-  if (eventsCount === 0 && attendantsCount === 0) {
+const prerequisites = (eventsCount, attendeesCount) => {
+  if (eventsCount === 0 && attendeesCount === 0) {
     console.log(
       '\x1b[33m',
-      'Attendants and events collection do not exist. Aborted comments collection population'
+      'Attendees and events collection do not exist. Aborted comments collection population'
     );
     return false;
   } else if (eventsCount === 0) {
@@ -24,10 +24,10 @@ const prerequisites = (eventsCount, attendantsCount) => {
       'Events collection does not exist. Aborted comments collection population'
     );
     return false;
-  } else if (attendantsCount === 0) {
+  } else if (attendeesCount === 0) {
     console.log(
       '\x1b[33m',
-      'Attendants collection does not exist. Aborted comments collection population'
+      'Attendees collection does not exist. Aborted comments collection population'
     );
     return false;
   }
@@ -54,17 +54,17 @@ const createComments = async (verbose) => {
   displayLogs = verbose;
 
   const eventsList = await Event.distinct('_id');
-  const attendantsList = await Attendant.find();
+  const attendeesList = await Attendee.find();
   const eventsCount = eventsList.length;
-  const attendantsCount = attendantsList.length;
+  const attendeesCount = attendeesList.length;
 
-  if (!prerequisites(eventsCount, attendantsCount)) return;
+  if (!prerequisites(eventsCount, attendeesCount)) return;
 
   const commentsArray = [];
   for (const event of eventsList) {
-    // Find attendants for event
-    const eventAttendants = attendantsList.filter(
-      (attendant) => attendant.event.toString() === event.toString()
+    // Find attendees for event
+    const eventAttendees = attendeesList.filter(
+      (attendee) => attendee.event.toString() === event.toString()
     );
     const eventComments = await Comment.find({ event });
 
@@ -72,7 +72,7 @@ const createComments = async (verbose) => {
     const commentsCount = Math.floor(Math.random() * 20);
     for (let i = 0; i <= commentsCount; i++) {
       const user =
-        eventAttendants[Math.floor(Math.random() * eventAttendants.length)]
+        eventAttendees[Math.floor(Math.random() * eventAttendees.length)]
           .user;
       const content = getParagraph();
       const parentComment =
@@ -89,7 +89,7 @@ const createComments = async (verbose) => {
       eventComments.push(comment);
       commentsArray.push(comment);
 
-      for (const attendee of eventAttendants) {
+      for (const attendee of eventAttendees) {
         if (attendee.user.toString() === comment.user.toString()) continue;
         await createNotification(
           {
