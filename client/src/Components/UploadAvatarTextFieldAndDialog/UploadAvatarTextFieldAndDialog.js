@@ -1,4 +1,4 @@
-import React, { useState, createRef, Fragment } from 'react';
+import { useState, createRef, Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';

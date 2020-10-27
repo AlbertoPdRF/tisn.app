@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from 'react';
+import { useState, useEffect, Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useHistory, Link } from 'react-router-dom';
 import Card from '@material-ui/core/Card';
