@@ -105,5 +105,5 @@ If you have any questions, please email us at [support@tisn.app](mailto:support@
 
 <div align="center">
   <br>
-  <strong>Welcome and happy codding!</strong>
+  <strong>Welcome and happy coding!</strong>
 </div>

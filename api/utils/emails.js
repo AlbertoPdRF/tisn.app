@@ -3,8 +3,33 @@ const Token = require('../models/Token');
 
 const crypto = require('crypto');
 const sendgrid = require('@sendgrid/mail');
+const fs = require('fs').promises;
+const path = require('path');
 
 sendgrid.setApiKey(process.env.SENDGRID_API_KEY);
+
+const dbBackup = async (filename) => {
+  const destination = path.join(__dirname, `../db/dumps/${filename}`);
+
+  const attachment = await fs.readFile(destination, { encoding: 'base64' });
+
+  const email = {
+    to: 'admin@tisn.app',
+    from: { email: 'no-reply@tisn.app', name: 'Tisn' },
+    subject: 'Database backup',
+    text: `Find attached today's database backup: "${filename}".`,
+    attachments: [
+      {
+        content: attachment,
+        filename,
+        type: 'application/gzip',
+        disposition: 'attachment',
+      },
+    ],
+  };
+
+  sendgrid.send(email).then(() => fs.unlink(destination, () => {}));
+};
 
 const emailConfirmation = (req, user) => {
   Notification.findOne(
@@ -75,6 +100,7 @@ const emailConfirmation = (req, user) => {
 
 const emails = {
   emailConfirmation,
+  dbBackup,
 };
 
 module.exports = emails;

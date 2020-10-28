@@ -1,4 +1,4 @@
-import React, { useState, useEffect, createRef, Fragment } from 'react';
+import { useState, useEffect, createRef, Fragment } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import LinearProgress from '@material-ui/core/LinearProgress';
@@ -49,7 +49,6 @@ const Chat = ({ match }) => {
   const [messages, setMessages] = useState(null);
   const [updateMessages, setUpdateMessages] = useState(false);
   const [updateNotifications, setUpdateNotifications] = useState(false);
-  const [checkSharedContent, setCheckSharedContent] = useState(true);
   const [content, setContent] = useState('');
   const [loading, setLoading] = useState(true);
   const [validationErrors, setValidationErrors] = useState({});
@@ -107,27 +106,23 @@ const Chat = ({ match }) => {
     }
   }, [cardContentRef]);
 
-  const params = new URLSearchParams(window.location.search);
   useEffect(() => {
-    if (checkSharedContent) {
-      let sharedContent;
-      if (params.has('text')) {
-        sharedContent = params.get('text');
-      } else if (params.has('title')) {
-        sharedContent = params.get('title');
-      }
-      if (params.has('url')) {
-        const url = params.get('url');
-        sharedContent = sharedContent ? `${sharedContent} ${url}` : url;
-      }
-
-      if (sharedContent) {
-        setContent(sharedContent);
-      }
-
-      setCheckSharedContent(false);
+    const params = new URLSearchParams(window.location.search);
+    let sharedContent;
+    if (params.has('text')) {
+      sharedContent = params.get('text');
+    } else if (params.has('title')) {
+      sharedContent = params.get('title');
     }
-  }, [checkSharedContent, params]);
+    if (params.has('url')) {
+      const url = params.get('url');
+      sharedContent = sharedContent ? `${sharedContent} ${url}` : url;
+    }
+
+    if (sharedContent) {
+      setContent(sharedContent);
+    }
+  }, []);
 
   useEffect(() => {
     if (user && friendship && notifications) {
