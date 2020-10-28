@@ -50,12 +50,12 @@
     "title": "Evento",
     "details": "Detalles",
     "comments": "Comentarios",
-    "onlyAttendants": "Solo los asistentes pueden leer y publicar comentarios",
+    "onlyAttendees": "Solo los asistentes pueden leer y publicar comentarios",
     "attend": "¡Asistiré!"
   },
   "eventDetails": {
     "relatedInterests": "Intereses relacionados:",
-    "attendants": "Asistentes:",
+    "attendees": "Asistentes:",
     "avatar": "Avatar de {{name}}",
     "notAttend": "No asistiré",
     "attend": "¡Asistiré!",
@@ -73,7 +73,7 @@
     "noMatchingCountry": "Ningún país coincide",
     "region": "Región",
     "noMatchingRegion": "Ninguna región coincide",
-    "attendantsLimit": "Límite de asistentes"
+    "attendeesLimit": "Límite de asistentes"
   },
   "events": {
     "title": "Eventos",
@@ -190,7 +190,7 @@
       "title": "¡Selecciona tus intereses!",
       "subheader": "Recibirás recomendaciones de eventos según tus intereses"
     },
-    "newAttendant": {
+    "newAttendee": {
       "title": "{{userName}} asistirá a tu evento {{eventName}}",
       "subheader": "Ve a la página del evento para ver todos los asistentes"
     },

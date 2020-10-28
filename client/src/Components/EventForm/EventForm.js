@@ -27,8 +27,8 @@ const EventForm = (props) => {
     handleRegionChange,
     coverPhoto,
     handleUpload,
-    attendantsLimit,
-    handleAttendantsLimitChange,
+    attendeesLimit,
+    handleAttendeesLimitChange,
     validationErrors,
   } = props;
 
@@ -193,19 +193,19 @@ const EventForm = (props) => {
             type="number"
             min="2"
             step="1"
-            label={t('eventForm.attendantsLimit')}
+            label={t('eventForm.attendeesLimit')}
             variant="outlined"
-            value={attendantsLimit}
+            value={attendeesLimit}
             onChange={(event) =>
-              handleAttendantsLimitChange(event.target.value)
+              handleAttendeesLimitChange(event.target.value)
             }
             InputProps={{
               inputProps: { min: 2 },
             }}
-            error={!!validationErrors.attendantsLimit}
+            error={!!validationErrors.attendeesLimit}
             helperText={
-              validationErrors.attendantsLimit &&
-              t(`errorsList.${validationErrors.attendantsLimit}`)
+              validationErrors.attendeesLimit &&
+              t(`errorsList.${validationErrors.attendeesLimit}`)
             }
           />
         </Grid>

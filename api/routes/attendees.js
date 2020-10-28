@@ -5,12 +5,12 @@ const auth = require('./auth');
 const validations = require('./validations');
 const permissions = require('./permissions');
 
-const attendantsController = require('../controllers/attendantsController');
+const attendeesController = require('../controllers/attendeesController');
 
 router.get(
   '/',
-  [auth.required, validations.create('attendantsGet'), validations.run],
-  attendantsController.get
+  [auth.required, validations.create('attendeesGet'), validations.run],
+  attendeesController.get
 );
 
 router.post(
@@ -18,21 +18,21 @@ router.post(
   [
     auth.required,
     permissions,
-    validations.create('attendantsPost'),
+    validations.create('attendeesPost'),
     validations.run,
   ],
-  attendantsController.post
+  attendeesController.post
 );
 
 router.delete(
-  '/:attendantId',
+  '/:attendeeId',
   [
     auth.required,
     permissions,
-    validations.create('attendantsDeleteId'),
+    validations.create('attendeesDeleteId'),
     validations.run,
   ],
-  attendantsController.deleteId
+  attendeesController.deleteId
 );
 
 module.exports = router;

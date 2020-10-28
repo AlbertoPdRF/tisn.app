@@ -32,7 +32,7 @@ const EventDetails = (props) => {
     futureEvent,
     userAttending,
     handleClick,
-    attendants,
+    attendees,
     limitMet,
     loading,
   } = props;
@@ -126,25 +126,25 @@ const EventDetails = (props) => {
             onClick={() => history.push(`/events?interest=${interest._id}`)}
           />
         ))}
-        {attendants && attendants.length > 0 && (
+        {attendees && attendees.length > 0 && (
           <Fragment>
             <Typography variant="h6" component="h4">
-              {t('eventDetails.attendants')}
+              {t('eventDetails.attendees')}
             </Typography>
-            <AvatarGroup max={event.attendantsLimit}>
-              {attendants.map((attendant) => (
+            <AvatarGroup max={event.attendeesLimit}>
+              {attendees.map((attendee) => (
                 <Avatar
-                  key={attendant.user._id}
-                  src={attendant.user.avatar}
-                  alt={t('eventDetails.avatar', { name: attendant.user.name })}
-                  title={attendant.user.name}
+                  key={attendee.user._id}
+                  src={attendee.user.avatar}
+                  alt={t('eventDetails.avatar', { name: attendee.user.name })}
+                  title={attendee.user.name}
                   component={Link}
-                  to={`/users/${attendant.user._id}`}
+                  to={`/users/${attendee.user._id}`}
                   color="inherit"
                   underline="none"
                   style={{ textDecoration: 'none' }}
                 >
-                  {attendant.user.name.charAt(0).toUpperCase()}
+                  {attendee.user.name.charAt(0).toUpperCase()}
                 </Avatar>
               ))}
             </AvatarGroup>
@@ -179,10 +179,10 @@ const EventDetails = (props) => {
               </Grid>
               <Grid item className={`${style.fullWidth} ${style.alignRight}`}>
                 <Typography className={style.preLine} variant="body1">
-                  {attendants &&
+                  {attendees &&
                     t('eventDetails.spot', {
-                      count: event.attendantsLimit - attendants.length,
-                      max: event.attendantsLimit,
+                      count: event.attendeesLimit - attendees.length,
+                      max: event.attendeesLimit,
                     })}
                 </Typography>
               </Grid>

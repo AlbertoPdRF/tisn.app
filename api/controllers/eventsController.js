@@ -1,5 +1,5 @@
 const Event = require('../models/Event');
-const Attendant = require('../models/Attendant');
+const Attendee = require('../models/Attendee');
 const Comment = require('../models/Comment');
 
 const async = require('async');
@@ -43,11 +43,11 @@ exports.post = (req, res, next) => {
   const finalEvent = new Event(event);
 
   return finalEvent.save().then(() => {
-    const attendant = new Attendant({
+    const attendee = new Attendee({
       event: finalEvent._id,
       user: finalEvent.createdBy,
     });
-    attendant.save();
+    attendee.save();
 
     res.json({ event: finalEvent });
   });
@@ -101,8 +101,8 @@ exports.deleteId = (req, res, next) => {
           _id: id,
           createdBy: req.payload.admin ? event.createdBy : req.payload._id,
         }).exec(callback),
-      attendants: (callback) =>
-        Attendant.deleteMany({
+      attendees: (callback) =>
+        Attendee.deleteMany({
           event: id,
         }).exec(callback),
       comments: (callback) =>
@@ -121,7 +121,7 @@ exports.deleteId = (req, res, next) => {
 
       res.json({
         event: results.event,
-        attendants: results.attendants,
+        attendees: results.attendees,
         comments: results.comments,
       });
     }

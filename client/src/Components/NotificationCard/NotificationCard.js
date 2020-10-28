@@ -41,7 +41,7 @@ const NotificationCard = (props) => {
       avatar = <CategoryIcon color="primary" />;
 
       break;
-    case 'newAttendant':
+    case 'newAttendee':
     case 'newComment':
       path =
         notification.referencedEvent &&
@@ -50,7 +50,7 @@ const NotificationCard = (props) => {
         path += '/comments';
       }
 
-      if (type === 'newAttendant') {
+      if (type === 'newAttendee') {
         avatar = <PlusOneIcon color="primary" />;
       } else if (type === 'newComment') {
         avatar = <AddCommentIcon color="primary" />;

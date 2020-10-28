@@ -61,7 +61,7 @@ const EventSteps = ({ match }) => {
   const [interests, setInterests] = useState(null);
   const [relatedInterests, setRelatedInterests] = useState([]);
   const [coverPhoto, setCoverPhoto] = useState('');
-  const [attendantsLimit, setAttendantsLimit] = useState('');
+  const [attendeesLimit, setAttendeesLimit] = useState('');
   const [updatedFields, setUpdatedFields] = useState(null);
   const [updateNotifications, setUpdateNotifications] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -99,7 +99,7 @@ const EventSteps = ({ match }) => {
 
               setCreatedBy(data.event.createdBy);
               setCoverPhoto(data.event.coverPhoto);
-              setAttendantsLimit(data.event.attendantsLimit);
+              setAttendeesLimit(data.event.attendeesLimit);
             }
           })
           .catch((error) => setError(error))
@@ -115,7 +115,7 @@ const EventSteps = ({ match }) => {
       setRegion(null);
       setCreatedBy('');
       setCoverPhoto('');
-      setAttendantsLimit('');
+      setAttendeesLimit('');
       setActiveStep(0);
       setLoading(false);
     }
@@ -194,7 +194,7 @@ const EventSteps = ({ match }) => {
       validationErrors.country ||
       validationErrors.region ||
       validationErrors.coverPhoto ||
-      validationErrors.attendantsLimit;
+      validationErrors.attendeesLimit;
     const errorInSecondStep = validationErrors.relatedInterests;
 
     setStepWithError({ 0: errorInFirstStep, 1: errorInSecondStep });
@@ -233,8 +233,8 @@ const EventSteps = ({ match }) => {
             handleRegionChange={handleRegionChange}
             coverPhoto={coverPhoto}
             handleUpload={handleUpload}
-            attendantsLimit={attendantsLimit}
-            handleAttendantsLimitChange={handleAttendantsLimitChange}
+            attendeesLimit={attendeesLimit}
+            handleAttendeesLimitChange={handleAttendeesLimitChange}
             validationErrors={validationErrors}
           />
         );
@@ -273,7 +273,7 @@ const EventSteps = ({ match }) => {
       !endDate ||
       !country ||
       !region ||
-      !attendantsLimit;
+      !attendeesLimit;
     const secondNextDisabled =
       !relatedInterests || relatedInterests.length === 0;
     const createDisabled =
@@ -369,10 +369,10 @@ const EventSteps = ({ match }) => {
     }
   };
 
-  const handleAttendantsLimitChange = (attendantsLimit) => {
-    setAttendantsLimit(attendantsLimit);
-    if (!updatedFields || !updatedFields.attendantsLimit) {
-      setUpdatedFields({ ...updatedFields, attendantsLimit: true });
+  const handleAttendeesLimitChange = (attendeesLimit) => {
+    setAttendeesLimit(attendeesLimit);
+    if (!updatedFields || !updatedFields.attendeesLimit) {
+      setUpdatedFields({ ...updatedFields, attendeesLimit: true });
     }
   };
 
@@ -397,7 +397,7 @@ const EventSteps = ({ match }) => {
       createdBy: user._id,
       relatedInterests,
       coverPhoto,
-      attendantsLimit,
+      attendeesLimit,
     })
       .then((data) => {
         if (data.errors) {
@@ -428,7 +428,7 @@ const EventSteps = ({ match }) => {
       createdBy,
       relatedInterests,
       coverPhoto,
-      attendantsLimit,
+      attendeesLimit,
     })
       .then((data) => {
         if (data.errors) {

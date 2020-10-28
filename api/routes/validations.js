@@ -4,7 +4,7 @@ const countries = require('country-region-data');
 const User = require('../models/User');
 const Interest = require('../models/Interest');
 const Event = require('../models/Event');
-const Attendant = require('../models/Attendant');
+const Attendee = require('../models/Attendee');
 const Comment = require('../models/Comment');
 const Friendship = require('../models/Friendship');
 const Notification = require('../models/Notification');
@@ -148,7 +148,7 @@ const buildValidator = (type, param, optional = false) => {
           let model;
           switch (param) {
             case 'userId':
-            case 'attendant.user._id':
+            case 'attendee.user._id':
             case 'comment.user._id':
             case 'friendship.requestant._id':
             case 'friendship.receivant._id':
@@ -164,13 +164,13 @@ const buildValidator = (type, param, optional = false) => {
               model = Interest;
               break;
             case 'eventId':
-            case 'attendant.event._id':
+            case 'attendee.event._id':
             case 'comment.event._id':
             case 'notification.referencedEvent._id':
               model = Event;
               break;
-            case 'attendantId':
-              model = Attendant;
+            case 'attendeeId':
+              model = Attendee;
               break;
             case 'comment.parentComment':
               model = Comment;
@@ -216,7 +216,7 @@ const buildValidator = (type, param, optional = false) => {
           'createEvent',
           'uploadAvatar',
           'selectInterests',
-          'newAttendant',
+          'newAttendee',
           'newComment',
           'newFriendshipRequest',
           'acceptedFriendshipRequest',
@@ -307,11 +307,11 @@ const createValidation = (route) => {
         buildValidator('array', 'event.relatedInterests'),
         buildValidator('id', 'event.relatedInterests.*._id'),
         buildValidator('imageUrl', 'event.coverPhoto', true),
-        buildValidator('int', 'event.attendantsLimit'),
+        buildValidator('int', 'event.attendeesLimit'),
       ];
     case 'eventsGetId':
     case 'eventsDeleteId':
-    case 'attendantsGet':
+    case 'attendeesGet':
     case 'commentsGet':
       return [buildValidator('id', 'eventId')];
     case 'eventsPutId':
@@ -327,18 +327,18 @@ const createValidation = (route) => {
         buildValidator('array', 'event.relatedInterests'),
         buildValidator('id', 'event.relatedInterests.*._id'),
         buildValidator('imageUrl', 'event.coverPhoto', true),
-        buildValidator('int', 'event.attendantsLimit'),
+        buildValidator('int', 'event.attendeesLimit'),
       ];
-    case 'attendantsPost':
+    case 'attendeesPost':
       return [
         buildValidator('id', 'eventId'),
-        buildValidator('id', 'attendant.event._id'),
-        buildValidator('id', 'attendant.user._id'),
+        buildValidator('id', 'attendee.event._id'),
+        buildValidator('id', 'attendee.user._id'),
       ];
-    case 'attendantsDeleteId':
+    case 'attendeesDeleteId':
       return [
         buildValidator('id', 'eventId'),
-        buildValidator('id', 'attendantId'),
+        buildValidator('id', 'attendeeId'),
       ];
     case 'commentsPost':
       return [

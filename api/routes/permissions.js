@@ -25,8 +25,8 @@ const permissions = (req, res, next) => {
       id = params.userId;
     }
   } else if (baseUrl.startsWith('/events')) {
-    if (baseUrl.endsWith('/attendants')) {
-      id = body.attendant.user._id;
+    if (baseUrl.endsWith('/attendees')) {
+      id = body.attendee.user._id;
     } else if (baseUrl.endsWith('/comments')) {
       id = body.comment.user._id;
     } else {

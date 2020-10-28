@@ -15,7 +15,7 @@ const EventSchema = new Schema(
       { type: Schema.Types.ObjectId, ref: 'Interest', required: true },
     ],
     coverPhoto: { type: String },
-    attendantsLimit: { type: Number, required: true },
+    attendeesLimit: { type: Number, required: true },
   },
   { timestamps: true }
 );

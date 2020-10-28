@@ -1,5 +1,5 @@
 const User = require('../models/User');
-const Attendant = require('../models/Attendant');
+const Attendee = require('../models/Attendee');
 const Event = require('../models/Event');
 const Friendship = require('../models/Friendship');
 const Message = require('../models/Message');
@@ -155,8 +155,8 @@ exports.deleteId = (req, res, next) => {
   async.parallel(
     {
       user: (callback) => User.findByIdAndRemove(id).exec(callback),
-      attendants: (callback) =>
-        Attendant.deleteMany({ user: id }).exec(callback),
+      attendees: (callback) =>
+        Attendee.deleteMany({ user: id }).exec(callback),
       friendshipsAndMessages: (callback) =>
         async.waterfall(
           [
@@ -200,7 +200,7 @@ exports.deleteId = (req, res, next) => {
 
       res.json({
         user: results.user.toJson(),
-        attendants: results.attendants,
+        attendees: results.attendees,
         friendshipsAndMessages: results.friendshipsAndMessages,
         notifications: results.notifications,
       });
@@ -213,7 +213,7 @@ exports.getEvents = (req, res, next) => {
   async.parallel(
     {
       attending: (callback) =>
-        Attendant.aggregate(
+        Attendee.aggregate(
           [
             { $match: { user: mongoose.Types.ObjectId(id) } },
             {
@@ -243,7 +243,7 @@ exports.getEvents = (req, res, next) => {
 
       res.json({
         events: {
-          attending: results.attending.map((attendant) => attendant.event),
+          attending: results.attending.map((attendee) => attendee.event),
           created: results.created,
         },
       });

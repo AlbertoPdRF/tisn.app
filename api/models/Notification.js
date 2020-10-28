@@ -13,7 +13,7 @@ const NotificationSchema = new Schema(
         'createEvent',
         'uploadAvatar',
         'selectInterests',
-        'newAttendant',
+        'newAttendee',
         'newComment',
         'newFriendshipRequest',
         'acceptedFriendshipRequest',
