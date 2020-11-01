@@ -8,43 +8,43 @@ const permissions = require('./permissions');
 const eventsController = require('../controllers/eventsController');
 
 router.get(
-  '/',
-  [auth.required, validations.create('eventsGet'), validations.run],
-  eventsController.get
+	'/',
+	[auth.required, validations.create('eventsGet'), validations.run],
+	eventsController.get
 );
 
 router.post(
-  '/',
-  [auth.required, validations.create('eventsPost'), validations.run],
-  eventsController.post
+	'/',
+	[auth.required, validations.create('eventsPost'), validations.run],
+	eventsController.post
 );
 
 router.get(
-  '/:eventId',
-  [auth.required, validations.create('eventsGetId'), validations.run],
-  eventsController.getId
+	'/:eventId',
+	[auth.required, validations.create('eventsGetId'), validations.run],
+	eventsController.getId
 );
 
 router.put(
-  '/:eventId',
-  [
-    auth.required,
-    permissions,
-    validations.create('eventsPutId'),
-    validations.run,
-  ],
-  eventsController.putId
+	'/:eventId',
+	[
+		auth.required,
+		permissions,
+		validations.create('eventsPutId'),
+		validations.run,
+	],
+	eventsController.putId
 );
 
 router.delete(
-  '/:eventId',
-  [
-    auth.required,
-    permissions,
-    validations.create('eventsDeleteId'),
-    validations.run,
-  ],
-  eventsController.deleteId
+	'/:eventId',
+	[
+		auth.required,
+		permissions,
+		validations.create('eventsDeleteId'),
+		validations.run,
+	],
+	eventsController.deleteId
 );
 
 const attendantsRouter = require('./attendants');

@@ -15,22 +15,22 @@ import IconButton from '@material-ui/core/IconButton';
 import SendIcon from '@material-ui/icons/Send';
 
 import {
-  getMessages,
-  getFriendship,
-  postMessage,
-  putNotification,
-  getNotifications,
+	getMessages,
+	getFriendship,
+	postMessage,
+	putNotification,
+	getNotifications,
 } from '../../logic/api';
 import {
-  buildValidationErrorsObject,
-  decodeAndLinkifyText,
-  classifyNotifications,
+	buildValidationErrorsObject,
+	decodeAndLinkifyText,
+	classifyNotifications,
 } from '../../logic/utils';
 
 import { useUser } from '../UserProvider/UserProvider';
 import {
-  useNotifications,
-  useSetNotifications,
+	useNotifications,
+	useSetNotifications,
 } from '../NotificationsProvider/NotificationsProvider';
 
 import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
@@ -38,271 +38,271 @@ import ErrorSnackbar from '../ErrorSnackbar/ErrorSnackbar';
 import Style from '../Style/Style';
 
 const Chat = ({ match }) => {
-  const { t } = useTranslation();
-  const style = Style();
-  const user = useUser();
-  const notifications = useNotifications();
-  const setNotifications = useSetNotifications();
+	const { t } = useTranslation();
+	const style = Style();
+	const user = useUser();
+	const notifications = useNotifications();
+	const setNotifications = useSetNotifications();
 
-  const [friendship, setFriendship] = useState(null);
-  const [userToDisplay, setUserToDisplay] = useState(null);
-  const [messages, setMessages] = useState(null);
-  const [updateMessages, setUpdateMessages] = useState(false);
-  const [updateNotifications, setUpdateNotifications] = useState(false);
-  const [content, setContent] = useState('');
-  const [loading, setLoading] = useState(true);
-  const [validationErrors, setValidationErrors] = useState({});
-  const [error, setError] = useState(null);
+	const [friendship, setFriendship] = useState(null);
+	const [userToDisplay, setUserToDisplay] = useState(null);
+	const [messages, setMessages] = useState(null);
+	const [updateMessages, setUpdateMessages] = useState(false);
+	const [updateNotifications, setUpdateNotifications] = useState(false);
+	const [content, setContent] = useState('');
+	const [loading, setLoading] = useState(true);
+	const [validationErrors, setValidationErrors] = useState({});
+	const [error, setError] = useState(null);
 
-  const id = match.params.friendshipId;
-  useEffect(() => {
-    setUserToDisplay(null);
-    setMessages(null);
-    if (user && id) {
-      setLoading(true);
-      setError(null);
-      getFriendship(user._id, id)
-        .then((data) => {
-          setFriendship(data.friendship);
-          setUpdateMessages(true);
-        })
-        .catch((error) => {
-          setError(error);
-          setLoading(false);
-        });
-    }
-  }, [user, id]);
+	const id = match.params.friendshipId;
+	useEffect(() => {
+		setUserToDisplay(null);
+		setMessages(null);
+		if (user && id) {
+			setLoading(true);
+			setError(null);
+			getFriendship(user._id, id)
+				.then((data) => {
+					setFriendship(data.friendship);
+					setUpdateMessages(true);
+				})
+				.catch((error) => {
+					setError(error);
+					setLoading(false);
+				});
+		}
+	}, [user, id]);
 
-  useEffect(() => {
-    if (user && friendship) {
-      setLoading(true);
-      setUserToDisplay(
-        friendship.requestant._id === user._id
-          ? friendship.receivant
-          : friendship.requestant
-      );
-      setLoading(false);
-    }
-  }, [user, friendship]);
+	useEffect(() => {
+		if (user && friendship) {
+			setLoading(true);
+			setUserToDisplay(
+				friendship.requestant._id === user._id
+					? friendship.receivant
+					: friendship.requestant
+			);
+			setLoading(false);
+		}
+	}, [user, friendship]);
 
-  useEffect(() => {
-    if (user && id && updateMessages) {
-      setLoading(true);
-      setError(null);
-      getMessages(user._id, id)
-        .then((data) => setMessages(data.messages))
-        .catch((error) => setError(error))
-        .finally(() => {
-          setUpdateMessages(false);
-          setLoading(false);
-        });
-    }
-  }, [user, id, updateMessages]);
+	useEffect(() => {
+		if (user && id && updateMessages) {
+			setLoading(true);
+			setError(null);
+			getMessages(user._id, id)
+				.then((data) => setMessages(data.messages))
+				.catch((error) => setError(error))
+				.finally(() => {
+					setUpdateMessages(false);
+					setLoading(false);
+				});
+		}
+	}, [user, id, updateMessages]);
 
-  const cardContentRef = createRef();
-  useEffect(() => {
-    if (cardContentRef && cardContentRef.current) {
-      cardContentRef.current.scrollTop = cardContentRef.current.scrollHeight;
-    }
-  }, [cardContentRef]);
+	const cardContentRef = createRef();
+	useEffect(() => {
+		if (cardContentRef && cardContentRef.current) {
+			cardContentRef.current.scrollTop = cardContentRef.current.scrollHeight;
+		}
+	}, [cardContentRef]);
 
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    let sharedContent;
-    if (params.has('text')) {
-      sharedContent = params.get('text');
-    } else if (params.has('title')) {
-      sharedContent = params.get('title');
-    }
-    if (params.has('url')) {
-      const url = params.get('url');
-      sharedContent = sharedContent ? `${sharedContent} ${url}` : url;
-    }
+	useEffect(() => {
+		const params = new URLSearchParams(window.location.search);
+		let sharedContent;
+		if (params.has('text')) {
+			sharedContent = params.get('text');
+		} else if (params.has('title')) {
+			sharedContent = params.get('title');
+		}
+		if (params.has('url')) {
+			const url = params.get('url');
+			sharedContent = sharedContent ? `${sharedContent} ${url}` : url;
+		}
 
-    if (sharedContent) {
-      setContent(sharedContent);
-    }
-  }, []);
+		if (sharedContent) {
+			setContent(sharedContent);
+		}
+	}, []);
 
-  useEffect(() => {
-    if (user && friendship && notifications) {
-      const chatNotifications = notifications.message.filter(
-        (notification) =>
-          notification.referencedFriendship._id === friendship._id
-      );
+	useEffect(() => {
+		if (user && friendship && notifications) {
+			const chatNotifications = notifications.message.filter(
+				(notification) =>
+					notification.referencedFriendship._id === friendship._id
+			);
 
-      if (chatNotifications.length > 0) {
-        setLoading(true);
-        setError(null);
+			if (chatNotifications.length > 0) {
+				setLoading(true);
+				setError(null);
 
-        chatNotifications.forEach((notification, index) => {
-          notification.read = true;
-          notification.readAt = new Date();
+				chatNotifications.forEach((notification, index) => {
+					notification.read = true;
+					notification.readAt = new Date();
 
-          putNotification(user._id, notification._id, notification)
-            .then((data) => {
-              if (data.errors) {
-                setError(t('errorsList.generic'));
-              }
+					putNotification(user._id, notification._id, notification)
+						.then((data) => {
+							if (data.errors) {
+								setError(t('errorsList.generic'));
+							}
 
-              if (index === chatNotifications.length - 1) {
-                setUpdateNotifications(true);
-              }
-            })
-            .catch((error) => setError(error));
-        });
-      }
-    }
-  }, [user, friendship, notifications, t]);
+							if (index === chatNotifications.length - 1) {
+								setUpdateNotifications(true);
+							}
+						})
+						.catch((error) => setError(error));
+				});
+			}
+		}
+	}, [user, friendship, notifications, t]);
 
-  useEffect(() => {
-    if (updateNotifications) {
-      setLoading(true);
-      setError(null);
-      getNotifications()
-        .then((data) =>
-          setNotifications(classifyNotifications(data.notifications))
-        )
-        .catch((error) => setError(error))
-        .finally(() => setLoading(false));
-    }
-  }, [updateNotifications, setNotifications]);
+	useEffect(() => {
+		if (updateNotifications) {
+			setLoading(true);
+			setError(null);
+			getNotifications()
+				.then((data) =>
+					setNotifications(classifyNotifications(data.notifications))
+				)
+				.catch((error) => setError(error))
+				.finally(() => setLoading(false));
+		}
+	}, [updateNotifications, setNotifications]);
 
-  const handleClick = () => {
-    setLoading(true);
-    setError(null);
-    setValidationErrors({});
+	const handleClick = () => {
+		setLoading(true);
+		setError(null);
+		setValidationErrors({});
 
-    const message = {
-      friendship,
-      user,
-      content,
-    };
+		const message = {
+			friendship,
+			user,
+			content,
+		};
 
-    postMessage(user._id, id, message)
-      .then((data) => {
-        if (data.errors) {
-          setError(t('errorsList.formErrors'));
-          setValidationErrors(buildValidationErrorsObject(data.errors));
-          setLoading(false);
-        } else {
-          setUpdateMessages(true);
-          setContent('');
-        }
-      })
-      .catch((error) => {
-        setError(error);
-        setLoading(false);
-      });
-  };
+		postMessage(user._id, id, message)
+			.then((data) => {
+				if (data.errors) {
+					setError(t('errorsList.formErrors'));
+					setValidationErrors(buildValidationErrorsObject(data.errors));
+					setLoading(false);
+				} else {
+					setUpdateMessages(true);
+					setContent('');
+				}
+			})
+			.catch((error) => {
+				setError(error);
+				setLoading(false);
+			});
+	};
 
-  return (
-    <Fragment>
-      {loading && <LinearProgress />}
-      {userToDisplay && (
-        <div className={`${style.root} ${style.fullHeight}`}>
-          <Card className={`${style.grow} ${style.messagesCard}`}>
-            <CardActionArea
-              component={Link}
-              to={`/users/${userToDisplay._id}`}
-              color="inherit"
-              underline="none"
-            >
-              <CardHeader
-                avatar={
-                  <Avatar
-                    src={userToDisplay.avatar}
-                    alt={t('chat.avatar', { name: userToDisplay.name })}
-                  >
-                    {userToDisplay.name.charAt(0).toUpperCase()}
-                  </Avatar>
-                }
-                title={userToDisplay.name}
-                titleTypographyProps={{ variant: 'h5', component: 'h3' }}
-              />
-            </CardActionArea>
-            <CardContent
-              ref={cardContentRef}
-              className={style.messagesCardContent}
-            >
-              <Grid
-                container
-                direction="column"
-                alignItems="center"
-                spacing={1}
-              >
-                {messages &&
-                  messages.length > 0 &&
-                  messages.map((message) => (
-                    <Grid item key={message._id} className={style.fullWidth}>
-                      <Typography
-                        className={`${style.preLine} ${style.breakWord} ${
-                          style.message
-                        } ${
-                          message.user === user._id
-                            ? style.messageSent
-                            : style.messageReceived
-                        }`}
-                        variant="body1"
-                        dangerouslySetInnerHTML={{
-                          __html: decodeAndLinkifyText(message.content),
-                        }}
-                      />
-                    </Grid>
-                  ))}
-              </Grid>
-            </CardContent>
-            <CardActions>
-              <TextField
-                autoFocus
-                onFocus={(event) => {
-                  const value = event.target.value;
-                  event.target.value = '';
-                  event.target.value = value;
-                }}
-                multiline
-                rowsMax={3}
-                className={`${style.fullWidth} ${style.center}`}
-                size="small"
-                variant="outlined"
-                placeholder={t('chat.message')}
-                value={content}
-                onChange={(event) => setContent(event.target.value)}
-                InputProps={{
-                  endAdornment: (
-                    <IconButton
-                      color="primary"
-                      onClick={() => handleClick()}
-                      disabled={!content || loading}
-                    >
-                      <SendIcon />
-                    </IconButton>
-                  ),
-                }}
-                onKeyPress={(event) => {
-                  if (
-                    event.key === 'Enter' &&
-                    !event.shiftKey &&
-                    content &&
-                    !loading
-                  ) {
-                    event.preventDefault();
-                    handleClick();
-                  }
-                }}
-                error={!!validationErrors.content}
-                helperText={
-                  validationErrors.content &&
-                  t(`errorsList.${validationErrors.content}`)
-                }
-              />
-            </CardActions>
-          </Card>
-        </div>
-      )}
-      {error && <ErrorSnackbar error={error} />}
-    </Fragment>
-  );
+	return (
+		<Fragment>
+			{loading && <LinearProgress />}
+			{userToDisplay && (
+				<div className={`${style.root} ${style.fullHeight}`}>
+					<Card className={`${style.grow} ${style.messagesCard}`}>
+						<CardActionArea
+							component={Link}
+							to={`/users/${userToDisplay._id}`}
+							color='inherit'
+							underline='none'
+						>
+							<CardHeader
+								avatar={
+									<Avatar
+										src={userToDisplay.avatar}
+										alt={t('chat.avatar', { name: userToDisplay.name })}
+									>
+										{userToDisplay.name.charAt(0).toUpperCase()}
+									</Avatar>
+								}
+								title={userToDisplay.name}
+								titleTypographyProps={{ variant: 'h5', component: 'h3' }}
+							/>
+						</CardActionArea>
+						<CardContent
+							ref={cardContentRef}
+							className={style.messagesCardContent}
+						>
+							<Grid
+								container
+								direction='column'
+								alignItems='center'
+								spacing={1}
+							>
+								{messages &&
+									messages.length > 0 &&
+									messages.map((message) => (
+										<Grid item key={message._id} className={style.fullWidth}>
+											<Typography
+												className={`${style.preLine} ${style.breakWord} ${
+													style.message
+												} ${
+													message.user === user._id
+														? style.messageSent
+														: style.messageReceived
+												}`}
+												variant='body1'
+												dangerouslySetInnerHTML={{
+													__html: decodeAndLinkifyText(message.content),
+												}}
+											/>
+										</Grid>
+									))}
+							</Grid>
+						</CardContent>
+						<CardActions>
+							<TextField
+								autoFocus
+								onFocus={(event) => {
+									const value = event.target.value;
+									event.target.value = '';
+									event.target.value = value;
+								}}
+								multiline
+								rowsMax={3}
+								className={`${style.fullWidth} ${style.center}`}
+								size='small'
+								variant='outlined'
+								placeholder={t('chat.message')}
+								value={content}
+								onChange={(event) => setContent(event.target.value)}
+								InputProps={{
+									endAdornment: (
+										<IconButton
+											color='primary'
+											onClick={() => handleClick()}
+											disabled={!content || loading}
+										>
+											<SendIcon />
+										</IconButton>
+									),
+								}}
+								onKeyPress={(event) => {
+									if (
+										event.key === 'Enter' &&
+										!event.shiftKey &&
+										content &&
+										!loading
+									) {
+										event.preventDefault();
+										handleClick();
+									}
+								}}
+								error={!!validationErrors.content}
+								helperText={
+									validationErrors.content &&
+									t(`errorsList.${validationErrors.content}`)
+								}
+							/>
+						</CardActions>
+					</Card>
+				</div>
+			)}
+			{error && <ErrorSnackbar error={error} />}
+		</Fragment>
+	);
 };
 
 export default Chat;

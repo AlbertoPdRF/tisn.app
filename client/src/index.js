@@ -6,10 +6,10 @@ import * as serviceWorker from './serviceWorker';
 import './i18n';
 
 render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-  document.getElementById('root')
+	<StrictMode>
+		<App />
+	</StrictMode>,
+	document.getElementById('root')
 );
 
 serviceWorker.register();

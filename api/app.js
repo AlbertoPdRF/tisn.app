@@ -10,11 +10,11 @@ const i18nextMiddleware = require('i18next-http-middleware');
 const i18nextBackend = require('i18next-fs-backend');
 
 i18next.use(i18nextBackend).init({
-  backend: {
-    loadPath: __dirname + '/locales/{{lng}}/{{ns}}.json',
-  },
-  fallbackLng: 'en',
-  preload: ['en', 'es'],
+	backend: {
+		loadPath: __dirname + '/locales/{{lng}}/{{ns}}.json',
+	},
+	fallbackLng: 'en',
+	preload: ['en', 'es'],
 });
 
 const app = express();
@@ -27,13 +27,11 @@ connectDb(process.env.DB_URL);
 require('./config/passport');
 
 const corsOptions = {
-  origin: (origin, callback) => {
-    if (origin === process.env.BASE_CLIENT_URL) {
-      callback(null, true);
-    } else {
-      callback(createError(403));
-    }
-  },
+	origin: (origin, callback) => {
+		origin === process.env.BASE_CLIENT_URL
+			? callback(null, true)
+			: callback(createError(403));
+	},
 };
 
 app.use(cors(corsOptions));
@@ -45,16 +43,16 @@ app.use(cookieParser());
 app.use('/', require('./routes/index'));
 
 app.use(function (req, res, next) {
-  next(createError(404));
+	next(createError(404));
 });
 
 app.use(function (err, req, res, next) {
-  res.status(err.status || 500);
-  res.json({
-    message: err.message,
-    error: err,
-  });
-  return;
+	res.status(err.status || 500);
+	res.json({
+		message: err.message,
+		error: err,
+	});
+	return;
 });
 
 global.CronJob = require('./utils/cron.js');

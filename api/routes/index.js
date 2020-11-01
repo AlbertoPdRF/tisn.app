@@ -8,7 +8,7 @@ const interestsRouter = require('./interests');
 const uploadsRouter = require('./uploads');
 
 router.get('/', function (req, res, next) {
-  res.json({ message: 'Tisn API' });
+	res.json({ message: 'Tisn API' });
 });
 
 router.use('/users', usersRouter);

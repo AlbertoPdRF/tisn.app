@@ -12,20 +12,20 @@ import { ThemeProvider } from '../ThemeProvider/ThemeProvider';
 import Navigation from '../Navigation/Navigation';
 
 const App = () => (
-  <BrowserRouter>
-    <UserProvider>
-      <NotificationsProvider>
-        <ThemeProvider>
-          <ConfirmProvider>
-            <Suspense fallback={<LinearProgress />}>
-              <CssBaseline />
-              <Navigation />
-            </Suspense>
-          </ConfirmProvider>
-        </ThemeProvider>
-      </NotificationsProvider>
-    </UserProvider>
-  </BrowserRouter>
+	<BrowserRouter>
+		<UserProvider>
+			<NotificationsProvider>
+				<ThemeProvider>
+					<ConfirmProvider>
+						<Suspense fallback={<LinearProgress />}>
+							<CssBaseline />
+							<Navigation />
+						</Suspense>
+					</ConfirmProvider>
+				</ThemeProvider>
+			</NotificationsProvider>
+		</UserProvider>
+	</BrowserRouter>
 );
 
 export default App;

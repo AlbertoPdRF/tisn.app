@@ -8,15 +8,15 @@ const permissions = require('./permissions');
 const notificationsController = require('../controllers/notificationsController');
 
 router.get(
-  '/',
-  [auth.required, validations.create('notificationsGet'), validations.run],
-  notificationsController.get
+	'/',
+	[auth.required, validations.create('notificationsGet'), validations.run],
+	notificationsController.get
 );
 
 router.put(
-  '/:notificationId',
-  [auth.required, permissions],
-  notificationsController.putId
+	'/:notificationId',
+	[auth.required, permissions],
+	notificationsController.putId
 );
 
 module.exports = router;

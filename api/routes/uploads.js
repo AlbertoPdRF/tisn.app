@@ -6,7 +6,7 @@ const auth = require('./auth');
 const fileUpload = require('express-fileupload');
 
 const uploadsMiddleware = fileUpload({
-  limits: { fileSize: 50 * 1024 * 1024 },
+	limits: { fileSize: 50 * 1024 * 1024 },
 });
 
 const middleware = [auth.required, uploadsMiddleware];
