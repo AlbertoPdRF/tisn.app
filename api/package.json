@@ -49,7 +49,7 @@
     "minimist": "^1.2.5",
     "nodemon": "^2.0.6",
     "prettier": "2.1.2",
-    "prompts": "^2.3.2",
+    "prompts": "^2.4.0",
     "txtgen": "^2.2.7",
     "unique-names-generator": "^4.3.1"
   },
