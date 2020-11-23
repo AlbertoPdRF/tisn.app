@@ -21,7 +21,7 @@
     "cloudinary": "^1.23.0",
     "cookie-parser": "~1.4.4",
     "cors": "^2.8.5",
-    "country-region-data": "^1.6.0",
+    "country-region-data": "^1.7.0",
     "cron": "^1.8.2",
     "debug": "~4.2.0",
     "dotenv": "^8.2.0",
