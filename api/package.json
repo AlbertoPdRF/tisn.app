@@ -48,7 +48,7 @@
     "lint-staged": "^10.4.2",
     "minimist": "^1.2.5",
     "nodemon": "^2.0.6",
-    "prettier": "2.1.2",
+    "prettier": "2.2.0",
     "prompts": "^2.3.2",
     "txtgen": "^2.2.7",
     "unique-names-generator": "^4.3.1"
