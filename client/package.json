@@ -30,7 +30,7 @@
     "react": "^16.14.0",
     "react-avatar-editor": "^11.0.9",
     "react-dom": "^16.14.0",
-    "react-i18next": "^11.7.3",
+    "react-i18next": "^11.8.3",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
     "react-swipeable-views": "^0.13.9"
