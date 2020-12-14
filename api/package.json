@@ -44,7 +44,7 @@
     "node": "12.x"
   },
   "devDependencies": {
-    "husky": "^4.3.0",
+    "husky": "^4.3.6",
     "lint-staged": "^10.4.2",
     "minimist": "^1.2.5",
     "nodemon": "^2.0.6",
