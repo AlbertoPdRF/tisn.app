@@ -28,7 +28,7 @@
     "i18next-xhr-backend": "^3.2.2",
     "material-ui-confirm": "^2.1.1",
     "react": "^16.14.0",
-    "react-avatar-editor": "^11.0.9",
+    "react-avatar-editor": "^11.1.0",
     "react-dom": "^16.14.0",
     "react-i18next": "^11.7.3",
     "react-router-dom": "^5.2.0",
