@@ -30,7 +30,7 @@ We try to do all of that while being completely transparent and respecting our u
 
 ## Contributing
 
-We would love that you contribute to Tisn! We only ask you to please follow [our contributing guidelines](./CONTRIBUTING.md). You are also more than welcome to [join our Slack workspace](https://join.slack.com/t/tisn/shared_invite/zt-f90lp602-QKAWQFXzru2zy3cg3UuFBA)!
+<strong>:warning: This project is no longer maintained</strong>
 
 ## Getting started
 
