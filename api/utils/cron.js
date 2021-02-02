@@ -6,4 +6,4 @@ const dbBackup = new CronJob('0 0 0 * * *', () => {
   createBackup();
 });
 
-if (process.env.NODE_ENV === 'production') dbBackup.start();
+// if (process.env.NODE_ENV === 'production') dbBackup.start();
