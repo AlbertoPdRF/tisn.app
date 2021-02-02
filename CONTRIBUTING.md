@@ -15,7 +15,7 @@ We use GitHub to host the code, to track feature requests and bugs, as well as a
 
 ### Request new features and/or report bugs using GitHub's issues
 
-We use GitHub issues to track track feature requests and bugs. If you want to request a feature or report a bug, [open a new issue](https://github.com/Tisn/tisn.app/issues/new/choose) choosing and filling the appropriate template; it's that easy! However, before opening a new issue, make sure that it won't be duplicated by browsing [the already existing ones](https://github.com/Tisn/tisn.app/issues).
+We use GitHub issues to track track feature requests and bugs. If you want to request a feature or report a bug, [open a new issue](https://github.com/AlbertoPdRF/tisn.app/issues/new/choose) choosing and filling the appropriate template; it's that easy! However, before opening a new issue, make sure that it won't be duplicated by browsing [the already existing ones](https://github.com/AlbertoPdRF/tisn.app/issues).
 
 ### Propose code changes through pull requests
 

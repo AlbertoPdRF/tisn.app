@@ -4,11 +4,11 @@
   "homepage": "https://tisn.app",
   "repository": {
     "type": "git",
-    "url": "https://github.com/tisn/tisn.app",
+    "url": "https://github.com/AlbertoPdRF/tisn.app",
     "directory": "client"
   },
   "bugs": {
-    "url": "https://github.com/tisn/tisn.app/issues"
+    "url": "https://github.com/AlbertoPdRF/tisn.app/issues"
   },
   "license": "AGPL-3.0-or-later",
   "dependencies": {

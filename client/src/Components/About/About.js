@@ -98,7 +98,7 @@ const About = () => {
       title: t('about.openSourceTitle'),
       paragraph: t('about.openSourceParagraph'),
       button: {
-        href: 'https://github.com/Tisn/tisn.app',
+        href: 'https://github.com/AlbertoPdRF/tisn.app',
         content: t('about.openSourceButton'),
       },
     },

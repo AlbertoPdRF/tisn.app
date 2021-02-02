@@ -37,11 +37,11 @@ We would love that you contribute to Tisn! We only ask you to please follow [our
 Clone the repository:
 
 ```bash
-git clone https://github.com/tisn/tisn.app.git
+git clone https://github.com/AlbertoPdRF/tisn.app.git
 cd tisn.app
 ```
 
-We recommend [setting up an SSH key](https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/) and clonning the repository with the command `git clone git@github.com:tisn/tisn.app.git` instead.
+We recommend [setting up an SSH key](https://help.github.com/en/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent/) and clonning the repository with the command `git clone git@github.com:AlbertoPdRF/tisn.app.git` instead.
 
 ### Prerequisites
 
